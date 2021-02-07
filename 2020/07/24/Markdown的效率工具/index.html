@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"juliecodestack.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在上一篇 Markdown 入门文章 里，我们对 Markdown 这个写作和编辑利器有了初步认识。接下来，我们一起来看看还有哪些进一步提高编辑效率的工具方法？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown进阶">
+<meta property="og:url" content="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/index.html">
+<meta property="og:site_name" content="宁萌的笔记本">
+<meta property="og:description" content="在上一篇 Markdown 入门文章 里，我们对 Markdown 这个写作和编辑利器有了初步认识。接下来，我们一起来看看还有哪些进一步提高编辑效率的工具方法？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E8%A1%A5%E5%85%852020-05-05-21-45-58.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E8%A1%A5%E5%85%852020-05-05-21-36-33.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown%E8%BF%9B%E9%98%B62020-07-26-10-31-08.png">
+<meta property="article:published_time" content="2020-07-24T03:41:31.000Z">
+<meta property="article:modified_time" content="2021-01-23T03:02:20.110Z">
+<meta property="article:author" content="宁萌">
+<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="软件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E8%A1%A5%E5%85%852020-05-05-21-45-58.png">
+
+<link rel="canonical" href="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Markdown进阶 | 宁萌的笔记本</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="宁萌的笔记本" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">宁萌的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">A Notebook by Julie</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/julieavatar.jpg">
+      <meta itemprop="name" content="宁萌">
+      <meta itemprop="description" content="记录分享 技术、英语、读书">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宁萌的笔记本">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Markdown进阶
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-24 11:41:31" itemprop="dateCreated datePublished" datetime="2020-07-24T11:41:31+08:00">2020-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-23 11:02:20" itemprop="dateModified" datetime="2021-01-23T11:02:20+08:00">2021-01-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在上一篇 <a href="https://juliecodestack.github.io/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/#more">Markdown 入门文章</a> 里，我们对 Markdown 这个写作和编辑利器有了初步认识。接下来，我们一起来看看还有哪些进一步提高编辑效率的工具方法？</p>
+<a id="more"></a>
+<h3 id="1-公式编辑利器"><a href="#1-公式编辑利器" class="headerlink" title="1. 公式编辑利器"></a>1. 公式编辑利器</h3><p><strong>问题：</strong> 有时我们会在文章中用到公式，如果一个个输进去，符号、标记需要花费很多时间，有没有更快捷的方法呢？</p>
+<p>有，这就是 Mathpix 。我们可以截取公式图片，然后在Mathpix 中识别并转换成相应的格式，再复制粘贴到 Markdown 文档中。</p>
+<p>到 <a href="https://mathpix.com/" target="_blank" rel="noopener">Mathpix官网</a> 下载，首先我们要注册一个账号，免费账户一个月可使用 50 次；学生账户一个月可使用 100 次，需要使用学校邮箱注册；专业用户一个月需支付 4.99 美金，使用次数不限。如果不经常使用，注册一个免费用户就行，然后下载 Mathpix。</p>
+<p>打开 Mathpix 软件，登录刚才注册的账户。再打开要截取公式的页面，然后点击左上角的图标，如下图所示，就可以截图：<br><img src="/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown学习笔记补充2020-05-05-21-45-58.png" alt="Mathpix界面" align="center"> </p>
+<p>截取的公式图像会在 Mathpix 中自动显示并进行识别转换，如下图所示，我们可以选取所需要的格式。图中下方结果项里，第二个是行内公式，第三个是独立公式，只要点击图中箭头指示的按钮，可以复制内容，然后粘贴到 Markdown 文档中。图中最下面那条绿色的进度条代表置信度(Confidence)，进度条越长，表示转换的准确度和可靠性越高。<br><img src="/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown学习笔记补充2020-05-05-21-36-33.png" alt="Mathpix公式识别示例" align="center"> </p>
+<p>下面这个公式就是示例中从 Mathpix 复制粘贴到 Markdown 文档的效果。<br>$$z=w_{1} x_{1}+\ldots+w_{m} x_{m}$$</p>
+<h3 id="2-文档转换"><a href="#2-文档转换" class="headerlink" title="2. 文档转换"></a>2. 文档转换</h3><h4 id="VSCode-中将-Markdown-转换成-PDF-文档"><a href="#VSCode-中将-Markdown-转换成-PDF-文档" class="headerlink" title="VSCode 中将 Markdown 转换成 PDF 文档"></a>VSCode 中将 Markdown 转换成 PDF 文档</h4><p>Markdown 转 PDF，在<strong>预览视图</strong>中，点击右键菜单，这时会出现一系列文档转换方式，如图所示，<br><img src="/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown%E8%BF%9B%E9%98%B62020-07-26-10-31-08.png" alt><br>看到这个菜单你可能会想到用 PDF(prince) 选项，但是转换效果不如图中选择的 Chrome(Puppeteer)&gt; PDF 选项效果好，您可以尝试转换一下，对比一下输出的 PDF 文档显示效果。</p>
+<blockquote>
+<p>您是不是有顾虑，害怕转换后 Markdown 文档就变成 PDF 文档了？如果弄错了，原文档又找不回来了怎么办？<br>请放心，这个转换是另外输出一个 PDF 文档，不会对本身的 Markdown 文档做修改。</p>
+</blockquote>
+<h4 id="Markdown-转换成-Word-文档"><a href="#Markdown-转换成-Word-文档" class="headerlink" title="Markdown 转换成 Word 文档"></a>Markdown 转换成 Word 文档</h4><p>这里就要用到文档转换界的“瑞士军刀”——Pandoc，它能实现很多文档类型的转换。</p>
+<p>（1）如果您正在使用 Python，电脑中安装了 Anaconda，那么其中就包含了 Pandoc 模块，可以<strong>在 Anaconda 的命令行界面运行 Pandoc</strong>。</p>
+<p>比如，我要将文件名为“mdtest”的 Markdown 文档转换成 Word，先将 Anaconda 的命令行界面转换到 mdtest.md 所在文件夹，然后运行命令：<br><code>pandoc mdtest.md -o mdtest.docx</code><br>就会在当前文件夹中转换并新生成一个 mdtest.docx 文档。</p>
+<p>（2）<strong>Typora 或 VSCode 中 Markdown 转 Word 文档</strong><br>首先要安装 Pandoc 软件。进入<a href="https://pandoc.org/installing.html" target="_blank" rel="noopener">Pandoc官方网站下载页面</a>，点击最新的安装包，比如我是 Windows 系统，就选择 .msi 后缀的文件下载安装。</p>
+<blockquote>
+<p>您可能会有疑问，前面方法（1）中提到 Anaconda 包含了 Pandoc 模块，那我们还要再安装一次吗？<br>虽然 Anaconda 包含了 Pandoc，但是这一功能要在 Anaconda 命令行中使用。如果我们要在软件中操作，就需要单独安装 Pandoc。</p>
+</blockquote>
+<p>需要用到图形处理的交叉引用时，还要安装：<br><code>pip install pandoc-fignos</code></p>
+<p><strong>对于 Typora</strong>，现在点击菜单栏 File &gt; Export，选择 Word(.docx) 选项，即可导出 Word 文档。</p>
+<p><strong>对于 VScode</strong>，还需要<strong>在 Markdown 文档的开头加入以下语句</strong>，定义 Pandoc 转化后的文件格式。path 是转化后输出 Word 文档的存放位置，是必填项。后面三项根据需要选择，toc 是目录选项，true表示生成目录。请注意语句的缩进格式以及语句前后的<code>---</code>标记符。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">"当前Markdown文档名"</span></span><br><span class="line"><span class="attr">output:</span></span><br><span class="line">    <span class="attr">word_document:</span></span><br><span class="line">        <span class="attr">path:</span> <span class="string">/当前Markdown文档名.docx</span></span><br><span class="line">        <span class="attr">toc:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">toc_depth:</span> <span class="number">6</span></span><br><span class="line">        <span class="attr">number_sections:</span> <span class="literal">true</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+<p>然后在<strong>预览视图</strong>中，点击右键菜单中的 Pandoc 选项，即可完成文档转换。</p>
+<h4 id="Markdown-文档在线转换成富文本格式"><a href="#Markdown-文档在线转换成富文本格式" class="headerlink" title="Markdown 文档在线转换成富文本格式"></a>Markdown 文档在线转换成富文本格式</h4><p>现在大家都愿意在网上写文章分享交流知识，那么，您是否曾经花很多时间在微信文章等平台的排版上呢？</p>
+<p>前面提到，Markdown 可以极大缩短排版编辑时间。我们就想，要是用 Markdown 编辑器写文章，然后用类似上面介绍的文档转换工具转换成网络平台的格式就好了。</p>
+<p>答案是当然有，而且选择还不少，我在这里分享两款我用过的<strong>在线转换工具</strong>，如果您有觉得不错的转换工具，欢迎留言与大家交流分享。<br><a href="https://lab.lyric.im/wxformat/" target="_blank" rel="noopener">微信公众号格式化编辑器</a><br>特点：风格简洁，很适合排版文章。如果是诗歌可能换行、字号等不好调整。<br><a href="http://md.aclickall.com/" target="_blank" rel="noopener">Md2All</a><br>特点：功能强大，版式风格选择很多，如果略懂网页编辑Javascript的语法，还可以自己对版式调整。</p>
+<p>使用 Markdown 编辑文档时，您有哪些得心应手的效率工具呢？欢迎分享交流。</p>
+<p>参考文章：<br>1.<a href="https://blog.csdn.net/nkwshuyi/article/details/78714788" target="_blank" rel="noopener">如何用Markdown写论文？</a><br>2.<a href="https://www.jianshu.com/p/6ba04f669d0b" target="_blank" rel="noopener">Pandoc安装与使用（转）</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------感谢您的阅读！-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>您的支持给我更多能量，谢谢！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赞赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="宁萌 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="宁萌 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>宁萌
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/" title="Markdown进阶">https://juliecodestack.github.io/2020/07/24/Markdown的效率工具/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Markdown/" rel="tag"><i class="fa fa-tag"></i> Markdown</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/" rel="tag"><i class="fa fa-tag"></i> 软件</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/" rel="prev" title="一篇文章带你入门Markdown">
+      <i class="fa fa-chevron-left"></i> 一篇文章带你入门Markdown
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/24/Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE/" rel="next" title="Windows系统的屏幕截图，你用过哪些方法？">
+      Windows系统的屏幕截图，你用过哪些方法？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-公式编辑利器"><span class="nav-text">1. 公式编辑利器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-文档转换"><span class="nav-text">2. 文档转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VSCode-中将-Markdown-转换成-PDF-文档"><span class="nav-text">VSCode 中将 Markdown 转换成 PDF 文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Markdown-转换成-Word-文档"><span class="nav-text">Markdown 转换成 Word 文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Markdown-文档在线转换成富文本格式"><span class="nav-text">Markdown 文档在线转换成富文本格式</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宁萌"
+      src="/images/julieavatar.jpg">
+  <p class="site-author-name" itemprop="name">宁萌</p>
+  <div class="site-description" itemprop="description">记录分享 技术、英语、读书</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Juliecodestack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Juliecodestack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/applebear1123" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;applebear1123" rel="noopener" target="_blank"><i class="fa fa-crosshairs fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Juliecodestack@126.com" title="E-Mail → mailto:Juliecodestack@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宁萌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">69k</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user"></i>
+<span id="busuanzi_container_site_uv">
+  本站总访客数: <span id="busuanzi_value_site_uv"></span>&nbsp;&nbsp;| 
+</span>
+<span id="busuanzi_container_site_pv">
+    &nbsp;本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</span>
+</div>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.4/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'DIVYtuLgNv9DvW5Q08SqITJd-MdYXbMMI',
+      appKey     : 'I5Xj6XTwH9V4UJQtaFdrSEF1',
+      placeholder: "哈哈，既然来了，就打个招呼呗！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

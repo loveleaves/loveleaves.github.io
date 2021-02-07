@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"juliecodestack.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文写于2020年1月。  5G 来了刚刚过去的 2019 年是 5G 商用元年。19 年 6 月，5G 牌照发放。11 月，5G 商用套餐正式上线。“ 5G ” 也成为年度热词、大家谈论的焦点。许多人可能会有疑问：5G 除了比 4G 网速快了，还有哪些不同之处？5G 来了，它能给社会和生活带来哪些变化和便利？带着同样的问题，我打开了这本最新出版的 《 5G 时代：经济增长新引擎》，听北京邮">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迎接5G时代">
+<meta property="og:url" content="https://juliecodestack.github.io/2020/04/22/%E8%BF%8E%E6%8E%A55G%E6%97%B6%E4%BB%A3/index.html">
+<meta property="og:site_name" content="宁萌的笔记本">
+<meta property="og:description" content="本文写于2020年1月。  5G 来了刚刚过去的 2019 年是 5G 商用元年。19 年 6 月，5G 牌照发放。11 月，5G 商用套餐正式上线。“ 5G ” 也成为年度热词、大家谈论的焦点。许多人可能会有疑问：5G 除了比 4G 网速快了，还有哪些不同之处？5G 来了，它能给社会和生活带来哪些变化和便利？带着同样的问题，我打开了这本最新出版的 《 5G 时代：经济增长新引擎》，听北京邮">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img1.doubanio.com/view/subject/l/public/s33537277.jpg">
+<meta property="article:published_time" content="2020-04-22T13:12:04.000Z">
+<meta property="article:modified_time" content="2020-11-29T11:21:43.943Z">
+<meta property="article:author" content="宁萌">
+<meta property="article:tag" content="非虚构">
+<meta property="article:tag" content="科技">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img1.doubanio.com/view/subject/l/public/s33537277.jpg">
+
+<link rel="canonical" href="https://juliecodestack.github.io/2020/04/22/%E8%BF%8E%E6%8E%A55G%E6%97%B6%E4%BB%A3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>迎接5G时代 | 宁萌的笔记本</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="宁萌的笔记本" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">宁萌的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">A Notebook by Julie</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://juliecodestack.github.io/2020/04/22/%E8%BF%8E%E6%8E%A55G%E6%97%B6%E4%BB%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/julieavatar.jpg">
+      <meta itemprop="name" content="宁萌">
+      <meta itemprop="description" content="记录分享 技术、英语、读书">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宁萌的笔记本">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          迎接5G时代
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-22 21:12:04" itemprop="dateCreated datePublished" datetime="2020-04-22T21:12:04+08:00">2020-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-29 19:21:43" itemprop="dateModified" datetime="2020-11-29T19:21:43+08:00">2020-11-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6/" itemprop="url" rel="index"><span itemprop="name">读书</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2020/04/22/%E8%BF%8E%E6%8E%A55G%E6%97%B6%E4%BB%A3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/22/%E8%BF%8E%E6%8E%A55G%E6%97%B6%E4%BB%A3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <meta name="referrer" content="no-referrer">
+
+<blockquote>
+<p>本文写于2020年1月。</p>
+</blockquote>
+<h3 id="5G-来了"><a href="#5G-来了" class="headerlink" title="5G 来了"></a>5G 来了</h3><p>刚刚过去的 2019 年是 5G 商用元年。19 年 6 月，5G 牌照发放。11 月，5G 商用套餐正式上线。“ 5G ” 也成为年度热词、大家谈论的焦点。许多人可能会有疑问：5G 除了比 4G 网速快了，还有哪些不同之处？5G 来了，它能给社会和生活带来哪些变化和便利？带着同样的问题，我打开了这本最新出版的 <strong>《 5G 时代：经济增长新引擎》</strong>，听北京邮电大学孙松林教授讲述 5G 的发展之路，展望即将开启的 5G 时代。</p>
+<a id="more"></a>
+
+<img src="https://img1.doubanio.com/view/subject/l/public/s33537277.jpg" width="260" height="368" alt="本书封面图片，来源：豆瓣" align="center">
+
+<p>注：本书封面图片，来源：豆瓣</p>
+<h3 id="5G-带来的变革"><a href="#5G-带来的变革" class="headerlink" title="5G 带来的变革"></a>5G 带来的变革</h3><p>读完这本书，我印象最深的就是 5G 带来的<strong>理念变革</strong>：</p>
+<ul>
+<li>由面向人的通信方式转变为面向物的通信方式，打造万物互联的社会。</li>
+<li>将信息行业技术融入到通信行业，使通信网络的管理向软件化、智能化发展。</li>
+</ul>
+<p>可以预见，这两大转变将对信息社会、数字经济产生巨大的影响，而 5G 技术作为催化剂和桥梁，在其中发挥重要的作用。</p>
+<h4 id="1-从面向人的通信到面向物的通信"><a href="#1-从面向人的通信到面向物的通信" class="headerlink" title="1. 从面向人的通信到面向物的通信"></a>1. 从面向人的通信到面向物的通信</h4><p>通信的本质是信息传输。传统的通信系统如书信、电报、电话等，都是以人为中心设计的，人是信息的最初发起者和最终消费者，传递的是人可以认知的信息，这就是面向人的通信。技术发展至今，计算机、手机终端产生的数据量远远超过一个人产生的数据量，正如书中所说，“我们无法想象用人类的语言去描述一个联网游戏中各个角色的位置和动作。” 此时，还采用面向人的通信方式，对于海量数据的发送和接收处理就显得力不从心。</p>
+<p>另一方面，随着自动化和智能化的普及，包括传感器、控制器等各种机器被赋予了越来越多的功能，它们可以采集数据，产生、传送和展示信息。这一类通信过程是由物体、而不是人在主导，这就是典型的面向物的通信。</p>
+<p>5G 之前所有的通信系统都是面向人的通信，偶尔会兼顾物，5G 技术对此做出了改变。5G 的梦想是“信息随心至，万物触手及”，不但延续了之前高速率传输的特点，而且将物体连接作为自己的使命。 5G 有三大应用场景：<br>(1) <strong>增强移动宽带 ( eMBB )</strong>，提供大带宽高速率的移动服务，可以看作是对 4G 个人用户业务的延续和提升。<br>(2) <strong>海量机器类通信 ( mMTC )</strong>，提供面向广域低功耗覆盖的物联网服务，可以在 1 平方千米内同时接入 100 万个设备，按连接数密度来算，这大约相当于在 1 个足球场内可放置 700 多个同时接入 5G 网络的设备。<br>(3) <strong>超高可靠低时延通信 ( uRLLC )</strong>，这一场景的名字正是其突出特点。在此场景下，传输的控制面时延只有 1 毫秒，超越了人的触觉极限；同时，可以支持每小时 500 千米的高速移动环境下通信。主要用于满足远程医疗、工业设备、车辆等物体的通信需求。</p>
+<p>其中，后两种应用场景就是面向物的通信，这为通信打开了一片新天地。互联网也将依托 5G 从消费互联网渗透到产业互联网，带来新的产业和机会。</p>
+<h4 id="2-信息行业IT与通信行业CT的融合，云网融合"><a href="#2-信息行业IT与通信行业CT的融合，云网融合" class="headerlink" title="2. 信息行业IT与通信行业CT的融合，云网融合"></a>2. 信息行业IT与通信行业CT的融合，云网融合</h4><p>书中详细介绍了 5G 采用的几项新技术，也可以称为 5G 的几大法宝，其中包括了软件定义网络( SDN )、网络功能虚拟化( NFV ) 和网络切片、边缘计算。这些新技术将促成 5G 时代信息行业与通信行业的融合和云网融合。</p>
+<p><strong>(1) 软件化、智能化——IT与CT的融合</strong><br>软件定义网络 ( SDN )，是将传统网络设备的数据转发和路由控制两个模块分离，集中管理路由控制功能。举例来说，假设系统中有100 台不同配置的交换机，使用传统方法，需要登录每台交换机终端进行配置，效率低且故障率高，使用 SDN 就可以集中化管理配置网络设备，既让传输更加高效，又让网络维护十分便捷。</p>
+<p>网络功能虚拟化 ( NFV ) ，是通过虚拟网络功能，把许多网络设备由目前的专有平台迁移到通用的 X86 平台上，帮助运营商和数据中心更加敏捷地为客户创建和部署网络特性，降低设备投资和运营费用。NFV 和软件定义网络 ( SDN ) 关系紧密，是 SDN 的补充。</p>
+<p>SDN 通过将控制平面与数据平面分离，彻底打通了传统计算机网络（如互联网）和电信网络之间的逻辑通道。而 NFV 则是用信息行业 IT 的思维对通信行业 CT 进行的一场革命，最大的意义在于使用 IT 设备来管理电信网络，这彻底打通了 IT 与 CT 之间的硬件通道。5G 的伟大之处就在于它第一次大规模地将 IT 与 CT 进行深度融合，意义深远。</p>
+<blockquote>
+<p>软件化的应用：<strong>网络切片</strong><br>5G 需要支持语音、数据、物联网等多种业务，不同的业务场景对网络要求不同，那么，如何在一个网络里兼顾多种场景需求呢？<br>这就要用到网络切片，将物理网络通过软件划分为多个虚拟网络，不同网络适应不同业务需求。而实现这一技术的先决条件就是要能通过软件控制各个不同的网元，也就是前面介绍的 SDN 及 NFV 技术。</p>
+</blockquote>
+<p><strong>(2) 分布式计算——云网融合</strong><br>5G 强大的网络能力使得数据传输不再是瓶颈，但计算会捉襟见肘。大量的数据在终端与云端之间不停地传输，如果只靠云端来进行处理，整体时延将较大。边缘计算正是为了解决这一问题应运而生，它是在靠近物或数据源头的网络边缘侧，就近提供边缘智能服务。通俗地讲，即为就近处理数据，分担云端的计算负荷。这一技术将计算能力从集中单一的云端下沉分散到用户侧，这样可以减少响应时间，降低整体计算成本，提高系统性能。</p>
+<p>5G 时代，全国连接终端有望超过1000亿，一个云化的核心网络毫无疑问是必需的。在 SDN/NFV 的基础上，未来网络需要划分为“三朵云”：接入云、控制云和转发云，它们有一个共同的特点，就是需要部署在网络边缘，即边缘云。边缘云将计算能力下沉，因此可以提供超低时延的大带宽服务，网络下载速度可能达到数百兆，甚至超过了机械硬盘的读写速度，这意味着一些常规、高计算量的应用部署在“边缘云”节点甚至可能比安装在“本地”更快。</p>
+<p>业界普遍认为，5G 和云计算天生就是相互促进、相互融合的。一方面，5G 网络是一种“云源生”的数据传输网络，网络单元虚拟化可以帮助运营商更有效地布网和运维，把计算节点下沉这种边缘架构也是 5G 网络能够保持低时延的关键，是 5G 网络的大势所趋；另一方面，只有虚拟化和网络深度融合，才能让运营商有能力拓展出更多业务，比如为企业提供自定义专用网络和专用数据通路。因此，5G 和云计算必然相辅相成、协同发展。</p>
+<h3 id="身边的-5G-应用"><a href="#身边的-5G-应用" class="headerlink" title="身边的 5G 应用"></a>身边的 5G 应用</h3><p>了解这么多新技术，大家最关心的可能还是与自己息息相关的 5G 应用。5G 时代，会有哪些新业务、新应用等着我们去体验和发现？书中对此也进行了介绍。</p>
+<h4 id="1-畅快的游戏体验"><a href="#1-畅快的游戏体验" class="headerlink" title="1. 畅快的游戏体验"></a>1. 畅快的游戏体验</h4><p>5G 时代，云游戏会成为一个很有潜力的应用。云游戏的愿景是用户在手机端只需要处理视频，其它计算都交给云端。这样，对手机算力的需求减小，将显著降低游戏功耗并提高续航时间。对于在线手游而言，网络时延是影响游戏体验的最大因素。要解决时延问题，既要依赖 5G 网络建设，也需要部署边缘云以缩短服务器和用户终端的距离。在较短时期内，5G 的网络建设将领先于云端服务器的建设，因此，预计前期将支持时延不敏感的云游戏，后期随着云计算中心和云服务的完善，用户将在手机上体验到更多的动作类3A大作。</p>
+<h4 id="2-不在现场、胜似现场"><a href="#2-不在现场、胜似现场" class="headerlink" title="2. 不在现场、胜似现场"></a>2. 不在现场、胜似现场</h4><p>在 5G 三大场景中，增强移动宽带 ( eMBB )将首先落地应用。这一场景的大带宽高速率特点，最适合的业务就是超高清视频。我们可以看到，目前各国的 5G 主推业务也是超高清视频、虚拟现实 ( VR ) / 增强现实 ( AR ) 等。那么，什么是超高清视频？国际电信联盟将屏幕的物理分辨率达到 3840x2160 及以上的显示称为超高清，目前主要有两种：“ 4K 分辨率 ” ( 3840 x 2160 像素，这也是我们常听到的“ 4K 超高清” ) 和“ 8K 分辨率 ” ( 7680 x 4320 像素 )。超高清能达到怎样的清晰度呢？举个例子，一帧 8K 分辨率的图像有大约 3300 万个像素点，在 65 英寸的电视上显示，肉眼几乎感觉不到颗粒感。</p>
+<p>书中介绍了一些体育赛事、大型晚会采用“ 5G + 超高清 ”直播回传的例子，比如 2018 年韩国平昌冬奥会、2019 年央视春晚深圳分会场、篮球世界杯转播等等。值得一提的是，平昌冬奥会在部分比赛场馆部署了边缘计算服务器，进行了 4K 超高清 VR 沉浸式体验和任意回看。在用 VR 观看时，摄像机采集的海量数据不用传送到首尔的核心网，而只需传送到靠近赛场的边缘服务器，再传到现场 VR 区的头显上，传输距离短，保证了实时的观赛体验。未来随着技术的推广和成熟，我们将越来越多地体验到“ 5G + 超高清 ”带来的全方位高清视角。</p>
+<p>除了为用户带来身临其境的观赏体验外，“ 5G + 超高清视频 ”还可以用于安防监控、工业生产监测等，使其更加高效准确。</p>
+<h4 id="3-车联网"><a href="#3-车联网" class="headerlink" title="3. 车联网"></a>3. 车联网</h4><p>这几年随着大数据、人工智能的广泛应用，网约车、地图导航等应用已成为热门，而自动驾驶也得到了普遍关注。如果把路况信息、车辆都连上网，进行智能规划，交通状况是不是会更加有序顺畅？你是否也和我一样，设想过乘坐自动驾驶车辆出行的未来？要实现这一愿景，首先就要解决海量数据传输与处理、信息指令的快速传递等问题，目前的 4G 网络无法满足这一需求。而 5G 高可靠、高带宽、低时延的通信特性，可以为车联网的用户体验、车辆驾驶和协同通信提供有力支撑。同时，在网络部署中也同样会运用到边缘计算这一理念，将一部分业务部署在边缘云平台上，从而有效减少反应时延，使系统更加高效迅捷。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这本书让我对 5G 有了深入的了解，也对 5G 时代更加期待。书中说到，整个经济的对象分为物理世界和数字世界，而物理世界又可以简单地分为人（包括环境）和机器。第一次和第二次工业革命完成了生产过程的机械化和自动化，让机器替代人工作，但我们注意到，此时的活动仍然限于物理世界。第三次工业革命是由计算机发起的，从此开始了人和机器向数字世界迁移的过程，今天的信息通信技术正是在这一过程中起到桥梁作用。的确，当我们环顾四周，网上社交媒体、网上购物、网上预约…会发现我们正在不知不觉中步入数字世界。5G 技术的到来会加速这一迁移过程，可能带来数字经济的全面爆发。5G 结合云计算、人工智能、区块链、物联网等技术，将带来经济和社会的快速发展和变革，让我们拭目以待吧！</p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------感谢您的阅读！-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>您的支持给我更多能量，谢谢！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赞赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="宁萌 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="宁萌 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>宁萌
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://juliecodestack.github.io/2020/04/22/%E8%BF%8E%E6%8E%A55G%E6%97%B6%E4%BB%A3/" title="迎接5G时代">https://juliecodestack.github.io/2020/04/22/迎接5G时代/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%9E%E8%99%9A%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 非虚构</a>
+              <a href="/tags/%E7%A7%91%E6%8A%80/" rel="tag"><i class="fa fa-tag"></i> 科技</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/22/%E4%B8%80%E6%9C%AC%E4%B9%A6%E4%B8%AD%E7%9A%84%E4%BA%BA%E7%94%9F%E6%BB%8B%E5%91%B3/" rel="prev" title="一本书中的人生滋味">
+      <i class="fa fa-chevron-left"></i> 一本书中的人生滋味
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%B8%80/" rel="next" title="英文有声书和广播剧推荐之一">
+      英文有声书和广播剧推荐之一 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#5G-来了"><span class="nav-text">5G 来了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5G-带来的变革"><span class="nav-text">5G 带来的变革</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-从面向人的通信到面向物的通信"><span class="nav-text">1. 从面向人的通信到面向物的通信</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-信息行业IT与通信行业CT的融合，云网融合"><span class="nav-text">2. 信息行业IT与通信行业CT的融合，云网融合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#身边的-5G-应用"><span class="nav-text">身边的 5G 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-畅快的游戏体验"><span class="nav-text">1. 畅快的游戏体验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-不在现场、胜似现场"><span class="nav-text">2. 不在现场、胜似现场</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-车联网"><span class="nav-text">3. 车联网</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宁萌"
+      src="/images/julieavatar.jpg">
+  <p class="site-author-name" itemprop="name">宁萌</p>
+  <div class="site-description" itemprop="description">记录分享 技术、英语、读书</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Juliecodestack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Juliecodestack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/applebear1123" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;applebear1123" rel="noopener" target="_blank"><i class="fa fa-crosshairs fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Juliecodestack@126.com" title="E-Mail → mailto:Juliecodestack@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宁萌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">69k</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user"></i>
+<span id="busuanzi_container_site_uv">
+  本站总访客数: <span id="busuanzi_value_site_uv"></span>&nbsp;&nbsp;| 
+</span>
+<span id="busuanzi_container_site_pv">
+    &nbsp;本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</span>
+</div>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.4/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'DIVYtuLgNv9DvW5Q08SqITJd-MdYXbMMI',
+      appKey     : 'I5Xj6XTwH9V4UJQtaFdrSEF1',
+      placeholder: "哈哈，既然来了，就打个招呼呗！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

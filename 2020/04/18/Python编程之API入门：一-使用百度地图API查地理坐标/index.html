@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"juliecodestack.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在网络编程中，我们会和API打交道。那么，什么是API?如何使用API呢？本文分享了一下笔者对API的理解以及百度地图API的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python编程之API入门：一 使用百度地图API查地理坐标">
+<meta property="og:url" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/index.html">
+<meta property="og:site_name" content="宁萌的笔记本">
+<meta property="og:description" content="在网络编程中，我们会和API打交道。那么，什么是API?如何使用API呢？本文分享了一下笔者对API的理解以及百度地图API的使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/02%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E5%B9%B3%E5%8F%B0.png">
+<meta property="article:published_time" content="2020-04-18T02:17:29.000Z">
+<meta property="article:modified_time" content="2020-04-19T03:48:25.191Z">
+<meta property="article:author" content="宁萌">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="API">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/02%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E5%B9%B3%E5%8F%B0.png">
+
+<link rel="canonical" href="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Python编程之API入门：一 使用百度地图API查地理坐标 | 宁萌的笔记本</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="宁萌的笔记本" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">宁萌的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">A Notebook by Julie</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/julieavatar.jpg">
+      <meta itemprop="name" content="宁萌">
+      <meta itemprop="description" content="记录分享 技术、英语、读书">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宁萌的笔记本">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python编程之API入门：一 使用百度地图API查地理坐标
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-18 10:17:29" itemprop="dateCreated datePublished" datetime="2020-04-18T10:17:29+08:00">2020-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-19 11:48:25" itemprop="dateModified" datetime="2020-04-19T11:48:25+08:00">2020-04-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.5k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在网络编程中，我们会和API打交道。那么，什么是API?如何使用API呢？本文分享了一下笔者对API的理解以及百度地图API的使用。</p>
+<a id="more"></a>
+<p>API是”Application Programming Interface（应用程序编程接口）”的缩写。如果那一大堆的术语和定义让你头晕，不妨试着这样理解：网络服务商（比如百度、微博等）存有大量数据，我们可以查询数据，但是需要按照一定的格式/协议，否则服务商不知道我们的需求无法进行处理，我们拿到数据也看不懂。通过API接口规范，通信双方都能明白对方传送的信息和数据，同时也简化了操作（只要按照规定的格式输入，就可以得到已知格式的输出，我们无需了解具体实现的技术细节，是不是很省心呢？）</p>
+<p>下面以<a href="http://lbsyun.baidu.com/index.php?title=webapi" target="_blank" rel="noopener">百度地图Web服务API</a>的调用为例。</p>
+<img src="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/02%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E5%B9%B3%E5%8F%B0.png" class title="百度地图API平台示意图"> 
+
+<p>要使用的是图中所示“正/逆地理编码服务”。在使用服务前，需要登录百度账号（如果没有就注册一个），申请成为百度开发者，然后创建一个你自己的应用，就可以收到一个对应的服务密钥(AK)。在服务配置页面，有两种校验方式，一种是IP白名单方式，一种是sn校验方式。我根据文章<a href="https://www.cnblogs.com/liao-sir/p/8367683.html" target="_blank" rel="noopener"><br>python实现百度地图API获取某地址的经纬度</a>中的介绍，选择了sn校验方式，这样页面上会有SK。请将AK和SK两个序列码保存好，这就是你个人的验证信息。下一步使用百度地图API时要用到。</p>
+<p>要编写的这个Python小程序实现的功能是：<strong>输入某个地址，得到相应的经纬度坐标信息</strong>。分三步实现：</p>
+<ol>
+<li>生成url（用于提交到API进行查询）</li>
+<li>与API交互，查询并返回数据（json格式） </li>
+<li>利用json解析并输出。</li>
+</ol>
+<p>下面分别介绍具体实现。</p>
+<h3 id="1-sn码及url的生成"><a href="#1-sn码及url的生成" class="headerlink" title="1. sn码及url的生成"></a>1. sn码及url的生成</h3><p>url= <a href="http://api.map.baidu.com/geocoder/v2/?address=“输入的地点名”&amp;output=json&amp;ak=&#39;你的AK码&#39;&amp;sn=&#39;你的sn码&#39;。" target="_blank" rel="noopener">http://api.map.baidu.com/geocoder/v2/?address=“输入的地点名”&amp;output=json&amp;ak=&#39;你的AK码&#39;&amp;sn=&#39;你的sn码&#39;。</a><br>需要注意的是：</p>
+<ul>
+<li>由于url中有中文字符串，需要使用函数<code>urllib.parse.quote(inputstr, safe=&quot;/:=&amp;?#+!$,;&#39;@()*[]&quot;)</code>转换一下编码。</li>
+<li>在url里output可以选择输出为json格式或xml格式，默认是xml格式。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request,urllib.parse,urllib.error</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">MyAK=<span class="string">'这里请填入你的AK'</span></span><br><span class="line">MySK=<span class="string">'这里请填入你的SK'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    address = input(<span class="string">'输入地点：'</span>)</span><br><span class="line">    <span class="keyword">if</span> len(address)&lt;<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#产生sn码</span></span><br><span class="line">    queryStr=<span class="string">"/geocoder/v2/?address="</span>+address+<span class="string">'&amp;output=json&amp;ak='</span>+MyAK</span><br><span class="line">    encodedStr=urllib.parse.quote(queryStr, safe=<span class="string">"/:=&amp;?#+!$,;'@()*[]"</span>)</span><br><span class="line">    rawStr=encodedStr+MySK</span><br><span class="line">    sn=(hashlib.md5(urllib.parse.quote_plus(rawStr).encode(<span class="string">"utf8"</span>)).hexdigest())</span><br><span class="line"></span><br><span class="line">    <span class="comment">#生成url  </span></span><br><span class="line">    url=urllib.parse.quote(<span class="string">"http://api.map.baidu.com"</span>+queryStr+<span class="string">"&amp;sn="</span>+sn,safe=<span class="string">"/:=&amp;?#+!$,;'@()*[]"</span>)</span><br><span class="line">    print(<span class="string">'Retrieving'</span>,url)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-输入url，利用urllib从API读取数据"><a href="#2-输入url，利用urllib从API读取数据" class="headerlink" title="2. 输入url，利用urllib从API读取数据"></a>2. 输入url，利用urllib从API读取数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#从API读取数据</span></span><br><span class="line">uh=urllib.request.urlopen(url)</span><br><span class="line">data=uh.read().decode()</span><br><span class="line">print(<span class="string">'Retrieved'</span>,len(data),<span class="string">'characters'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-利用json对返回数据进行解析。"><a href="#3-利用json对返回数据进行解析。" class="headerlink" title="3. 利用json对返回数据进行解析。"></a>3. 利用json对返回数据进行解析。</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#解析数据</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        js=json.loads(data)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        js=<span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> js <span class="keyword">or</span> <span class="string">'status'</span><span class="keyword">not</span> <span class="keyword">in</span> js <span class="keyword">or</span> js[<span class="string">'status'</span>]!=<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'======Failure===='</span>)</span><br><span class="line">        print(data)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    print(json.dumps(js,indent=<span class="number">4</span>,ensure_ascii=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+<p>以上代码可输出得到json格式的数据。例如，输入“百度大厦”后，程序输出的json格式数据如下所示：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"status"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"result"</span>: &#123;</span><br><span class="line">        <span class="attr">"location"</span>: &#123;</span><br><span class="line">            <span class="attr">"lng"</span>: <span class="number">116.30695597357376</span>,</span><br><span class="line">            <span class="attr">"lat"</span>: <span class="number">40.05738753357608</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"precise"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">"confidence"</span>: <span class="number">80</span>,</span><br><span class="line">        <span class="attr">"comprehension"</span>: <span class="number">100</span>,</span><br><span class="line">        <span class="attr">"level"</span>: <span class="string">"商务大厦"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，在这里一开始中文字符<code>&quot;商务大厦&quot;</code>不能正确显示，我从文章<a href="https://www.cnblogs.com/mingjiatang/p/9527345.html" target="_blank" rel="noopener">python中文编码&amp;json中文输出问题</a>中找到了答案，在<code>json.dumps()</code>函数中，默认转换为 ASCII 编码，中文字符就无法转换显示，因此在<code>json.dumps()</code>中要设置<code>ensure_ascii=False</code>。</p>
+<p>最后，通过以下代码，可提取经纬度坐标等信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取经纬度坐标和地址类型</span></span><br><span class="line">lat=js[<span class="string">"result"</span>][<span class="string">"location"</span>][<span class="string">"lat"</span>]</span><br><span class="line">lng=js[<span class="string">"result"</span>][<span class="string">"location"</span>][<span class="string">"lng"</span>]</span><br><span class="line">print(<span class="string">'纬度'</span>,lat,<span class="string">'经度'</span>,lng)</span><br><span class="line">level=js[<span class="string">"result"</span>][<span class="string">"level"</span>]</span><br><span class="line">print(<span class="string">'地址类型'</span>,level)</span><br></pre></td></tr></table></figure>
+<p>总结：按照规范发送 url 以及对返回 json 或 xml 格式数据正确解析，另外注意中文字符的编码问题，就可以上手API。怎么样？你也快来试试吧！</p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------感谢您的阅读！-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>您的支持给我更多能量，谢谢！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赞赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="宁萌 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="宁萌 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>宁萌
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/" title="Python编程之API入门：一 使用百度地图API查地理坐标">https://juliecodestack.github.io/2020/04/18/Python编程之API入门：一-使用百度地图API查地理坐标/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+              <a href="/tags/API/" rel="tag"><i class="fa fa-tag"></i> API</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/18/%E5%86%99%E4%BD%9C%E5%89%8D%E7%9A%84%E6%80%9D%E8%80%83%EF%BC%9AWhy&How/" rel="prev" title="写作前的思考：Why&How">
+      <i class="fa fa-chevron-left"></i> 写作前的思考：Why&How
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/" rel="next" title="Python编程之API入门：二 Python3中使用新浪微博API">
+      Python编程之API入门：二 Python3中使用新浪微博API <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-sn码及url的生成"><span class="nav-text">1. sn码及url的生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-输入url，利用urllib从API读取数据"><span class="nav-text">2. 输入url，利用urllib从API读取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-利用json对返回数据进行解析。"><span class="nav-text">3. 利用json对返回数据进行解析。</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宁萌"
+      src="/images/julieavatar.jpg">
+  <p class="site-author-name" itemprop="name">宁萌</p>
+  <div class="site-description" itemprop="description">记录分享 技术、英语、读书</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Juliecodestack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Juliecodestack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/applebear1123" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;applebear1123" rel="noopener" target="_blank"><i class="fa fa-crosshairs fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Juliecodestack@126.com" title="E-Mail → mailto:Juliecodestack@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宁萌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">69k</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user"></i>
+<span id="busuanzi_container_site_uv">
+  本站总访客数: <span id="busuanzi_value_site_uv"></span>&nbsp;&nbsp;| 
+</span>
+<span id="busuanzi_container_site_pv">
+    &nbsp;本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</span>
+</div>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.4/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'DIVYtuLgNv9DvW5Q08SqITJd-MdYXbMMI',
+      appKey     : 'I5Xj6XTwH9V4UJQtaFdrSEF1',
+      placeholder: "哈哈，既然来了，就打个招呼呗！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

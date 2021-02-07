@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>宁萌的笔记本</title>
+  
+  <subtitle>A Notebook by Julie</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://juliecodestack.github.io/"/>
+  <updated>2021-02-01T11:50:10.476Z</updated>
+  <id>https://juliecodestack.github.io/</id>
+  
+  <author>
+    <name>宁萌</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>重装系统后如何配置hexo</title>
+    <link href="https://juliecodestack.github.io/2021/01/20/21002/"/>
+    <id>https://juliecodestack.github.io/2021/01/20/21002/</id>
+    <published>2021-01-20T09:15:43.000Z</published>
+    <updated>2021-02-01T11:50:10.476Z</updated>
+    
+    <content type="html"><![CDATA[<p>早段时间重装了系统，考虑到hexo博客需要在新系统安装配置，重装之前在网上查找学习了相关教程，在这里记录一下。</p><a id="more"></a><p><strong>提示：因为重新配置hexo已经过了一段时间，所以每个步骤我记录得不够详细准确，仅供您参考。如需重装系统配置hexo，请一定要先做好备份保存再尝试。</strong></p><h3 id="重要的准备工作"><a href="#重要的准备工作" class="headerlink" title="重要的准备工作"></a>重要的准备工作</h3><p>首先，<strong>最重要的一点：在重装系统之前，备份保存</strong> 硬盘里hexo博客文件夹（就是hexo博客存储的文件夹。） 因为不知道哪些文件需要用，所以我把整个文件夹都保存下来。</p><h3 id="重装系统之后"><a href="#重装系统之后" class="headerlink" title="重装系统之后"></a>重装系统之后</h3><h4 id="1-安装软件-git-和-Node-js"><a href="#1-安装软件-git-和-Node-js" class="headerlink" title="1.安装软件 git 和 Node.js"></a>1.安装软件 git 和 Node.js</h4><p>git下载地址：<a href="https://git-scm.com/" target="_blank" rel="noopener">git官网</a><br>Node.js下载地址：<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js官网</a> </p><p><strong>注</strong>：因为有一段时间了，以下的步骤2，3，5，6 我不记得具体是在哪个文件夹上运行Git Bash 客户端，是当前盘？还是 hexo 博客存储文件夹？下次安装要记录一下。</p><h4 id="2-配置SSH-Key"><a href="#2-配置SSH-Key" class="headerlink" title="2.配置SSH Key"></a>2.配置SSH Key</h4><p>在 Git Bash 客户端，输入：</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git<span class="built_in"> config </span>--global user.name <span class="string">"这里输入在GitHub的账户名"</span></span><br><span class="line">git<span class="built_in"> config </span>--global user.email <span class="string">"这里输入在GitHub的注册邮箱名"</span></span><br><span class="line">ssh-keygen -t rsa -C <span class="string">"这里输入在 GitHub 的注册邮箱"</span></span><br></pre></td></tr></table></figure><p>接着在 Git Bash 客户端，输入命令行：</p><p><code>cat id_ras.pub</code></p><p>这样会显示公钥文件内容，把它复制到剪贴板。</p><p>登录 GitHub 账户，点击右上角个人头像的下拉菜单，依次点击 Settings &gt; SSH and GPG Keys，在 SSH Keys 页面右上角有个<code>New SSH Key</code>按钮，点击该按钮后，粘贴上刚才复制的公钥内容。这样，SSH Key 就配置好了。</p><p><strong>思考</strong>：我当时按照这个配置的，但是忘记看一下重装之前的SSH Key是不是还在，是否有必要重新配置，下次重装时要看一下。</p><h4 id="3-安装hexo"><a href="#3-安装hexo" class="headerlink" title="3.安装hexo"></a>3.安装hexo</h4><p>在 Git Bash 客户端输入:<br><code>npm install hexo-cli -g</code></p><h4 id="4-删除hexo博客文件夹里的部分文件"><a href="#4-删除hexo博客文件夹里的部分文件" class="headerlink" title="4.删除hexo博客文件夹里的部分文件"></a>4.删除hexo博客文件夹里的部分文件</h4><p><strong>提示：为防止误操作，稳妥起见，执行本操作之前，还是在另外一个盘再存储一份hexo博客文件夹保存为好。</strong></p><p><strong>保留_config.yml, themes/, source/, scaffolds/, package.json, .gitignore 这些文件/文件夹，</strong> 其它可以删除。</p><h4 id="5-安装文件"><a href="#5-安装文件" class="headerlink" title="5.安装文件"></a>5.安装文件</h4><p>在Git Bash 客户端输入<br><code>npm install</code></p><h4 id="6-安装部署"><a href="#6-安装部署" class="headerlink" title="6.安装部署"></a>6.安装部署</h4><p>在Git Bash 客户端输入：<br><code>npm install hexo-deployer-git --save</code></p><h4 id="7-运行"><a href="#7-运行" class="headerlink" title="7.运行"></a>7.运行</h4><p>最后，在博客文件夹上，运行Git Bash 客户端，依次输入以下命令：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></p><p>然后查看是否配置成功。</p><p>参考文章：<br><a href="https://www.jianshu.com/p/b9a636d45bcd" target="_blank" rel="noopener">重装系统后重新部署恢复 Hexo blog</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;早段时间重装了系统，考虑到hexo博客需要在新系统安装配置，重装之前在网上查找学习了相关教程，在这里记录一下。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://juliecodestack.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="软件" scheme="https://juliecodestack.github.io/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+      <category term="电脑" scheme="https://juliecodestack.github.io/tags/%E7%94%B5%E8%84%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>录屏软件OBS入门笔记</title>
+    <link href="https://juliecodestack.github.io/2021/01/20/21001/"/>
+    <id>https://juliecodestack.github.io/2021/01/20/21001/</id>
+    <published>2021-01-20T09:14:38.000Z</published>
+    <updated>2021-02-01T11:25:21.107Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近我想学习一下怎么录屏，就上网查找了一下教程，本文为我记录的学习笔记，详细教程请参考文末链接。</p><a id="more"></a><h4 id="工具选择"><a href="#工具选择" class="headerlink" title="工具选择"></a>工具选择</h4><p>我用的是 Windows系统，可以用系统自带的游戏录屏，但是功能单一。也可以用OBS、Bandicam等专业软件。最后我选择 OBS 这款开源免费的软件。</p><h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p>OBS，全称Open Broadcaster Software，录像、录屏和直播均可。<br>到<a href="https://obsproject.com/" target="_blank" rel="noopener">OBS官网</a>下载，小诀窍：用<strong>迅雷</strong>下载。</p><h4 id="参数配置"><a href="#参数配置" class="headerlink" title="参数配置"></a>参数配置</h4><h5 id="1-重要的控件栏"><a href="#1-重要的控件栏" class="headerlink" title="1.重要的控件栏"></a>1.重要的控件栏</h5><p>如图所示为控件栏，在屏幕的右侧，点击【开始录制】按钮就可以录屏了，然后再点同一个按钮停止录制。【开始推流】是用于直播，还需要到直播间获取地址。<br>录完后在页面左上角的菜单栏，依次点击：【文件】&gt;【显示录像】，可以查看录制的视频。<br><img src="/2021/01/20/21001/OBS%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B02021-01-24-12-56-41.png" alt="控件栏"></p><blockquote><p>注：我在使用时没有出现录屏黑屏的情况。如果有黑屏，文末链接1和2都有介绍解决方法，可以学习一下。</p></blockquote><p>在录之前还有<strong>一些参数需要设置</strong>，点击【设置】&gt;【输出】，默认输出模式是“简单”，视频码率选 4000（<strong>思考</strong>：网上也有说3000？后续查看），音频比特率320。<br>现在，<strong>输出模式改为选择“高级”</strong>，编码选VBR，4000-6000（思考：是否可以3000-5000？后续查看）。“串流”页（用于直播）里选音轨1输出，“录像”页选音轨2和3输出，同时还可以在此页选择录制视频存储路径。“音频”页设置比特率：轨道1：320；轨道2/3：160（加起来不超过320）。<br>在“设置”页面点击【音频】，采样率选择44.1kHz。在麦克风和桌面音频里分别选择对应使用的设备。<br>在“设置”页面点击【视频】，基础/输出分辨率均为1920x1080，FPS（帧率）为30。</p><blockquote><p>注：以上参数设置均参照B站<a href="https://www.bilibili.com/video/BV1wt4y1Q7rV" target="_blank" rel="noopener">向天笑SkyRoar的OBS教程</a>（文末的链接3），感谢！这个教程很详细，讲解清晰明白，强烈推荐。</p></blockquote><h5 id="2-混音器设置"><a href="#2-混音器设置" class="headerlink" title="2.混音器设置"></a>2.混音器设置</h5><p>上面提到音轨设置，录音时也要据此设置混音器。<br><img src="/2021/01/20/21001/OBS%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B02021-01-24-13-27-40.png" alt="混音器选项"><br>如图所示，点击混音器中右侧的齿轮图标，选择【高级音频属性】，进入以下页面：<br><img src="/2021/01/20/21001/OBS%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B02021-01-24-13-29-02.png" alt="高级音频属性选项"><br>采用上图的设置之后，轨道 1 混合了麦克风声音和桌面声音，轨道 2 和轨道 3 则只录制一种声音。结合步骤 1 的输出设置，可以达到：直播时声音效果好；同时，又可以对录像的音频分别进行调节（麦克风和桌面声音是独立音轨）。<br><strong>问题</strong>：根据我的尝试，只能听到轨道2的声音，导入万兴喵影也只有一条音轨。请教了讲解教程的up主，如果把视频导入Pr,Vegas等软件里可以看到两条音轨，后续有机会尝试一下。</p><h5 id="3-录制场景设置"><a href="#3-录制场景设置" class="headerlink" title="3.录制场景设置"></a>3.录制场景设置</h5><p>OBS软件页面的左下角为场景设置。<br><img src="/2021/01/20/21001/OBS%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B02021-01-20-20-51-31.png" alt="场景和来源选项"><br>如图所示，可以在“场景”里新建（点击“+”），设置多个录视频的场景，这对于直播尤其实用，比如，桌面软件运行、录制游戏、PPT、图片展示（课间/中场休息），等等。提前设置好了场景，我们就可以在直播时快速切换。</p><p>场景右边的“来源”里，可以添加拍摄来源为捕获显示器/摄像头/窗口/游戏等，也可以选择图像、文字等。<br>如图中所示，注意：（1）后添加的排在上面，会覆盖前面的。可以拖动来源排列上下顺序。（2）设置好后别忘了点右边的锁标记，固定住。</p><p>参考教程：<br>1.几种录屏工具简要介绍：<a href="https://www.bilibili.com/video/BV1jt411J7Wt" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1jt411J7Wt</a><br>2.obs下载技巧：<a href="https://www.bilibili.com/video/BV19z4y1f7CF" target="_blank" rel="noopener">https://www.bilibili.com/video/BV19z4y1f7CF</a><br>3.很棒的OBS完整教程，包括直播和录像：<a href="https://www.bilibili.com/video/BV1wt4y1Q7rV" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1wt4y1Q7rV</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近我想学习一下怎么录屏，就上网查找了一下教程，本文为我记录的学习笔记，详细教程请参考文末链接。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://juliecodestack.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="软件" scheme="https://juliecodestack.github.io/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+      <category term="电脑" scheme="https://juliecodestack.github.io/tags/%E7%94%B5%E8%84%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>电脑上插入U盘不识别，怎么办？</title>
+    <link href="https://juliecodestack.github.io/2020/12/14/%E7%94%B5%E8%84%91%E4%B8%8A%E6%8F%92%E5%85%A5U%E7%9B%98%E4%B8%8D%E8%AF%86%E5%88%AB/"/>
+    <id>https://juliecodestack.github.io/2020/12/14/%E7%94%B5%E8%84%91%E4%B8%8A%E6%8F%92%E5%85%A5U%E7%9B%98%E4%B8%8D%E8%AF%86%E5%88%AB/</id>
+    <published>2020-12-14T10:26:53.000Z</published>
+    <updated>2020-12-18T12:48:07.664Z</updated>
+    
+    <content type="html"><![CDATA[<p>有几次把 Mp3 播放器或移动硬盘插入电脑不识别，电脑里连 U 盘的盘符都不显示，一开始还以为是播放器的数据线出问题了，后来找到解决方法，记录一下。</p><a id="more"></a><p>我的电脑是 Windows 10系统，首先要到“设备管理器”界面，有两种方法：<br>方法一、右键点击“此电脑”&gt;右键菜单中选择“管理”&gt;系统工具&gt;设备管理器；<br>方法二、同时按<code>Win</code>+<code>X</code>键，在弹出菜单中选择设备管理器，这种方法快多了，所以记住快捷键很重要。</p><p>在“设备管理器”界面中，找到“通用串行总线控制器”项，下方有“USB大容量存储设备”，右键点击该项，弹出菜单：<br>方法一、（我自己用过的），先点“卸载设备”，再点“扫描检测硬件改动”；<br>方法二、（网上介绍的，下次试试），点击“启用设备”。</p><p>参考文章：<br><a href="https://www.jb51.net/softjc/682868.html" target="_blank" rel="noopener">U盘不能识别怎么办 U盘无法识别的7种解决方法</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有几次把 Mp3 播放器或移动硬盘插入电脑不识别，电脑里连 U 盘的盘符都不显示，一开始还以为是播放器的数据线出问题了，后来找到解决方法，记录一下。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://juliecodestack.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="电脑" scheme="https://juliecodestack.github.io/tags/%E7%94%B5%E8%84%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>双显示器扩展显示时怎么移动鼠标到另一块屏？</title>
+    <link href="https://juliecodestack.github.io/2020/12/14/%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BA%E6%97%B6%E7%A7%BB%E5%8A%A8%E9%BC%A0%E6%A0%87/"/>
+    <id>https://juliecodestack.github.io/2020/12/14/%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BA%E6%97%B6%E7%A7%BB%E5%8A%A8%E9%BC%A0%E6%A0%87/</id>
+    <published>2020-12-14T09:04:04.000Z</published>
+    <updated>2020-12-19T01:56:42.184Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近为小笔记本加了一个大点的显示器，虽然设置为大屏显示，但有时开机会出现设置为扩展显示器的情况，不知怎的，鼠标点半天，光标都移动不到另一块屏幕中，上网查找了一下答案，把解决方法记录一下。</p><a id="more"></a><p>我的电脑是 Windows10 系统，依次点击：开始菜单&gt;设置&gt;系统&gt;显示，进入“显示”设置中，看到如下图所示界面：</p><img src="/2020/12/14/%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BA%E6%97%B6%E7%A7%BB%E5%8A%A8%E9%BC%A0%E6%A0%87/双显示器扩展显示时移动鼠标2020-12-14-17-07-25.png" alt="显示器排列-左右" align="center"> <p><strong>原来默认两个显示器是按左右排列的，因此鼠标光标只有左右移动，才能在两块屏幕间切换。</strong></p><p>我的两个屏幕是上下摆放的，之前我想当然地上下移动鼠标，难怪怎么也切换不到屏幕。由此，我又想到，那可不可以改变显示器排列，使之符合我的使用习惯呢？我拖动了一下两个显示器排列，改为2屏（外接大屏显示器）在上，1屏（笔记本电脑的小屏）在下，如下图所示：</p><img src="/2020/12/14/%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BA%E6%97%B6%E7%A7%BB%E5%8A%A8%E9%BC%A0%E6%A0%87/双显示器扩展显示时移动鼠标2020-12-14-17-11-50.png" alt="显示器排列-上下" align="center"><p>然后点击<code>应用</code>按钮，再重新上下移动鼠标光标，成了，这下可以切换到另一块屏幕了！</p><p>另外，这里蓝色标识的1屏是主显示器，在哪里设置主显示器呢？</p><p>在下方我们看到有“多显示器设置”选项，当前1屏是主显示器，如果我们点击2，同时勾选多显示器设置下方的“设为主显示器”选项，就可以将2屏设置为主显示器，用蓝色标识。</p><img src="/2020/12/14/%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BA%E6%97%B6%E7%A7%BB%E5%8A%A8%E9%BC%A0%E6%A0%87/双显示器扩展显示时移动鼠标2020-12-14-17-09-11.png" alt="主显示器设置选项" align="center"><p>此外，当前是“扩展这些显示器（两个屏幕分别显示不同内容）”选项，点击下拉菜单还有“复制这些显示器”（两个屏幕显示内容相同）或 “仅在1（或2）上显示”的选项。</p><img src="/2020/12/14/%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BA%E6%97%B6%E7%A7%BB%E5%8A%A8%E9%BC%A0%E6%A0%87/双显示器扩展显示时移动鼠标2020-12-14-17-09-33.png" alt="多显示器设置下拉菜单" align="center"><p>参考文章：<br>1.<a href="https://www.zhihu.com/question/50002939/answer/372662198" target="_blank" rel="noopener">https://www.zhihu.com/question/50002939/answer/372662198</a></p><p>2.<a href="https://www.zhihu.com/question/50002939/answer/348352441" target="_blank" rel="noopener">https://www.zhihu.com/question/50002939/answer/348352441</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近为小笔记本加了一个大点的显示器，虽然设置为大屏显示，但有时开机会出现设置为扩展显示器的情况，不知怎的，鼠标点半天，光标都移动不到另一块屏幕中，上网查找了一下答案，把解决方法记录一下。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://juliecodestack.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="电脑" scheme="https://juliecodestack.github.io/tags/%E7%94%B5%E8%84%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GitHub入门指南</title>
+    <link href="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/"/>
+    <id>https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/</id>
+    <published>2020-12-13T02:46:25.000Z</published>
+    <updated>2020-12-19T01:58:57.003Z</updated>
+    
+    <content type="html"><![CDATA[<p>我去年入门 GitHub，一开始不知道从哪开始学，在网上查找了很多文章、教程学习。<strong>这篇文章就是以我刚学习时的小白视角写的，希望能帮助到想开始学 GitHub 又不知如何上手的学习者。</strong>因为我也是初级水平，文中介绍的知识基于我自己的学习理解，如果有疏漏错误之处，欢迎您留言指正，谢谢！</p><a id="more"></a><p>新手小白可能会对 GitHub 有以下困惑：<br>1.GitHub 是个什么网站？<br>2.为什么一说学 GitHub，就听到人家说要学 Git？这两个有什么关联吗，是不是一回事？<br>3.听说 GitHub 是个开源社区，可以在上面与其他人一起切磋技术、完善代码，具体是怎么与别人交流呢？</p><p>下面，我从这几个方面进行解答。</p><h4 id="一、带你浏览-GitHub-网站，看看都有些什么？"><a href="#一、带你浏览-GitHub-网站，看看都有些什么？" class="headerlink" title="一、带你浏览 GitHub 网站，看看都有些什么？"></a>一、带你浏览 GitHub 网站，看看都有些什么？</h4><h5 id="1-注册账号"><a href="#1-注册账号" class="headerlink" title="1.注册账号"></a>1.注册账号</h5><p>打开 <a href="https://github.com/" target="_blank" rel="noopener">GitHub网站</a>，首页如下图所示，点击右上角<code>Sign up</code>按钮，进入注册页面。使用电子邮件注册，设置好用户名和密码，即可生成账号。完成注册后，点击旁边的<code>Sign in</code>按钮登录。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-13-10-46-55.png" alt="注册/登录页面" align="center"> <h5 id="2-登录-GitHub，浏览页面"><a href="#2-登录-GitHub，浏览页面" class="headerlink" title="2.登录 GitHub，浏览页面"></a>2.登录 GitHub，浏览页面</h5><p>登录进去后，我们见到的页面分成三大版块，如下图所示，从左至右依次为：自己的仓库(Repositories)、关注的人的动态、发现新的热门/有趣仓库。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-13-11-44-23.png" alt="登录后首页示例 " align="center"> <blockquote><p><strong>可能的疑问：Repository? 仓库？</strong> 是不是有点不好理解？<br>我在初学时也遇到这一困惑。”repository”有“仓库”的意思，我们可以理解成存放项目所需的各类文件的仓库。等熟悉了之后，你会发现 GitHub 上各种仓库都有，不是只包含程序代码，还有学习课程文档等等，难怪会叫仓库，哈哈。Repository（仓库）在 GitHub 上有重要作用，我们以后的很多操作都是在 Repository（仓库）中进行。</p></blockquote><p>点击右上角的个人头像，在下拉列表中选择<code>Your profile</code>项，到达个人主页。下图所示为我的个人主页。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-13-12-49-14.png" alt="个人主页示例" align="center"> <p>你如果打开另一个人的主页，看到的界面风格也大致如此。我在图中简要注明了页面中的各项功能，此外：</p><ol><li>点击账户名下方的<code>Edit profile</code>按钮，可以修改自己的个人信息，比如这里的一句话简介，公司、地址、联系方式等。而如果是别人的个人主页，这里我们看到的就是<code>Follow</code>（关注）按钮。</li><li>粉丝和关注的人数右边有个星星图标，这就是传说中的 Star。我们看技术文章可能常会遇到如“程序员必看！GitHub 上 Star 数过万的项目！”，“该项目在 GitHub 上迅速收获上千 Star 数” 类似的介绍，看来 Star 数是个很重要的标识哦！那么，Star 是什么意思呢？比如，我们觉得一个仓库不错，在右上角点个 Star，就相当于是收藏+点赞了，之后还可以在自己的主页中点击星星图标查看。</li></ol><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-13-13-06-34.png" alt="仓库页面-Star" align="center"> <ol start="3"><li>“Pinned”区域是自己的个人展示区，在自己的仓库中精选几个放到这里展示，让别人能很快发现你的闪光点。</li><li>活跃度表格：上面的绿色格子越多，颜色越深，说明该用户在 GitHub 上提交次数越多，是活跃用户。</li></ol><h4 id="二、GitHub-是-Git-软件用户的项目管理中心"><a href="#二、GitHub-是-Git-软件用户的项目管理中心" class="headerlink" title="二、GitHub 是 Git 软件用户的项目管理中心"></a>二、GitHub 是 Git 软件用户的项目管理中心</h4><h5 id="1-Git"><a href="#1-Git" class="headerlink" title="1. Git"></a>1. Git</h5><p>GitHub 之所以得此名，与一款分布式版本控制软件 Git 是分不开的。通俗地讲，Git 软件记录了你每次修改时的文件状态。更妙的是，如果你改着改着，又觉得以前的版本更好，还可以回溯呢，也就是说，有“后悔药”可吃了！同时， Git 也是一款极佳的协作软件。打个简单的比方，我和小红、小蓝三个人一起修改一篇文章，每个人改的地方可能都不一样，那么合并修改稿就是个头疼的事。或者，我先修改、再给小红修改、最后小蓝修改？这样效率又降低了。怎么办？用 Git，我们三个人可以建立修改分支，同时进行修改工作，最后合并分支。你可能会问，如果你们三个人在同一个地方做了不同的修改，还能合并吗？放心吧，软件考虑了这种“冲突”情况，有相应的解决办法。</p><p>既然 Git 可以协作，那总要有一个地方让使用的人们存放文件、修改等信息呀，就像控制中心一样，这样，GitHub 应运而生。这里多说一句，Git 的托管中心不是只有 GitHub 哦，GitHub 是方便个人用户、开源项目建立的网站。有的企业会自己搭建服务器和云盘构建托管中心，同样也是用 Git 软件进行协作管理。</p><p>那么，怎么用 Git 软件呢？<br>（1）先到 <a href="https://git-scm.com/" target="_blank" rel="noopener">Git官网</a>下载安装 Git 软件。<br>（2）安装成功后，选定一个文件夹，在右键菜单中选择<code>Git Bash Here</code>，会弹出一个黑色的命令行界面，输入语句，就可以在当前文件夹中运行 Git 命令。</p><p>这里推荐学习一下<a href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener">廖雪峰老师的Git教程</a>，讲解得明白易懂，从中我们可以了解 Git 的各种操作。然后，跟着教程的讲解，自己建个新文件夹动手练练。</p><h5 id="2-Git-基本命令"><a href="#2-Git-基本命令" class="headerlink" title="2.Git 基本命令"></a>2.Git 基本命令</h5><p>Git 命令还是挺多的，但是<strong>对新手来说，我们可以先掌握几个在 GitHub 上常用的 Git 基本命令</strong>：</p><p><strong>（1）提交修改：<code>git add</code>和 <code>git commit</code></strong></p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-14-15-14-31.png" alt="git操作示意图，图片来自Git官网" align="center"> <p>上面的示意图来自 Git 官网，说明了 Git 中最重要的操作 “git add” 和 “git commit” 的工作流程。 Git 软件的核心是保存修改。working directory 是工作区，就是我们的电脑上当前工作的文件夹。staging area 可以理解成暂存区或者中转站，<code>git add .</code>（注意：这里 add 和<code>.</code>中间有个空格）提交了修改，放在 staging area 暂存，再通过 <code>git commit -m&quot;修改说明文字&quot;</code> 确定最终提交版。不要小看这个缓冲的暂存区，它为我们修改时提供了“后悔药”。这个效果就有点类似于我们平时在电脑上删除文件，文件不会直接删除，而是放到回收站中转一下。如果我们过后发现手抖误删了，还可以到回收站里把文件“还原”回去，或者确定都不需要了，就点击“清空回收站”，把这些文件都删除。</p><p><strong>（2）与远程仓库同步：<code>git pull</code> 和 <code>git push</code></strong></p><p>在多人协作的情况下，比如前面提到的我和小红、小蓝一起写文章的例子，可能每个人的修改不一致，要保持同步。而我们要从远程仓库获取更新和推送自己的修改，就要用<code>git pull</code> 和 <code>git push</code>。前面提到的 <code>git commit</code> 是确定我自己最终的修改结果，<code>git push</code> 则是将这一修改结果提交到远程（比如 GitHub上）的 repository（仓库）保存。我始终记得廖雪峰老师教程里提的要点：每天开始工作的第一件事是 <code>git pull</code>，跟上项目最新的修改进度。结束一天工作、提交修改时，先 <code>git pull</code> 再 <code>git push</code>。</p><p><strong>（3）下载 repository（仓库）： <code>git clone</code></strong></p><p>打开一个仓库，我们会看到<code>Code</code>按钮，点击后，下面出现 HTTPS 地址和 SSH 地址。我们只要复制了这个地址，然后在电脑上右键点击存放文件夹，打开 Git Bash 客户端，输入命令行：<code>git clone 复制的地址</code>，就能下载这个仓库到本地电脑。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-16-20-33-57.png" alt="下载仓库示意图" align="center"> <p>需要注意的是，用 HTTPS 地址需要账户验证。使用 SSH 地址只需要第一次时提交 SSH Key 到 GitHub ，后续无需每次验证，很方便，接下来就会介绍如何配置 SSH Key。</p><blockquote><p>注：写这篇文章时，我也出现了一个困惑：不知道是否因为我已经用 SSH 验证了，我用<code>git clone HTTPS 地址</code>下载时，也没有要求输入账户名和密码验证。小伙伴们请把你们实践的结果告诉我一下呀，谢谢！</p></blockquote><h4 id="三、新手必备的GitHub基本操作"><a href="#三、新手必备的GitHub基本操作" class="headerlink" title="三、新手必备的GitHub基本操作"></a>三、新手必备的GitHub基本操作</h4><h5 id="1-配置SSH-Key"><a href="#1-配置SSH-Key" class="headerlink" title="1.配置SSH Key"></a>1.配置SSH Key</h5><p><strong>（1）第一次使用时，要配置一下账户。</strong></p><p>在 Git Bash 客户端，输入：</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git<span class="built_in"> config </span>--global user.name <span class="string">"这里输入你在GitHub的账户名"</span></span><br><span class="line">git<span class="built_in"> config </span>--global user.email <span class="string">"这里输入你在GitHub的注册邮箱名"</span></span><br></pre></td></tr></table></figure><p><strong>（2）检查是否已经有 SSH Key了，如果没有就生成一个。</strong></p><p>同样在 Git Bash 客户端，先后输入：</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> ~<span class="string">/.ssh</span></span><br></pre></td></tr></table></figure><p>和</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ls</span></span><br></pre></td></tr></table></figure><p>我的账户已经生成了 SSH Key，就有了下面所示的 id_ras 和 id_rsa.pub 。请注意，id_ras.pub 是公钥，后面要把这个公钥上传到 GitHub 上验证。id_rsa 是你自己的私钥，要保存好。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id_rsa  id_rsa.pub  known_hosts</span><br></pre></td></tr></table></figure><p>如果没有 SSH Key，就要输入以下命令行生成：</p><p><code>ssh-keygen -t rsa -C &quot;这里输入你在 GitHub 的注册邮箱&quot;</code></p><p>生成后再输入上面的<code>cd ~/.ssh</code>和<code>ls</code>命令，就可以看到 SSH Key 了。</p><p><strong>（3）复制公钥。</strong></p><p>接着在 Git Bash 客户端，输入命令行：</p><p><code>cat id_ras.pub</code></p><p>这样会显示公钥文件内容，我们把它复制到剪贴板。</p><p><strong>（4）把复制的公钥添加到 GitHub 账户安装。</strong></p><p>登录 GitHub 账户，点击右上角个人头像的下拉菜单，如图所示：</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-11-48-27.png" alt="个人头像的菜单项" align="center"> <p>依次点击 Settings &gt; SSH and GPG Keys，在 SSH Keys 页面右上角有个<code>New SSH Key</code>按钮，点击该按钮后，粘贴上刚才复制的公钥内容。里面的 “title”项就是为自己的 SSH Key 命个名，可根据个人喜好随意。</p><p><strong>（5）最后，检查一下 SSH Key 是否安装成功。</strong></p><p>在 Git Bash 客户端运行命令：</p><p><code>$ ssh -T git@github.com</code></p><p>出现类似下面的提示，表示安装成功：</p><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi Juliecodestack! You<span class="symbol">'ve</span> successfully authenticated, but GitHub does <span class="keyword">not</span> provide shell <span class="keyword">access</span>.</span><br></pre></td></tr></table></figure><h5 id="2-我的第一个-GitHub-项目：如何新建上传仓库"><a href="#2-我的第一个-GitHub-项目：如何新建上传仓库" class="headerlink" title="2.我的第一个 GitHub 项目：如何新建上传仓库"></a>2.我的第一个 GitHub 项目：如何新建上传仓库</h5><p>学了这么多基本功，我们终于要练手了，哈哈，先来建一个自己的仓库玩玩吧！</p><p><strong>（1）在 GitHub 中新建仓库</strong></p><p>如下图所示，点击个人主页的 Repositories 项，再点击右方的<code>New</code>按钮，新建一个仓库。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-11-51-07.png" alt="仓库页面-新建按钮" align="center"> <p>我这里做了一个简单的示范，如下图所示，你可以照着我的模板填，最后点击最下方的<code>Create repository</code>按钮，即可创建一个新的仓库。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-12-30-31.png" alt="新建仓库填写页面" align="center"><p>打开新建的仓库，如下图所示，这个仓库的 Readme 文档的内容就是刚才填入的仓库名和说明。我们点击<code>Code</code>按钮，复制 SSH 地址。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-12-34-00.png" alt="仓库页面-testexample2020" align="center"><p><strong>（2）把仓库文件下载到电脑。</strong></p><p>假设我们要下载到电脑上的目标文件夹（为了描述方便，这里简称为文件夹 A），那么我们就右键点击文件夹 A ，在右键菜单中选择“Git Bash”，在 Git Bash 客户端输入命令行：</p><p><code>git clone SSH地址</code></p><p>这样，仓库就会下载到文件夹 A 中。</p><p><strong>（3）修改仓库文件，使用 Git 命令提交修改并推送至 GitHub。</strong></p><p>下载仓库完成之后，我们会发现文件夹 A 中有了一个新的子文件夹，比如我在前一步骤下载了仓库 testexample2020，此时文件夹 A 中就出现了一个名为”testexample2020”的新文件夹，这就是下载到本地电脑的仓库。我们打开这个新文件夹（”testexample2020”），使用 VSCode 或 Atom 编辑器（编辑器的使用方法可参考我的文章：<a href="https://juliecodestack.github.io/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/">一篇文章带你入门Markdown</a>），在 Readme 文件里增加一行： <code>hello,world!</code>。再新建一个 main.py文件，输入一行简单的代码:<code>print(&quot;hello&quot;)</code>。</p><p>修改好了之后，我们右键点击文件夹 testexample2020（注意：此时不是在母文件夹 A 上使用 Git Bash 了），打开Git Bash 客户端，依次输入命令行：</p><p><code>git add .</code></p><p><code>git commit -m&quot;v0.1&quot;</code></p><p><code>git push</code></p><p>这样修改就推送到了 GitHub 上的仓库中。</p><p><strong>（4）登录 GitHub，查看一下仓库的变化。</strong></p><p>登录 GitHub 后我们发现，刚才做的改动都同步到了 GitHub 仓库中，如下图中标示：</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-12-58-52.png" alt="仓库页面-改动后" align="center"> <h5 id="3-和别人一起做项目：Fork-和-Pull-request"><a href="#3-和别人一起做项目：Fork-和-Pull-request" class="headerlink" title="3.和别人一起做项目：Fork 和 Pull request"></a>3.和别人一起做项目：Fork 和 Pull request</h5><p>前面提到过，GitHub 是个开源社区，我们可以参加到开源项目之中，那么，具体是怎么操作呢？</p><p>举个我自己的例子来说明一下这个过程吧。</p><p><strong>（1）Fork 一个别人的仓库</strong> </p><p>我在学习 API 接口时，网上的微博 API 工具包很多是基于 Python2 写的，我在 Github 找到了一个 Python3 的版本 <a href="https://github.com/olwolf/sinaweibopy3" target="_blank" rel="noopener">sinaweibopy3</a>，如下图所示。我用了一下，觉得很好，看到作者没有写 Readme，我就想添加一个 Readme 说明文档，让别人能更快地了解这个仓库的功能和使用方法，也就是说，我想对这个仓库做一些修改。这种情况下，我就要先 Fork 一下这个仓库到我自己那儿。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-17-16-45-16.png" alt="sinaweibopy3仓库页面" align="center"><blockquote><p><strong>为什么要 Fork 呢？</strong><br>Fork有“叉子”的意思，也就是从原仓库复制建一个我自己的分支（分叉），这样，我做的改动只是在我自己的分支上，不会影响到原仓库，除非我提交的 Pull request 被接受后。</p></blockquote><p>Fork 之后，在我的仓库里就出现了一个相同的仓库 sinaweibopy3，如下图所示。不同之处在于，仓库名下方有个备注：”Forked from olwolf/sinaweibopy3”。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-17-16-50-50.png" alt="Fork的仓库" align="center"> <p><strong>（2）对自己 Fork 的仓库做修改</strong></p><p>接下来，我就对 Fork 的 sinaweibopy3 仓库做修改，添加了一个 Readme 文档。具体方法请参考上一步 “2.我的第一个 GitHub 项目：如何新建上传仓库” 的示例，可以先<code>git clone</code>下载到本地文件夹，修改后再<code>git push</code>推送到 GitHub。</p><p><strong>（3）提交 Pull request</strong></p><p>如下图所示，点击 Pull request，在弹出的界面填写一些信息，告诉原仓库的作者你做了什么修改、为什么要修改等，方便作者了解你对仓库的改动，然后提交，Pull request 请求就会发送至原仓库的作者。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-17-16-56-15.png" alt="Pull request示例" align="center"> <p><strong>（4）等待原仓库的作者查看和决定是否接受修改。</strong></p><p>提交了 Pull request 后，我们就等待一段时间，原仓库的作者会决定是否接受修改。</p><p>这里，仓库 sinaweibopy3 的原作者 olwolf 合并了我的修改，如图所示，这样原仓库中也增加了Readme文件。同时，我也因此成为了仓库贡献者(Contributors)之一。</p><img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-17-17-04-19.png" alt="接受Pull request后原仓库的变化 " align="center"> <h4 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h4><p>完成以上学习，我们基本上就入门了，接下来，你可以自己在 GitHub 上探索一下，比如搜索发现一些有趣的项目，关注一些高手大牛，加入到开源项目中，等等。最重要的是，动手练习！一旦上手实践，慢慢熟悉之后，你会发现没有开始想象的那么难，一起加油吧！</p><p>最后，推荐几个好的学习教程：</p><p>1.<a href="https://docs.github.com/en/free-pro-team@latest/github" target="_blank" rel="noopener">GitHub 帮助页面</a></p><p>2.<a href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener">廖雪峰老师的Git教程</a></p><p>3.<a href="https://blog.csdn.net/u013778905/article/details/83501204" target="_blank" rel="noopener">GitHub如何配置SSH Key</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;我去年入门 GitHub，一开始不知道从哪开始学，在网上查找了很多文章、教程学习。&lt;strong&gt;这篇文章就是以我刚学习时的小白视角写的，希望能帮助到想开始学 GitHub 又不知如何上手的学习者。&lt;/strong&gt;因为我也是初级水平，文中介绍的知识基于我自己的学习理解，如果有疏漏错误之处，欢迎您留言指正，谢谢！&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://juliecodestack.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="软件" scheme="https://juliecodestack.github.io/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+      <category term="GitHub" scheme="https://juliecodestack.github.io/tags/GitHub/"/>
+    
+      <category term="Git" scheme="https://juliecodestack.github.io/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>读霍金人生简史的感悟</title>
+    <link href="https://juliecodestack.github.io/2020/12/03/%E8%AF%BB%E9%9C%8D%E9%87%91%E4%BA%BA%E7%94%9F%E7%AE%80%E5%8F%B2%E7%9A%84%E6%84%9F%E6%82%9F/"/>
+    <id>https://juliecodestack.github.io/2020/12/03/%E8%AF%BB%E9%9C%8D%E9%87%91%E4%BA%BA%E7%94%9F%E7%AE%80%E5%8F%B2%E7%9A%84%E6%84%9F%E6%82%9F/</id>
+    <published>2020-12-03T12:32:02.000Z</published>
+    <updated>2020-12-03T12:55:08.150Z</updated>
+    
+    <content type="html"><![CDATA[<meta name="referrer" content="no-referrer"><p>我曾经看到简书上朋友 <a href="https://www.jianshu.com/u/7qy9Se" target="_blank" rel="noopener">随机运动</a> 对这本书的推荐：<a href="https://www.jianshu.com/p/dfed9b16b6a5" target="_blank" rel="noopener">读书笔记,《My Brief History》</a>，当时留下了印象，最近听了有声书版本。书如其名，这是一本简洁的书，篇幅不长，包括两方面内容，一是霍金的人生回顾；二是介绍了他的理论研究。有声书有一个特别之处是每一章的开头都是霍金特有的声音朗读的。</p><img src="https://img2.doubanio.com/view/subject/l/public/s26859702.jpg" width="260" height="368" alt="本书封面图片，来源：豆瓣" align="center"><p>注：本书封面图片，来源：豆瓣</p><a id="more"></a><p>在书中，霍金回顾了自己的成长经历，他在二十出头的年纪，就被诊断得了 肌萎缩侧索硬化症（ALS），医生说不知道他能活多久。得知自己的病情时，他感到震惊、无法接受，他问过：“为什么是自己？”也曾觉得沮丧难过。但是，他又想到，正因为生命有限，时日无多，才更加发现生命的可贵，还有很多想完成、值得做的事。“<em>When you are faced with the possibility of an early death, it makes you realize that life is worth living and that there are lots of things you want to do.</em>” </p><p>后面的人生中，他的病情逐渐加重，也遇到各种困难，但是“办法总比困难多”。书中让我印象很深的一个地方是，当霍金不能发声后，科技公司帮他制作了一套电子传感的计算机系统，连接声音合成器就可以发声。书中提到，这个电子系统大约一分钟处理3个词，可生成语音（就是后来我们听到的机械的语音）或者存成文档。霍金就是用这个系统，写了他的论文、多部科普著作、演讲等等。他提到写作 <strong><em>A Brief History of Time</em></strong>（《时间简史》）时，得了肺炎住院，好在有计算机系统帮助他继续写作，“虽然它有点慢，但我也思考得慢，因此倒也适合我的节奏。”一分钟3个词，这个速度与霍金的众多著作相比，我们无法想象霍金付出了多少汗水和心血。</p><p>另一方面，霍金在介绍他的理论研究时，讲解得通俗易懂、生动有趣，虽然偶尔有的名词（比如: Cauchy surface）还是要通过上网搜索查阅才明白。文中有一句话让我很受启发：“<em>In science, finding the right formulation of a problem is often the key to solving it,……</em>” 就是说，科学研究中，解决问题的关键往往在于正确的表述问题。看来，学会提问很重要。只有明确了真正要解决的是什么问题，才能切中要点，解决问题。</p><p>这是我第一次详细了解霍金的人生，而这些经历让我感触最深的一点就是：我们的能力和所能达成的目标，其实不是由外在条件决定，而在于我们内在思维的广度。就像这本书最后一章的标题所言：“No Boundaries”，我们不应给自己设限，要发掘自己的潜力，勇敢去探索和体验，让自己的人生更加精彩。霍金一生中的大部分时间在同疾病做抗争，但他并没有因此消极度日，更没有停下自己探索世界的脚步，而是孜孜不倦地进行宇宙探索研究。他也到全球各地旅行，去体验了潜水艇和热气球，甚至还有失重飞行。他的一生充实又精彩。</p><p>我不由得想起几年前看过的一本书——程浩写的《站在两个世界的边缘》(欢迎阅读我的书评：<a href="https://juliecodestack.github.io/2020/12/03/%E4%BB%A5%E5%BE%AE%E7%AC%91%E9%9D%A2%E5%AF%B9%E4%BA%BA%E7%94%9F/">以微笑面对人生</a>)，程浩因为身体原因从小就不能走路，常常呆在家里或是住院治疗。他选择了通过阅读和写作来充实自己的人生。读他的文章，你能感受到他敏锐的洞察力和思考，他的幽默风趣，而他的坚强乐观也通过文字给我们传递着力量。</p><p>每个人的一生中，不免会遇到大大小小的困难、挫折，甚至失败、病痛。在痛苦、低落时，读一读霍金或是程浩的书，会让人振作精神、直面挑战、勇敢前行。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+
+
+&lt;p&gt;我曾经看到简书上朋友 &lt;a href=&quot;https://www.jianshu.com/u/7qy9Se&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;随机运动&lt;/a&gt; 对这本书的推荐：&lt;a href=&quot;https://www.jianshu.com/p/dfed9b16b6a5&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;读书笔记,《My Brief History》&lt;/a&gt;，当时留下了印象，最近听了有声书版本。书如其名，这是一本简洁的书，篇幅不长，包括两方面内容，一是霍金的人生回顾；二是介绍了他的理论研究。有声书有一个特别之处是每一章的开头都是霍金特有的声音朗读的。&lt;/p&gt;
+&lt;img src=&quot;https://img2.doubanio.com/view/subject/l/public/s26859702.jpg&quot; width=&quot;260&quot; height=&quot;368&quot; alt=&quot;本书封面图片，来源：豆瓣&quot; align=&quot;center&quot;&gt;
+
+&lt;p&gt;注：本书封面图片，来源：豆瓣&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="读书" scheme="https://juliecodestack.github.io/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+    
+      <category term="英文原著" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E6%96%87%E5%8E%9F%E8%91%97/"/>
+    
+      <category term="非虚构" scheme="https://juliecodestack.github.io/tags/%E9%9D%9E%E8%99%9A%E6%9E%84/"/>
+    
+      <category term="人物传记" scheme="https://juliecodestack.github.io/tags/%E4%BA%BA%E7%89%A9%E4%BC%A0%E8%AE%B0/"/>
+    
+      <category term="科技" scheme="https://juliecodestack.github.io/tags/%E7%A7%91%E6%8A%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>以微笑面对人生</title>
+    <link href="https://juliecodestack.github.io/2020/12/03/%E4%BB%A5%E5%BE%AE%E7%AC%91%E9%9D%A2%E5%AF%B9%E4%BA%BA%E7%94%9F/"/>
+    <id>https://juliecodestack.github.io/2020/12/03/%E4%BB%A5%E5%BE%AE%E7%AC%91%E9%9D%A2%E5%AF%B9%E4%BA%BA%E7%94%9F/</id>
+    <published>2020-12-03T12:30:54.000Z</published>
+    <updated>2020-12-03T12:49:44.277Z</updated>
+    
+    <content type="html"><![CDATA[<meta name="referrer" content="no-referrer"><blockquote><p>注：本文写于2016年。</p></blockquote><p>这本《站在两个世界的边缘》可以说是一本不是励志书、但胜似励志书的文集。我每一次阅读都能从中汲取到正能量，在精神上得到激励。书的作者程浩是一名90后的少年，从他对自己的戏称“职业病人”、“深度宅男”，可以看出他经历的病痛与苦难，然而，如果你以为这本书就是他与疾病的斗争史，那就错了。程浩说，他反感别人给他贴上“自强不息”、“励志”的标签，因为“活着，是每个人的希望；活得好，是每个人的欲望。这是每个活着的人(无论健康与否)都应该做到的。”他写的都是他生活的新疆小城的故事、他成长的故事、以及他对于人生和世界的思考、对爱情的憧憬。</p><a id="more"></a><img src="https://img3.doubanio.com/view/subject/l/public/s27066060.jpg" width="260" height="368" alt="本书封面图片，来源：豆瓣" align="center"><p>注：本书封面图片，来源：豆瓣</p><p>程浩从小生病，而且收到过厚厚一沓的病危通知单，因此，他比同龄人更早开始思考人生的意义、对于生命的看法也更加成熟。以前他常常困惑，如果他的人生注定短暂，那他来世界上走一遭有什么意义呢？最终，他想明白了，“人生的问题无非是要想明白这三个问题：我想要什么？我还有什么？我能放弃什么?”他提的这三个问题很纯粹，在回答中你会发现自己应该珍惜的现在和想要追求的梦想、以及可以为梦想付出的努力。最终，他选择了通过阅读和写作来充实自己的人生，有一段时间，他每天阅读量达到十万至二十万字之多，从书中他汲取到了营养与精神，然后写下一篇篇文章。他的文字睿智风趣、旁征博引、富含思辨、积极乐观，从文字中我看到的是一个朝气蓬勃、意气风发的翩翩少年。</p><p>书读完之后，程浩的那些文字依然在我的脑海浮现。“生命的本身就是坚强的，就是不会轻易服输的；它或许要经历狂风骤雨，还需要承受贫困交加；但生命的本质，更像时间；它无法阻挡，无法重复，任何困难都无法成为它的桎梏；你一觉醒来，它依然继续。”是的，不管我们遇到多大的困难和挫折，只要咬牙挺过来了，明天，又是全新的一天。生活，依然继续前行。他在知乎上回答了很多问题，产生了很多金句，其中就包括“真正牛逼的，不是那些可以随口拿来夸耀的事迹，而是那些在困境中依然保持微笑的凡人。”如果你结合文章中他自述与疾病顽强斗争的成长史来看，会对这句话有很深的体会。除此之外，还有很多，比如有人提问说自己学什么都三天打鱼两天晒网坚持不下去怎么办，他说：“送你一句话：‘今天不想跑，所以才去跑，这才是长距离跑者的思维方式’——村上春树。其实村上这个道理可以用在任何地方。‘今天不想背单词，所以才去背单词，这才是考六级学生的思维方式。’今天不想写代码，所以才去写代码，这才是优秀程序员的思维方式。’ 今天不想吃药，所以才去吃药，这才是职业病人的思维方式。’”通过打比方，他道出了一个道理：很多时候我们要去做一件事是因为我们应该去做，而不是根据自己的心情。</p><p>这本书也让我对于人生有了新的思考。人生苦短，但我们也应该过好每一天，让自己的生命有意义，并尽可能地照亮他人。当我遇到了困难、病痛、失意与挫折，想想程浩的坚强和乐观，就好像得到了一份力量，鼓励我继续前进！</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;注：本文写于2016年。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这本《站在两个世界的边缘》可以说是一本不是励志书、但胜似励志书的文集。我每一次阅读都能从中汲取到正能量，在精神上得到激励。书的作者程浩是一名90后的少年，从他对自己的戏称“职业病人”、“深度宅男”，可以看出他经历的病痛与苦难，然而，如果你以为这本书就是他与疾病的斗争史，那就错了。程浩说，他反感别人给他贴上“自强不息”、“励志”的标签，因为“活着，是每个人的希望；活得好，是每个人的欲望。这是每个活着的人(无论健康与否)都应该做到的。”他写的都是他生活的新疆小城的故事、他成长的故事、以及他对于人生和世界的思考、对爱情的憧憬。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="读书" scheme="https://juliecodestack.github.io/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+    
+      <category term="非虚构" scheme="https://juliecodestack.github.io/tags/%E9%9D%9E%E8%99%9A%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何有效学习？</title>
+    <link href="https://juliecodestack.github.io/2020/11/29/%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E5%AD%A6%E4%B9%A0/"/>
+    <id>https://juliecodestack.github.io/2020/11/29/%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E5%AD%A6%E4%B9%A0/</id>
+    <published>2020-11-29T08:50:55.000Z</published>
+    <updated>2020-11-29T11:52:46.989Z</updated>
+    
+    <content type="html"><![CDATA[<meta name="referrer" content="no-referrer"><img src="https://img1.doubanio.com/view/subject/l/public/s29897337.jpg" width="260" height="368" alt="本书封面图片，来源：豆瓣" align="center"><p>注：本书封面图片，来源：豆瓣</p><p>这是一本教我们如何有效学习的书。读这本书时，我常常回想自己学习中使用的方法，哪些效果好？哪些效果差？我惊奇地发现，自己学得好时，都或多或少用到了书中提到的方法，比如：穿插学习、自我检测、反思、将知识用自己的方式讲解和举例、等等，而书中还有更多方法值得我学习。这本书并不是简单枯燥地讲解方法，而在同时介绍了很多例子，让我们更容易理解和应用。在当今飞速发展的社会中，我们都需要做一个终身学习者，不断提升自我。因此，我推荐您读一遍这本书，或许会让您在提高效率的同时学得更好，达到事半功倍的效果。</p><a id="more"></a><h4 id="自以为很努力，其实在做无用功？"><a href="#自以为很努力，其实在做无用功？" class="headerlink" title="自以为很努力，其实在做无用功？"></a>自以为很努力，其实在做无用功？</h4><p>书中提到，很多人喜欢在读书时划线、标注，多读几遍，认为这样就学到了知识。其实，这是一种被动吸收，并没有什么效果，只是因为读起来更流畅，会给自己造成一种对知识熟悉的假象。看到这里，我回想起以前自己书里的那些标记…… 此外，我标注的有些地方是虽然觉得很好、但也不想深入思考,于是就记录下来以后再看，其实也就是偷懒的办法。</p><p><strong>原来，这样的学习只是在感动自己、自以为很努力呀？！那么，怎样才能真正学好知识呢？</strong></p><h4 id="有间隔的检索和巩固、反思"><a href="#有间隔的检索和巩固、反思" class="headerlink" title="有间隔的检索和巩固、反思"></a>有间隔的检索和巩固、反思</h4><p>真正对学习效果有帮助的方法，是隔一段时间后，以测验的方式进行检索回忆。</p><p>测验？！读书时经历了大大小小的考试，现在听到考试就头晕啊……</p><p>其实，测验并不需要以考试的形式进行，也可以是学完一节课、一章之后，结合课后的习题，给自己提问。此时，不要去查阅书或笔记，仅凭脑子里的印象来回忆这个知识点。你很快会发现，看书或听课时很认真，觉得听明白了，可是有时看到问题却怎么都想不起来了。我们就先努力回想，再来查阅书和笔记。换一种思路，测验也是检测知识掌握情况的工具，它让我们更加清楚哪里没有弄懂、哪里没掌握，接下来的复习巩固也更加有针对性。</p><p>同时，我们还可以根据自己的学习情况，及时地反思总结，不断改进。比如，碰到这种情况，自己当时是怎么做的，做得好不好，需要怎样改进。下次遇到类似的情况，我们就能从容应对，学习、工作中都是如此。其实，很多同学（包括我自己）都总结过错题集，这也是一种形式的反思，遇到错题、分析自己出错的原因，解题方法不对？知识点没掌握？加以改进提高，甚至举一反三，下次遇到类似的题目就能答得更快更好。</p><h4 id="生成式学习，带着问题思考"><a href="#生成式学习，带着问题思考" class="headerlink" title="生成式学习，带着问题思考"></a>生成式学习，带着问题思考</h4><p>这个理念与《如何阅读一本书》相似（欢迎阅读我的书评：<a href="https://juliecodestack.github.io/2020/04/26/%E8%AF%BB%E4%B9%A6%E7%9A%84%E8%A6%81%E9%A2%86/">读书的要领</a>），即：我们要做一个主动的学习者。比如读一本书，这本书讲一个什么问题？在没看书之前，我们先想一想，自己会如何分析和解决这一问题，然后再来看作者介绍的方法。因为引入了自己的思考，即使方法不同，也会对这一问题产生深刻印象。</p><p>对于实际应用的技能，我们更应该在解决实际问题中学习提高。这方面我也有类似的体会。在英语学习中，记单词、短语，再怎么复习背诵，过一段时间也容易忘。但是，如果在交流、表达中遇到、使用过，尤其自己一开始绞尽脑汁没想到这个表达，查找到再记忆，就不容易忘了。学习编程和软件操作也是如此，开始时很认真地看教程视频和教材，好像语法、算法都知道一些，但应用起来还是不太熟悉，只会一些基本的操作。可是，如果有明确的目标，比如，要实现一个什么样的软件功能，自己试着去完成，遇到错误再调试、不懂的函数定义上网查找，这样，无形中倒逼自己去补充不懂的知识点，学起来效果确实更好一些。</p><h4 id="细化"><a href="#细化" class="headerlink" title="细化"></a>细化</h4><p>细化就是用自己的方式把知识点表达出来，可以举个实际应用的例子，也可以结合已学的知识点，等等。这也是掌握和巩固知识的一个好方法。以我自己的学习举例，比如在学习机器学习的基本概念时，讲到机器学习包括有监督学习和无监督学习，二者的区别就在于训练时有没有给出目标变量，这样有点抽象。而换个方式，我觉得这就像两组学生要考试，先给他们模拟题复习备考（训练），一组给了复习题答案（有监督学习），一组没有给复习题答案（无监督学习）。经过这样的讲解和应用，对知识的理解进一步加深了。</p><h4 id="穿插学习"><a href="#穿插学习" class="headerlink" title="穿插学习"></a>穿插学习</h4><p>我们习惯于有条理地学习，先学第一部分/步，熟练了再学第二部分/步，……。作者指出，穿插学习不同类型、不同难度的部分，学习效果反而更好。仔细一想也是如此，我们在实际中面对的情况都是随机出现的，可能需要我们用到一个或多个知识点，很难遇到完全是哪个学习单元的应用场景。穿插学习能增强我们融会贯通和灵活应对的能力。</p><p>穿插学习的理念，和我在 <a href="https://juliecodestack.github.io/2020/10/17/%E6%88%91%E7%9A%84%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E6%96%B9%E6%B3%95/">分享我的单词记忆方法</a> 一文中提到的“用乱序单词本而不是字母顺序单词本”，是不是有相通之处呢？</p><p>以上是我在读这本书时印象较深的几种学习方法。书中还有一些人们应用这些学习方法提高学习效果的例子，启发我们思考：应该怎样在学习和工作中应用这些方法？</p><p>这本书让我审视并思考如何改进自己的学习方法，读了之后带给我的收获让我有一种惊喜感，值得一读。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+
+
+&lt;img src=&quot;https://img1.doubanio.com/view/subject/l/public/s29897337.jpg&quot; width=&quot;260&quot; height=&quot;368&quot; alt=&quot;本书封面图片，来源：豆瓣&quot; align=&quot;center&quot;&gt;
+
+&lt;p&gt;注：本书封面图片，来源：豆瓣&lt;/p&gt;
+&lt;p&gt;这是一本教我们如何有效学习的书。读这本书时，我常常回想自己学习中使用的方法，哪些效果好？哪些效果差？我惊奇地发现，自己学得好时，都或多或少用到了书中提到的方法，比如：穿插学习、自我检测、反思、将知识用自己的方式讲解和举例、等等，而书中还有更多方法值得我学习。这本书并不是简单枯燥地讲解方法，而在同时介绍了很多例子，让我们更容易理解和应用。在当今飞速发展的社会中，我们都需要做一个终身学习者，不断提升自我。因此，我推荐您读一遍这本书，或许会让您在提高效率的同时学得更好，达到事半功倍的效果。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="读书" scheme="https://juliecodestack.github.io/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+    
+      <category term="非虚构" scheme="https://juliecodestack.github.io/tags/%E9%9D%9E%E8%99%9A%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>David Copperfield 读书笔记</title>
+    <link href="https://juliecodestack.github.io/2020/10/19/DavidCopperfield%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>https://juliecodestack.github.io/2020/10/19/DavidCopperfield%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</id>
+    <published>2020-10-19T09:17:04.000Z</published>
+    <updated>2020-12-19T00:52:58.046Z</updated>
+    
+    <content type="html"><![CDATA[<p>早段时间我听了 David Copperfield 的有声书，播讲者 Nicholas Boulton 演绎得特别好，让各个人物角色都呈现鲜明的特点。而且，他把书中抒发感慨的地方读得深情感人，让听众融入到作品的情绪之中。感谢 Nicholas Boulton 的朗读，让我用心体会 Charles Dickens （狄更斯）作品的精彩。读到狄更斯的作品，我忽然有一种相见恨晚的感觉，很喜欢狄更斯描写的细致入微、抒情时善用排比。我摘抄一些片段，与您一起欣赏学习。</p><a id="more"></a><p>我尤其钟爱这本书的前半部分，写 David Copperfield 童年时。特别是那些儿童特有的视角和想象力，天真、无邪、有趣，我读到的时候很好奇狄更斯是如何想到这些描述的。</p><h4 id="天真无邪、奇妙有趣的儿童视角"><a href="#天真无邪、奇妙有趣的儿童视角" class="headerlink" title="天真无邪、奇妙有趣的儿童视角"></a>天真无邪、奇妙有趣的儿童视角</h4><p>1.David 回忆他的保姆 Peggotty 时，写了她红红的皮肤，然后就想象，她皮肤比苹果都要红，爱啄苹果的鸟儿为啥不啄她呢？<br>The first objects that assume a distinct presence before me, as I look far back, into the blank of my infancy, are my mother with her pretty hair and youthful shape, and Peggotty, with no shape at all, and eyes so dark that they seemed to darken their whole neighbourhood in her face, and <strong>cheeks and arms so hard and red that I wondered the birds didn’t peck her in preference to apples</strong>.</p><p>2.小 David 跟着 Peggotty 去她哥哥家做客。他们是坐马车去的，这一段对于马儿的描写实在是太有趣了，我感觉这真的是儿童才会有的奇妙想象力。小 David 说马儿好像在偷懒，就想让目的地的人们等着，而且，这马儿好像为自己的想法而得意地轻声笑呢，估计 David 把这个天真的想法告诉车夫了，结果车夫告诉他，马儿只是在咳嗽呢（孩子，你想多了…）。<br>THE CARRIER’S horse was the laziest horse in the world, I should hope, and shuffled along, with his head down, as if he liked to keep people waiting to whom the packages were directed. <strong>I fancied, indeed, that he sometimes chuckled audibly over this reflection</strong>, but the carrier said he was only troubled with a cough.</p><p>3.他们到达海边 Peggotty 哥哥 Mr. Peggott 家。Mr. Peggott 是一个渔夫，回家后热情地同 David 打招呼，然后说要出去用热水洗一下脸，因为凉水洗不掉污渍。不一会儿，他回来了，脸是干净了，但也洗得通红，这让小 David 联想到了虾、蟹等海鲜，进热水时是黑的，出来（煮熟时）却是通红的。<br>Having done the honours of his house in this hospitable manner, Mr. Peggotty went out to wash himself in a kettleful of hot water, remarking that ‘cold would never get his muck off.’ He soon returned, greatly improved in appearance; but so rubicund, that <strong>I couldn’t help thinking his face had this in common with the lobsters, crabs, and crawfish—that it went into the hot water very black and came out very red</strong>.</p><p>4.书的开篇提到，David 是遗腹子，他的父亲在他出生前就去世了。几年后， David 的母亲嫁给了 Mr. Murdstone。Mr. Murdstone 和他妹妹住进来，对 David 并不好。比如这里背课文学习就是这样，他们很严厉，吓得小 David 更背不出来，本来记住一点，见到他们也全都忘了。这里就用了一个生动形象的描写，这些课文内容快速溜走，还不是一个词一个词或是一行行，而是一整页一整页地从他的脑子里溜走，就像穿上了溜冰鞋一样。<br>I felt the words of my lessons slipping off, not one by one, or line by line, but by the entire page; I tried to lay hold of them; but <strong>they seemed, if I may so express it, to have put skates on, and to skim away from me with a smoothness there was no checking</strong>.</p><h4 id="两次分别"><a href="#两次分别" class="headerlink" title="两次分别"></a>两次分别</h4><p>书中有两次分别的情景也让我印象深刻。这两次分别之后不久，David 的生活都发生了重大变化。在分别时，他的母亲知道或者说有预感，而小 David 对此一无所知。一次是小 David 跟着 Peggotty 去她哥哥家做客，他不知道的是，他的母亲即将要和 Mr.Murdstone 结婚。另一次是小 David 学校的假期结束，他要返校了，此时，他的母亲身体不好。可能她自己预感到时日无多，而天真的小 David 并没多想。</p><p>1.小 David 跟着 Peggotty 去她哥哥家做客，出发前他和母亲的分别。<br>It touches me nearly now, although I tell it lightly, to recollect how eager I was to leave my happy home; to think how little I suspected what I did leave for ever.<br>现在回想起来，David 才想到当初的自己一无所知，小孩子只是急切地想出去玩，却不知道自己将要离开或者说是失去什么。</p><p>I am glad to recollect that when the carrier’s cart was at the gate, and my mother stood there kissing me, a grateful fondness for her and for the old place I had never turned my back upon before, made me cry. I am glad to know that my mother cried too, and that I felt her heart beat against mine.<br>I am glad to recollect that when the carrier began to move, my mother ran out at the gate, and called to him to stop, that she might kiss me once more. I am glad to dwell upon the earnestness and love with which she lifted up her face to mine, and did so.<br>David 的母亲没有告诉 David 即将发生的变化，只是将感情融入到深情的吻、依依惜别之中。</p><p>2.小 David 假期结束，返校前和母亲的分别。<br>I kissed her, and my baby brother, and was very sorry then; but not sorry to go away, for the gulf between us was there, and the parting was there, every day. And it is not so much the embrace she gave me, that lives in my mind, though it was as fervent as could be, as what followed the embrace.<br>David 与母亲、弟弟告别，心中虽有不舍，但是同时他也知道 Murdstone 兄妹容不下他，他们让他和母亲之间也有了距离。</p><p>I was in the carrier’s cart when I heard her calling to me. I looked out, and she stood at the garden-gate alone, holding her baby up in her arms for me to see. It was cold still weather; and not a hair on her head, nor a fold of her dress, was stirred, as she looked intently at me, holding up her child.<br>So I lost her. So I saw her afterwards, in my sleep at school—a silent presence near my bed—looking at me with the same intent face—holding up her baby in her arms.<br>我读到这两段时很心酸。这描写的是一个母亲和孩子分别的场景，母亲想让 David 记住她和他弟弟的样子，一直在门口高高抱起婴儿，让 David 回过头能看到。紧接着的一句 So I lost her. 更是让人落泪，以后 David 只能在梦里见到她。<br>这一段也让我回想起文学作品和生活中常见的一个场景：在外工作的孩子回乡看父母，要回去时，母亲也是这样一路送到路口。孩子都走出很远了，一回头，还能看到老母亲微微佝偻的身影在远处看着，见到孩子回头，又挥挥手。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;早段时间我听了 David Copperfield 的有声书，播讲者 Nicholas Boulton 演绎得特别好，让各个人物角色都呈现鲜明的特点。而且，他把书中抒发感慨的地方读得深情感人，让听众融入到作品的情绪之中。感谢 Nicholas Boulton 的朗读，让我用心体会 Charles Dickens （狄更斯）作品的精彩。读到狄更斯的作品，我忽然有一种相见恨晚的感觉，很喜欢狄更斯描写的细致入微、抒情时善用排比。我摘抄一些片段，与您一起欣赏学习。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="读书" scheme="https://juliecodestack.github.io/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+    
+      <category term="英语学习" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="英文原著" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E6%96%87%E5%8E%9F%E8%91%97/"/>
+    
+      <category term="有声书" scheme="https://juliecodestack.github.io/tags/%E6%9C%89%E5%A3%B0%E4%B9%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分享我的听力练习方法</title>
+    <link href="https://juliecodestack.github.io/2020/10/19/%E6%88%91%E7%9A%84%E5%90%AC%E5%8A%9B%E7%BB%83%E4%B9%A0%E6%96%B9%E6%B3%95/"/>
+    <id>https://juliecodestack.github.io/2020/10/19/%E6%88%91%E7%9A%84%E5%90%AC%E5%8A%9B%E7%BB%83%E4%B9%A0%E6%96%B9%E6%B3%95/</id>
+    <published>2020-10-19T09:16:15.000Z</published>
+    <updated>2021-01-11T09:28:52.463Z</updated>
+    
+    <content type="html"><![CDATA[<p>注：这篇文章是<a href="https://juliecodestack.github.io/2020/10/17/%E6%88%91%E7%9A%84%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E6%96%B9%E6%B3%95/">分享我的单词记忆方法</a>的姊妹篇，是我的英语学习方法的总结和分享，请点击链接阅读，欢迎交流指教。</p><p>大家对于英语听力的疑问和困惑主要集中在以下两方面：<br>1.不知道听什么好？似乎有的太简单、有的又根本听不懂；<br>2.怎么听？是不是要每个词都听清楚才算听得好？为什么常常有听不出但一看单词又认识的地方？</p><p>针对这些问题，我说说自己的学习体会和方法，与大家交流分享。</p><a id="more"></a><h4 id="一、听力材料的选择和练习方法"><a href="#一、听力材料的选择和练习方法" class="headerlink" title="一、听力材料的选择和练习方法"></a>一、听力材料的选择和练习方法</h4><p>二语习得理论告诉我们，如果我们目前水平是 <em>i</em>，那么学习 <em>i</em> +1水平的材料能最有效地得到提高。这么说有点抽象，打个简单的比方吧，比如一篇听力我们能听懂 80%，有 20% 不懂，那我们就想办法弄明白这 20%，可以通过上下文联想、查词典等方法。如果下次在其它地方遇到这些单词、用法，我们能听懂，这就是提高。如果拿到一篇听力完全能听懂或是只能听懂 20%，那么这个听力就是难度太低或太高了，不能帮助我们有效提高听力水平。</p><p>掌握了这一原则，我们就可以先泛听，评估难度如何，再挑选适合的听力材料来“磨耳朵”。对于短期内要备考的同学来说，可能还是要以考试题型为重点，有针对性地练习。对于学习时间相对充裕的同学，选择范围可以更大一些，新闻广播、影视、英文有声书都可以。下面具体介绍一下我的练习方法和体会。</p><h5 id="1-1-备考"><a href="#1-1-备考" class="headerlink" title="1.1 备考"></a>1.1 备考</h5><p>我们可以用往年真题或是模拟题练习。听的时候就像真正考试时一样，找一个相对安静的时间段和地方，<strong>不要看听力文本</strong>，努力调动自己的注意力，聚精会神地听和猜测语意，认真做题。同时，把题目分类，对于没听懂内容、瞎蒙的题<strong>做好标记</strong>。</p><p>听完之后对答案，然后这一遍开始就听标记的错题和没听懂的题，听上两三遍，看看多听几遍后是不是能听明白一些？</p><p>接下来才是对照文本，看看是哪里造成听不懂，生词？发音不对？短语？把这些记在生词本或单词 APP 中，经常复习。</p><p>这样有针对性的练习，更能发现自己的不足之处，有效提高。其中最重要的一点就是，听的时候不要拿着听力文本对照听，那样注意力都在文字上了，听力没调动起来，听力提升效果为 0，切记切记。</p><h5 id="1-2-平时练习"><a href="#1-2-平时练习" class="headerlink" title="1.2 平时练习"></a>1.2 平时练习</h5><p>新闻广播、美剧、英文有声书我都坚持听过一段时间，分别说说我的学习体会。</p><p><strong>新闻广播</strong><br>新闻广播的特点是单篇时间短，容易安排时间收听，但是话题广泛，生词多，需要一定的词汇量储备。我建议听谈话节目做练习，比如 NPR 有经济类谈话节目、情感故事类节目，这一类节目有一定的主题、题材范围，更容易听懂大意。</p><p><strong>美剧</strong><br>我以前看美剧时只顾着看剧情，又会看字幕，听力没有充分发挥。有一段时间我就尝试盲听 绝望的主妇 (Desperate Housewives) 第一季，当时是在【每日英语听力】APP 上听的音频版。因为以前看过两遍，剧情、人物都熟悉，所以知道大概情节。</p><p>听第一遍时有个大致印象即可（也相当于回顾一下剧情），有一两句没听清的也不要紧，不要停顿。<br>听第二遍时，没听清的句子就放慢多听几遍，如果还听不出来，就对照文本看看是略读？表达？还是生词？的问题，同时不懂的生词就查词典学习。<br>再听第三遍，此时有了第二遍的基础，听起来相对轻松，相当于复习一下。<br>最后再看剧，但是要挡住字幕，想象自己就在实际生活中、面对面地听剧中人物说话，注意观察人物的语气、神态、动作等，看自己能不能听懂？</p><p>这样精听几遍后，我发现对于快速听清语音语调、连读略读帮助很大，感觉到自己在听懂日常对话、发言等方面更轻松一些，不会像以前一样听到说话者语速偏快、有连读略读听不清楚就心里发慌，后面跟不上节奏了。</p><p><strong>英文有声书</strong><br>最近两三年我坚持听英文有声书。有声书的好处是有剧情、上下文，这些“线索”能帮助我们听懂，而且有的演员的播讲可以说是绘声绘色、生动有趣，让故事书里的人物都鲜活起来，这一点对于我们培养英文听力的习惯和兴趣很有帮助，因为有趣，才会喜欢，进而才愿意投入更多的时间，对吧？我写了两篇文章总结推荐我听过的、觉得好的有声作品，<a href="https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%B8%80/">英文有声书和广播剧推荐之一</a> 和 <a href="https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%BA%8C/">英文有声书和广播剧推荐之二</a>，您可以参考一下，选择自己感兴趣的作品收听，坚持一段时间，也许就会发现语感的提升。</p><h4 id="二、听力练习小技巧"><a href="#二、听力练习小技巧" class="headerlink" title="二、听力练习小技巧"></a>二、听力练习小技巧</h4><h5 id="2-1-是不是要每个词都听明白呢？"><a href="#2-1-是不是要每个词都听明白呢？" class="headerlink" title="2.1 是不是要每个词都听明白呢？"></a>2.1 是不是要每个词都听明白呢？</h5><p>英语泛听时，是不是每个词都要听清楚、听懂呢？我觉得未必，泛听更多的是培养语感，就是营造一种真实语境，如果在现实生活中有人跟我们说这一通话，我们能不能知道他大概要说一些什么，因此我们要结合上下文、语气等等，加上已经掌握的单词去分析、推测大意。</p><p>其中，有两点很关键：<br>一是听的时候不要看对照文本/字幕。这一点我反复强调了，这里也再啰嗦一次。看文本听时，你会觉得自己好像都懂，其实是因为眼睛已经帮大脑看了“小抄”。不看文本时，耳朵才真正被调动起来，此时因为有的地方听不明白，你也会聚精会神地听，然后才能发现自己哪里没听懂。</p><p>二是不要听到不明白的地方就停下来、查生词。听了一段时间后，我感受到流畅的朗读和表达是一种很美妙的听觉体验，如行云流水、一气呵成，哈哈，不信你听一段时间，用心体会，看是不是这样？而如果听的中间打断或停顿，那就很难体会到了。并且，这一句里听到这个生词可能不懂，但是下一句或许就有能帮助我们理解这个词的内容，所以，不要急着查词。</p><h5 id="2-2-听的时候没听懂，看文本却发现是认识的词？"><a href="#2-2-听的时候没听懂，看文本却发现是认识的词？" class="headerlink" title="2.2 听的时候没听懂，看文本却发现是认识的词？"></a>2.2 听的时候没听懂，看文本却发现是认识的词？</h5><p>如果在听了几遍后，对照文本时发现听不出来的单词看着却认识，我们可以从发音和听力映射两方面来提升。<br>一是学学发音课程，看标准音怎么发，对比就会发现自己原来听错的地方。网上有一些发音课程，可以跟着学一下，还可以到 每日英语听力、英语流利说 等 APP 中多做跟读、配音练习。</p><p>二是避免翻译，比如听到 ear 这个词，训练自己想到的是耳朵的画面（例如下图），而不是中文的词汇：“耳朵”，这样逐渐培养英语思维。<br><img src="/2020/10/19/%E6%88%91%E7%9A%84%E5%90%AC%E5%8A%9B%E7%BB%83%E4%B9%A0%E6%96%B9%E6%B3%95/ear1.jpg" width="280" height="260" alt="图片来源:agung pandit wiguna from pexels" align="center"><br>注：图片来源: agung pandit wiguna from pexels</p><p>训练一段时间后，你再听到单词和表达时，脑海中反应到的是这幅场景、一个一闪而过的画面，反应速度会明显加快；而不是像以前一样脑子里蹦出的是一个个词汇和每个词的中文翻译，弄得大脑还要对听到的信息进行处理，等你反应到这一句话的意思，下一句话又错过了。</p><h5 id="2-3-积累和复习"><a href="#2-3-积累和复习" class="headerlink" title="2.3 积累和复习"></a>2.3 积累和复习</h5><p>此外，对于自己遇到几次、感觉有点陌生的单词和短语表达，都要注意积累，比如【欧路词典】APP/软件就不错，查词后可以自动存到生词本，方便后续复习。</p><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>总的来说，我觉得听力练习的要点是：<br>1.选择适当难度的听力材料，可以先泛听筛选；<br>2.听的时候一定不要看文本/字幕，全神贯注、认真地听。同时，不要追求每词必懂，听懂大意即可，多体会语言的连续和流畅；<br>3.听了几遍之后，对于仍不懂的地方，再对照文本查找原因，同时做好笔记。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;注：这篇文章是&lt;a href=&quot;https://juliecodestack.github.io/2020/10/17/%E6%88%91%E7%9A%84%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E6%96%B9%E6%B3%95/&quot;&gt;分享我的单词记忆方法&lt;/a&gt;的姊妹篇，是我的英语学习方法的总结和分享，请点击链接阅读，欢迎交流指教。&lt;/p&gt;
+&lt;p&gt;大家对于英语听力的疑问和困惑主要集中在以下两方面：&lt;br&gt;1.不知道听什么好？似乎有的太简单、有的又根本听不懂；&lt;br&gt;2.怎么听？是不是要每个词都听清楚才算听得好？为什么常常有听不出但一看单词又认识的地方？&lt;/p&gt;
+&lt;p&gt;针对这些问题，我说说自己的学习体会和方法，与大家交流分享。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="英语" scheme="https://juliecodestack.github.io/categories/%E8%8B%B1%E8%AF%AD/"/>
+    
+    
+      <category term="英语学习" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="有声书" scheme="https://juliecodestack.github.io/tags/%E6%9C%89%E5%A3%B0%E4%B9%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分享我的单词记忆方法</title>
+    <link href="https://juliecodestack.github.io/2020/10/17/%E6%88%91%E7%9A%84%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E6%96%B9%E6%B3%95/"/>
+    <id>https://juliecodestack.github.io/2020/10/17/%E6%88%91%E7%9A%84%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E6%96%B9%E6%B3%95/</id>
+    <published>2020-10-17T03:08:00.000Z</published>
+    <updated>2021-01-11T09:29:44.921Z</updated>
+    
+    <content type="html"><![CDATA[<p>在与学英语的同学、朋友的交流中，我发现大家在背单词上主要有以下困惑：</p><ul><li>背单词很容易忘，记不住，怎么办？</li><li>单词/短语一词多义，头好大啊。。。</li><li>怎么才能快速记单词？</li><li>不知道怎么把单词的不同意思应用到自己的写作表达里呢？</li></ul><p>我学的是理工科专业，但是我一直对英语很感兴趣，也参加了不少英语考试和竞赛，取得了一些成绩。因为喜欢，我在英语学习中投入了很多时间，也曾遇到过提升的平台期、有过困惑，尝试了不同方法，因此积累了一些经验，在这里与大家交流分享。</p><a id="more"></a><h4 id="1-背单词的理念"><a href="#1-背单词的理念" class="headerlink" title="1.背单词的理念"></a>1.背单词的理念</h4><p>请回想一下：你背单词时，是怎么背的？</p><p>是记住单词对应的中文意思，一个英语词汇+一个中文意思的组合吗？</p><img src="/2020/10/17/%E6%88%91%E7%9A%84%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E6%96%B9%E6%B3%95/words.jpg" width="368" height="260" alt="图片来源:skitterphoto from pexels" align="center"><p>注：图片来源: skitterphoto from pexels</p><p>那么，你觉得这种方法有效吗？</p><p>可能你也发现，背了很快又忘了。<strong>单词要放在句子里记忆。</strong> 单词组成句子，而单词也只有融入句子中才能展现灵活多变的意思。我们记单词时，记住句子，同时就是记住了单词应用的语境，在脑子里形成画面感，更容易记住，也不容易忘。</p><h4 id="2-单词本的选择和记单词方法"><a href="#2-单词本的选择和记单词方法" class="headerlink" title="2.单词本的选择和记单词方法"></a>2.单词本的选择和记单词方法</h4><p>在考试前为了突击提高词汇量，我也曾经拿着单词本每天背单词，现在有了各种背单词APP，但是挑选和学习的方法大致相同。我的经验是：</p><p>1.选择 <strong>乱序单词本</strong>，因为按字母顺序背单词很容易弄混。乱序也符合我们遇到单词的情况，再见到这个单词时，更容易适应并认出。</p><p>2.单词本一定要有 <strong>例句</strong>。正如前面所说的，只背英语单词和中文释义，我们会发现几乎没有效果。单词要融入句子中记忆，才能更好理解单词的词性、使用的语境等。</p><p>3.<strong>筛选法记忆</strong>。<br>首先说一下，这一方法的要点是：<strong>不断缩小我们要背单词的范围、集中突破 + 隔一段时间复习巩固</strong>。具体操作如下：</p><p>第一遍 浏览：标记不认识的单词（评估自己词汇掌握量）；<br>第二遍 强化记忆：只背第一遍标记的不认识单词（有重点地记）；<br>第三遍 浏览：对还不熟悉的单词，换个符号再加个标记(复习巩固）；<br>…<br>如此重复几遍，大概80-90%的单词都熟悉了。</p><h4 id="3-掌握和应用单词的诀窍"><a href="#3-掌握和应用单词的诀窍" class="headerlink" title="3. 掌握和应用单词的诀窍"></a>3. 掌握和应用单词的诀窍</h4><p><strong>背单词的效果要通过阅读巩固</strong>。就像别人刚向我们介绍一个人，一开始我们只知道人名，并不熟悉。只有后面打了交道、相处了，才会对这个人熟悉起来。单词也是一样，背单词只是建立一个印象，我们要知道这个单词一般用在哪里、怎么用、表达什么意思（有时还要考虑书面语-口语、褒义-贬义等细节），就要通过阅读来学习。我在考试准备时，会把很大一部分备考时间用于做阅读理解题目，我觉得这是一举两得的工作。</p><p>另一方面，我们还可以通过阅读英文原著和听英文有声书来巩固已学词汇和学习生词。我的体会是：当听读的输入提高之后，会感觉到掌握词汇量的增大。因为在听读英文书的过程中，我们不知不觉就在语境中记住了单词，而且这是单词应用的语境。此外，许多单词一词多义，背单词本只是学习主要释义，而在阅读英文原著时，能学到很多单词的灵活表达，这可能是单词基本义推广到的比喻义、扩展义等等，如果我们见到了这种情况，稍微一联想，就能记住并灵活运用，但是没见到这种语境，可能就不敢去用。</p><p>这样干巴巴地讲还是没有说服力，下面我举几个例子，你一看就明白了。</p><p>Storm 的基本义是“暴风雨”、名词，可是在读英文书中我经常见到 storm 的动词用法，例如，在争吵过后出现这样一句话：He stormed out of the room. 结合上下文，我理解到这个表达就是说他大发雷霆、气势汹汹地走出了房间。在这里，storm和基本义不同，但又有关联（这个气势和暴风雨给人的感觉相似），相当于引申义，是不是很形象？这样，在写作时，描述某人生气发火，我们就不会只想到angry、anger, 在合适的地方也能用上这个词。</p><p>福尔摩斯探案集里有一集，提及让福尔摩斯也感到棋逢对手的一位女性，是这样写的：”In his eyes she eclipses and predominates the whole of her sex.” 我们以前在单词本里可能只看到 eclipse 是“日食/月食”，就是太阳/月亮被遮住了。这里却是 eclipse 的动词用法：she eclipses the whole of her sex. 她把其他女性的光芒都遮住了—&gt;可以推测到，这就是指让其他人都黯然失色，这个比喻义用得很妙吧？当你要描述某人非常优秀、非常出色时，就不会只想到 be better than，用上这个词，能让人眼前一亮呢。</p><p>Whistle 有“口哨声、吹口哨”的意思。你想一下，当风很大的时候，是不是能听到呜呜的声音，和口哨声有点像，我们来看阿加莎的《东方快车谋杀案》(<em>Murder on the Orient Express</em>) 里这一句：”A cold wind came whistling down the platform. Both men shivered.” ，这里用了 whistle 描述呼啸的冷风。再进一步联想战场上子弹、炮弹飞速穿过的声音，接着看《柳林风声》(<em>The Wind in the Willows</em>) 里这一句:” Toad prudently dropped flat in the road, and Bang! a bullet whistled over his head.”，这里就用了 whistle 描述子弹飞速而过。掌握 whistle 的这个“呼啸”的词义，我们以后描写刮风就不用只写 blow 了。</p><p>短语也是如此，一个短语往往有多种用法和意思，在阅读中可以更好地记住，比如，我听哈利波特有声书时，老听到 be taken back 的表达，例如 She was taken back by his words. 表达一种吃惊、不安的感觉，正好 back 这个词也有“退缩”的意思，多遇到几次就记住了，下次遇到 be taken back 头脑中就会反应出意思。类似的语境我们也就可以尝试用上这个短语，而不是只想到 surprise 了。</p><p>通过这些有趣的例子，你会发现，我们多听多读之后，增加了输入，熟悉了单词应用的语境，单词也就从陌生人变成了我们的朋友，我们知道它们一般喜欢出现在哪里。这样，我们既记住了单词，又知道怎么应用。</p><h4 id="4-推荐"><a href="#4-推荐" class="headerlink" title="4. 推荐"></a>4. 推荐</h4><p>总之，要想真正有效地提高词汇量，我建议不要只把时间用在单词本上，多一条途径：通过扩大阅读量来记忆和巩固，会事半功倍。</p><p>如果你的备考时间紧，可以多做一些考试的阅读理解题。如果你的学习时间充裕一些，可以读一些英文原著，从简单的、自己感兴趣的开始，比如童话、通俗小说、侦探小说、科幻小说等等均可。书虫系列也很好，但前提是你能克制住、不去看中文对照。哈哈，我就会忍不住看中文对照，所以我选择英文原著。</p><p>我在B站做了一些英文童话经典 <em>The Wind in the Willows</em>（《柳林风声》）的精读视频，讲解生词和好的表达，配有笔记字幕，或许对你开始英文原著阅读有帮助，点击看看：<a href="https://www.bilibili.com/video/BV1NT4y1J7pm" target="_blank" rel="noopener">读名著学英语-《柳林风声》第一章 The Wind in the Willows</a><br>此外，推荐一下<a href="https://juliecodestack.github.io/2020/07/23/%E6%88%91%E7%9A%84%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%A7%86%E9%A2%91%E5%88%97%E8%A1%A8/">我的英语学习视频列表</a>，里面有我制作的所有英语学习视频链接和简介，欢迎收看呀！</p><p>除了阅读，听英文有声书也是一个不错的选择，有的播讲者声情并茂，会让你更加喜欢英文书，而且这也是一种语境熏陶，时间长了，下次你读到类似的句子，你也会模仿这样的语音语调读出来。我就是一个英文有声书爱好者，哈哈，我整理了自己听过觉得不错的有声书，供您参考，欢迎点击阅读：<br><a href="https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%B8%80/">英文有声书和广播剧推荐之一</a></p><p><a href="https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%BA%8C/">英文有声书和广播剧推荐之二</a></p><p>你有哪些记单词的好方法呢？欢迎在评论区留言交流。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在与学英语的同学、朋友的交流中，我发现大家在背单词上主要有以下困惑：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;背单词很容易忘，记不住，怎么办？&lt;/li&gt;
+&lt;li&gt;单词/短语一词多义，头好大啊。。。&lt;/li&gt;
+&lt;li&gt;怎么才能快速记单词？&lt;/li&gt;
+&lt;li&gt;不知道怎么把单词的不同意思应用到自己的写作表达里呢？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我学的是理工科专业，但是我一直对英语很感兴趣，也参加了不少英语考试和竞赛，取得了一些成绩。因为喜欢，我在英语学习中投入了很多时间，也曾遇到过提升的平台期、有过困惑，尝试了不同方法，因此积累了一些经验，在这里与大家交流分享。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="英语" scheme="https://juliecodestack.github.io/categories/%E8%8B%B1%E8%AF%AD/"/>
+    
+    
+      <category term="英语学习" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="英文原著" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E6%96%87%E5%8E%9F%E8%91%97/"/>
+    
+      <category term="有声书" scheme="https://juliecodestack.github.io/tags/%E6%9C%89%E5%A3%B0%E4%B9%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows系统的屏幕截图，你用过哪些方法？</title>
+    <link href="https://juliecodestack.github.io/2020/07/24/Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE/"/>
+    <id>https://juliecodestack.github.io/2020/07/24/Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE/</id>
+    <published>2020-07-24T03:44:09.000Z</published>
+    <updated>2020-12-14T09:45:04.465Z</updated>
+    
+    <content type="html"><![CDATA[<p>我们在写作电脑教程或笔记类文章时，配上操作运行时的一些屏幕截图，可以让文章更加明白易懂。那么，您一般都是用什么方法截图呢？</p><a id="more"></a><p>我看到网上的工具教程文章，学习使用了 <strong>Windows系统的几种屏幕截图方法</strong>，在这里总结一下，与大家分享。如果您有其它方法，欢迎多多交流指教。</p><p>1.按【PrtSc】键，会自动<strong>全屏截图</strong>，图像保存在剪贴板。</p><p>2.按【Windows】+【PrtSc】键，会自动<strong>全屏截图</strong>，图像同时保存在剪贴板和屏幕截图文件夹中（该文件夹路径：C盘 &gt; 用户 &gt; 电脑的用户名 &gt; 图片 &gt; 屏幕截图）。</p><blockquote><p>注：【Windows】键在左侧键盘、紧邻【Alt】键的左边，键盘上有一个像窗口的图标。</p></blockquote><p>3.按【Alt】+【PrtSc】键，会自动对<strong>当前窗口截图</strong>，图像保存在剪贴板。</p><p>看到这里，你可能有点困惑：<strong>全屏截图和窗口截图有什么区别呢？</strong><br>可以对比下面两张截图的屏幕范围，两次截图时屏幕和窗口的设置相同。</p><p>按【PrtSc】键（或者按【Windows】+【PrtSc】键），全屏截图效果：</p><img src="/2020/07/24/Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE/Windows截屏方法总结2020-05-06-21-46-18.png" alt="全屏截图效果" align="center"> <p>按【Alt】+【PrtSc】键，当前窗口截图效果：</p><img src="/2020/07/24/Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE/Windows截屏方法总结2020-05-06-21-46-41.png" alt="当前窗口截图效果" align="center"> <p>4.按【Windows】+【Shift】+【S】键，屏幕会出现图标，可以矩形、任意形状截图，窗口截图或者全屏截图，图像保存在剪贴板。这个方法可以灵活选择截图区域，我经常使用。</p><p>5.打开电脑端微信，然后用微信截图功能，按【Alt】+【A】键，可以任意形状截图，还可以对图片简单标注，标注完成后，点击最右边的勾选图标，内容复制到剪贴板。<br><img src="/2020/07/24/Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE/Windows截屏方法总结2020-05-06-21-53-04.png" alt="微信截图示例" align="center"></p><p>6.打开<a href="https://www.snipaste.com/" target="_blank" rel="noopener">Snipaste官网</a>，下载安装 Snipaste。点击 Snipaste 图标后，屏幕上会出现选择框，可以选择任意区域，此时下面会出现一组标注选项，标注完成后，点击最右边的复制图标，即可复制到剪贴板。<br><img src="/2020/07/24/Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE/Windows截屏方法总结2020-05-06-21-21-25.png" alt="Snipaste截图示例" align="center"></p><blockquote><p>注：5.6.这两种方式，可以对图片进行标注、标记等处理，功能更为强大，非常实用。</p></blockquote><p><strong>好了，屏幕截图复制到剪贴板之后，如何插入到 文档，比如 Markdown 文档中呢？</strong><br>在 Markdown 编辑器 Typora 或 VSCode 中（首先需要简单设置或安装扩展），按下【Ctrl】+【V】键或【Ctrl】+【Alt】+【V】键，软件即可自动完成插入图片的后续工作。了解更多详细操作，您可以阅读我的文章：<a href="https://juliecodestack.github.io/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/#more">一篇文章带你入门Markdown</a>。</p><p>参考文章：<br>1.<a href="https://zhuanlan.zhihu.com/p/130940509" target="_blank" rel="noopener">windows 10 如何截图</a><br>2.<a href="https://mp.weixin.qq.com/s/YGyHTc2uZ4igDggBsAjIIw" target="_blank" rel="noopener">截屏，真的不是微信和QQ才有的</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;我们在写作电脑教程或笔记类文章时，配上操作运行时的一些屏幕截图，可以让文章更加明白易懂。那么，您一般都是用什么方法截图呢？&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://juliecodestack.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="软件" scheme="https://juliecodestack.github.io/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+      <category term="电脑" scheme="https://juliecodestack.github.io/tags/%E7%94%B5%E8%84%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Markdown进阶</title>
+    <link href="https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/"/>
+    <id>https://juliecodestack.github.io/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/</id>
+    <published>2020-07-24T03:41:31.000Z</published>
+    <updated>2021-01-23T03:02:20.110Z</updated>
+    
+    <content type="html"><![CDATA[<p>在上一篇 <a href="https://juliecodestack.github.io/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/#more">Markdown 入门文章</a> 里，我们对 Markdown 这个写作和编辑利器有了初步认识。接下来，我们一起来看看还有哪些进一步提高编辑效率的工具方法？</p><a id="more"></a><h3 id="1-公式编辑利器"><a href="#1-公式编辑利器" class="headerlink" title="1. 公式编辑利器"></a>1. 公式编辑利器</h3><p><strong>问题：</strong> 有时我们会在文章中用到公式，如果一个个输进去，符号、标记需要花费很多时间，有没有更快捷的方法呢？</p><p>有，这就是 Mathpix 。我们可以截取公式图片，然后在Mathpix 中识别并转换成相应的格式，再复制粘贴到 Markdown 文档中。</p><p>到 <a href="https://mathpix.com/" target="_blank" rel="noopener">Mathpix官网</a> 下载，首先我们要注册一个账号，免费账户一个月可使用 50 次；学生账户一个月可使用 100 次，需要使用学校邮箱注册；专业用户一个月需支付 4.99 美金，使用次数不限。如果不经常使用，注册一个免费用户就行，然后下载 Mathpix。</p><p>打开 Mathpix 软件，登录刚才注册的账户。再打开要截取公式的页面，然后点击左上角的图标，如下图所示，就可以截图：<br><img src="/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown学习笔记补充2020-05-05-21-45-58.png" alt="Mathpix界面" align="center"> </p><p>截取的公式图像会在 Mathpix 中自动显示并进行识别转换，如下图所示，我们可以选取所需要的格式。图中下方结果项里，第二个是行内公式，第三个是独立公式，只要点击图中箭头指示的按钮，可以复制内容，然后粘贴到 Markdown 文档中。图中最下面那条绿色的进度条代表置信度(Confidence)，进度条越长，表示转换的准确度和可靠性越高。<br><img src="/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown学习笔记补充2020-05-05-21-36-33.png" alt="Mathpix公式识别示例" align="center"> </p><p>下面这个公式就是示例中从 Mathpix 复制粘贴到 Markdown 文档的效果。<br>$$z=w_{1} x_{1}+\ldots+w_{m} x_{m}$$</p><h3 id="2-文档转换"><a href="#2-文档转换" class="headerlink" title="2. 文档转换"></a>2. 文档转换</h3><h4 id="VSCode-中将-Markdown-转换成-PDF-文档"><a href="#VSCode-中将-Markdown-转换成-PDF-文档" class="headerlink" title="VSCode 中将 Markdown 转换成 PDF 文档"></a>VSCode 中将 Markdown 转换成 PDF 文档</h4><p>Markdown 转 PDF，在<strong>预览视图</strong>中，点击右键菜单，这时会出现一系列文档转换方式，如图所示，<br><img src="/2020/07/24/Markdown%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/Markdown%E8%BF%9B%E9%98%B62020-07-26-10-31-08.png" alt><br>看到这个菜单你可能会想到用 PDF(prince) 选项，但是转换效果不如图中选择的 Chrome(Puppeteer)&gt; PDF 选项效果好，您可以尝试转换一下，对比一下输出的 PDF 文档显示效果。</p><blockquote><p>您是不是有顾虑，害怕转换后 Markdown 文档就变成 PDF 文档了？如果弄错了，原文档又找不回来了怎么办？<br>请放心，这个转换是另外输出一个 PDF 文档，不会对本身的 Markdown 文档做修改。</p></blockquote><h4 id="Markdown-转换成-Word-文档"><a href="#Markdown-转换成-Word-文档" class="headerlink" title="Markdown 转换成 Word 文档"></a>Markdown 转换成 Word 文档</h4><p>这里就要用到文档转换界的“瑞士军刀”——Pandoc，它能实现很多文档类型的转换。</p><p>（1）如果您正在使用 Python，电脑中安装了 Anaconda，那么其中就包含了 Pandoc 模块，可以<strong>在 Anaconda 的命令行界面运行 Pandoc</strong>。</p><p>比如，我要将文件名为“mdtest”的 Markdown 文档转换成 Word，先将 Anaconda 的命令行界面转换到 mdtest.md 所在文件夹，然后运行命令：<br><code>pandoc mdtest.md -o mdtest.docx</code><br>就会在当前文件夹中转换并新生成一个 mdtest.docx 文档。</p><p>（2）<strong>Typora 或 VSCode 中 Markdown 转 Word 文档</strong><br>首先要安装 Pandoc 软件。进入<a href="https://pandoc.org/installing.html" target="_blank" rel="noopener">Pandoc官方网站下载页面</a>，点击最新的安装包，比如我是 Windows 系统，就选择 .msi 后缀的文件下载安装。</p><blockquote><p>您可能会有疑问，前面方法（1）中提到 Anaconda 包含了 Pandoc 模块，那我们还要再安装一次吗？<br>虽然 Anaconda 包含了 Pandoc，但是这一功能要在 Anaconda 命令行中使用。如果我们要在软件中操作，就需要单独安装 Pandoc。</p></blockquote><p>需要用到图形处理的交叉引用时，还要安装：<br><code>pip install pandoc-fignos</code></p><p><strong>对于 Typora</strong>，现在点击菜单栏 File &gt; Export，选择 Word(.docx) 选项，即可导出 Word 文档。</p><p><strong>对于 VScode</strong>，还需要<strong>在 Markdown 文档的开头加入以下语句</strong>，定义 Pandoc 转化后的文件格式。path 是转化后输出 Word 文档的存放位置，是必填项。后面三项根据需要选择，toc 是目录选项，true表示生成目录。请注意语句的缩进格式以及语句前后的<code>---</code>标记符。</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">"当前Markdown文档名"</span></span><br><span class="line"><span class="attr">output:</span></span><br><span class="line">    <span class="attr">word_document:</span></span><br><span class="line">        <span class="attr">path:</span> <span class="string">/当前Markdown文档名.docx</span></span><br><span class="line">        <span class="attr">toc:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">toc_depth:</span> <span class="number">6</span></span><br><span class="line">        <span class="attr">number_sections:</span> <span class="literal">true</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure><p>然后在<strong>预览视图</strong>中，点击右键菜单中的 Pandoc 选项，即可完成文档转换。</p><h4 id="Markdown-文档在线转换成富文本格式"><a href="#Markdown-文档在线转换成富文本格式" class="headerlink" title="Markdown 文档在线转换成富文本格式"></a>Markdown 文档在线转换成富文本格式</h4><p>现在大家都愿意在网上写文章分享交流知识，那么，您是否曾经花很多时间在微信文章等平台的排版上呢？</p><p>前面提到，Markdown 可以极大缩短排版编辑时间。我们就想，要是用 Markdown 编辑器写文章，然后用类似上面介绍的文档转换工具转换成网络平台的格式就好了。</p><p>答案是当然有，而且选择还不少，我在这里分享两款我用过的<strong>在线转换工具</strong>，如果您有觉得不错的转换工具，欢迎留言与大家交流分享。<br><a href="https://lab.lyric.im/wxformat/" target="_blank" rel="noopener">微信公众号格式化编辑器</a><br>特点：风格简洁，很适合排版文章。如果是诗歌可能换行、字号等不好调整。<br><a href="http://md.aclickall.com/" target="_blank" rel="noopener">Md2All</a><br>特点：功能强大，版式风格选择很多，如果略懂网页编辑Javascript的语法，还可以自己对版式调整。</p><p>使用 Markdown 编辑文档时，您有哪些得心应手的效率工具呢？欢迎分享交流。</p><p>参考文章：<br>1.<a href="https://blog.csdn.net/nkwshuyi/article/details/78714788" target="_blank" rel="noopener">如何用Markdown写论文？</a><br>2.<a href="https://www.jianshu.com/p/6ba04f669d0b" target="_blank" rel="noopener">Pandoc安装与使用（转）</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在上一篇 &lt;a href=&quot;https://juliecodestack.github.io/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/#more&quot;&gt;Markdown 入门文章&lt;/a&gt; 里，我们对 Markdown 这个写作和编辑利器有了初步认识。接下来，我们一起来看看还有哪些进一步提高编辑效率的工具方法？&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://juliecodestack.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="Markdown" scheme="https://juliecodestack.github.io/tags/Markdown/"/>
+    
+      <category term="软件" scheme="https://juliecodestack.github.io/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一篇文章带你入门Markdown</title>
+    <link href="https://juliecodestack.github.io/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/"/>
+    <id>https://juliecodestack.github.io/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/</id>
+    <published>2020-07-24T03:41:03.000Z</published>
+    <updated>2020-07-26T09:33:53.945Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-为什么选择-Markdown？"><a href="#1-为什么选择-Markdown？" class="headerlink" title="1. 为什么选择 Markdown？"></a>1. 为什么选择 Markdown？</h3><p>正在看这篇文章的您很可能还没有使用过 Markdown 编辑器，平时写文档、排版编辑以 Word 为主吧，那么，您是否遇到过以下问题：</p><ul><li>写好文章后设定文档标题、字号、间距、加粗等排版工作，要花费大量时间。</li><li>在插入网址链接时，显示出一长串网址，不够简洁美观。要是能够把链接显示为简要文字说明，点击文字就可以到达网址就好了。</li><li>对于程序员来说，文档中经常需要插入代码，可是 Word 中没有能直接突出显示代码的效果。如果能像代码编辑器里一样，对函数、部分语句等突出标识，看着就清晰多了。<a id="more"></a></li></ul><p>使用 Markdown之后，你就不用再为这些问题烦恼了。只需在写作时顺带加入几个标记符，文档就会显示为统一、规范的网页格式。而且，Markdown 还有以下优势：</p><ul><li><p><strong>Markdown编辑器平台统一。</strong> 如果你使用过网上的写作平台，可能就会发现，在支持富文本编辑器的平台，比如豆瓣，输入文档后还需要对标题、链接等重新编辑调整一下，而支持 Markdown 编辑器的平台，比如我的博客小站使用的hexo博客系统、或者CSDN， 输入文档后显示比较一致，标题、加粗、链接等都是使用的统一语法，无需对内容进行二次排版编辑。</p></li><li><p>现在有很多工具可以帮助我们<strong>将 Markdown 文档轻松转换为 PDF 或 Word 文档</strong>，这样，用 Markdown 写作，然后转换一下，可以省去很多排版编辑时间。</p></li></ul><p>看到这里，您是不是也跃跃欲试，想开始用 Markdown 来编辑文档。那么，要在哪里用？怎么用呢？别着急，接着往下看。</p><h3 id="2-怎么用-Markdown？"><a href="#2-怎么用-Markdown？" class="headerlink" title="2. 怎么用 Markdown？"></a>2. 怎么用 Markdown？</h3><p>我们要用好 Markdown，首先要学习一下它的语法。<br>听到“语法”，你是不是瞬间头大了？哈哈，不用担心，内容不多而且好记。当然，最好的办法是在练习中掌握：<strong>参考我的示例格式，自己输入内容练习几遍</strong>。下一节就会介绍编辑器的使用了，你可以先浏览一下本节内容，对 Markdown 的使用有个大致印象。</p><h4 id="2-1-标题"><a href="#2-1-标题" class="headerlink" title="2.1 标题"></a>2.1 标题</h4><p>用 Markdown 编辑时，标题使用<code>#</code>进行标记，几级标题就在标题前加几个<code>#</code>，显示效果如下图所示。这里说明一下，我采用的是对照模式，左边为编辑输入，右边为预览显示，后面的示例也是这样。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-17-50-42.png" alt="标题编辑的对照示例" align="center"> <p>可以对比一下各级标题显示字号、行间距的不同。另外，你可能会注意到，在<code>#</code>与文字间有一个空格。在使用中，我发现有的编辑器要求必须有空格，有的编辑器不做要求、可以识别，因此，建议还是加一个空格。</p><h4 id="2-2-加粗、斜体"><a href="#2-2-加粗、斜体" class="headerlink" title="2.2 加粗、斜体"></a>2.2 加粗、斜体</h4><p>在加粗文字前后用<code>**</code>进行标记，在斜体文字前后用<code>*</code>标记，具体方法和显示效果如图所示：</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-18-09-35.png" alt="加粗和斜体的对照示例" align="center"><h4 id="2-3下划线、删除线"><a href="#2-3下划线、删除线" class="headerlink" title="2.3下划线、删除线"></a>2.3下划线、删除线</h4><p>在添加下划线的文字前后用<code>&lt;u&gt;</code>符号标记，在添加删除线的文字前后用<code>~~</code>符号标记，具体方法和显示效果如图所示：</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/Markdown学习笔记补充2020-05-05-17-32-10.png" alt="下划线、删除线的对照示例" align="center"><h4 id="2-4-引用、代码"><a href="#2-4-引用、代码" class="headerlink" title="2.4 引用、代码"></a>2.4 引用、代码</h4><p>在引用文字的前面使用<code>&gt;</code>标记。<br>编辑行内代码时，在代码前后使用 ` 符号标记（对应键盘位置为 【Tab】键上方）。<br>编辑代码块时，在代码前后使用 ``` 符号标记。此外，代码块前可以加上所使用的语言作为注释（比如 python），显示效果更佳。具体方法和显示效果如图所示：</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-20-00-59.png" alt="引用和代码的对照示例" align="center"><p>有时我们需要在文章中显示运行程序的结果，这时可以采用图中所示的方式，在结果前加上 text 注释。</p><h4 id="2-5-列表"><a href="#2-5-列表" class="headerlink" title="2.5 列表"></a>2.5 列表</h4><p>Markdown 中采用<code>-</code>或<code>*</code>+空格的方式来标记无序列表，用<code>数字</code>+<code>.</code>+空格的方式来标记有序列表，具体方法和显示效果如图所示：</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-20-07-47.png" alt="列表的对照示例" align="center"><p>请注意示例中的有序列表。我们输入<code>数字</code>+<code>.</code>+空格，后续项会自动顺序编号，而如果始终输入<code>1</code>+<code>.</code>+空格，实际的显示效果也是顺序编号的。</p><h4 id="2-6-公式"><a href="#2-6-公式" class="headerlink" title="2.6 公式"></a>2.6 公式</h4><p>在行内公式前后使用<code>$</code>标记，独立公式的前后使用<code>$$</code>标记，可以看下面的简单示例，更多公式的写法请参考网上的 Latex 语法。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/一篇文章带你入门Markdown2020-07-25-09-47-33.png" alt="公式的对照示例" align="center"><h4 id="2-7-表格"><a href="#2-7-表格" class="headerlink" title="2.7 表格"></a>2.7 表格</h4><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-04-08-59-02.png" alt="表格的对照示例" align="center"><p>图中示例展示了表格的写法，注意：第二行的分隔线对于生成表格至关重要。<br>另外，如果后期要进行文档转换，尤其是转换成 Word 文档，一定要先检查一下表格能否正常转换，我就遇到过转换成 Word 文档后、显示的表格是图中左侧原始编辑格式的情况。</p><h4 id="2-8-插入网址链接和图片"><a href="#2-8-插入网址链接和图片" class="headerlink" title="2.8 插入网址链接和图片"></a>2.8 插入网址链接和图片</h4><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-20-25-27.png" alt="插入网址和图片的对照示例" align="center"><p>如图中示例所示，对于网址链接，在[ ]内填写链接的文字说明，( )内填写对应的链接地址。这样，显示为文字说明部分，点击即可到达链接。</p><p>图片链接的格式与此类似，同时，图片链接的文字说明前要加一个<code>!</code>符号标记。显示为图片。另外，虽然图片链接的文字说明一般不会显示，但是建议填写，因为如果网站的图片加载出现问题，图片无法正常显示，就会显示出文字说明，此时至少可以给读者提供一点图片的相关信息。</p><p>细心的你可能会有一个疑问，图片链接如果是网络的还好办，如果是本地图片，把文档导入网络平台（比如CSDN）时，图片就无法正常显示了，怎么办？容易想到的办法是重新上传图片到网络平台并生成链接。但是，还有一种便捷的解决办法，就是把图片放到网络服务器中存储，这样就把本地图片“变成”网络图片，我们可以随时引用网络链接查看图片，这就是图床的原理。但是很抱歉，我现在还没有使用图床，等我用了之后，再写篇文章与大家分享。</p><h4 id="2-9-排版规范"><a href="#2-9-排版规范" class="headerlink" title="2.9 排版规范"></a>2.9 排版规范</h4><p>最后补充一点，在 Markdown 写作时，了解一点排版规范对我们是有帮助的，这样显示的文章整洁美观，读者看着也舒服。向你推荐我读到的一篇介绍排版规范的好文：<a href="https://zhuanlan.zhihu.com/p/69376149" target="_blank" rel="noopener">会用 Markdown 还不够，还得知道排版规范</a>。</p><h3 id="3-在哪用Markdown？"><a href="#3-在哪用Markdown？" class="headerlink" title="3. 在哪用Markdown？"></a>3. 在哪用Markdown？</h3><p>要写 Markdown 文档，一款得心应手的<strong>编辑器</strong>必不可少。我根据网友们的介绍和推荐，体验了几款受好评的编辑器，下面逐一介绍，看看您喜欢哪一款？</p><h4 id="3-1-即写即显示：Typora"><a href="#3-1-即写即显示：Typora" class="headerlink" title="3.1 即写即显示：Typora"></a>3.1 即写即显示：Typora</h4><p>点击<a href="https://typora.io/" target="_blank" rel="noopener">Typora官网</a>，可以下载 Typora。</p><p>Typora 的最大特点就是即写即显示，有点像打字机 ( Typewriter ) 的效果，这样看来，这个名字很贴切。请看一下 <a href="https://typora.io/img/beta.mp4" target="_blank" rel="noopener">Typora使用展示-27秒小视频</a>，会对这种编辑体验有更多了解。</p><p>Typora 的页面干净整齐，插入图片、公式等十分便捷，因此受到众多 Markdown 写作者们的喜爱。</p><p><strong>1.一键插入图片</strong><br>如果您是第一次安装 Typora，需要在 File&gt;Preferences&gt;Image 里，选择插入图片的存放位置，默认设置是无操作。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-07-08-11-45-58.png" alt="Typora中Image设置界面" align="center"><p>如图所示，在下拉列表中选择 Copy image to ./${filename}.assets，这样图片会复制一份到当前文档名.assests 子文件夹中（如果没有会自动新建一个）。另外，您可能注意到，在下拉列表下方有几个勾选项，比如，是否对本地图片按此操作（这一项一定要勾选），是否对网络图片按此操作，是否使用相对路径，等等，可以根据需要选择，对比效果后确定自己的设置，图中就是我在 Typora 中的设置，您可以参照着对自己的 Typora 进行设置。</p><p>使用 Typora 插入图片非常轻松。如果是屏幕截图，以我自己使用的 Windows 系统为例，可以直接用【Windows】+【Shift】+【S】 键，或者打开微信后用 【Alt】+【A】键进行截图，然后使用 【Ctrl】+【V】 键，或者是在右键菜单中选择 Paste 把截图插入到文档。如果是本地图片，可以从存放文件夹中把图片直接拖动到文档中的编辑位置。然后，剩下的事就不用管了，因为 Typora 会帮我们全部做好，包括将图片自动复制到 当前文档名.assets文件夹，Markdown 文档里也会生成图片链接，是不是很贴心呢？</p><p><strong>2.文档转换</strong><br>如下图所示，点击菜单栏 File &gt; Export，然后选择你想要的文件类型（比如 PDF、Word），可以实现文档转换。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-21-43-05.png" alt="Typora文档转换菜单选项" align="center"><p>但是，我现在没有经常使用 Typora，主要是还不适应即写即显示、不能对照看原始编辑的设置。如果有和我一样习惯的小伙伴，可以看看接下来的两款编辑器。</p><h4 id="3-2-对照显示：Atom-VSCode"><a href="#3-2-对照显示：Atom-VSCode" class="headerlink" title="3.2 对照显示：Atom, VSCode"></a>3.2 对照显示：Atom, VSCode</h4><p>这两款编辑器大同小异，都是可以预览、对照显示的。Atom 由 Github 出品，可以从<a href="https://atom.io/" target="_blank" rel="noopener">Atom官网</a>下载。 VSCode, 全称为 Visual Studio Code，由微软出品，可以从<a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode官网</a>下载。</p><p>有一点请注意，要使这两款编辑器发挥最佳性能，需要安装插件（Packages/ Extensions），下面以我现在使用的 VSCode 为例进行说明。</p><p><strong>1.安装扩展（Extensions）</strong></p><p>点击菜单栏 File &gt; Preferences &gt; Extensions，如图中所示：</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-16-25-52.png" alt="扩展的菜单选项" align="center"><p>然后在搜索栏中搜索扩展并安装：<code>Markdown All in One</code>，<code>Markdown Preview Enhanced</code>，<code>Paste Image</code>。下图中我给出了一个示例，在搜索栏输入” markdown preview enhanced “，在未安装的扩展名右下角会有一个显示为<code>install</code>的绿色按钮，点击即可安装。这里因为我已经安装了该扩展，所以没有显示，而在我尚未安装的扩展下方就显示了<code>install</code>按钮。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-16-22-56.png" alt="安装扩展示例" align="center"><p><strong>2.扩展设置</strong></p><p>此外，Paste Image 扩展在安装后还要进行设置。点击 File &gt; Preferences &gt; Settings，在搜索栏中输入：” Paste Image “，在结果中找到：<br>Name Prefix 一栏，填入<code>${currentFileNameWithoutExt}</code>；<br>Path 一栏，填入<code>${currentFileDir}/imgs</code>，具体如下图所示。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-16-41-07.png" alt="Paste Image 扩展设置" align="center"><p><strong>3.预览视图与文章目录</strong></p><p>安装了上面介绍的扩展后，重新在 VSCode 中打开一篇文档，可以看到右上方会出现预览按钮，点击下图中箭头指示的第一个按钮，即可出现 Preview 预览窗格。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-16-20-43.png" alt="预览窗格按钮" align="center"><p>在预览视图中，点击下图中箭头指示的第一个按钮，可以显示文章的目录。图中右侧显示的就是本文的目录。目录显示即为文章的大纲，对于我们阅读时理清文章脉络、写作时构建文章框架很有帮助。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/一篇文章带你入门Markdown2020-07-24-16-20-36.png" alt="文章目录显示按钮及显示效果" align="center"><p>还有一种显示文章目录的方法，就是在文章开头处加上<code>[TOC]</code>，显示效果与上图的目录视图类似，您不妨也试一试，看看效果如何呀。</p><p><strong>4.快速贴图</strong></p><p>因为安装了 Paste Image 扩展，VSCode 中截图贴图十分方便。以我自己使用的 Windows 系统为例，截图后打开要插入图片的文档，使用 <code>Ctrl</code>+<code>Alt</code>+<code>V</code> 键，图片就会自动复制到 Markdown 文档目录下的 imgs 文件夹中，同时在文档中自动生成了图片链接。</p><p>但是与 Typora 相比，VSCode还有一点不足：不能拖动本地图片到文档实现自动插入图片，也可能是我还没有安装所需的扩展，如果您知道这个使用方法，请告诉我一下哦，谢谢！</p><p><strong>5.文档转换</strong></p><p>在<strong>预览视图</strong>中，点击鼠标右键，将出现下图所示的菜单栏，此时可以选择需要的文件类型进行转换。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-21-45-39.png" alt="VSCode中右键菜单的文档转换选项" align="center"><h4 id="3-3-多平台协作：印象笔记"><a href="#3-3-多平台协作：印象笔记" class="headerlink" title="3.3 多平台协作：印象笔记"></a>3.3 多平台协作：印象笔记</h4><p>有时我们可能在这个电脑上写了一点文字，然后又换个地方、换了电脑，这种情况下，要把文档传过去才能继续编辑吗？</p><p>当然不用那么麻烦！可以使用多平台工具：印象笔记。印象笔记现在融合了马克飞象的功能，可以编辑 Markdown 文章了。这样要收集灵感、创意进行写作，就更加方便了。我这篇文章的初稿就是在印象笔记上写的。</p><p>如下图所示，打开印象笔记后，在新建笔记右方有个窗格图标（图中箭头指示位置），点击后有多种文档格式，选择 “ Markdown “，即可新建一个 Markdown文档。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-21-21-12.png" alt="印象笔记中新建Markdown文档" align="center"><p>打开文档后，在右上方有一个编辑/预览切换按钮，如下图中箭头标示位置，点击之后文档可以在对照编辑（类似 VSCode 的显示模式）和预览模式 (类似 Typora 的显示模式，但是不能编辑) 之间切换，这样，如果只看文档显示效果，就可以点击这个按钮，切换到预览模式。</p><img src="/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/浅显易懂的Markdown入门教程2020-05-03-21-25-39.png" alt="Markdown文档对照编辑/预览模式切换按钮" align="center"><p>有一点请注意，印象笔记在电脑端可以编辑写作 Markdown 文档，在手机端只能看预览效果、不能对 Markdown 文档编辑修改。</p><p>好了，看到这里，相信您对于 Markdown 有了初步的了解。但是，Markdown 编辑器的诸多优点，还要等您使用后才能真正体会，所以，现在就点击文章中的链接安装软件，然后跟着示例编辑一个文档试试吧！</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-为什么选择-Markdown？&quot;&gt;&lt;a href=&quot;#1-为什么选择-Markdown？&quot; class=&quot;headerlink&quot; title=&quot;1. 为什么选择 Markdown？&quot;&gt;&lt;/a&gt;1. 为什么选择 Markdown？&lt;/h3&gt;&lt;p&gt;正在看这篇文章的您很可能还没有使用过 Markdown 编辑器，平时写文档、排版编辑以 Word 为主吧，那么，您是否遇到过以下问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;写好文章后设定文档标题、字号、间距、加粗等排版工作，要花费大量时间。&lt;/li&gt;
+&lt;li&gt;在插入网址链接时，显示出一长串网址，不够简洁美观。要是能够把链接显示为简要文字说明，点击文字就可以到达网址就好了。&lt;/li&gt;
+&lt;li&gt;对于程序员来说，文档中经常需要插入代码，可是 Word 中没有能直接突出显示代码的效果。如果能像代码编辑器里一样，对函数、部分语句等突出标识，看着就清晰多了。&lt;/li&gt;&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://juliecodestack.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="Markdown" scheme="https://juliecodestack.github.io/tags/Markdown/"/>
+    
+      <category term="软件" scheme="https://juliecodestack.github.io/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的英语学习视频列表~持续更新</title>
+    <link href="https://juliecodestack.github.io/2020/07/23/%E6%88%91%E7%9A%84%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%A7%86%E9%A2%91%E5%88%97%E8%A1%A8/"/>
+    <id>https://juliecodestack.github.io/2020/07/23/%E6%88%91%E7%9A%84%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%A7%86%E9%A2%91%E5%88%97%E8%A1%A8/</id>
+    <published>2020-07-23T10:17:02.000Z</published>
+    <updated>2021-02-01T12:37:05.469Z</updated>
+    
+    <content type="html"><![CDATA[<p>接着上一篇：<a href="https://juliecodestack.github.io/2020/07/22/%E6%88%91%E7%9A%84%E8%AF%BB%E4%B9%A6%E8%A7%86%E9%A2%91%E5%88%97%E8%A1%A8/#more">我的读书视频列表</a> ，B站萌新up主还制作了一些英语学习视频呢，哈哈。<strong>我在这里做一个索引列表，持续更新</strong>。欢迎您点击收看，请多多交流指教！<br>来B站找我玩—&gt;<a href="https://space.bilibili.com/40990299" target="_blank" rel="noopener">宁萌Julie</a>。</p><a id="more"></a><p><strong>注：列表顺序：由前至后 依次为 最近作品至较早作品</strong></p><p><strong>2020年8月作品：</strong><br>13.【精读】<a href="https://www.bilibili.com/video/BV1Zz4y1f7iq" target="_blank" rel="noopener">合集-《柳林风声》第二章 12集全-The Wind in the Willows</a><br><strong>宁萌说：</strong> 这一章的视频我制作得更加短小精练，同时搭配了好听的轻音乐。</p><p><strong>2020年6月作品：</strong><br>12.<a href="https://www.bilibili.com/video/BV1Up4y1U7hf" target="_blank" rel="noopener">美景、轻音乐+读书，你喜欢吗？</a><br><strong>宁萌说：</strong> 从 The Wind in the Willows 《柳林风声》第一章中选了两段，读给您听，搭配上相应的美景和轻音乐，喜欢吗？快去欣赏一下吧！</p><p>11.<strong>重磅推荐：【精读】</strong><a href="https://www.bilibili.com/video/BV1NT4y1J7pm" target="_blank" rel="noopener">读名著学英语-《柳林风声》第一章 The Wind in the Willows</a><br><strong>宁萌说：</strong> 这是一期视频合辑，里面有对 The Wind in the Willows 《柳林风声》第一章的精读，还有我精心制作的笔记字幕哦，更加易懂。因为我花了很多时间和心思在这个精读活动上，一边接收观众反馈，一边尝试改进，所以特别推荐您点开看一下，帮我提点改进建议啊，谢谢！ </p><p><strong>2020年5月作品：</strong><br>10.<a href="https://www.bilibili.com/video/BV1XK411H7H9" target="_blank" rel="noopener">【读书分享】与《爱丽丝漫游奇境》齐名，这部英文童话经典讲了什么？</a><br><strong>宁萌说：</strong> 我很喜欢 The Wind in the Willows 《柳林风声》这本书，很有趣，文笔优美，打算做精读。这一期是导读，简要介绍一下这本书。</p><p>9.<a href="https://www.bilibili.com/video/BV1bC4y1H7Ay" target="_blank" rel="noopener">英语表达-怎么描述煎炸食物？</a><br><strong>宁萌说：</strong> 爱美食、爱生活的小伙伴不要错过呀！</p><p>8.<a href="https://www.bilibili.com/video/BV1ue411W7ga" target="_blank" rel="noopener">英语表达-一关门想起钥匙落在屋里了……</a></p><p>7.<a href="https://www.bilibili.com/video/BV1b5411s7JY" target="_blank" rel="noopener">英语表达-一顿匆忙的早餐</a></p><p>6.<a href="https://www.bilibili.com/video/BV1x54y1D7Ae" target="_blank" rel="noopener">英语表达-工作日的早晨，闹钟没响……</a></p><p>5.<a href="https://www.bilibili.com/video/BV1mC4y1H7yp" target="_blank" rel="noopener">英语表达-英语怎么描述穿着得体?</a></p><p>4.<a href="https://www.bilibili.com/video/BV14f4y1U7vA" target="_blank" rel="noopener">英语表达-whistle除了表示口哨声，还可以形容这些声音……</a><br><strong>宁萌说：</strong> 这一期的表达我特别推荐，可以体会到用词的灵活。 </p><p>3.<a href="https://www.bilibili.com/video/BV1DV411k7wh" target="_blank" rel="noopener">英语表达-“有其父必有其子”，英文怎么说?</a><br><strong>宁萌说：</strong> 从 Harry Potter《哈利波特》中摘录的，你猜这是说的谁？</p><p>2.<a href="https://www.bilibili.com/video/BV1a5411s7T6" target="_blank" rel="noopener">英语表达-从童话书里看到的一句有趣的表达</a><br><strong>宁萌说：</strong> 从这一期开始，我制作了8期英语表达的短视频，都是从书中精选的句子，地道表达，形象生动，快来看看吧！</p><p>1.<a href="https://www.bilibili.com/video/BV1Xz411q726" target="_blank" rel="noopener">教程-英文电子书阅读-怎么找书，手机上用什么看书？</a><br><strong>宁萌说：</strong> 这是我在B站的第一个小视频，时长不到两分钟，用手机录屏的方式示范了 Gutenberg.org+多看+印象笔记 的英文电子书阅读方法。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;接着上一篇：&lt;a href=&quot;https://juliecodestack.github.io/2020/07/22/%E6%88%91%E7%9A%84%E8%AF%BB%E4%B9%A6%E8%A7%86%E9%A2%91%E5%88%97%E8%A1%A8/#more&quot;&gt;我的读书视频列表&lt;/a&gt; ，B站萌新up主还制作了一些英语学习视频呢，哈哈。&lt;strong&gt;我在这里做一个索引列表，持续更新&lt;/strong&gt;。欢迎您点击收看，请多多交流指教！&lt;br&gt;来B站找我玩—&amp;gt;&lt;a href=&quot;https://space.bilibili.com/40990299&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;宁萌Julie&lt;/a&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="英语" scheme="https://juliecodestack.github.io/categories/%E8%8B%B1%E8%AF%AD/"/>
+    
+    
+      <category term="英语学习" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="英文原著" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E6%96%87%E5%8E%9F%E8%91%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的读书视频列表~持续更新</title>
+    <link href="https://juliecodestack.github.io/2020/07/22/%E6%88%91%E7%9A%84%E8%AF%BB%E4%B9%A6%E8%A7%86%E9%A2%91%E5%88%97%E8%A1%A8/"/>
+    <id>https://juliecodestack.github.io/2020/07/22/%E6%88%91%E7%9A%84%E8%AF%BB%E4%B9%A6%E8%A7%86%E9%A2%91%E5%88%97%E8%A1%A8/</id>
+    <published>2020-07-22T12:58:01.000Z</published>
+    <updated>2021-02-01T12:22:46.329Z</updated>
+    
+    <content type="html"><![CDATA[<p>Hi，好久不见！最近这段时间，我到B站去体验了一下当up主的感觉，欢迎来B站找我玩呀—&gt;<a href="https://space.bilibili.com/40990299" target="_blank" rel="noopener">宁萌Julie</a>。我从零开始学习视频制作，不断改进，制作了一些读书和英语学习的小视频。<strong>我在这里做一个读书视频的索引列表，持续更新</strong>。赶快点开看看都分享了哪些书呀，有你喜欢的那一本吗？</p><a id="more"></a><p><strong>注：列表顺序：由前至后 依次为 最近作品至较早作品</strong></p><h3 id="2021年1月作品："><a href="#2021年1月作品：" class="headerlink" title="2021年1月作品："></a>2021年1月作品：</h3><p>11.<a href="https://www.bilibili.com/video/BV1gK411u71Z" target="_blank" rel="noopener">【购书分享】我买了哪几本英文名著呢？快来看看吧！</a></p><p>10.<a href="https://www.bilibili.com/video/BV14f4y1y7me" target="_blank" rel="noopener">【购书分享】几本英文儿童文学作品</a></p><h3 id="2020年8月作品："><a href="#2020年8月作品：" class="headerlink" title="2020年8月作品："></a>2020年8月作品：</h3><p>9.<a href="https://www.bilibili.com/video/BV1fK4y1e7MM/" target="_blank" rel="noopener">【读书分享】硬科幻？软科幻？你喜欢哪种？附英文有声书介绍</a><br><strong>宁萌说：</strong> 本期分享我钟爱的两本科幻小说，还有英文有声书的介绍和收听链接。精心制作、重磅推荐，哈哈！说不定你也读过这两本书呢，快点开看看、加入讨论吧！</p><p>8.<a href="https://www.bilibili.com/video/BV1j54y1i7tH/" target="_blank" rel="noopener">【读书分享】人工智能、5G，这些新技术你了解吗？</a><br><strong>宁萌说：</strong> 本期介绍两本科普新知类的书，身处这些新技术带来的改变中，了解一下很有必要，看看我分享的哪两本书呢？</p><h3 id="2020年7月作品："><a href="#2020年7月作品：" class="headerlink" title="2020年7月作品："></a>2020年7月作品：</h3><p>7.<a href="https://www.bilibili.com/video/BV1Sv411q7T2/" target="_blank" rel="noopener">【读书分享】选专业、找工作，迷茫时看看毛姆的这本小说</a><br><strong>宁萌说：</strong> 小伙伴们，在选专业、找工作时，你是否有过迷茫？是否思考过人生、梦想与现实？快来看看这本小说，也许会给你新的启发。</p><p>6.<a href="https://www.bilibili.com/video/BV1eZ4y1u7RM" target="_blank" rel="noopener">【读书分享】如何阅读一本书？学习高效阅读的方法</a><br><strong>宁萌说：</strong> 这是一本让我反复阅读和思考的指南书，改变了我以前对于读书的认识，所以，虽然大家可能会不太感兴趣，我还是做了一期分享，因为，如果你看了，可能就会对你有帮助，你说呢？</p><p>5.<a href="https://www.bilibili.com/video/BV1Nf4y1R77a" target="_blank" rel="noopener">【读书分享】B站CEO推荐的科普书，读了之后惊呼…</a><br><strong>宁萌说：</strong> 看了B站陈总的视频之后，我读了这本科普书，后来又看了两本，原来科普书也可以写得这么有趣！于是，趁热打铁制作了这一期分享推荐视频，哈哈！你看了吗？快快加入讨论……</p><p>4.<a href="https://www.bilibili.com/video/BV15k4y1B7Tw" target="_blank" rel="noopener">【读书分享】英文原版书入门，来看看这几本书</a><br><strong>宁萌说：</strong> 终于要和大家分享英文阅读了，这几本英文小说都不错，很适合刚开始进行英文原版阅读的小伙伴，用心推荐的，请看一下呀！</p><h3 id="2020年6月作品："><a href="#2020年6月作品：" class="headerlink" title="2020年6月作品："></a>2020年6月作品：</h3><p>3.<a href="https://www.bilibili.com/video/BV1uD4y1S7Ym" target="_blank" rel="noopener">【读书分享】好书一本，让自己慢下来</a><br><strong>宁萌说：</strong> 这一期我尝试加了背景音乐，搭配上风景的视频，嘿嘿，这样来读一本散文集真是再合适不过，很舒缓放松呢！快来一起欣赏吧！</p><h3 id="2020年5月作品："><a href="#2020年5月作品：" class="headerlink" title="2020年5月作品："></a>2020年5月作品：</h3><p>2.<a href="https://www.bilibili.com/video/BV14t4y1C7t6" target="_blank" rel="noopener">【购书分享】五月我买了哪些书？一起来看看</a><br><strong>宁萌说：</strong> 五月底趁着购物节活动，买了几本书，忍不住就拍了开箱视频与小伙伴们分享，没想到反响不错，大家好像对于买书视频挺感兴趣，这也让我有了多制作几期读书分享视频的打算。</p><p>1.<a href="https://www.bilibili.com/video/BV1XK411H7H9" target="_blank" rel="noopener">【读书分享】与《爱丽丝漫游奇境》齐名，这部英文童话经典讲了什么？</a><br><strong>宁萌说：</strong> 介绍了一本英文童话书 <strong>The Wind in the Willows</strong>，很有趣的书哦！这是初学阶段，视频制作的比较简单粗糙，因为没设置好比例，导致最后视频上下有一条黑边，虽然观众说不太明显、感觉不到，自己觉得还挺抱歉的，谢谢大家的鼓励和包容！</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Hi，好久不见！最近这段时间，我到B站去体验了一下当up主的感觉，欢迎来B站找我玩呀—&amp;gt;&lt;a href=&quot;https://space.bilibili.com/40990299&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;宁萌Julie&lt;/a&gt;。我从零开始学习视频制作，不断改进，制作了一些读书和英语学习的小视频。&lt;strong&gt;我在这里做一个读书视频的索引列表，持续更新&lt;/strong&gt;。赶快点开看看都分享了哪些书呀，有你喜欢的那一本吗？&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="读书" scheme="https://juliecodestack.github.io/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+    
+      <category term="英文原著" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E6%96%87%E5%8E%9F%E8%91%97/"/>
+    
+      <category term="小说" scheme="https://juliecodestack.github.io/tags/%E5%B0%8F%E8%AF%B4/"/>
+    
+      <category term="非虚构" scheme="https://juliecodestack.github.io/tags/%E9%9D%9E%E8%99%9A%E6%9E%84/"/>
+    
+      <category term="科普" scheme="https://juliecodestack.github.io/tags/%E7%A7%91%E6%99%AE/"/>
+    
+      <category term="散文" scheme="https://juliecodestack.github.io/tags/%E6%95%A3%E6%96%87/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>读书的要领</title>
+    <link href="https://juliecodestack.github.io/2020/04/26/%E8%AF%BB%E4%B9%A6%E7%9A%84%E8%A6%81%E9%A2%86/"/>
+    <id>https://juliecodestack.github.io/2020/04/26/%E8%AF%BB%E4%B9%A6%E7%9A%84%E8%A6%81%E9%A2%86/</id>
+    <published>2020-04-26T13:41:18.000Z</published>
+    <updated>2020-11-29T11:23:57.847Z</updated>
+    
+    <content type="html"><![CDATA[<meta name="referrer" content="no-referrer"><img src="https://img9.doubanio.com/view/subject/l/public/s4247555.jpg" width="260" height="368" alt="本书封面图片，来源：豆瓣" align="center"><p>注：本书封面图片，来源：豆瓣</p><p>首先承认，在读 <strong><em>How To Read A Book</em></strong> 之前，我原以为这类指南书可能都是像教科书一样，讲一些条条框框的指导建议。可是，读过之后却有一种相见恨晚的感觉，意识到自己以前读书都没有掌握有效的方法、不得要领。我读了一遍英文版，又读了一遍中文版，对读书方法、书单选择有了新的思考，很受启发。我把书中的精华总结归纳了一下，与大家分享。</p><a id="more"></a><h4 id="主动阅读"><a href="#主动阅读" class="headerlink" title="主动阅读"></a>主动阅读</h4><p>我们要让自己在阅读中有收获，就要做一个主动的读者，带着问题去阅读。那么，应该提什么问题呢？可以从以下四个方面提问：</p><ul><li>这本书谈了什么？（主旨）</li><li>作者是怎么阐述观点的？（论点、结构）</li><li>这本书说的有道理吗？全部有道理，还是部分有道理？</li><li>这本书对于我们的意义是什么？换句话说，就是我们读书之后的收获，是知识、洞见、启发，还是什么？</li></ul><h4 id="阅读的四个层次"><a href="#阅读的四个层次" class="headerlink" title="阅读的四个层次"></a>阅读的四个层次</h4><img src="/2020/04/26/%E8%AF%BB%E4%B9%A6%E7%9A%84%E8%A6%81%E9%A2%86/readinglevel.png" width="325" height="300" alt="阅读的四个层次示意图" align="center"><p>这里我画了一个简单的示意图说明阅读的四个层次，其中，高层次的阅读是建立在掌握低层次阅读的基础之上。第一个层次的阅读，基础阅读（Elementary Reading），就是基本的见文知义能力，这一阅读能力在小学和初中教育中建立。而对于检视阅读（Inspectional Reading）、分析阅读（Analytical Reading）和主题阅读（Syntopical Reading），很多人都没有掌握正确的方法。下面简要介绍一下这三种阅读。</p><h5 id="检视阅读（Inspectional-Reading）"><a href="#检视阅读（Inspectional-Reading）" class="headerlink" title="检视阅读（Inspectional Reading）"></a>检视阅读（Inspectional Reading）</h5><p>检视阅读是快速阅读，但这种快，并不是走马观花、囫囵吞枣，而是利用有限的时间充分提取书籍信息。因此，检视阅读主要包括：</p><p>1、查看书名、目录、索引、序、后记等信息，甚至书封也可以看看，明确书的主题，为书籍分类，看属于虚构小说、还是非虚构论述作品。如果是论述作品，又可以思考一下是属于“解释是什么”的理论性作品，还是属于告诉读者“要怎么做”的实用性作品。</p><p>2、把握书籍大致的架构、大纲。</p><p>3、浏览一下全书，对于书的内容有个大致的印象。打个比方，就像侦探一样，在书里寻找线索式地读书，有快有慢，而不是一个速度从头读到尾。如果遇到不懂的地方，也不要停下来去查询，留待后续阅读解决。只要读懂了一部分，对书有个大概印象即可。</p><p>做完检视阅读，我们可以知道：这本书的主题、分类，还有很重要的一点：是否值得再读一遍？这里我谈一点自己的体会，回想自己经常都是拿起一本书，从第一页开始读起、一个速度读完…相比之下，检视阅读的方法的确做到了高效阅读。我按这种方法快速浏览了两本实用类的书，发现很快能知道书的主题、作者的重点放在哪里，这样就知道哪里可以读快一点、哪里需要仔细读，读完之后也能总结大致的观点。</p><h5 id="分析阅读（Analytical-Reading）"><a href="#分析阅读（Analytical-Reading）" class="headerlink" title="分析阅读（Analytical Reading）"></a>分析阅读（Analytical Reading）</h5><p>分析阅读就像一个拆卸机械的过程。前面检视阅读中我们已经知道了书籍的框架，那么，作者是如何加入描述、论证、说明，让其立体丰满起来？这就是我们要完成的分析工作。具体可分为三阶段：</p><p>1、提纲挈领：分析书的主题、分类、主旨、大纲、作者要解决的问题，可以看出，做好检视阅读对这一步有帮助；</p><p>2、析词达意，并且抓住主旨、重构论点、尝试回答问题，这一阶段就是对书进行深入解读，我们要尝试用自己的语言归纳总结作者的观点，而不仅仅是摘抄。（这也是我在本文中做的工作，结合读书时的笔记，用自己的话概况书中的观点。）</p><p>3、评论书籍，这一阶段的重点就是要确保读完读懂，不要片面下结论，而且对作者观点有异议应建立在事实依据或逻辑分析的基础上。</p><h5 id="主题阅读（Syntopical-Reading）"><a href="#主题阅读（Syntopical-Reading）" class="headerlink" title="主题阅读（Syntopical Reading）"></a>主题阅读（Syntopical Reading）</h5><p>主题阅读的要点就是阅读围绕一个主题展开，所有的工作都是为这个主题服务的。这里要注意的一点是，书不是中心，我们不需要研读每本书，只需要选取其中与主题相关的章节进行研读分析。</p><p>主题阅读主要包括以下步骤：</p><p>1、选择书籍：首先列一个大概的书单，然后进行第一次检视阅读，筛选出与主题相关的书，同时也帮助明确主题、建立概念。</p><p>2、围绕主题进行阅读：对选中的书籍进行第二次检视阅读，找出与主题最相关的章节。下一步的方法类似分析阅读，不同之处在于这里是以主题为中心。我们要建立词汇、主旨，列出议题，让作者“各抒己见”（根据书中内容，用刚建立的词汇来归纳表达），然后分析这些讨论。这个过程是不是很像开国际会议，每本书的作者都有自己的观点，作为读者，我们要把这些观点转述出来，就好像翻译一样，让不同书籍的作者可以讨论一个话题。</p><h4 id="作者提的一些有帮助的阅读建议"><a href="#作者提的一些有帮助的阅读建议" class="headerlink" title="作者提的一些有帮助的阅读建议"></a>作者提的一些有帮助的阅读建议</h4><p>1、读书在精不在多。“如果你的阅读目的是想变成一个更好的阅读者，你就不能摸到任何书或文章都读。如果你所读的书都在你的能力范围之内，你就没法提升自己的阅读能力。你必须能操纵超越你能力的书，或像我们所说的，阅读超越你头脑的书。只有那样的书能帮助你的思想增长。除非你能增长心智，否则你学不到东西。” </p><p>作者还提到了什么样的书是精品好书。他说，其中百分之九十的书都不需要分析阅读，可能有一小部分好书，值得你花时间仔细读一遍。在这些好书之中，又有这样一部分精品，你过一段时间再读一遍这本书时，又能发现新的内容和收获，就好像这本书和你一起成长。其实，是这本书内涵丰富，让不同读者每次阅读都有新的领悟。</p><p>2、读小说、故事时，如果人物角色众多，不要把记人名当作一个负担。就像我们新到一个地方，刚开始人生地不熟，随着时间推移，就熟悉周围人了。对应小说中，随着情节的深入，我们就知道谁是主要人物，其实只要记住主要人物就可以，而这些主角因为频繁出现，也很容易记住并且不会忘记。</p><p>3、读诗歌最好的方式就是朗读出来，多读几遍。读戏剧也是如此，有感情地读出台词，想象自己在导演这部戏剧。这里说一点体会，我读王尔德的戏剧时就用了这个方法，读剧本时脑子里描绘人物形象、性格、情绪，读起来有趣多了。</p><p>4、读历史的要点：<br>一、兼听则明：对于一个主题或事件，尽可能多读几本与之相关的书；<br>二、以史为鉴：读史的目的是什么？既是为了知道某时某地发生了什么事，也要明白当时的人们为什么会这么做，对于现在的我们有何借鉴意义。这一思考尤为重要，正所谓，“前事不忘，后事之师。”</p><p>5、科学著作没有那么高深。作者说到，直到十九世纪，很多科学著作的读者都是大众，也就是门外汉，因此我们可以读懂。或许我们不能读懂每一个原理，但至少我们可以学习一下作者论证说明的思路，他是如何分析问题的，以及更多的启发。</p><h4 id="带去荒岛的十本书"><a href="#带去荒岛的十本书" class="headerlink" title="带去荒岛的十本书"></a>带去荒岛的十本书</h4><p>书中提到一种很古老的测验：如果你被警告将在一个无人荒岛度过余生，或至少很长的一段时间，而假设你有时间作一些准备，可以带一些实际有用的物品到岛上，还能带十本书去，你会选哪十本？</p><p>以前我以为这种书单选择的问题，就是回答自己最喜爱的十本书。读了作者的解答，我才意识到这不只是发现自己想一读再读的书。试想，在与世隔绝的环境，没有电视、没有收音机、没有图书馆，只有你跟十本书，那时，书提供的精神支持和启迪十分重要。再想想，我们有时候内心是不是也会有这样的孤独，面临相似的挑战——如何找出内在的资源、过更加美好的人类生活的挑战，此时，哪些书可以陪伴在我们走过这一段人生旅程？想到这里，我陷入了沉思，我想到了《老人与海》、《唐诗三百首》、《约翰.克里斯朵夫》、《月亮与六便士》…。看到这里，您想到了哪些书呢？欢迎留言告诉我呀。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+
+
+&lt;img src=&quot;https://img9.doubanio.com/view/subject/l/public/s4247555.jpg&quot; width=&quot;260&quot; height=&quot;368&quot; alt=&quot;本书封面图片，来源：豆瓣&quot; align=&quot;center&quot;&gt;
+
+&lt;p&gt;注：本书封面图片，来源：豆瓣&lt;/p&gt;
+&lt;p&gt;首先承认，在读 &lt;strong&gt;&lt;em&gt;How To Read A Book&lt;/em&gt;&lt;/strong&gt; 之前，我原以为这类指南书可能都是像教科书一样，讲一些条条框框的指导建议。可是，读过之后却有一种相见恨晚的感觉，意识到自己以前读书都没有掌握有效的方法、不得要领。我读了一遍英文版，又读了一遍中文版，对读书方法、书单选择有了新的思考，很受启发。我把书中的精华总结归纳了一下，与大家分享。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="读书" scheme="https://juliecodestack.github.io/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+    
+      <category term="英文原著" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E6%96%87%E5%8E%9F%E8%91%97/"/>
+    
+      <category term="非虚构" scheme="https://juliecodestack.github.io/tags/%E9%9D%9E%E8%99%9A%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>英文有声书和广播剧推荐之二</title>
+    <link href="https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%BA%8C/"/>
+    <id>https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%BA%8C/</id>
+    <published>2020-04-24T13:33:16.000Z</published>
+    <updated>2021-01-11T11:21:08.492Z</updated>
+    
+    <content type="html"><![CDATA[<p>接着<a href="https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%B8%80/">上一篇文章</a>，继续介绍好的英文有声书和广播剧。</p><a id="more"></a><blockquote><p>7.英文有声书-类型：儿童文学<br>书名：Esio Trot<br>作者：Roald Dahl</p></blockquote><p>这本书的作者 Roald Dahl 写了很多儿童故事，其中就包括《查理和巧克力工厂》。</p><p>这个小故事说的是一位男士爱慕楼下女邻居，却不敢表白。女邻居养了一只小乌龟，有一天聊天，女邻居说小乌龟为什么一直不长个呢？男士主动说他有生长咒语。那么，小乌龟长大了吗？它是怎么长大的呢？哈哈，有趣的小故事。</p><blockquote><p>8.英文有声书-类型：儿童文学<br>书名：The Giraffe and the Pelly and Me<br>作者：Roald Dahl<br>播讲者：Hugh Laurie</p></blockquote><p>这个故事也是 Roald Dahl 写的。长颈鹿、鹈鹕和猴子组成了一个无梯子擦窗户公司，它们是怎么分工的呢？后来又有怎样的奇遇呢？</p><p>这个有声书的精彩之处在于播讲者把里面的唱段唱出来了，非常欢快，很好听，而且各个角色也是活灵活现。我很喜欢这部作品。</p><blockquote><p>9.英文有声书-类型：儿童文学<br>书名：Alice’s Adventures in Wonderland<br>作者：Lewis Carroll<br>Naxos公司出品</p></blockquote><p>这部经典儿童文学有多个版本的有声书，我喜欢这个版本的主要原因就是里面的 Alice 也是由一个小女孩演绎的，声音里传递出来的人物性格、脾气都非常符合角色。</p><blockquote><p>10.英文广播剧：Love virtually<br>演员：David Tennant &amp;Emilia Fox</p></blockquote><p>一封发错地址的邮件，牵起一段网络情缘。剧情设定有点类似于电影《电子情书》（You Got a Mail），喜欢爱情故事的朋友不要错过。</p><p>如果听完觉得意犹未尽，可以听续集 Every Seventh Wave。</p><blockquote><p>11.英文广播剧：Turing’s Test<br>演员:Samuel Barnett &amp; Paul Kendrick</p></blockquote><p>这个广播剧时间不长，只有半个小时。剧中主角是图灵的灵魂。图灵对于计算机、人工智能都有杰出的贡献，计算机学科最高奖“图灵奖”就是以他的名字命名，人工智能的经典测试：“图灵测试”也是由图灵提出。图灵因为同性恋身份被定罪，后来吃下含有氰化物的毒苹果身亡。这部剧就是设想图灵的灵魂与计算机之间的对话。演员感情充沛，听众很容易融入其中，感受到图灵的痛苦。</p><p>Samuel Barnett 的演绎十分精彩，我也因此喜欢上了他的声音，接下来要推荐的两部作品都是由他主演或朗读的。</p><blockquote><p>12.英文广播剧：Cicero<br>主演：Samuel Barnett，饰演Marcus Tullius Cicero<br>George Naylor，饰演Quintus Tullius Cicero</p></blockquote><p>这部广播剧讲述的是古罗马著名政治家、演说家、雄辩家 Cicero（西塞罗）年轻时的故事，当时 Cicero 正从事律师工作。强烈推荐第一集，Cicero 的法庭辩论，逻辑清晰，论证严谨，十分精彩！这个案子也让年轻的 Cicero 在律师界一举成名。</p><blockquote><p>13.英文有声书—类型：人物、回忆录<br>书名：My Week with Marilyn<br>播讲者：Samuel Barnett</p></blockquote><p>书名中的 Marilyn 就是玛丽莲梦露，这本书回忆了作者在剧组工作时与梦露女神相处的一周。Samuel 的声线塑造年轻的男主角很贴切。这本书让我感到惊讶之处是，想不到大众女神 Marilyn 的内心是个敏感脆弱、渴望爱的小孩。<br>ps: 片尾有彩蛋，最后是一段 Marilyn 的歌声。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;接着&lt;a href=&quot;https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%B8%80/&quot;&gt;上一篇文章&lt;/a&gt;，继续介绍好的英文有声书和广播剧。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="英语" scheme="https://juliecodestack.github.io/categories/%E8%8B%B1%E8%AF%AD/"/>
+    
+    
+      <category term="英语学习" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="英文原著" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E6%96%87%E5%8E%9F%E8%91%97/"/>
+    
+      <category term="有声书" scheme="https://juliecodestack.github.io/tags/%E6%9C%89%E5%A3%B0%E4%B9%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>英文有声书和广播剧推荐之一</title>
+    <link href="https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%B8%80/"/>
+    <id>https://juliecodestack.github.io/2020/04/24/%E8%8B%B1%E6%96%87%E6%9C%89%E5%A3%B0%E4%B9%A6%E5%92%8C%E5%B9%BF%E6%92%AD%E5%89%A7%E6%8E%A8%E8%8D%90%E4%B9%8B%E4%B8%80/</id>
+    <published>2020-04-24T11:44:46.000Z</published>
+    <updated>2021-01-11T11:21:15.314Z</updated>
+    
+    <content type="html"><![CDATA[<p>近两年我对英文有声书很感兴趣，我觉得有声书的魅力在于播讲者让书的语言生动起来，同时又忠于原著，给读者（听众）留有一些想象的空间，可以自己“描绘”角色形象。听有声书给了我很多美好的回忆，跟着书中的人物高兴或者悲伤，听着听着，有时一个人也哈哈大笑，有时又泪眼朦胧。现在我想到听过的某本书，脑子里会浮现出听书时让我印象深刻的话，以及播讲者读这句话的声音、语气、情绪。</p><p>最近听哈利波特有声书时，播讲者 Jim Dale 在录音结尾说的一段话我挺认同。他说，回想我们小时候最初的阅读能力就是通过听父母读故事书获得。听书对于孩子阅读习惯和读书兴趣的培养很重要。我认为，听有声书是培养语感的好方法，而且有声书一般有故事情节，更能激发我们上下文联想的能力。此外，听有声书可以和一些简单的工作同时进行，比如散步、做家务等等，高效地利用时间。</p><p>说了这么多有声书的好处，您是不是也跃跃欲试，想开始英文有声书之旅呢？那么，问题来了，听什么？去哪里找资源？</p><a id="more"></a><h4 id="听什么？"><a href="#听什么？" class="headerlink" title="听什么？"></a>听什么？</h4><p>建议从自己感兴趣的题材入手。爱情、科幻、侦探、悬疑、童话…，都可以。就我自己的经验而言，听之前我会搜索一下这本书的简介，了解大概的故事情节、人物等信息，这样听的时候更容易集中注意力。对于找不到简介的作品，我就会先听，听到一半左右，弄清了大致情节和人物关系，如果和前面听书时的重点有偏差，我就回到开头再听一遍，这样就能把握整本书的大致情节，理解作者的意思。</p><h4 id="听不懂怎么办？"><a href="#听不懂怎么办？" class="headerlink" title="听不懂怎么办？"></a>听不懂怎么办？</h4><p>请回想一下，我们小时候，一开始是不是也不能完全听懂读懂，会遇到好多“生词”？有时我们结合上下文、故事情节推测出来意思，有时查字典、问老师之后明白了意思。这里也是一样，不用追求每词都听清楚、每词必懂，而是像我们听别人说话一样，让自己进入语境中，抓住主要意思。</p><h4 id="去哪里找资源？"><a href="#去哪里找资源？" class="headerlink" title="去哪里找资源？"></a>去哪里找资源？</h4><p>1.Audible是最大的有声书平台，可以<strong>付费购买</strong>上面的有声书资源。每个专辑的页面有几分钟的试听，还有听友的收听评价可供参考。<br>2.有网友分享了一些资源，帮助大家英语学习使用，感谢！比如：豆瓣上的英文有声书小组，可以看到有声书推荐和介绍。比如：喜马拉雅、哔哩哔哩（B站）。 </p><h4 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h4><p>我把自己听过的英文有声书和广播剧中觉得好的作品整理总结，分享给您参考。</p><blockquote><p>1.英文有声书-类型：都市爱情，<br>书名：Rage of Angels<br>作者：Sidney Sheldon<br>播讲者：Lorelei King </p></blockquote><p>这部小说的作者是大名鼎鼎的畅销书作家 Sidney Sheldon，他被誉为说故事高手，书中人物描写、用词等都很棒。</p><p>小说讲的是一位刚工作的年轻女律师 Jennifer 的成长之路（其中描写了几个案子和精彩的法庭辩护），以及她与参议员、黑手党老大之间的情感纠葛。以现在的眼光来看，可能剧情略显俗套，因为这是上世纪八十年代写的小说，现在的人们看多了各种都市剧，已经熟悉了这类题材的套路，哈哈。</p><p>之所以首推这部作品，是因为它让我第一次体会到了有声书“绘声绘色”的感觉。播讲者让书中的每个人物都栩栩如生，就拿法庭辩护来说，正方公诉律师检察官、反方辩护律师、嫌疑人、原告、被告、法官，这么多人物，大段对白，看书都很容易就把各个人物说的话弄混了，而播讲者通过不同的声音、语速、语气，把各个人物分别塑造出来，你能感受到不同人物的不同性格、脾气，让听众有强烈的现场感。</p><blockquote><p>2.英文有声书-类型：科幻，<br>书名：I, Robot<br>作者：Isaac Asimov<br>播讲者：Scott Brick </p></blockquote><p>这是大名鼎鼎的科幻小说作家阿西莫夫（Isaac Asimov）的作品，里面有九个小故事，都是关于机器人和人类的故事。书中还有著名的 <strong>“机器人三定律”</strong>：</p><p>一、机器人不能伤害人类，或者看到人类有危险而坐视不管；<br>二、机器人必须服从人类的命令，除非与定律一冲突的情况；<br>三、在不违反定律一、二的情况下，机器人要自保。</p><p>书中很多故事都是围绕“三定律”产生的悖论情况展开讨论。 这本短篇小说集发表于六十多年前，可是现在看来仍不过时，精彩至极！听完之后，以前关于人工智能、科幻的诸多想法、认知就在我的脑海中翻腾碰撞，让我不停回想。更重要的一点，这本书让我联想到现在对于人工智能的利弊讨论，这一问题的根源在人类自身，解决问题的钥匙在人类手中。</p><p>一开始听播讲者 Scott Brick 的声音觉得有些平淡，但是耐心听完第一个小故事之后，就越来越入迷。现在想起这部作品，我脑子里还会回响起各种声音：</p><ul><li>小女孩惊喜地呼喊机器人“Robbie”；</li><li>机器人中的“笛卡尔”Cutie 一本正经地说“I myself, exist, because I think”；</li><li>“Liar”那一集的最后，机器人的痛苦崩溃；</li><li>机器Brain思考中被Susan打断，他的那声呆萌的“Huh?”；…</li></ul><p>无一不活灵活现。播讲者让机器人鲜活起来，让我在想象这些机器人时不再想到冰冷的机器和机械的语音，而是也有情感，也会失落、伤心、纠结、迷茫、生气。其实想想也是，机器人由人类制造，自然也会带有人类的行为模式。总之，这本书值得一听、值得一读。</p><blockquote><p>3.英文有声书-类型：科幻，<br>书名：Flowers for Algernon<br>作者：Daniel Keyes</p></blockquote><p>这部小说先后获得科幻小说界最重要的两项大奖：雨果奖、星云奖。看到这里您可能会好奇，这部小说为何能屡获殊荣？它有何特别或是精彩之处？</p><p>作者在书中设想了有一种脑部手术可以提高智力。先天弱智的 Charlie 在32岁时作为试验对象接受了这种外科手术，短时间内智力快速提升，顶峰时达到天才智商，然后又开始退化。这本书以Charlie的日记形式，记录了他在手术前后几个月内经历的人情冷暖和悲喜交加。读这本书，跟着 Charlie 一起在短时间内品尝人生百味，心情起起伏伏、思绪万千。书中的心理描写很细致真实。了解更多本书，欢迎阅读我的书评：<a href="https://juliecodestack.github.io/2020/04/22/%E4%B8%80%E6%9C%AC%E4%B9%A6%E4%B8%AD%E7%9A%84%E4%BA%BA%E7%94%9F%E6%BB%8B%E5%91%B3/#more">一本书中的人生滋味</a></p><p>这本书的特别之处在于，作者是根据 Charlie 不同时期的智力水平来写日记，因此，书开篇和末尾的日记有很多错别字。如果看文字版，可能需要适应一下。但是有声书里是通过另一种方式来呈现，从开始语气的迟缓、停顿等，到智力提升之后语速加快、增加情绪，播讲者演绎的很好，给人感觉就像在听 Charlie 自己读日记一样。</p><blockquote><p>4.英文有声书-类型：非虚构，科学，人物传记<br>书名：Surely You’re Joking, Mr. Feynman!<br>作者：Richard P. Feynman<br>播讲者：Raymond Todd   </p></blockquote><p>这本书的作者就是参加了原子弹研制、得过诺贝尔奖的物理学家费曼。书中有很多有趣的小故事，让我看到了费曼的率真、对于科学的好奇探索和严谨执着。让我印象最深的一点是他提到怎样的学习、教育才是有效的，不是背诵知识点，而是去总结、去验证、试错。费曼也很幽默“调皮”，他多才多艺，学语言、画画、打鼓…有时还会恶作剧，有些故事也让我意识到人们有时会陷入固定思维，反而不能做出最好的判断和选择。</p><blockquote><p>5.英文有声书-类型：非虚构，科学，人物传记<br>书名：What Do You Care What Other People Think?<br>作者：Richard P. Feynman</p></blockquote><p>这本书同样是物理学家费曼的作品， 上一本书 <strong>Surely You’re Joking, Mr. Feynman!</strong> 比较幽默风趣，让人了解生活中的费曼，这本书给我启发和思考则更多。书中讲到费曼父亲的教育方法、费曼对阿琳的一往情深、以及他对于挑战者号失事的分析和思考，都让人印象深刻。特别推荐读一读后记，费曼从哲学的角度分析了科学的价值、科学的双刃剑效应，他对未来的思考等等。科学一直在发展，但是我们对于人类自己所知的还太少，还需要去发现可能性、去探索、怀疑、求证。</p><p>听了这两本有关费曼的书之后，我写了一篇书评，欢迎点击阅读：<a href="https://juliecodestack.github.io/2020/04/22/%E7%8E%87%E7%9C%9F%E7%9A%84%E7%A7%91%E5%AD%A6%E5%AE%B6%E8%B4%B9%E6%9B%BC/#more">率真的科学家费曼</a></p><blockquote><p>6.英文广播剧：Copenhagen<br>演员：<br>Benedict Cumberbatch(“卷福”)，饰演Werner Heisenberg(海森堡)<br>Simon Russell Beale，饰演Niels Bohr (玻尔)<br>Greta Scacchi，饰演Margrethe Bohr(玻尔夫人)</p></blockquote><p>二战期间，1941年，德国物理学家海森堡在到访哥本哈根之时，曾与他的老师——物理学家玻尔有一次会面。因为双方都是原子能领域的重要科学家，又分属战争敌对国，这次见面引起世人的诸多猜测。而双方后来对会谈内容讳莫如深，让这件事情显得更加神秘，他们谈了什么？与原子弹研制有怎样的关系？本剧设想了玻尔夫妇和海森堡在天堂对这次见面内容的回忆，演绎得很精彩。在他们三人的争吵和回忆中，听众对于科学的双刃剑效应、科学家的国界等问题会有很多思考。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;近两年我对英文有声书很感兴趣，我觉得有声书的魅力在于播讲者让书的语言生动起来，同时又忠于原著，给读者（听众）留有一些想象的空间，可以自己“描绘”角色形象。听有声书给了我很多美好的回忆，跟着书中的人物高兴或者悲伤，听着听着，有时一个人也哈哈大笑，有时又泪眼朦胧。现在我想到听过的某本书，脑子里会浮现出听书时让我印象深刻的话，以及播讲者读这句话的声音、语气、情绪。&lt;/p&gt;
+&lt;p&gt;最近听哈利波特有声书时，播讲者 Jim Dale 在录音结尾说的一段话我挺认同。他说，回想我们小时候最初的阅读能力就是通过听父母读故事书获得。听书对于孩子阅读习惯和读书兴趣的培养很重要。我认为，听有声书是培养语感的好方法，而且有声书一般有故事情节，更能激发我们上下文联想的能力。此外，听有声书可以和一些简单的工作同时进行，比如散步、做家务等等，高效地利用时间。&lt;/p&gt;
+&lt;p&gt;说了这么多有声书的好处，您是不是也跃跃欲试，想开始英文有声书之旅呢？那么，问题来了，听什么？去哪里找资源？&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="英语" scheme="https://juliecodestack.github.io/categories/%E8%8B%B1%E8%AF%AD/"/>
+    
+    
+      <category term="英语学习" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="英文原著" scheme="https://juliecodestack.github.io/tags/%E8%8B%B1%E6%96%87%E5%8E%9F%E8%91%97/"/>
+    
+      <category term="有声书" scheme="https://juliecodestack.github.io/tags/%E6%9C%89%E5%A3%B0%E4%B9%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>迎接5G时代</title>
+    <link href="https://juliecodestack.github.io/2020/04/22/%E8%BF%8E%E6%8E%A55G%E6%97%B6%E4%BB%A3/"/>
+    <id>https://juliecodestack.github.io/2020/04/22/%E8%BF%8E%E6%8E%A55G%E6%97%B6%E4%BB%A3/</id>
+    <published>2020-04-22T13:12:04.000Z</published>
+    <updated>2020-11-29T11:21:43.943Z</updated>
+    
+    <content type="html"><![CDATA[<meta name="referrer" content="no-referrer"><blockquote><p>本文写于2020年1月。</p></blockquote><h3 id="5G-来了"><a href="#5G-来了" class="headerlink" title="5G 来了"></a>5G 来了</h3><p>刚刚过去的 2019 年是 5G 商用元年。19 年 6 月，5G 牌照发放。11 月，5G 商用套餐正式上线。“ 5G ” 也成为年度热词、大家谈论的焦点。许多人可能会有疑问：5G 除了比 4G 网速快了，还有哪些不同之处？5G 来了，它能给社会和生活带来哪些变化和便利？带着同样的问题，我打开了这本最新出版的 <strong>《 5G 时代：经济增长新引擎》</strong>，听北京邮电大学孙松林教授讲述 5G 的发展之路，展望即将开启的 5G 时代。</p><a id="more"></a><img src="https://img1.doubanio.com/view/subject/l/public/s33537277.jpg" width="260" height="368" alt="本书封面图片，来源：豆瓣" align="center"><p>注：本书封面图片，来源：豆瓣</p><h3 id="5G-带来的变革"><a href="#5G-带来的变革" class="headerlink" title="5G 带来的变革"></a>5G 带来的变革</h3><p>读完这本书，我印象最深的就是 5G 带来的<strong>理念变革</strong>：</p><ul><li>由面向人的通信方式转变为面向物的通信方式，打造万物互联的社会。</li><li>将信息行业技术融入到通信行业，使通信网络的管理向软件化、智能化发展。</li></ul><p>可以预见，这两大转变将对信息社会、数字经济产生巨大的影响，而 5G 技术作为催化剂和桥梁，在其中发挥重要的作用。</p><h4 id="1-从面向人的通信到面向物的通信"><a href="#1-从面向人的通信到面向物的通信" class="headerlink" title="1. 从面向人的通信到面向物的通信"></a>1. 从面向人的通信到面向物的通信</h4><p>通信的本质是信息传输。传统的通信系统如书信、电报、电话等，都是以人为中心设计的，人是信息的最初发起者和最终消费者，传递的是人可以认知的信息，这就是面向人的通信。技术发展至今，计算机、手机终端产生的数据量远远超过一个人产生的数据量，正如书中所说，“我们无法想象用人类的语言去描述一个联网游戏中各个角色的位置和动作。” 此时，还采用面向人的通信方式，对于海量数据的发送和接收处理就显得力不从心。</p><p>另一方面，随着自动化和智能化的普及，包括传感器、控制器等各种机器被赋予了越来越多的功能，它们可以采集数据，产生、传送和展示信息。这一类通信过程是由物体、而不是人在主导，这就是典型的面向物的通信。</p><p>5G 之前所有的通信系统都是面向人的通信，偶尔会兼顾物，5G 技术对此做出了改变。5G 的梦想是“信息随心至，万物触手及”，不但延续了之前高速率传输的特点，而且将物体连接作为自己的使命。 5G 有三大应用场景：<br>(1) <strong>增强移动宽带 ( eMBB )</strong>，提供大带宽高速率的移动服务，可以看作是对 4G 个人用户业务的延续和提升。<br>(2) <strong>海量机器类通信 ( mMTC )</strong>，提供面向广域低功耗覆盖的物联网服务，可以在 1 平方千米内同时接入 100 万个设备，按连接数密度来算，这大约相当于在 1 个足球场内可放置 700 多个同时接入 5G 网络的设备。<br>(3) <strong>超高可靠低时延通信 ( uRLLC )</strong>，这一场景的名字正是其突出特点。在此场景下，传输的控制面时延只有 1 毫秒，超越了人的触觉极限；同时，可以支持每小时 500 千米的高速移动环境下通信。主要用于满足远程医疗、工业设备、车辆等物体的通信需求。</p><p>其中，后两种应用场景就是面向物的通信，这为通信打开了一片新天地。互联网也将依托 5G 从消费互联网渗透到产业互联网，带来新的产业和机会。</p><h4 id="2-信息行业IT与通信行业CT的融合，云网融合"><a href="#2-信息行业IT与通信行业CT的融合，云网融合" class="headerlink" title="2. 信息行业IT与通信行业CT的融合，云网融合"></a>2. 信息行业IT与通信行业CT的融合，云网融合</h4><p>书中详细介绍了 5G 采用的几项新技术，也可以称为 5G 的几大法宝，其中包括了软件定义网络( SDN )、网络功能虚拟化( NFV ) 和网络切片、边缘计算。这些新技术将促成 5G 时代信息行业与通信行业的融合和云网融合。</p><p><strong>(1) 软件化、智能化——IT与CT的融合</strong><br>软件定义网络 ( SDN )，是将传统网络设备的数据转发和路由控制两个模块分离，集中管理路由控制功能。举例来说，假设系统中有100 台不同配置的交换机，使用传统方法，需要登录每台交换机终端进行配置，效率低且故障率高，使用 SDN 就可以集中化管理配置网络设备，既让传输更加高效，又让网络维护十分便捷。</p><p>网络功能虚拟化 ( NFV ) ，是通过虚拟网络功能，把许多网络设备由目前的专有平台迁移到通用的 X86 平台上，帮助运营商和数据中心更加敏捷地为客户创建和部署网络特性，降低设备投资和运营费用。NFV 和软件定义网络 ( SDN ) 关系紧密，是 SDN 的补充。</p><p>SDN 通过将控制平面与数据平面分离，彻底打通了传统计算机网络（如互联网）和电信网络之间的逻辑通道。而 NFV 则是用信息行业 IT 的思维对通信行业 CT 进行的一场革命，最大的意义在于使用 IT 设备来管理电信网络，这彻底打通了 IT 与 CT 之间的硬件通道。5G 的伟大之处就在于它第一次大规模地将 IT 与 CT 进行深度融合，意义深远。</p><blockquote><p>软件化的应用：<strong>网络切片</strong><br>5G 需要支持语音、数据、物联网等多种业务，不同的业务场景对网络要求不同，那么，如何在一个网络里兼顾多种场景需求呢？<br>这就要用到网络切片，将物理网络通过软件划分为多个虚拟网络，不同网络适应不同业务需求。而实现这一技术的先决条件就是要能通过软件控制各个不同的网元，也就是前面介绍的 SDN 及 NFV 技术。</p></blockquote><p><strong>(2) 分布式计算——云网融合</strong><br>5G 强大的网络能力使得数据传输不再是瓶颈，但计算会捉襟见肘。大量的数据在终端与云端之间不停地传输，如果只靠云端来进行处理，整体时延将较大。边缘计算正是为了解决这一问题应运而生，它是在靠近物或数据源头的网络边缘侧，就近提供边缘智能服务。通俗地讲，即为就近处理数据，分担云端的计算负荷。这一技术将计算能力从集中单一的云端下沉分散到用户侧，这样可以减少响应时间，降低整体计算成本，提高系统性能。</p><p>5G 时代，全国连接终端有望超过1000亿，一个云化的核心网络毫无疑问是必需的。在 SDN/NFV 的基础上，未来网络需要划分为“三朵云”：接入云、控制云和转发云，它们有一个共同的特点，就是需要部署在网络边缘，即边缘云。边缘云将计算能力下沉，因此可以提供超低时延的大带宽服务，网络下载速度可能达到数百兆，甚至超过了机械硬盘的读写速度，这意味着一些常规、高计算量的应用部署在“边缘云”节点甚至可能比安装在“本地”更快。</p><p>业界普遍认为，5G 和云计算天生就是相互促进、相互融合的。一方面，5G 网络是一种“云源生”的数据传输网络，网络单元虚拟化可以帮助运营商更有效地布网和运维，把计算节点下沉这种边缘架构也是 5G 网络能够保持低时延的关键，是 5G 网络的大势所趋；另一方面，只有虚拟化和网络深度融合，才能让运营商有能力拓展出更多业务，比如为企业提供自定义专用网络和专用数据通路。因此，5G 和云计算必然相辅相成、协同发展。</p><h3 id="身边的-5G-应用"><a href="#身边的-5G-应用" class="headerlink" title="身边的 5G 应用"></a>身边的 5G 应用</h3><p>了解这么多新技术，大家最关心的可能还是与自己息息相关的 5G 应用。5G 时代，会有哪些新业务、新应用等着我们去体验和发现？书中对此也进行了介绍。</p><h4 id="1-畅快的游戏体验"><a href="#1-畅快的游戏体验" class="headerlink" title="1. 畅快的游戏体验"></a>1. 畅快的游戏体验</h4><p>5G 时代，云游戏会成为一个很有潜力的应用。云游戏的愿景是用户在手机端只需要处理视频，其它计算都交给云端。这样，对手机算力的需求减小，将显著降低游戏功耗并提高续航时间。对于在线手游而言，网络时延是影响游戏体验的最大因素。要解决时延问题，既要依赖 5G 网络建设，也需要部署边缘云以缩短服务器和用户终端的距离。在较短时期内，5G 的网络建设将领先于云端服务器的建设，因此，预计前期将支持时延不敏感的云游戏，后期随着云计算中心和云服务的完善，用户将在手机上体验到更多的动作类3A大作。</p><h4 id="2-不在现场、胜似现场"><a href="#2-不在现场、胜似现场" class="headerlink" title="2. 不在现场、胜似现场"></a>2. 不在现场、胜似现场</h4><p>在 5G 三大场景中，增强移动宽带 ( eMBB )将首先落地应用。这一场景的大带宽高速率特点，最适合的业务就是超高清视频。我们可以看到，目前各国的 5G 主推业务也是超高清视频、虚拟现实 ( VR ) / 增强现实 ( AR ) 等。那么，什么是超高清视频？国际电信联盟将屏幕的物理分辨率达到 3840x2160 及以上的显示称为超高清，目前主要有两种：“ 4K 分辨率 ” ( 3840 x 2160 像素，这也是我们常听到的“ 4K 超高清” ) 和“ 8K 分辨率 ” ( 7680 x 4320 像素 )。超高清能达到怎样的清晰度呢？举个例子，一帧 8K 分辨率的图像有大约 3300 万个像素点，在 65 英寸的电视上显示，肉眼几乎感觉不到颗粒感。</p><p>书中介绍了一些体育赛事、大型晚会采用“ 5G + 超高清 ”直播回传的例子，比如 2018 年韩国平昌冬奥会、2019 年央视春晚深圳分会场、篮球世界杯转播等等。值得一提的是，平昌冬奥会在部分比赛场馆部署了边缘计算服务器，进行了 4K 超高清 VR 沉浸式体验和任意回看。在用 VR 观看时，摄像机采集的海量数据不用传送到首尔的核心网，而只需传送到靠近赛场的边缘服务器，再传到现场 VR 区的头显上，传输距离短，保证了实时的观赛体验。未来随着技术的推广和成熟，我们将越来越多地体验到“ 5G + 超高清 ”带来的全方位高清视角。</p><p>除了为用户带来身临其境的观赏体验外，“ 5G + 超高清视频 ”还可以用于安防监控、工业生产监测等，使其更加高效准确。</p><h4 id="3-车联网"><a href="#3-车联网" class="headerlink" title="3. 车联网"></a>3. 车联网</h4><p>这几年随着大数据、人工智能的广泛应用，网约车、地图导航等应用已成为热门，而自动驾驶也得到了普遍关注。如果把路况信息、车辆都连上网，进行智能规划，交通状况是不是会更加有序顺畅？你是否也和我一样，设想过乘坐自动驾驶车辆出行的未来？要实现这一愿景，首先就要解决海量数据传输与处理、信息指令的快速传递等问题，目前的 4G 网络无法满足这一需求。而 5G 高可靠、高带宽、低时延的通信特性，可以为车联网的用户体验、车辆驾驶和协同通信提供有力支撑。同时，在网络部署中也同样会运用到边缘计算这一理念，将一部分业务部署在边缘云平台上，从而有效减少反应时延，使系统更加高效迅捷。</p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这本书让我对 5G 有了深入的了解，也对 5G 时代更加期待。书中说到，整个经济的对象分为物理世界和数字世界，而物理世界又可以简单地分为人（包括环境）和机器。第一次和第二次工业革命完成了生产过程的机械化和自动化，让机器替代人工作，但我们注意到，此时的活动仍然限于物理世界。第三次工业革命是由计算机发起的，从此开始了人和机器向数字世界迁移的过程，今天的信息通信技术正是在这一过程中起到桥梁作用。的确，当我们环顾四周，网上社交媒体、网上购物、网上预约…会发现我们正在不知不觉中步入数字世界。5G 技术的到来会加速这一迁移过程，可能带来数字经济的全面爆发。5G 结合云计算、人工智能、区块链、物联网等技术，将带来经济和社会的快速发展和变革，让我们拭目以待吧！</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;本文写于2020年1月。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;5G-来了&quot;&gt;&lt;a href=&quot;#5G-来了&quot; class=&quot;headerlink&quot; title=&quot;5G 来了&quot;&gt;&lt;/a&gt;5G 来了&lt;/h3&gt;&lt;p&gt;刚刚过去的 2019 年是 5G 商用元年。19 年 6 月，5G 牌照发放。11 月，5G 商用套餐正式上线。“ 5G ” 也成为年度热词、大家谈论的焦点。许多人可能会有疑问：5G 除了比 4G 网速快了，还有哪些不同之处？5G 来了，它能给社会和生活带来哪些变化和便利？带着同样的问题，我打开了这本最新出版的 &lt;strong&gt;《 5G 时代：经济增长新引擎》&lt;/strong&gt;，听北京邮电大学孙松林教授讲述 5G 的发展之路，展望即将开启的 5G 时代。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="读书" scheme="https://juliecodestack.github.io/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+    
+      <category term="非虚构" scheme="https://juliecodestack.github.io/tags/%E9%9D%9E%E8%99%9A%E6%9E%84/"/>
+    
+      <category term="科技" scheme="https://juliecodestack.github.io/tags/%E7%A7%91%E6%8A%80/"/>
+    
+  </entry>
+  
+</feed>

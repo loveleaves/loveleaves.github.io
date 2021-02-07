@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"juliecodestack.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="我去年入门 GitHub，一开始不知道从哪开始学，在网上查找了很多文章、教程学习。这篇文章就是以我刚学习时的小白视角写的，希望能帮助到想开始学 GitHub 又不知如何上手的学习者。因为我也是初级水平，文中介绍的知识基于我自己的学习理解，如果有疏漏错误之处，欢迎您留言指正，谢谢！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitHub入门指南">
+<meta property="og:url" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="宁萌的笔记本">
+<meta property="og:description" content="我去年入门 GitHub，一开始不知道从哪开始学，在网上查找了很多文章、教程学习。这篇文章就是以我刚学习时的小白视角写的，希望能帮助到想开始学 GitHub 又不知如何上手的学习者。因为我也是初级水平，文中介绍的知识基于我自己的学习理解，如果有疏漏错误之处，欢迎您留言指正，谢谢！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-13-10-46-55.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-13-11-44-23.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-13-12-49-14.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-13-13-06-34.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-14-15-14-31.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-16-20-33-57.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-18-11-48-27.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-18-11-51-07.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-18-12-30-31.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-18-12-34-00.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-18-12-58-52.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-17-16-45-16.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-17-16-50-50.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-17-16-56-15.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-17-17-04-19.png">
+<meta property="article:published_time" content="2020-12-13T02:46:25.000Z">
+<meta property="article:modified_time" content="2020-12-19T01:58:57.003Z">
+<meta property="article:author" content="宁萌">
+<meta property="article:tag" content="软件">
+<meta property="article:tag" content="GitHub">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/github%E5%85%A5%E9%97%A82020-12-13-10-46-55.png">
+
+<link rel="canonical" href="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GitHub入门指南 | 宁萌的笔记本</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="宁萌的笔记本" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">宁萌的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">A Notebook by Julie</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/julieavatar.jpg">
+      <meta itemprop="name" content="宁萌">
+      <meta itemprop="description" content="记录分享 技术、英语、读书">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宁萌的笔记本">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GitHub入门指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-13 10:46:25" itemprop="dateCreated datePublished" datetime="2020-12-13T10:46:25+08:00">2020-12-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-19 09:58:57" itemprop="dateModified" datetime="2020-12-19T09:58:57+08:00">2020-12-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2020/12/13/github%E5%85%A5%E9%97%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/13/github%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.7k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我去年入门 GitHub，一开始不知道从哪开始学，在网上查找了很多文章、教程学习。<strong>这篇文章就是以我刚学习时的小白视角写的，希望能帮助到想开始学 GitHub 又不知如何上手的学习者。</strong>因为我也是初级水平，文中介绍的知识基于我自己的学习理解，如果有疏漏错误之处，欢迎您留言指正，谢谢！</p>
+<a id="more"></a>
+<p>新手小白可能会对 GitHub 有以下困惑：<br>1.GitHub 是个什么网站？<br>2.为什么一说学 GitHub，就听到人家说要学 Git？这两个有什么关联吗，是不是一回事？<br>3.听说 GitHub 是个开源社区，可以在上面与其他人一起切磋技术、完善代码，具体是怎么与别人交流呢？</p>
+<p>下面，我从这几个方面进行解答。</p>
+<h4 id="一、带你浏览-GitHub-网站，看看都有些什么？"><a href="#一、带你浏览-GitHub-网站，看看都有些什么？" class="headerlink" title="一、带你浏览 GitHub 网站，看看都有些什么？"></a>一、带你浏览 GitHub 网站，看看都有些什么？</h4><h5 id="1-注册账号"><a href="#1-注册账号" class="headerlink" title="1.注册账号"></a>1.注册账号</h5><p>打开 <a href="https://github.com/" target="_blank" rel="noopener">GitHub网站</a>，首页如下图所示，点击右上角<code>Sign up</code>按钮，进入注册页面。使用电子邮件注册，设置好用户名和密码，即可生成账号。完成注册后，点击旁边的<code>Sign in</code>按钮登录。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-13-10-46-55.png" alt="注册/登录页面" align="center"> 
+
+<h5 id="2-登录-GitHub，浏览页面"><a href="#2-登录-GitHub，浏览页面" class="headerlink" title="2.登录 GitHub，浏览页面"></a>2.登录 GitHub，浏览页面</h5><p>登录进去后，我们见到的页面分成三大版块，如下图所示，从左至右依次为：自己的仓库(Repositories)、关注的人的动态、发现新的热门/有趣仓库。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-13-11-44-23.png" alt="登录后首页示例 " align="center"> 
+
+<blockquote>
+<p><strong>可能的疑问：Repository? 仓库？</strong> 是不是有点不好理解？<br>我在初学时也遇到这一困惑。”repository”有“仓库”的意思，我们可以理解成存放项目所需的各类文件的仓库。等熟悉了之后，你会发现 GitHub 上各种仓库都有，不是只包含程序代码，还有学习课程文档等等，难怪会叫仓库，哈哈。Repository（仓库）在 GitHub 上有重要作用，我们以后的很多操作都是在 Repository（仓库）中进行。</p>
+</blockquote>
+<p>点击右上角的个人头像，在下拉列表中选择<code>Your profile</code>项，到达个人主页。下图所示为我的个人主页。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-13-12-49-14.png" alt="个人主页示例" align="center"> 
+
+<p>你如果打开另一个人的主页，看到的界面风格也大致如此。我在图中简要注明了页面中的各项功能，此外：</p>
+<ol>
+<li>点击账户名下方的<code>Edit profile</code>按钮，可以修改自己的个人信息，比如这里的一句话简介，公司、地址、联系方式等。而如果是别人的个人主页，这里我们看到的就是<code>Follow</code>（关注）按钮。</li>
+<li>粉丝和关注的人数右边有个星星图标，这就是传说中的 Star。我们看技术文章可能常会遇到如“程序员必看！GitHub 上 Star 数过万的项目！”，“该项目在 GitHub 上迅速收获上千 Star 数” 类似的介绍，看来 Star 数是个很重要的标识哦！那么，Star 是什么意思呢？比如，我们觉得一个仓库不错，在右上角点个 Star，就相当于是收藏+点赞了，之后还可以在自己的主页中点击星星图标查看。</li>
+</ol>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-13-13-06-34.png" alt="仓库页面-Star" align="center"> 
+
+<ol start="3">
+<li>“Pinned”区域是自己的个人展示区，在自己的仓库中精选几个放到这里展示，让别人能很快发现你的闪光点。</li>
+<li>活跃度表格：上面的绿色格子越多，颜色越深，说明该用户在 GitHub 上提交次数越多，是活跃用户。</li>
+</ol>
+<h4 id="二、GitHub-是-Git-软件用户的项目管理中心"><a href="#二、GitHub-是-Git-软件用户的项目管理中心" class="headerlink" title="二、GitHub 是 Git 软件用户的项目管理中心"></a>二、GitHub 是 Git 软件用户的项目管理中心</h4><h5 id="1-Git"><a href="#1-Git" class="headerlink" title="1. Git"></a>1. Git</h5><p>GitHub 之所以得此名，与一款分布式版本控制软件 Git 是分不开的。通俗地讲，Git 软件记录了你每次修改时的文件状态。更妙的是，如果你改着改着，又觉得以前的版本更好，还可以回溯呢，也就是说，有“后悔药”可吃了！同时， Git 也是一款极佳的协作软件。打个简单的比方，我和小红、小蓝三个人一起修改一篇文章，每个人改的地方可能都不一样，那么合并修改稿就是个头疼的事。或者，我先修改、再给小红修改、最后小蓝修改？这样效率又降低了。怎么办？用 Git，我们三个人可以建立修改分支，同时进行修改工作，最后合并分支。你可能会问，如果你们三个人在同一个地方做了不同的修改，还能合并吗？放心吧，软件考虑了这种“冲突”情况，有相应的解决办法。</p>
+<p>既然 Git 可以协作，那总要有一个地方让使用的人们存放文件、修改等信息呀，就像控制中心一样，这样，GitHub 应运而生。这里多说一句，Git 的托管中心不是只有 GitHub 哦，GitHub 是方便个人用户、开源项目建立的网站。有的企业会自己搭建服务器和云盘构建托管中心，同样也是用 Git 软件进行协作管理。</p>
+<p>那么，怎么用 Git 软件呢？<br>（1）先到 <a href="https://git-scm.com/" target="_blank" rel="noopener">Git官网</a>下载安装 Git 软件。<br>（2）安装成功后，选定一个文件夹，在右键菜单中选择<code>Git Bash Here</code>，会弹出一个黑色的命令行界面，输入语句，就可以在当前文件夹中运行 Git 命令。</p>
+<p>这里推荐学习一下<a href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener">廖雪峰老师的Git教程</a>，讲解得明白易懂，从中我们可以了解 Git 的各种操作。然后，跟着教程的讲解，自己建个新文件夹动手练练。</p>
+<h5 id="2-Git-基本命令"><a href="#2-Git-基本命令" class="headerlink" title="2.Git 基本命令"></a>2.Git 基本命令</h5><p>Git 命令还是挺多的，但是<strong>对新手来说，我们可以先掌握几个在 GitHub 上常用的 Git 基本命令</strong>：</p>
+<p><strong>（1）提交修改：<code>git add</code>和 <code>git commit</code></strong></p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-14-15-14-31.png" alt="git操作示意图，图片来自Git官网" align="center"> 
+
+<p>上面的示意图来自 Git 官网，说明了 Git 中最重要的操作 “git add” 和 “git commit” 的工作流程。 Git 软件的核心是保存修改。working directory 是工作区，就是我们的电脑上当前工作的文件夹。staging area 可以理解成暂存区或者中转站，<code>git add .</code>（注意：这里 add 和<code>.</code>中间有个空格）提交了修改，放在 staging area 暂存，再通过 <code>git commit -m&quot;修改说明文字&quot;</code> 确定最终提交版。不要小看这个缓冲的暂存区，它为我们修改时提供了“后悔药”。这个效果就有点类似于我们平时在电脑上删除文件，文件不会直接删除，而是放到回收站中转一下。如果我们过后发现手抖误删了，还可以到回收站里把文件“还原”回去，或者确定都不需要了，就点击“清空回收站”，把这些文件都删除。</p>
+<p><strong>（2）与远程仓库同步：<code>git pull</code> 和 <code>git push</code></strong></p>
+<p>在多人协作的情况下，比如前面提到的我和小红、小蓝一起写文章的例子，可能每个人的修改不一致，要保持同步。而我们要从远程仓库获取更新和推送自己的修改，就要用<code>git pull</code> 和 <code>git push</code>。前面提到的 <code>git commit</code> 是确定我自己最终的修改结果，<code>git push</code> 则是将这一修改结果提交到远程（比如 GitHub上）的 repository（仓库）保存。我始终记得廖雪峰老师教程里提的要点：每天开始工作的第一件事是 <code>git pull</code>，跟上项目最新的修改进度。结束一天工作、提交修改时，先 <code>git pull</code> 再 <code>git push</code>。</p>
+<p><strong>（3）下载 repository（仓库）： <code>git clone</code></strong></p>
+<p>打开一个仓库，我们会看到<code>Code</code>按钮，点击后，下面出现 HTTPS 地址和 SSH 地址。我们只要复制了这个地址，然后在电脑上右键点击存放文件夹，打开 Git Bash 客户端，输入命令行：<code>git clone 复制的地址</code>，就能下载这个仓库到本地电脑。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-16-20-33-57.png" alt="下载仓库示意图" align="center"> 
+
+<p>需要注意的是，用 HTTPS 地址需要账户验证。使用 SSH 地址只需要第一次时提交 SSH Key 到 GitHub ，后续无需每次验证，很方便，接下来就会介绍如何配置 SSH Key。</p>
+<blockquote>
+<p>注：写这篇文章时，我也出现了一个困惑：不知道是否因为我已经用 SSH 验证了，我用<code>git clone HTTPS 地址</code>下载时，也没有要求输入账户名和密码验证。小伙伴们请把你们实践的结果告诉我一下呀，谢谢！</p>
+</blockquote>
+<h4 id="三、新手必备的GitHub基本操作"><a href="#三、新手必备的GitHub基本操作" class="headerlink" title="三、新手必备的GitHub基本操作"></a>三、新手必备的GitHub基本操作</h4><h5 id="1-配置SSH-Key"><a href="#1-配置SSH-Key" class="headerlink" title="1.配置SSH Key"></a>1.配置SSH Key</h5><p><strong>（1）第一次使用时，要配置一下账户。</strong></p>
+<p>在 Git Bash 客户端，输入：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git<span class="built_in"> config </span>--global user.name <span class="string">"这里输入你在GitHub的账户名"</span></span><br><span class="line">git<span class="built_in"> config </span>--global user.email <span class="string">"这里输入你在GitHub的注册邮箱名"</span></span><br></pre></td></tr></table></figure>
+<p><strong>（2）检查是否已经有 SSH Key了，如果没有就生成一个。</strong></p>
+<p>同样在 Git Bash 客户端，先后输入：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> ~<span class="string">/.ssh</span></span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ls</span></span><br></pre></td></tr></table></figure>
+<p>我的账户已经生成了 SSH Key，就有了下面所示的 id_ras 和 id_rsa.pub 。请注意，id_ras.pub 是公钥，后面要把这个公钥上传到 GitHub 上验证。id_rsa 是你自己的私钥，要保存好。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id_rsa  id_rsa.pub  known_hosts</span><br></pre></td></tr></table></figure>
+<p>如果没有 SSH Key，就要输入以下命令行生成：</p>
+<p><code>ssh-keygen -t rsa -C &quot;这里输入你在 GitHub 的注册邮箱&quot;</code></p>
+<p>生成后再输入上面的<code>cd ~/.ssh</code>和<code>ls</code>命令，就可以看到 SSH Key 了。</p>
+<p><strong>（3）复制公钥。</strong></p>
+<p>接着在 Git Bash 客户端，输入命令行：</p>
+<p><code>cat id_ras.pub</code></p>
+<p>这样会显示公钥文件内容，我们把它复制到剪贴板。</p>
+<p><strong>（4）把复制的公钥添加到 GitHub 账户安装。</strong></p>
+<p>登录 GitHub 账户，点击右上角个人头像的下拉菜单，如图所示：</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-11-48-27.png" alt="个人头像的菜单项" align="center"> 
+
+<p>依次点击 Settings &gt; SSH and GPG Keys，在 SSH Keys 页面右上角有个<code>New SSH Key</code>按钮，点击该按钮后，粘贴上刚才复制的公钥内容。里面的 “title”项就是为自己的 SSH Key 命个名，可根据个人喜好随意。</p>
+<p><strong>（5）最后，检查一下 SSH Key 是否安装成功。</strong></p>
+<p>在 Git Bash 客户端运行命令：</p>
+<p><code>$ ssh -T git@github.com</code></p>
+<p>出现类似下面的提示，表示安装成功：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi Juliecodestack! You<span class="symbol">'ve</span> successfully authenticated, but GitHub does <span class="keyword">not</span> provide shell <span class="keyword">access</span>.</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-我的第一个-GitHub-项目：如何新建上传仓库"><a href="#2-我的第一个-GitHub-项目：如何新建上传仓库" class="headerlink" title="2.我的第一个 GitHub 项目：如何新建上传仓库"></a>2.我的第一个 GitHub 项目：如何新建上传仓库</h5><p>学了这么多基本功，我们终于要练手了，哈哈，先来建一个自己的仓库玩玩吧！</p>
+<p><strong>（1）在 GitHub 中新建仓库</strong></p>
+<p>如下图所示，点击个人主页的 Repositories 项，再点击右方的<code>New</code>按钮，新建一个仓库。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-11-51-07.png" alt="仓库页面-新建按钮" align="center"> 
+
+<p>我这里做了一个简单的示范，如下图所示，你可以照着我的模板填，最后点击最下方的<code>Create repository</code>按钮，即可创建一个新的仓库。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-12-30-31.png" alt="新建仓库填写页面" align="center">
+
+<p>打开新建的仓库，如下图所示，这个仓库的 Readme 文档的内容就是刚才填入的仓库名和说明。我们点击<code>Code</code>按钮，复制 SSH 地址。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-12-34-00.png" alt="仓库页面-testexample2020" align="center">
+
+
+<p><strong>（2）把仓库文件下载到电脑。</strong></p>
+<p>假设我们要下载到电脑上的目标文件夹（为了描述方便，这里简称为文件夹 A），那么我们就右键点击文件夹 A ，在右键菜单中选择“Git Bash”，在 Git Bash 客户端输入命令行：</p>
+<p><code>git clone SSH地址</code></p>
+<p>这样，仓库就会下载到文件夹 A 中。</p>
+<p><strong>（3）修改仓库文件，使用 Git 命令提交修改并推送至 GitHub。</strong></p>
+<p>下载仓库完成之后，我们会发现文件夹 A 中有了一个新的子文件夹，比如我在前一步骤下载了仓库 testexample2020，此时文件夹 A 中就出现了一个名为”testexample2020”的新文件夹，这就是下载到本地电脑的仓库。我们打开这个新文件夹（”testexample2020”），使用 VSCode 或 Atom 编辑器（编辑器的使用方法可参考我的文章：<a href="https://juliecodestack.github.io/2020/07/24/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8Markdown/">一篇文章带你入门Markdown</a>），在 Readme 文件里增加一行： <code>hello,world!</code>。再新建一个 main.py文件，输入一行简单的代码:<code>print(&quot;hello&quot;)</code>。</p>
+<p>修改好了之后，我们右键点击文件夹 testexample2020（注意：此时不是在母文件夹 A 上使用 Git Bash 了），打开Git Bash 客户端，依次输入命令行：</p>
+<p><code>git add .</code></p>
+<p><code>git commit -m&quot;v0.1&quot;</code></p>
+<p><code>git push</code></p>
+<p>这样修改就推送到了 GitHub 上的仓库中。</p>
+<p><strong>（4）登录 GitHub，查看一下仓库的变化。</strong></p>
+<p>登录 GitHub 后我们发现，刚才做的改动都同步到了 GitHub 仓库中，如下图中标示：</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-18-12-58-52.png" alt="仓库页面-改动后" align="center"> 
+
+<h5 id="3-和别人一起做项目：Fork-和-Pull-request"><a href="#3-和别人一起做项目：Fork-和-Pull-request" class="headerlink" title="3.和别人一起做项目：Fork 和 Pull request"></a>3.和别人一起做项目：Fork 和 Pull request</h5><p>前面提到过，GitHub 是个开源社区，我们可以参加到开源项目之中，那么，具体是怎么操作呢？</p>
+<p>举个我自己的例子来说明一下这个过程吧。</p>
+<p><strong>（1）Fork 一个别人的仓库</strong> </p>
+<p>我在学习 API 接口时，网上的微博 API 工具包很多是基于 Python2 写的，我在 Github 找到了一个 Python3 的版本 <a href="https://github.com/olwolf/sinaweibopy3" target="_blank" rel="noopener">sinaweibopy3</a>，如下图所示。我用了一下，觉得很好，看到作者没有写 Readme，我就想添加一个 Readme 说明文档，让别人能更快地了解这个仓库的功能和使用方法，也就是说，我想对这个仓库做一些修改。这种情况下，我就要先 Fork 一下这个仓库到我自己那儿。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-17-16-45-16.png" alt="sinaweibopy3仓库页面" align="center">
+
+<blockquote>
+<p><strong>为什么要 Fork 呢？</strong><br>Fork有“叉子”的意思，也就是从原仓库复制建一个我自己的分支（分叉），这样，我做的改动只是在我自己的分支上，不会影响到原仓库，除非我提交的 Pull request 被接受后。</p>
+</blockquote>
+<p>Fork 之后，在我的仓库里就出现了一个相同的仓库 sinaweibopy3，如下图所示。不同之处在于，仓库名下方有个备注：”Forked from olwolf/sinaweibopy3”。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-17-16-50-50.png" alt="Fork的仓库" align="center"> 
+
+<p><strong>（2）对自己 Fork 的仓库做修改</strong></p>
+<p>接下来，我就对 Fork 的 sinaweibopy3 仓库做修改，添加了一个 Readme 文档。具体方法请参考上一步 “2.我的第一个 GitHub 项目：如何新建上传仓库” 的示例，可以先<code>git clone</code>下载到本地文件夹，修改后再<code>git push</code>推送到 GitHub。</p>
+<p><strong>（3）提交 Pull request</strong></p>
+<p>如下图所示，点击 Pull request，在弹出的界面填写一些信息，告诉原仓库的作者你做了什么修改、为什么要修改等，方便作者了解你对仓库的改动，然后提交，Pull request 请求就会发送至原仓库的作者。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-17-16-56-15.png" alt="Pull request示例" align="center"> 
+
+
+<p><strong>（4）等待原仓库的作者查看和决定是否接受修改。</strong></p>
+<p>提交了 Pull request 后，我们就等待一段时间，原仓库的作者会决定是否接受修改。</p>
+<p>这里，仓库 sinaweibopy3 的原作者 olwolf 合并了我的修改，如图所示，这样原仓库中也增加了Readme文件。同时，我也因此成为了仓库贡献者(Contributors)之一。</p>
+<img src="/2020/12/13/github%E5%85%A5%E9%97%A8/github入门2020-12-17-17-04-19.png" alt="接受Pull request后原仓库的变化 " align="center"> 
+
+<h4 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h4><p>完成以上学习，我们基本上就入门了，接下来，你可以自己在 GitHub 上探索一下，比如搜索发现一些有趣的项目，关注一些高手大牛，加入到开源项目中，等等。最重要的是，动手练习！一旦上手实践，慢慢熟悉之后，你会发现没有开始想象的那么难，一起加油吧！</p>
+<p>最后，推荐几个好的学习教程：</p>
+<p>1.<a href="https://docs.github.com/en/free-pro-team@latest/github" target="_blank" rel="noopener">GitHub 帮助页面</a></p>
+<p>2.<a href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener">廖雪峰老师的Git教程</a></p>
+<p>3.<a href="https://blog.csdn.net/u013778905/article/details/83501204" target="_blank" rel="noopener">GitHub如何配置SSH Key</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------感谢您的阅读！-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>您的支持给我更多能量，谢谢！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赞赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="宁萌 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="宁萌 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>宁萌
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://juliecodestack.github.io/2020/12/13/github%E5%85%A5%E9%97%A8/" title="GitHub入门指南">https://juliecodestack.github.io/2020/12/13/github入门/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/" rel="tag"><i class="fa fa-tag"></i> 软件</a>
+              <a href="/tags/GitHub/" rel="tag"><i class="fa fa-tag"></i> GitHub</a>
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/03/%E8%AF%BB%E9%9C%8D%E9%87%91%E4%BA%BA%E7%94%9F%E7%AE%80%E5%8F%B2%E7%9A%84%E6%84%9F%E6%82%9F/" rel="prev" title="读霍金人生简史的感悟">
+      <i class="fa fa-chevron-left"></i> 读霍金人生简史的感悟
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/14/%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BA%E6%97%B6%E7%A7%BB%E5%8A%A8%E9%BC%A0%E6%A0%87/" rel="next" title="双显示器扩展显示时怎么移动鼠标到另一块屏？">
+      双显示器扩展显示时怎么移动鼠标到另一块屏？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、带你浏览-GitHub-网站，看看都有些什么？"><span class="nav-text">一、带你浏览 GitHub 网站，看看都有些什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-注册账号"><span class="nav-text">1.注册账号</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-登录-GitHub，浏览页面"><span class="nav-text">2.登录 GitHub，浏览页面</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、GitHub-是-Git-软件用户的项目管理中心"><span class="nav-text">二、GitHub 是 Git 软件用户的项目管理中心</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Git"><span class="nav-text">1. Git</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Git-基本命令"><span class="nav-text">2.Git 基本命令</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、新手必备的GitHub基本操作"><span class="nav-text">三、新手必备的GitHub基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-配置SSH-Key"><span class="nav-text">1.配置SSH Key</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-我的第一个-GitHub-项目：如何新建上传仓库"><span class="nav-text">2.我的第一个 GitHub 项目：如何新建上传仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-和别人一起做项目：Fork-和-Pull-request"><span class="nav-text">3.和别人一起做项目：Fork 和 Pull request</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、总结"><span class="nav-text">四、总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宁萌"
+      src="/images/julieavatar.jpg">
+  <p class="site-author-name" itemprop="name">宁萌</p>
+  <div class="site-description" itemprop="description">记录分享 技术、英语、读书</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Juliecodestack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Juliecodestack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/applebear1123" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;applebear1123" rel="noopener" target="_blank"><i class="fa fa-crosshairs fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Juliecodestack@126.com" title="E-Mail → mailto:Juliecodestack@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宁萌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">69k</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user"></i>
+<span id="busuanzi_container_site_uv">
+  本站总访客数: <span id="busuanzi_value_site_uv"></span>&nbsp;&nbsp;| 
+</span>
+<span id="busuanzi_container_site_pv">
+    &nbsp;本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</span>
+</div>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.4/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'DIVYtuLgNv9DvW5Q08SqITJd-MdYXbMMI',
+      appKey     : 'I5Xj6XTwH9V4UJQtaFdrSEF1',
+      placeholder: "哈哈，既然来了，就打个招呼呗！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

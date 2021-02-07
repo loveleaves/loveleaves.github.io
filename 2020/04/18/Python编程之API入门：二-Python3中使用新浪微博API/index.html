@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"juliecodestack.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="回顾API使用流程在上一篇文章“Python编程之API入门：一 使用百度地图API查地理坐标”中，通过百度地图API的使用，我们看到API调用的一般流程为：生成API规定格式的url-&gt;通过urllib读取url中数据-&gt;对json格式的数据进行解析。下一步，让我们开始研究新浪微博API的使用吧！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python编程之API入门：二 Python3中使用新浪微博API">
+<meta property="og:url" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/index.html">
+<meta property="og:site_name" content="宁萌的笔记本">
+<meta property="og:description" content="回顾API使用流程在上一篇文章“Python编程之API入门：一 使用百度地图API查地理坐标”中，通过百度地图API的使用，我们看到API调用的一般流程为：生成API规定格式的url-&gt;通过urllib读取url中数据-&gt;对json格式的数据进行解析。下一步，让我们开始研究新浪微博API的使用吧！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03oAuth2.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03url.png">
+<meta property="og:image" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03parameters.png">
+<meta property="article:published_time" content="2020-04-18T02:22:38.000Z">
+<meta property="article:modified_time" content="2020-04-19T03:48:52.810Z">
+<meta property="article:author" content="宁萌">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="API">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI.png">
+
+<link rel="canonical" href="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Python编程之API入门：二 Python3中使用新浪微博API | 宁萌的笔记本</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="宁萌的笔记本" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">宁萌的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">A Notebook by Julie</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/julieavatar.jpg">
+      <meta itemprop="name" content="宁萌">
+      <meta itemprop="description" content="记录分享 技术、英语、读书">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宁萌的笔记本">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python编程之API入门：二 Python3中使用新浪微博API
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-18 10:22:38" itemprop="dateCreated datePublished" datetime="2020-04-18T10:22:38+08:00">2020-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-19 11:48:52" itemprop="dateModified" datetime="2020-04-19T11:48:52+08:00">2020-04-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="回顾API使用流程"><a href="#回顾API使用流程" class="headerlink" title="回顾API使用流程"></a>回顾API使用流程</h4><p>在上一篇文章“Python编程之API入门：一 使用百度地图API查地理坐标”中，通过百度地图API的使用，我们看到API调用的一般流程为：生成API规定格式的url-&gt;通过urllib读取url中数据-&gt;对json格式的数据进行解析。下一步，让我们开始研究新浪微博API的使用吧！</p>
+<a id="more"></a>
+<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><p><a href="https://open.weibo.com/wiki/API" target="_blank" rel="noopener">新浪微博开放平台</a>是新浪微博API的使用平台。</p>
+<img src="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI.png" class title="新浪微博开放平台示意图">
+<p>用微博账号登录该平台后，申请成为开发者，创建一个新应用后会得到唯一的App Key和App Secret。（注：应用不需要提交审核，只要创建新应用系统就会分配 Key 和 Secret ）在”我的应用/应用信息/基本信息”中也可以查到这两个信息。在这一页面中还有”我的应用/应用信息/高级信息“一项，点击进入并设置OAuth2.0授权回调页相关信息，如果不知道填什么好，可以设置为默认回调页：<a href="https://api.weibo.com/oauth2/default.html。" target="_blank" rel="noopener">https://api.weibo.com/oauth2/default.html。</a>  <strong>这三项信息都是后面需要用到的，请复制保存到文档。</strong></p>
+<h4 id="微博API新特点"><a href="#微博API新特点" class="headerlink" title="微博API新特点"></a>微博API新特点</h4><p>与百度地图API相比，新浪微博API增加了OAuth2.0协议用于用户身份验证和授权。这里仅作简要说明（感兴趣的同学请查看网上文档示意图）：通过该协议，第三方应用可以获得用户授权，然后用该许可从授权服务器获得令牌(Token)，用于后续从API服务器查询数据时验证身份。</p>
+<img src="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03oAuth2.png" class title="OAuth2.0协议示意图">
+<p>这一验证环节增加了url生成的复杂度，好在网站上已经有廖雪峰老师提供的SDK工具包:<a href="https://github.com/michaelliao/sinaweibopy" target="_blank" rel="noopener">sinaweibopy</a>（廖老师的github地址好像改过名字，因此网上很多旧链接无效，这个是新的有效链接），但是这一程序是基于Python2环境编写的，Python3有些系统库有更改，程序调用时经常报错。而作为Python入门者，改写程序以适应Python3环境无疑是一件困难的事。幸好有大神做了这一工作，感谢owolf针对Python3改写的SDK:<a href="https://github.com/olwolf/sinaweibopy3" target="_blank" rel="noopener">sinaweibopy3</a>，我使用过，正常运行，大家可以下载。在这里同时推荐owolf的文章<a href="https://www.jianshu.com/p/7c68f3ca73ed" target="_blank" rel="noopener">全网最详：python3调用新浪微博API接口获取数据</a>。</p>
+<h4 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h4><p>下面介绍一下我使用新浪微博API的过程，为新入门的同学提供参考。</p>
+<h5 id="1-参数设置"><a href="#1-参数设置" class="headerlink" title="1.参数设置"></a>1.参数设置</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sinaweibopy3</span><br><span class="line"><span class="keyword">import</span> webbrowser</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line">APP_KEY =<span class="string">' 填入你的App Key'</span>  </span><br><span class="line">APP_SECRET=<span class="string">' 填入你的App Secret'</span></span><br><span class="line">REDIRECT_URL =<span class="string">' 填入你的授权回调页'</span></span><br></pre></td></tr></table></figure>
+<p>注：</p>
+<ul>
+<li>该文件需要和sinaweibopy3.py放在同一个文件夹里。</li>
+<li>填写的三项信息都是在<strong>准备</strong>中提到的信息。</li>
+</ul>
+<p>这里谈谈我粗心大意造成的一个bug，也给大家提个醒。一开始我运行程序时，每次都出现“重定向地址不匹配”的错误信息：</p>
+<blockquote>
+<p>用微博帐号登录出错了！对第三方应用进行授权时出现错误，请您联系第三方应用的开发者：XXX 或者稍后再试。<br>错误码：21322  重定向地址不匹配</p>
+</blockquote>
+<p>查找网上的解决方法，要设置回调页，但是在前面的步骤里我已经设置了，怎么还会有这个问题？后来看到一篇文章中提到回调页地址和程序中的REDIRECT_URL要一致，我想到了程序示例是<a href="http://api.weibo.com/oauth2/default.html，" target="_blank" rel="noopener">http://api.weibo.com/oauth2/default.html，</a>  用的是<code>http:</code>开头，我在填写时看到地址一样，就没有改动，而网站上是<code>https:</code>开头，一个<code>&#39;s&#39;</code>之差，当时觉得是一个地址，没想到相差大矣！</p>
+<h5 id="2-OAuth2-0验证生成url"><a href="#2-OAuth2-0验证生成url" class="headerlink" title="2.OAuth2.0验证生成url"></a>2.OAuth2.0验证生成url</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">client = sinaweibopy3.APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=REDIRECT_URL)</span><br><span class="line">url = client.get_authorize_url()</span><br><span class="line">webbrowser.open_new(url)</span><br><span class="line">result = client.request_access_token(input(<span class="string">"please input code: "</span>))</span><br><span class="line">client.set_access_token(result.access_token, result.expires_in)</span><br></pre></td></tr></table></figure>
+<p>注意：这就是调用sinaweibopy3，实现OAuth2.0中用户授权-&gt;获取Token这一过程。当程序运行到<code>client.request_access_token</code>时，会弹出输入提示”please input code: “，要求输入code？这是什么意思呢？打开浏览器就会看到出现了OAuth2.0验证回调页，地址栏一项<code>&#39;code=&#39;</code>后面有一串字符，这就是我们要的Token信息，把它复制后粘贴输入，程序继续运行。</p>
+<h5 id="3-从API读取数据"><a href="#3-从API读取数据" class="headerlink" title="3.从API读取数据"></a>3.从API读取数据</h5><p>运行下列代码，可以读取公共微博的数据并显示结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result=client.public_timeline()</span><br><span class="line">print(json.dumps(result,indent=<span class="number">2</span>,ensure_ascii=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+<p>而通过查看数据结构，可以提取特定信息。例如，可以通过以下代码，输出用户微博昵称、地点和最新微博正文。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">number=result[<span class="string">"total_number"</span>]</span><br><span class="line">print(number,<span class="string">"users:"</span>)</span><br><span class="line"><span class="keyword">for</span> u <span class="keyword">in</span> result[<span class="string">"statuses"</span>]:</span><br><span class="line">    print(u[<span class="string">"user"</span>][<span class="string">"screen_name"</span>])</span><br><span class="line">    print(u[<span class="string">"user"</span>][<span class="string">"location"</span>])</span><br><span class="line">    print(u[<span class="string">"text"</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h4><p>如果要查询其他信息，比如获取用户的关注列表，怎么办呢？让我们来试着编写出相应的函数。</p>
+<h5 id="1-查看函数信息"><a href="#1-查看函数信息" class="headerlink" title="1.查看函数信息"></a>1.查看函数信息</h5><p>在新浪微博API中指定的url: <a href="https://api.weibo.com/2/friendships/friends.json" target="_blank" rel="noopener">https://api.weibo.com/2/friendships/friends.json</a></p>
+<img src="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03url.png" class title="查询用户关注列表的url">
+
+<p>以及定义的请求参数是：access_token, uid, screen_name, count, cursor, time_status。</p>
+<img src="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/03parameters.png" class title="函数定义的请求参数信息">
+<p>其中，access_token需要填写，uid和screen_name分别是用户id和昵称，二者必填且只填一项。（注：接口升级后，只能为当前授权用户） count, cursor可使用默认参数。count是单页返回记录条数，默认为5，最大不超过5，cursor返回结果的游标。trim_status是显示status字段的开关，0：返回完整status字段，1：仅返回status_id，默认为1。</p>
+<h5 id="2-编写fs-friends-函数"><a href="#2-编写fs-friends-函数" class="headerlink" title="2.编写fs_friends()函数"></a>2.编写<code>fs_friends()</code>函数</h5><p>首先查看一下，在sinaweibopy3.py中是如何实现<code>public_timeline()</code>呢?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">public_timeline</span><span class="params">(self)</span>:</span>       </span><br><span class="line">        result = _http_get(<span class="string">'%s'</span>% (self.api_url)  + <span class="string">'statuses/public_timeline.json'</span>,</span><br><span class="line">                           access_token=self.access_token, </span><br><span class="line">                           count=<span class="number">50</span>, </span><br><span class="line">                           page=<span class="number">1</span>, </span><br><span class="line">                           base_app=<span class="number">0</span>,</span><br><span class="line">                )</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>对照代码发现<code>%s&#39;% (self.api_url)</code>就是<code>https://api.weibo.com/2</code>，因此，我们只需要把 <code>&#39;statuses/public_timeline.json&#39;</code>改成<code>&#39;friendships/friends.json&#39;</code>，并添加必填的请求参数，就可以写出一个所需要的<code>fs_friends()</code>函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fs_friends</span><span class="params">(self)</span>:</span></span><br><span class="line">        result=_http_get(<span class="string">'%s'</span>% (self.api_url)  + <span class="string">'friendships/friends.json'</span>, </span><br><span class="line">                           access_token=self.access_token, </span><br><span class="line">                           screen_name=<span class="string">'填入你自己的微博昵称'</span> ,</span><br><span class="line">                           trim_status=<span class="number">0</span>,</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>注：trim_status默认为1，设置为0才会得到完整status字段（其中包括最新微博正文）。</p>
+<h5 id="3-在主程序中调用fs-friends-函数"><a href="#3-在主程序中调用fs-friends-函数" class="headerlink" title="3.在主程序中调用fs_friends()函数"></a>3.在主程序中调用<code>fs_friends()</code>函数</h5><p>参考原有的<code>client.public_timeline()</code>，得到以下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = client.fs_friends()</span><br><span class="line">print(json.dumps(result,indent=<span class="number">2</span>,ensure_ascii=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+<p>这样就可以看到关注的人的列表，包括基本信息及最新微博。</p>
+<p>进一步地，可以通过以下代码，提取最新微博内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> u <span class="keyword">in</span> result[<span class="string">'users'</span>]:</span><br><span class="line">    print(<span class="string">"\n"</span>,u[<span class="string">'screen_name'</span>])</span><br><span class="line">    print(u[<span class="string">'location'</span>])</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">'status'</span> <span class="keyword">not</span> <span class="keyword">in</span> u):</span><br><span class="line">        print(<span class="string">'not found\n'</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    print(u[<span class="string">'status'</span>][<span class="string">'text'</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p><strong>以下是我还在思考的问题，欢迎交流指教，谢谢！</strong><br>1、请求参数设置里count不大于5，我在实际运行程序时只看到4个关注用户及微博正文，能否读取更多用户，如何读取？<br>2、我还尝试了编写statuses/home_timeline(获取当前登录用户及其所关注（授权）用户的最新微博)的查询函数，但是因为参数设置问题，显示结果为Null（空）。我认为问题出在max_id参数上，说明中指出：若指定此参数，则返回ID小于或等于max_id的微博，默认为0，但是设多大合理？我有些困惑。</p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------感谢您的阅读！-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>您的支持给我更多能量，谢谢！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赞赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="宁萌 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="宁萌 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>宁萌
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://juliecodestack.github.io/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BA%8C-Python3%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9AAPI/" title="Python编程之API入门：二 Python3中使用新浪微博API">https://juliecodestack.github.io/2020/04/18/Python编程之API入门：二-Python3中使用新浪微博API/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+              <a href="/tags/API/" rel="tag"><i class="fa fa-tag"></i> API</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/18/Python%E7%BC%96%E7%A8%8B%E4%B9%8BAPI%E5%85%A5%E9%97%A8%EF%BC%9A%E4%B8%80-%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BEAPI%E6%9F%A5%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87/" rel="prev" title="Python编程之API入门：一 使用百度地图API查地理坐标">
+      <i class="fa fa-chevron-left"></i> Python编程之API入门：一 使用百度地图API查地理坐标
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/22/%E5%AF%B9%E8%82%AF%E7%A6%8F%E8%8E%B1%E7%89%B9%E4%B8%96%E7%BA%AA%E4%B8%89%E9%83%A8%E6%9B%B2%E7%9A%84%E8%AE%A8%E8%AE%BA%E5%92%8C%E6%80%9D%E8%80%83/" rel="next" title="对肯福莱特世纪三部曲的讨论和思考">
+      对肯福莱特世纪三部曲的讨论和思考 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#回顾API使用流程"><span class="nav-text">回顾API使用流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作"><span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#微博API新特点"><span class="nav-text">微博API新特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单示例"><span class="nav-text">简单示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-参数设置"><span class="nav-text">1.参数设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-OAuth2-0验证生成url"><span class="nav-text">2.OAuth2.0验证生成url</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-从API读取数据"><span class="nav-text">3.从API读取数据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进阶"><span class="nav-text">进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查看函数信息"><span class="nav-text">1.查看函数信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-编写fs-friends-函数"><span class="nav-text">2.编写fs_friends()函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-在主程序中调用fs-friends-函数"><span class="nav-text">3.在主程序中调用fs_friends()函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考"><span class="nav-text">思考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宁萌"
+      src="/images/julieavatar.jpg">
+  <p class="site-author-name" itemprop="name">宁萌</p>
+  <div class="site-description" itemprop="description">记录分享 技术、英语、读书</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Juliecodestack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Juliecodestack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/applebear1123" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;applebear1123" rel="noopener" target="_blank"><i class="fa fa-crosshairs fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Juliecodestack@126.com" title="E-Mail → mailto:Juliecodestack@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宁萌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">69k</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user"></i>
+<span id="busuanzi_container_site_uv">
+  本站总访客数: <span id="busuanzi_value_site_uv"></span>&nbsp;&nbsp;| 
+</span>
+<span id="busuanzi_container_site_pv">
+    &nbsp;本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</span>
+</div>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.4/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'DIVYtuLgNv9DvW5Q08SqITJd-MdYXbMMI',
+      appKey     : 'I5Xj6XTwH9V4UJQtaFdrSEF1',
+      placeholder: "哈哈，既然来了，就打个招呼呗！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
