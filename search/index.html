@@ -365,68 +365,78 @@ const ap = new APlayer({
 
 
 <script>
-    const cdnPath = 'https://cdn.jsdelivr.net/gh/letere-gzj/live2d-widget-v3@main';
-    const config = {
-      
-      path: {
-        modelPath: cdnPath + "/Resources/",
-        cssPath: cdnPath + "/waifu.css",
-        tipsJsonPath: cdnPath + "/waifu-tips.json",
-        tipsJsPath: cdnPath + "/waifu-tips.js",
-        live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
-        live2dSdkPath: cdnPath + "/live2d-sdk.js"
-      },
-      
-      tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "info", "quit"],
-      
-      drag: {
-        enable: true,
-        direction: ["x", "y"]
-      },
-      
-      switchType: "order"
-    }
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/letere-gzj/live2d-widget-v3@main';
+  const myCdnPath = "https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@v1.0.0/live2d/live2d-moc3/";
   
+  const cssPath = "https://loveleaves.github.io/waifu/waifu.css";
+  const tipsJsonPath = "https://loveleaves.github.io/waifu/waifu-tips.json";
+  const tipsJsPath = "https://loveleaves.github.io/waifu/waifu-tips.js";
+  const live2dJsPath = "https://loveleaves.github.io/waifu/live2d.min.js";
+
+  const config = {
     
-    if (screen.width >= 768) {
-      Promise.all([
-        loadExternalResource(config.path.cssPath, "css"),
-        loadExternalResource(config.path.live2dCorePath, "js"),
-        loadExternalResource(config.path.live2dSdkPath, "js"),
-        loadExternalResource(config.path.tipsJsPath, "js")
-      ]).then(() => {
-        initWidget({
-          waifuPath: config.path.tipsJsonPath,
-          cdnPath: config.path.modelPath,
-          tools: config.tools,
-          dragEnable: config.drag.enable,
-          dragDirection: config.drag.direction,
-          switchType: config.switchType
-        });
-      });
-    }
+    path: {
+      modelPath: myCdnPath,
+      cssPath: cssPath,
+      tipsJsonPath: tipsJsonPath,
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "info", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
   
-    
-    function loadExternalResource(url, type) {
-      return new Promise((resolve, reject) => {
-        let tag;
-        if (type === "css") {
-          tag = document.createElement("link");
-          tag.rel = "stylesheet";
-          tag.href = url;
-        }
-        else if (type === "js") {
-          tag = document.createElement("script");
-          tag.src = url;
-        }
-        if (tag) {
-          tag.onload = () => resolve(url);
-          tag.onerror = () => reject(url);
-          document.head.appendChild(tag);
-        }
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
       });
-    }
-  </script>  
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+
+
 
 <style>
     #TableOfContents > ul, ol {
