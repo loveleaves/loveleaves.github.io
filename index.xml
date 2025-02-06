@@ -7,6 +7,671 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright><atom:link href="https://loveleaves.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【SIMD】 ARM SIMD指令集NEON等介绍</title>
+        <link>https://loveleaves.github.io/p/arm-neon/</link>
+        <pubDate>Thu, 06 Feb 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/arm-neon/</guid>
+        <description>&lt;h1 id=&#34;arm-simd&#34;&gt;ARM SIMD
+&lt;/h1&gt;&lt;p&gt;ARM平台基于ARM v7-A架构的ARM Cortex-A系列处理器(Cortex-A5, Cortex-A7,Cortex-A8, Cortex-A9, Cortex-A15)上的NEON加速：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;针对C/C++语言：循环展开等编译优化，-O2启用&lt;/li&gt;
+&lt;li&gt;针对NEON intrinsics：NEOM SIMD C/C++语言接口，针对架构启用V向量扩展，选择浮点处理器和ABI（application Binary Interface）接口类型&lt;/li&gt;
+&lt;li&gt;针对汇编语言：内联汇编，直接操作neon指令和寄存器
+路线：了解相应编译优化=》使用intrinsic接口，学习对应汇编代码=》内联汇编，&lt;strong&gt;在编译器汇编代码基础上&lt;/strong&gt;（否则可能反优化）学习并优化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;references&#34;&gt;references
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.arm.com/documentation/den0018/latest&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;NEON Programmer&amp;rsquo;s Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.arm.com/documentation/den0013/latest&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Cortex-A Series Programmer&amp;rsquo;s Guide&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;算子源码&#34;&gt;算子源码
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;AI算子：&lt;a class=&#34;link&#34; href=&#34;https://github.com/Tencent/ncnn/tree/master/src/layer&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;腾讯ncnn&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;数据处理算子：&lt;a class=&#34;link&#34; href=&#34;https://github.com/numpy/numpy/tree/main/numpy/_core/src/common/simd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;numpy simd&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;图像处理算子：&lt;a class=&#34;link&#34; href=&#34;https://github.com/opencv/opencv/tree/master/3rdparty/carotene&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Nvidia carotene&lt;/a&gt;，OpenCV third party&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;理论学习&#34;&gt;理论学习
+&lt;/h2&gt;&lt;h3 id=&#34;指令流水线&#34;&gt;指令流水线
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;经典的五级流水线模型&lt;/strong&gt;
+&lt;img src=&#34;https://loveleaves.github.io/imgs/pipeline.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;pipeline&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;1、&lt;strong&gt;取指（IF）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;以程序计数器（PC）中的内容作为地址，从存储器中取出指令并放入指令寄存器（IR）；&lt;/li&gt;
+&lt;li&gt;PC值加4（假设每条指令占4字节），指向顺序的下一条指令。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2、&lt;strong&gt;指令译码/读寄存器周期（ID）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对指令进行译码，并用IR中的寄存器地址去访问通用寄存器组，读出所需的操作数；&lt;/li&gt;
+&lt;li&gt;对IR中的立即数进行扩展&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;3、&lt;strong&gt;执行/有效地址计算周期（EX）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ALU对上一个周期中准备好的操作数进行运算或处理。在这个阶段，不同类型的指令进行的操作不同。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;（1）load和store指令：ALB把指令中所指定的寄存器的内容与偏移量相加，形成访存有效地址；&lt;/li&gt;
+&lt;li&gt;（2）寄存器-寄存器 ALU 指令：ALU按照操作码指定的操作对从通用寄存器组中读出的数据进行运算；&lt;/li&gt;
+&lt;li&gt;（3）寄存器-立即数 ALU 指令：ALU按照操作码指定的操作对从通用寄存器组中读出的操作数和指令中给出的立即数进行运算；&lt;/li&gt;
+&lt;li&gt;（4）分支指令：ALU把指令中给出的偏移量与PC值相加，形成转移目标的地址。同时，对在前一个周期读出的操作数进行判断，确定分支是否成功。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;4、&lt;strong&gt;存储器访问/分支完成周期（MEM）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;（1）load和store指令：load指令根据上一个周期计算出的有效地址从存储器中读出的相应的数据；store把指定的数据写入这个有效地址对应的存储单元。&lt;/li&gt;
+&lt;li&gt;（2）分支指令：如果分支“成功”，就把前一个周期中计算好的转移目标地址送入PC。分支指令执行完成；否则，就不进行任何操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;5、&lt;strong&gt;写回周期（WB）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;把结果写入通用寄存器组。对于ALU运算来说，这个结果来自ALU，而对于load指令来说，这个结果来自存储器。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;simd加速原理&#34;&gt;SIMD加速原理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/QSCTech/zju-icicles/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E6%95%99%E6%9D%90/%E7%AC%AC5%E7%89%88/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%EF%BC%9A%E9%87%8F%E5%8C%96%E7%A0%94%E7%A9%B6%E6%96%B9%E6%B3%95%EF%BC%88%E7%AC%AC%E4%BA%94%E7%89%88%EF%BC%89%EF%BC%88%E4%B8%AD%E6%96%87%E7%89%88%EF%BC%89.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;《计算机体系结构：量化研究方法》&lt;/a&gt;。Neon是ARM平台的SIMD（Single Instruction Multiple Data，单指令多数据流）指令集实现，书中4.1~4.3讨论了SIMD，推荐阅读。
+&lt;img src=&#34;https://loveleaves.github.io/imgs/system_architecture_chapters.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;system architecture chapters&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;之所以能加速的&lt;strong&gt;原因总结&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;（1）通过加长的寄存器减少数据的读取/写入次数，从而减少将数据读入寄存器的时间开销。例如Neon可以一次性将16个int8（16*8=128bit）数据读入专用寄存器，这一次读取时间开销，明显少于16个int8数据一个一个地读入的时间之和。写入同理。（注意不要和cache的减少访存时间的原理混淆。从cache读取余下的第2~第16个int8数据到寄存器仍然是要花费时钟周期的）。&lt;/li&gt;
+&lt;li&gt;（2）执行SISD（single instruction, Single data，单指令流单数据流，这里可理解为标量计算）指令时，需要完成（时间开销大的）冒险（hazard）检查。既然使用SIMD指令计算，就暗示这些数据之间无依赖性，也就从指令集层面回避了不必要的时间开销。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;了解硬件决定的速度极限software-optimization-guide&#34;&gt;了解硬件决定的速度极限：Software Optimization Guide
+&lt;/h3&gt;&lt;p&gt;我们可能还要关心，我们所编写的Neon Intrinsics，可以将手头上硬件的性能发挥到多少水平？是否还有提升空间？这些是好问题。&lt;/p&gt;
+&lt;p&gt;在讨论一个问题前，先插入一个使笔者拍案叫绝的相关案例：在另一本计算经典&lt;a class=&#34;link&#34; href=&#34;https://github.com/Urinx/Books/blob/master/cs/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;《深入理解计算机系统》&lt;/a&gt;  （一般简称 CS:APP）的第5章 优化程序性能 中，该书作者考虑若干计算机硬件特性，将矩阵乘法连续优化了6个版本，直至优化到了该x86 CPU的吞吐量上限（注：对于某种指令，延迟latency 主要关注单条该指令的最小执行时间，吞吐量throughout主要关注单位时间内系统（一个CPU核）最多执行多少条该指令。因为AI计算的数据量比较大，我们更关注吞吐量）
+&lt;img src=&#34;https://loveleaves.github.io/imgs/csapp_ans1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;CS:APP 相关数据截图&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;回到问题，我们需要知道我们的吞吐量上界是多少。ARM官方为每个CPU架构（手机CPU一般大核是A7X架构，小核是A5X架构）提供对应的Software Optimization Guide，里面有进行各种运算的latency和throughout。以A76架构（采用该架构作为大核架构的CPU例如骁龙855，麒麟980）为例子，从ARM官网下载对应的pdf（https://developer.arm.com/documentation/swog307215/a/?lang=en）
+翻到ASIMD（Advance SIMD）那里，就能查阅各条Neon指令相应的latency和throughout。不同架构的吞吐量上界会有所不同，其他架构请自行在ARM官网文档中心下载。
+&lt;img src=&#34;https://loveleaves.github.io/imgs/A76_Software_Optimization_Guide.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;A76 Software Optimization Guide截图&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;理论数据有了，至于如何通过实验测试峰值，可参考BBuf的文章 如何判断算法是否有可优化空间？ （https://zhuanlan.zhihu.com/p/268925243）&lt;/p&gt;
+&lt;h3 id=&#34;反汇编分析生成代码质量&#34;&gt;反汇编分析生成代码质量
+&lt;/h3&gt;&lt;p&gt;可通过反汇编的方式查看Intrinsics 生成的汇编是否满足预期，如果不满足预期则进行手写汇编优化。具体操作可参考梁德澎的文章 移动端arm cpu优化学习笔记第4弹&amp;ndash;内联汇编入门（https://zhuanlan.zhihu.com/p/143328317）&lt;/p&gt;
+&lt;h2 id=&#34;materials&#34;&gt;materials
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;（1）研讨会视频 &lt;a class=&#34;link&#34; href=&#34;https://www.edge-ai-vision.com/2019/07/performance-analysis-for-optimizing-embedded-deep-learning-inference-software-a-presentation-from-arm/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&amp;ldquo;Performance Analysis for Optimizing Embedded Deep Learning Inference Software,&amp;rdquo; a Presentation from Arm - Edge AI and Vision Alliance&lt;/a&gt;，&lt;strong&gt;建立优化分析思维&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;（2）研讨会视频 &lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/watch?v=ixuDntaSnHIwww.youtube.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LCU14-504: Taming ARMv8 NEON: from theory to benchmark results&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;（3）研讨会视频 &lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/watch?v=NYFzidaS3Z4www.youtube.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;HKG15-408: ARM v8-A NEON optimization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;（4）Ne10（ARM官方的计算库）：https://github.com/projectNe10/Ne10&lt;/li&gt;
+&lt;li&gt;（5）Arm Optimized Routines（ARM官方的计算、网络、字符串库）：https://github.com/ARM-software/optimized-routines&lt;/li&gt;
+&lt;li&gt;（6）Neon优化Chromium的案例：https://developer.arm.com/documentation/101964/developer.arm.com&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;neon-介绍&#34;&gt;NEON 介绍
+&lt;/h2&gt;&lt;p&gt;ARM NEON 是 ARM 架构的一种 SIMD（Single Instruction, Multiple Data）扩展，旨在加速多媒体、数字信号处理（DSP）、图像处理、音视频编解码、加密算法等高并发计算任务。NEON 是 ARMv7 （ARMv7-A只支持单精度，32x64-bit寄存器；Armv8-A AArch64支持双精度，32x128-bit寄存器，针对浮点操作的Vector Floating Point，VFP）及之后版本的处理器的标准扩展，广泛用于智能手机、嵌入式设备、平板电脑以及其他移动设备中，尤其是处理需要并行化的计算密集型应用时，它能显著提高性能。&lt;/p&gt;
+&lt;h3 id=&#34;重要概念&#34;&gt;&lt;strong&gt;重要概念&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;lane&lt;/strong&gt;：如一个&lt;code&gt;float32x4_t&lt;/code&gt;类型的变量&lt;code&gt;float32x4_t v = {1.0f, 2.0f, 3.0f, 4.0f}&lt;/code&gt;，它占用 128 位，存储 4 个 32 位的浮点数，在这个向量寄存器 v 中，每个值依次存储在不同的lane序号为0、1、2、3中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;neon-寄存器&#34;&gt;&lt;strong&gt;NEON 寄存器&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 使用专门的寄存器来存储向量数据，这些寄存器通常用于处理多个数据元素，ARMv7-A只支持单精度，32x64-bit寄存器；Armv8-A AArch64支持双精度，32x128-bit寄存器。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：NEON 寄存器组包含了 128 （Q字母）或 64（D字母） 位宽的寄存器，可以存储多个 8 位、16 位、32 位、64 位整数或浮点数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Q0-Q15&lt;/strong&gt;：128 位宽的 NEON 寄存器，用于存储 8 位、16 位、32 位、64 位的数据（整数或浮点数）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;D0-D15&lt;/strong&gt;：64 位宽的 NEON 寄存器，也用于存储 64 位数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;向量和标量操作&#34;&gt;&lt;strong&gt;向量和标量操作&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 支持对向量（多个元素）和标量（单个元素）进行操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：标量操作是普通的逐元素操作，而向量操作则允许一次性处理多个数据元素。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vadd.f32&lt;/code&gt;：向量浮点加法操作。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vadd.i32&lt;/code&gt;：向量整数加法操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;neon-数据类型&#34;&gt;&lt;strong&gt;NEON 数据类型&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 支持多种数据类型，包括整数、浮点数、双精度浮点数和混合类型数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：不同的数据类型适应不同的应用需求，如 8 位整数、32 位浮点数等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;i8, i16, i32, i64&lt;/strong&gt;：不同宽度的整数类型。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;f32, f64&lt;/strong&gt;：浮点数类型，支持单精度和双精度浮点数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;neon-指令集&#34;&gt;&lt;strong&gt;NEON 指令集&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 提供了一组专门的指令来处理数据并执行并行计算。NEON 指令包括加法、乘法、减法、移位、汇聚（归约）、比较、选择、数据类型转换等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：这些指令能够加速处理向量数据，尤其是应用于图像处理、音频处理、视频编解码、加密算法等领域。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;vadd&lt;/strong&gt;：向量加法指令。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;vmul&lt;/strong&gt;：向量乘法指令。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;vsub&lt;/strong&gt;：向量减法指令。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;vmax&lt;/strong&gt;：向量最大值选择指令。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;扩展数据类型&#34;&gt;&lt;strong&gt;扩展数据类型&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 提供了扩展数据类型的支持，如高/低16位扩展、饱和算术、向量数据类型转换等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：这种扩展数据类型用于在计算过程中执行高效的数据操作和转换，避免数据溢出或精度丢失。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;vshl&lt;/strong&gt;：向左移位操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;vqadd&lt;/strong&gt;：饱和加法指令，防止数据溢出。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据载入和存储指令&#34;&gt;&lt;strong&gt;数据载入和存储指令&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 提供了一些专门的加载（load）和存储（store）指令，用于从内存中加载数据到寄存器，或将寄存器中的数据存储回内存。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：这些指令能够优化内存访问，支持从多个内存地址加载和存储数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vld1&lt;/code&gt;：加载向量数据指令。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vst1&lt;/code&gt;：存储向量数据指令。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据汇聚和归约操作&#34;&gt;&lt;strong&gt;数据汇聚和归约操作&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 提供了对向量数据的汇聚（归约）操作，例如求和、最大值、最小值等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：这些操作通常用于计算总和、平均值、最大值等统计量，广泛应用于信号处理和数据分析中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;vaddv&lt;/strong&gt;：对向量元素进行加法归约，返回所有元素的和。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;vmaxv&lt;/strong&gt;：对向量元素进行最大值归约，返回最大值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;条件执行&#34;&gt;&lt;strong&gt;条件执行&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 支持条件执行，通过设置条件码（flags），可以对某些指令的执行进行条件限制。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：可以根据特定的条件执行指令，避免不必要的计算，提高性能。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vsel&lt;/code&gt;：根据掩码（mask）选择性地执行指令。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;simd-聚合指令广播操作&#34;&gt;&lt;strong&gt;SIMD 聚合指令（广播操作）&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 支持广播操作，允许单一标量值扩展到整个向量中。广播操作使得标量与向量的数据处理更加简便。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：通过广播操作，标量可以与向量中的每个元素进行计算，提高了指令的灵活性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vdup&lt;/code&gt;：将一个标量值复制到整个向量中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;neon-浮点数运算&#34;&gt;&lt;strong&gt;NEON 浮点数运算&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 支持单精度浮点数和双精度浮点数的运算，符合 IEEE 754 标准。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：这些浮点数运算指令可用于科学计算、图像处理等应用。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;vadd.f32&lt;/strong&gt;：单精度浮点数向量加法。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;vmul.f32&lt;/strong&gt;：单精度浮点数向量乘法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据类型转换&#34;&gt;&lt;strong&gt;数据类型转换&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 支持多种类型之间的转换操作，如浮点与整数类型之间的转换。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：这种转换对于不同数据类型之间的运算非常重要，可以确保类型匹配并避免数据丢失。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;vcvt.f32.s32&lt;/strong&gt;：将 32 位整数转换为 32 位单精度浮点数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;vcvt.s32.f32&lt;/strong&gt;：将 32 位单精度浮点数转换为 32 位整数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;向量掩码&#34;&gt;&lt;strong&gt;向量掩码&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：NEON 支持通过掩码控制哪些向量元素应该被操作。掩码机制允许在处理多个数据时根据特定条件选择性地操作某些元素。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：掩码可以控制并行操作的粒度，提高计算的灵活性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;vmla&lt;/strong&gt;：向量乘加指令，根据掩码控制哪些元素参与计算。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;neon-intrinsic&#34;&gt;NEON Intrinsic
+&lt;/h2&gt;&lt;p&gt;兼容armv7和v8（部分指令可能不兼容），所以不同架构之间迁移方便，不需要改代码&lt;/p&gt;
+&lt;h3 id=&#34;references-1&#34;&gt;References
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.arm.com/documentation/den0018/a/NEON-Intrinsics/Introduction&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;NEON-Intrinsics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.arm.com/documentation/102159/0400&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Neon Programmer Guide for Armv8-A Coding for Neon&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.arm.com/architectures/instruction-sets/intrinsics/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;intrinsics检索&lt;/a&gt;，用来查看接口和支持架构&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://cloud.tencent.com/developer/article/1814183&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ARM Neon Intrinsics 学习指北：从入门、进阶到学个通透&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/numpy/numpy/tree/main/numpy/_core/src/common/simd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;numpy simd&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据和计算指令类型的格式&#34;&gt;数据和计算指令类型的格式
+&lt;/h3&gt;&lt;p&gt;1、向量数据类型格式：&lt;code&gt;&amp;lt;type&amp;gt;&amp;lt;size&amp;gt;x&amp;lt;number of lanes&amp;gt;_t&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;比如&lt;code&gt;float32x4_t&lt;/code&gt;，&lt;type&gt;=float,&lt;size&gt;=32,&lt;number of lanes&gt;=4&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;向量数据类型：
+&lt;img src=&#34;https://loveleaves.github.io/imgs/neon_dataType.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;neon dataType&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;2、向量数组类型：&lt;code&gt;&amp;lt;type&amp;gt;&amp;lt;size&amp;gt;x&amp;lt;number of lanes&amp;gt;x&amp;lt;length of array&amp;gt;_t&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;比如&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;struct int16x4x2_t
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;int16x4_t val[2];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;向量指令格式：&lt;code&gt;&amp;lt;opname&amp;gt;&amp;lt;flags&amp;gt;_&amp;lt;type&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;比如&lt;code&gt;vmulq_f32&lt;/code&gt;，&lt;opname&gt;=vmul，&lt;flags&gt;=q,&lt;type&gt;=f32&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;note&#34;&gt;Note
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;普通计算逻辑考虑优化编译器优化、类型量化等&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;循环一&lt;/strong&gt;般用do-while的形式&lt;/li&gt;
+&lt;li&gt;对于&lt;strong&gt;非整数倍元素个数&lt;/strong&gt;的解决方法： leftovers&lt;/li&gt;
+&lt;li&gt;使用 NEON 的&lt;strong&gt;广播操作&lt;/strong&gt;，避免显示复制数据&lt;/li&gt;
+&lt;li&gt;使用 NEON 的&lt;strong&gt;饱和操作&lt;/strong&gt;，避免数据溢出&lt;/li&gt;
+&lt;li&gt;利用数据&lt;strong&gt;类型转换&lt;/strong&gt;操作，并合理进行量化&lt;/li&gt;
+&lt;li&gt;利用shift、insert、mask等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;计算机组成结构运行相关通用&#34;&gt;计算机组成结构运行相关（通用）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;并行&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;充分利用计算机流水线：去除数据依赖&lt;/li&gt;
+&lt;li&gt;逻辑操作代替分支选择（分支预测）&lt;/li&gt;
+&lt;li&gt;数据预加载（预取/并行）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;资源利用&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;充分利用寄存器资源，分块处理数据，但避免寄存器溢出(Register Spilling）（测试时开启O2优化使编译器允许寄存器存储临时变量）&lt;/li&gt;
+&lt;li&gt;内存合理对齐分配，按对应寄存器长度读取&lt;/li&gt;
+&lt;li&gt;多线程处理，如OpenMP（并行/数据共享）&lt;/li&gt;
+&lt;li&gt;利用数据连续特性、利用cache&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;neon-汇编&#34;&gt;NEON 汇编
+&lt;/h2&gt;&lt;p&gt;可用&lt;code&gt;__aarch64__&lt;/code&gt;宏区分是armv8，否则armv7，针对性编写代码&lt;/p&gt;
+&lt;h3 id=&#34;references-2&#34;&gt;References
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/143328317&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;移动端arm cpu优化学习笔记第4弹&amp;ndash;内联汇编入门&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;arm-内联汇编使用&#34;&gt;arm 内联汇编使用
+&lt;/h3&gt;&lt;p&gt;arm内联汇编的一般格式，&lt;a class=&#34;link&#34; href=&#34;https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html#Using-Assembly-Language-with-C&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;detail&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://dillonzq.com/2019/08/c-%E8%AF%AD%E8%A8%80%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;docs&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;__asm__&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;qualifiers&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// 汇编代码部分
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OutputOperands&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//在内联汇编代码中被修改的变量列表
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;InputOperands&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;//在内联汇编代码中用到的变量列表
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Clobbers&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;//在内联汇编代码中用到的寄存器列表
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;note-1&#34;&gt;Note
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;先写intrinsic代码反汇编，学习编译器优化后的汇编代码，再优化&lt;/li&gt;
+&lt;li&gt;重点关注指令流水线排布，避免CPU的&lt;strong&gt;Hazard&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>【SIMD】 Risc-v SIMD指令集RVV介绍</title>
+        <link>https://loveleaves.github.io/p/rvv/</link>
+        <pubDate>Thu, 06 Feb 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/rvv/</guid>
+        <description>&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://riscv.org/wp-content/uploads/2017/05/riscv-privileged-v1.10.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The RISC-V Instruction Set Manual Volume II: Privileged Architecture&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/riscvarchive/riscv-v-spec/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RVV spec&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource/1836682/1638774209491/Xuantie&amp;#43;900&amp;#43;Series&amp;#43;RVV-0.7.1&amp;#43;Intrinsic&amp;#43;Manual.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Xuantie+900+Series+RVV-0.7.1+Intrinsic+Manual&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;算子源码&#34;&gt;算子源码
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/ARM-software/CMSIS_5&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ARM-software/CMSIS&lt;/a&gt;, &lt;a class=&#34;link&#34; href=&#34;https://github.com/ARM-software/CMSIS-DSP&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CMSIS-DSP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Nuclei-Software/NMSIS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Nuclei-software/NMSIS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;note&#34;&gt;Note
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;illegal instruction：修改CSR的mstatus标志位&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;important-concepts&#34;&gt;important concepts
+&lt;/h2&gt;&lt;h3 id=&#34;vlen-vector-length&#34;&gt;&lt;strong&gt;VLEN (Vector Length)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量寄存器的长度，表示每个寄存器可以存储的最大元素数量，通常是硬件设定的，例如 128 位、256 位或 512 位。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：决定向量寄存器的容量和能处理的数据量。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;如果 VLEN 为 256 位且每个元素为 32 位整数，则每个寄存器最多存储 8 个元素（256 / 32 = 8）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;slen-stride-length&#34;&gt;&lt;strong&gt;SLEN (Stride Length)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：元素在内存中的步长，即两个连续元素之间的内存偏移量。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：影响内存访问模式，特别是在访问非连续内存时，SLEN 决定了元素之间的间隔。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;假设一个向量寄存器存储 4 个元素，每个元素大小为 32 位，而 SLEN 设置为 2，这意味着每个向量元素在内存中的位置间隔为 2 个 32 位单元。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;elen-element-length&#34;&gt;&lt;strong&gt;ELEN (Element Length)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：每个向量元素的大小（单位：比特），决定了每个元素占用多少内存。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：影响向量中每个元素的数据类型大小，在指令中用e表示，如e32。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;如果 ELEN 设置为 32 位，则每个向量元素为 32 位宽，可以是一个 32 位整数或 32 位浮点数。&lt;/li&gt;
+&lt;li&gt;如果 ELEN 为 64 位，则每个元素占 64 位，适用于较大数据类型（如 64 位整数或浮点数）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;lmul-vector-register-grouping-factor&#34;&gt;&lt;strong&gt;LMUL (Vector Register Grouping Factor)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量寄存器的分组因子，控制每个向量寄存器内元素的数量，决定寄存器的并行度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：LMUL 会影响每个向量寄存器中包含的元素数量，从而影响并行性，在指令中用m表示，如m1。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;LMUL = 1：每个寄存器存储最大数量的元素（假设 VLEN = 256 位，ELEN = 32 位，则每个寄存器存储 8 个元素）。&lt;/li&gt;
+&lt;li&gt;LMUL = 2：每个寄存器只存储 4 个元素，寄存器总数增加，适合提高并行度。&lt;/li&gt;
+&lt;li&gt;LMUL = 4：每个寄存器只存储 2 个元素。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vl-vector-length-register&#34;&gt;&lt;strong&gt;VL (Vector Length Register)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：VL 是一个寄存器，用来控制当前向量指令的长度，即当前指令能处理的元素数量。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：在 RVV 指令中，VL 决定了向量运算的迭代次数，向量操作将执行 VL 次。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;如果 VL = 4，那么该指令将对前 4 个向量元素执行操作，用setvl(max)指令可以得到指令类型的最大元素数量，其中每个指令指定vl可处理不同数量的元素。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vtype-vector-type-register&#34;&gt;&lt;strong&gt;VTYPE (Vector Type Register)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：VTYPE 控制向量操作的类型，如元素长度 (ELEN) 和 LMUL 的配置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：配置向量操作的具体参数，帮助硬件理解如何处理向量指令。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;VTYPE 设置为 ELEN = 32 位，LMUL = 1，表示每个向量寄存器存储 32 位元素，且每个寄存器的并行度为 1。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-mask-vmsk&#34;&gt;&lt;strong&gt;Vector Mask (vmsk)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量掩码用于控制哪些向量元素应该被操作，哪些应该被忽略。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：掩码机制使得程序能够选择性地执行向量操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;若 &lt;code&gt;vmsk = 11110000&lt;/code&gt;（二进制），则只有前 4 个向量元素会被操作，后 4 个元素将被忽略。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-registers-v0---vn&#34;&gt;&lt;strong&gt;Vector Registers (v0 - vn)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量寄存器用于存储向量数据，RISC-V 定义了 v0 到 v31 的向量寄存器。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：这些寄存器用于存储和处理向量数据，数量和大小可由硬件决定。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;v0&lt;/code&gt; 和 &lt;code&gt;v1&lt;/code&gt; 可以分别存储 256 位的向量数据，适用于不同长度的数据类型。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-loadstore-instructions&#34;&gt;&lt;strong&gt;Vector Load/Store Instructions&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量加载和存储指令，用于将数据从内存加载到向量寄存器，或将向量寄存器中的数据存储回内存。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：支持各种内存访问模式，如连续或非连续访问。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vlb&lt;/code&gt;：加载字节数据到向量寄存器。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vsb&lt;/code&gt;：将字节数据存储回内存。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-arithmetic-instructions&#34;&gt;&lt;strong&gt;Vector Arithmetic Instructions&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量算术指令用于执行向量加法、减法、乘法、除法等算术运算。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：向量算术指令在多核处理器中并行执行运算。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vadd&lt;/code&gt;：向量加法，执行两个向量的逐元素加法。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vmul&lt;/code&gt;：向量乘法，执行两个向量的逐元素乘法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-compare-instructions&#34;&gt;&lt;strong&gt;Vector Compare Instructions&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量比较指令用于比较向量中的元素，返回布尔掩码结果。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：常用于条件判断和控制流。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vseq&lt;/code&gt;：判断两个向量的元素是否相等，结果返回掩码。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vsgt&lt;/code&gt;：判断向量元素是否大于另一个向量，返回布尔掩码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-reduction-instructions&#34;&gt;&lt;strong&gt;Vector Reduction Instructions&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量归约指令用于将向量中的多个元素归约为一个单一结果，如求和、求最大值等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：常用于矩阵运算、图像处理等应用。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vredsum&lt;/code&gt;：求和，将向量中所有元素相加。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vredmax&lt;/code&gt;：求最大值，返回向量中的最大元素。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-scattergather-instructions&#34;&gt;&lt;strong&gt;Vector Scatter/Gather Instructions&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：用于从非连续的内存地址中加载数据或将数据存储到非连续的内存地址。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：提高对非连续内存的访问效率。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vscatter&lt;/code&gt;：将向量元素存储到不连续的内存位置。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vgather&lt;/code&gt;：从不连续的内存位置加载数据到向量寄存器。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-scalar-operations&#34;&gt;&lt;strong&gt;Vector-Scalar Operations&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量与标量之间的操作，允许标量与每个向量元素进行逐一运算。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：通过标量与向量元素的结合，处理常数数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vaddvi&lt;/code&gt;：将一个标量与向量中的每个元素相加。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vmulvi&lt;/code&gt;：将一个标量与向量中的每个元素相乘。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-predication&#34;&gt;&lt;strong&gt;Vector Predication&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：根据掩码或布尔条件选择性执行向量操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：通过掩码决定哪些元素进行计算，哪些跳过。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vmand&lt;/code&gt;：与掩码进行与运算，满足条件的元素进行计算。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-tail--masking&#34;&gt;&lt;strong&gt;Vector Tail &amp;amp; Masking&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：当 VL 不能完全填充向量寄存器时，通过尾部掩码控制哪些元素需要操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：避免浪费计算资源，确保运算的有效性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;如果 VL = 5，而寄存器有 8 个元素，掩码将控制只操作前 5 个元素。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vector-unit-vu&#34;&gt;&lt;strong&gt;Vector Unit (VU)&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：向量单元是硬件中的计算单元，负责执行向量指令。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：处理向量计算，提高处理器的并行度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;在支持 RVV 的处理器中，向量单元可以同时处理多个向量运算。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;note-1&#34;&gt;Note
+&lt;/h2&gt;&lt;h3 id=&#34;常见使用方式&#34;&gt;常见使用方式
+&lt;/h3&gt;&lt;p&gt;以float32类型dot计算为例：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;riscv_dot_prod_f32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;float32_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pSrcA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;float32_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pSrcB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;uint32_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;blockSize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;float32_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;float32_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sum&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.0&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;size_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;blkCnt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;blockSize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;size_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;vfloat32m8_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v_A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v_B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;vfloat32m8_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;vsum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vsetvlmax_e32m8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;vsum&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vfmv_v_f_f32m8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;0.0&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;l&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vsetvl_e32m8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;blkCnt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;blkCnt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;v_A&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vle32_v_f32m8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pSrcA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;pSrcA&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;v_B&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vle32_v_f32m8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pSrcB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;pSrcB&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;vsum&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vfmacc_vv_f32m8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vsum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v_A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v_B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vsetvl_e32m8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;vfloat32m1_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;temp00&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vfmv_v_f_f32m1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;0.0&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vsetvlmax_e32m8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;temp00&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vfredusum_vs_f32m8_f32m1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vsum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;temp00&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;sum&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__riscv_vfmv_f_s_f32m1_f32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;temp00&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
         <title>Hugo &#43; Github 免费部署自己的博客</title>
         <link>https://loveleaves.github.io/p/hugo-blog/</link>
         <pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate>

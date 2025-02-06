@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="主要介绍Risc-v SIMD指令集RVV及其在性能优化方面的应用">
+<title>【SIMD】 Risc-v SIMD指令集RVV介绍</title>
+
+<link rel='canonical' href='https://loveleaves.github.io/p/rvv/'>
+
+<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="【SIMD】 Risc-v SIMD指令集RVV介绍">
+<meta property='og:description' content="主要介绍Risc-v SIMD指令集RVV及其在性能优化方面的应用">
+<meta property='og:url' content='https://loveleaves.github.io/p/rvv/'>
+<meta property='og:site_name' content='安哲睿'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-06T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-06T22:54:12&#43;08:00'/>
+<meta name="twitter:title" content="【SIMD】 Risc-v SIMD指令集RVV介绍">
+<meta name="twitter:description" content="主要介绍Risc-v SIMD指令集RVV及其在性能优化方面的应用">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b4d2f495c38e1067.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😁</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">安哲睿</a></h1>
+            <h2 class="site-description">世上无难事，只怕有心人</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/loveleaves'
+                        target="_blank"
+                        title="loveleaves"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/loveleaves'
+                        target="_blank"
+                        title="loveleaves"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://loveleaves.github.io/en/" >English</option>
+                                
+                                    <option value="https://loveleaves.github.io/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#references">References</a></li>
+    <li><a href="#算子源码">算子源码</a></li>
+    <li><a href="#note">Note</a></li>
+    <li><a href="#important-concepts">important concepts</a>
+      <ol>
+        <li><a href="#vlen-vector-length"><strong>VLEN (Vector Length)</strong></a></li>
+        <li><a href="#slen-stride-length"><strong>SLEN (Stride Length)</strong></a></li>
+        <li><a href="#elen-element-length"><strong>ELEN (Element Length)</strong></a></li>
+        <li><a href="#lmul-vector-register-grouping-factor"><strong>LMUL (Vector Register Grouping Factor)</strong></a></li>
+        <li><a href="#vl-vector-length-register"><strong>VL (Vector Length Register)</strong></a></li>
+        <li><a href="#vtype-vector-type-register"><strong>VTYPE (Vector Type Register)</strong></a></li>
+        <li><a href="#vector-mask-vmsk"><strong>Vector Mask (vmsk)</strong></a></li>
+        <li><a href="#vector-registers-v0---vn"><strong>Vector Registers (v0 - vn)</strong></a></li>
+        <li><a href="#vector-loadstore-instructions"><strong>Vector Load/Store Instructions</strong></a></li>
+        <li><a href="#vector-arithmetic-instructions"><strong>Vector Arithmetic Instructions</strong></a></li>
+        <li><a href="#vector-compare-instructions"><strong>Vector Compare Instructions</strong></a></li>
+        <li><a href="#vector-reduction-instructions"><strong>Vector Reduction Instructions</strong></a></li>
+        <li><a href="#vector-scattergather-instructions"><strong>Vector Scatter/Gather Instructions</strong></a></li>
+        <li><a href="#vector-scalar-operations"><strong>Vector-Scalar Operations</strong></a></li>
+        <li><a href="#vector-predication"><strong>Vector Predication</strong></a></li>
+        <li><a href="#vector-tail--masking"><strong>Vector Tail &amp; Masking</strong></a></li>
+        <li><a href="#vector-unit-vu"><strong>Vector Unit (VU)</strong></a></li>
+      </ol>
+    </li>
+    <li><a href="#note-1">Note</a>
+      <ol>
+        <li><a href="#常见使用方式">常见使用方式</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/simd/" >
+                SIMD
+            </a>
+        
+            <a href="/categories/hpc/" >
+                HPC
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/rvv/">【SIMD】 Risc-v SIMD指令集RVV介绍</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            主要介绍Risc-v SIMD指令集RVV及其在性能优化方面的应用
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 06, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="references">References
+</h2><ul>
+<li><a class="link" href="https://riscv.org/wp-content/uploads/2017/05/riscv-privileged-v1.10.pdf"  target="_blank" rel="noopener"
+    >The RISC-V Instruction Set Manual Volume II: Privileged Architecture</a></li>
+<li><a class="link" href="https://github.com/riscvarchive/riscv-v-spec/releases"  target="_blank" rel="noopener"
+    >RVV spec</a></li>
+<li><a class="link" href="https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource/1836682/1638774209491/Xuantie&#43;900&#43;Series&#43;RVV-0.7.1&#43;Intrinsic&#43;Manual.pdf"  target="_blank" rel="noopener"
+    >Xuantie+900+Series+RVV-0.7.1+Intrinsic+Manual</a></li>
+</ul>
+<h2 id="算子源码">算子源码
+</h2><ul>
+<li><a class="link" href="https://github.com/ARM-software/CMSIS_5"  target="_blank" rel="noopener"
+    >ARM-software/CMSIS</a>, <a class="link" href="https://github.com/ARM-software/CMSIS-DSP"  target="_blank" rel="noopener"
+    >CMSIS-DSP</a></li>
+<li><a class="link" href="https://github.com/Nuclei-Software/NMSIS"  target="_blank" rel="noopener"
+    >Nuclei-software/NMSIS</a></li>
+</ul>
+<h2 id="note">Note
+</h2><ul>
+<li>illegal instruction：修改CSR的mstatus标志位</li>
+</ul>
+<h2 id="important-concepts">important concepts
+</h2><h3 id="vlen-vector-length"><strong>VLEN (Vector Length)</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量寄存器的长度，表示每个寄存器可以存储的最大元素数量，通常是硬件设定的，例如 128 位、256 位或 512 位。</li>
+<li><strong>作用</strong>：决定向量寄存器的容量和能处理的数据量。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>如果 VLEN 为 256 位且每个元素为 32 位整数，则每个寄存器最多存储 8 个元素（256 / 32 = 8）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="slen-stride-length"><strong>SLEN (Stride Length)</strong>
+</h3><ul>
+<li><strong>定义</strong>：元素在内存中的步长，即两个连续元素之间的内存偏移量。</li>
+<li><strong>作用</strong>：影响内存访问模式，特别是在访问非连续内存时，SLEN 决定了元素之间的间隔。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>假设一个向量寄存器存储 4 个元素，每个元素大小为 32 位，而 SLEN 设置为 2，这意味着每个向量元素在内存中的位置间隔为 2 个 32 位单元。</li>
+</ul>
+</li>
+</ul>
+<h3 id="elen-element-length"><strong>ELEN (Element Length)</strong>
+</h3><ul>
+<li><strong>定义</strong>：每个向量元素的大小（单位：比特），决定了每个元素占用多少内存。</li>
+<li><strong>作用</strong>：影响向量中每个元素的数据类型大小，在指令中用e表示，如e32。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>如果 ELEN 设置为 32 位，则每个向量元素为 32 位宽，可以是一个 32 位整数或 32 位浮点数。</li>
+<li>如果 ELEN 为 64 位，则每个元素占 64 位，适用于较大数据类型（如 64 位整数或浮点数）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="lmul-vector-register-grouping-factor"><strong>LMUL (Vector Register Grouping Factor)</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量寄存器的分组因子，控制每个向量寄存器内元素的数量，决定寄存器的并行度。</li>
+<li><strong>作用</strong>：LMUL 会影响每个向量寄存器中包含的元素数量，从而影响并行性，在指令中用m表示，如m1。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>LMUL = 1：每个寄存器存储最大数量的元素（假设 VLEN = 256 位，ELEN = 32 位，则每个寄存器存储 8 个元素）。</li>
+<li>LMUL = 2：每个寄存器只存储 4 个元素，寄存器总数增加，适合提高并行度。</li>
+<li>LMUL = 4：每个寄存器只存储 2 个元素。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vl-vector-length-register"><strong>VL (Vector Length Register)</strong>
+</h3><ul>
+<li><strong>定义</strong>：VL 是一个寄存器，用来控制当前向量指令的长度，即当前指令能处理的元素数量。</li>
+<li><strong>作用</strong>：在 RVV 指令中，VL 决定了向量运算的迭代次数，向量操作将执行 VL 次。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>如果 VL = 4，那么该指令将对前 4 个向量元素执行操作，用setvl(max)指令可以得到指令类型的最大元素数量，其中每个指令指定vl可处理不同数量的元素。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vtype-vector-type-register"><strong>VTYPE (Vector Type Register)</strong>
+</h3><ul>
+<li><strong>定义</strong>：VTYPE 控制向量操作的类型，如元素长度 (ELEN) 和 LMUL 的配置。</li>
+<li><strong>作用</strong>：配置向量操作的具体参数，帮助硬件理解如何处理向量指令。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>VTYPE 设置为 ELEN = 32 位，LMUL = 1，表示每个向量寄存器存储 32 位元素，且每个寄存器的并行度为 1。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-mask-vmsk"><strong>Vector Mask (vmsk)</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量掩码用于控制哪些向量元素应该被操作，哪些应该被忽略。</li>
+<li><strong>作用</strong>：掩码机制使得程序能够选择性地执行向量操作。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>若 <code>vmsk = 11110000</code>（二进制），则只有前 4 个向量元素会被操作，后 4 个元素将被忽略。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-registers-v0---vn"><strong>Vector Registers (v0 - vn)</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量寄存器用于存储向量数据，RISC-V 定义了 v0 到 v31 的向量寄存器。</li>
+<li><strong>作用</strong>：这些寄存器用于存储和处理向量数据，数量和大小可由硬件决定。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>v0</code> 和 <code>v1</code> 可以分别存储 256 位的向量数据，适用于不同长度的数据类型。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-loadstore-instructions"><strong>Vector Load/Store Instructions</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量加载和存储指令，用于将数据从内存加载到向量寄存器，或将向量寄存器中的数据存储回内存。</li>
+<li><strong>作用</strong>：支持各种内存访问模式，如连续或非连续访问。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vlb</code>：加载字节数据到向量寄存器。</li>
+<li><code>vsb</code>：将字节数据存储回内存。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-arithmetic-instructions"><strong>Vector Arithmetic Instructions</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量算术指令用于执行向量加法、减法、乘法、除法等算术运算。</li>
+<li><strong>作用</strong>：向量算术指令在多核处理器中并行执行运算。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vadd</code>：向量加法，执行两个向量的逐元素加法。</li>
+<li><code>vmul</code>：向量乘法，执行两个向量的逐元素乘法。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-compare-instructions"><strong>Vector Compare Instructions</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量比较指令用于比较向量中的元素，返回布尔掩码结果。</li>
+<li><strong>作用</strong>：常用于条件判断和控制流。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vseq</code>：判断两个向量的元素是否相等，结果返回掩码。</li>
+<li><code>vsgt</code>：判断向量元素是否大于另一个向量，返回布尔掩码。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-reduction-instructions"><strong>Vector Reduction Instructions</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量归约指令用于将向量中的多个元素归约为一个单一结果，如求和、求最大值等。</li>
+<li><strong>作用</strong>：常用于矩阵运算、图像处理等应用。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vredsum</code>：求和，将向量中所有元素相加。</li>
+<li><code>vredmax</code>：求最大值，返回向量中的最大元素。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-scattergather-instructions"><strong>Vector Scatter/Gather Instructions</strong>
+</h3><ul>
+<li><strong>定义</strong>：用于从非连续的内存地址中加载数据或将数据存储到非连续的内存地址。</li>
+<li><strong>作用</strong>：提高对非连续内存的访问效率。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vscatter</code>：将向量元素存储到不连续的内存位置。</li>
+<li><code>vgather</code>：从不连续的内存位置加载数据到向量寄存器。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-scalar-operations"><strong>Vector-Scalar Operations</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量与标量之间的操作，允许标量与每个向量元素进行逐一运算。</li>
+<li><strong>作用</strong>：通过标量与向量元素的结合，处理常数数据。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vaddvi</code>：将一个标量与向量中的每个元素相加。</li>
+<li><code>vmulvi</code>：将一个标量与向量中的每个元素相乘。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-predication"><strong>Vector Predication</strong>
+</h3><ul>
+<li><strong>定义</strong>：根据掩码或布尔条件选择性执行向量操作。</li>
+<li><strong>作用</strong>：通过掩码决定哪些元素进行计算，哪些跳过。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vmand</code>：与掩码进行与运算，满足条件的元素进行计算。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-tail--masking"><strong>Vector Tail &amp; Masking</strong>
+</h3><ul>
+<li><strong>定义</strong>：当 VL 不能完全填充向量寄存器时，通过尾部掩码控制哪些元素需要操作。</li>
+<li><strong>作用</strong>：避免浪费计算资源，确保运算的有效性。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>如果 VL = 5，而寄存器有 8 个元素，掩码将控制只操作前 5 个元素。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vector-unit-vu"><strong>Vector Unit (VU)</strong>
+</h3><ul>
+<li><strong>定义</strong>：向量单元是硬件中的计算单元，负责执行向量指令。</li>
+<li><strong>作用</strong>：处理向量计算，提高处理器的并行度。</li>
+<li><strong>例子</strong>：
+<ul>
+<li>在支持 RVV 的处理器中，向量单元可以同时处理多个向量运算。</li>
+</ul>
+</li>
+</ul>
+<h2 id="note-1">Note
+</h2><h3 id="常见使用方式">常见使用方式
+</h3><p>以float32类型dot计算为例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">void</span> <span class="n">riscv_dot_prod_f32</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="n">float32_t</span> <span class="o">*</span> <span class="n">pSrcA</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="n">float32_t</span> <span class="o">*</span> <span class="n">pSrcB</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">uint32_t</span> <span class="n">blockSize</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">float32_t</span> <span class="o">*</span> <span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">float32_t</span> <span class="n">sum</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">blkCnt</span> <span class="o">=</span> <span class="n">blockSize</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">l</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">vfloat32m8_t</span> <span class="n">v_A</span><span class="p">,</span> <span class="n">v_B</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">vfloat32m8_t</span> <span class="n">vsum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">l</span> <span class="o">=</span> <span class="n">__riscv_vsetvlmax_e32m8</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="n">vsum</span> <span class="o">=</span> <span class="n">__riscv_vfmv_v_f_f32m8</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(;</span> <span class="p">(</span><span class="n">l</span> <span class="o">=</span> <span class="n">__riscv_vsetvl_e32m8</span><span class="p">(</span><span class="n">blkCnt</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">blkCnt</span> <span class="o">-=</span> <span class="n">l</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v_A</span> <span class="o">=</span> <span class="n">__riscv_vle32_v_f32m8</span><span class="p">(</span><span class="n">pSrcA</span><span class="p">,</span> <span class="n">l</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pSrcA</span> <span class="o">+=</span> <span class="n">l</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v_B</span> <span class="o">=</span> <span class="n">__riscv_vle32_v_f32m8</span><span class="p">(</span><span class="n">pSrcB</span><span class="p">,</span> <span class="n">l</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pSrcB</span> <span class="o">+=</span> <span class="n">l</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vsum</span> <span class="o">=</span> <span class="n">__riscv_vfmacc_vv_f32m8</span><span class="p">(</span><span class="n">vsum</span><span class="p">,</span> <span class="n">v_A</span><span class="p">,</span> <span class="n">v_B</span><span class="p">,</span> <span class="n">l</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">l</span> <span class="o">=</span> <span class="n">__riscv_vsetvl_e32m8</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">vfloat32m1_t</span> <span class="n">temp00</span> <span class="o">=</span> <span class="n">__riscv_vfmv_v_f_f32m1</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">l</span> <span class="o">=</span> <span class="n">__riscv_vsetvlmax_e32m8</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="n">temp00</span> <span class="o">=</span> <span class="n">__riscv_vfredusum_vs_f32m8_f32m1</span><span class="p">(</span><span class="n">vsum</span><span class="p">,</span> <span class="n">temp00</span><span class="p">,</span> <span class="n">l</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">sum</span> <span class="o">=</span> <span class="n">__riscv_vfmv_f_s_f32m1_f32</span><span class="p">(</span><span class="n">temp00</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Feb 06, 2025 22:54 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/arm-neon/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【SIMD】 ARM SIMD指令集NEON等介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Andrew Stark
+    </section>
+    
+    <section class="powerby">
+        
+            loveleaves <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<div id="aplayer"></div>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script>
+const staticDir = "https://loveleaves.github.io/";
+const musicDir = staticDir + '/music/';
+const songs = [
+    'Dream_It_Possible-Delacey'
+];
+let audios = [];
+songs.forEach((item) => {
+    const songInfo = item.split('-');
+    audios.push({
+        name: songInfo[0],
+        artist: songInfo[1],
+        url: musicDir + item + '/song.mp3',
+        lrc: musicDir + item + '/song.lrc',
+        cover: musicDir + 'cover.jpg', 
+    })
+});
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    
+    fixed: true,
+    
+    lrcType: 3,
+    audio: audios
+});
+</script>
+
+
+
+
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/letere-gzj/live2d-widget-v3@main';
+  const myCdnPath = "https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@v1.0.0/live2d/live2d-moc3/";
+  
+  const cssPath = "https://loveleaves.github.io/waifu/waifu.css";
+  const tipsJsonPath = "https://loveleaves.github.io/waifu/waifu-tips.json";
+  const tipsJsPath = "https://loveleaves.github.io/waifu/waifu-tips.js";
+  const live2dJsPath = "https://loveleaves.github.io/waifu/live2d.min.js";
+
+  const config = {
+    
+    path: {
+      modelPath: myCdnPath,
+      cssPath: cssPath,
+      tipsJsonPath: tipsJsonPath,
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "info", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+
+
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://loveleaves.github.io/icons/backTop.svg);
+    }
+</style>
+
+<div id="particles-js"></div>
+
+<script src=https://loveleaves.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://loveleaves.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<script>
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+
+    </body>
+</html>
