@@ -10,7 +10,7 @@
 <meta property='og:description' content="使用hugo工具生成静态页面，然后在github上部署静态页面，来免费搭建自己的博客">
 <meta property='og:url' content='https://loveleaves.github.io/p/hugo-blog/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-06T00:15:10&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-07T20:30:48&#43;08:00'/>
 <meta name="twitter:title" content="Hugo + Github 免费部署自己的博客">
 <meta name="twitter:description" content="使用hugo工具生成静态页面，然后在github上部署静态页面，来免费搭建自己的博客">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -302,6 +302,11 @@
         <li><a href="#配置主题">配置主题</a></li>
       </ol>
     </li>
+    <li><a href="#启用-giscus-评论">启用 Giscus 评论</a>
+      <ol>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </li>
     <li><a href="#github部署">Github部署</a>
       <ol>
         <li><a href="#常规部署">常规部署</a></li>
@@ -377,7 +382,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 3 分钟
+                    阅读时长: 4 分钟
                 </time>
             </div>
         
@@ -411,7 +416,59 @@ Windows下载版本：hugo_extended_xxxxx_windows_amd64.zip</p>
 <p>（3）将exampleSite样例数据中的 Content 和 hugo.yaml 复制到主文件夹中，并删掉hugo.toml和content/post/rich-content</p>
 <p>（4）修改 hugo.yaml 中的 theme，将他修改为跟主题文件夹同名</p>
 <p>（5）再次启动hugo服务，查看主题，具体主题配置修改 hugo.yaml，这里不细说，感兴趣可自行查找相关文章</p>
-<h2 id="github部署">Github部署
+<h2 id="启用-giscus-评论">启用 Giscus 评论
+</h2><p>Giscus 是利用 GitHub Discussions 实现的评论系统，开源、无跟踪、无广告、永久免费。</p>
+<p>Hugo 对 Giscus 有很好的支持，在 hugo-theme-jane 主题中配置启用Giscus 很简单。</p>
+<p>要启用 Giscus 请先确保：</p>
+<ul>
+<li>仓库是公开的，否则访客将无法查看 discussions。
+giscus app 已安装，否则访客将无法评论和回应。</li>
+<li>Discussions 功能已在你的仓库中启用。</li>
+</ul>
+<p>前面搭建的博客仓库就是公开的，满足了第一点，接下来要做的就是安装 Giscus app 和启用 Discussions。</p>
+<h3 id="references">References
+</h3><ul>
+<li><a class="link" href="https://www.codeaer.com/post/enable-giscus-comments-in-hugo/"  target="_blank" rel="noopener"
+    >https://www.codeaer.com/post/enable-giscus-comments-in-hugo/</a></li>
+</ul>
+<p>配置 Giscus 根据版本有所不同，0.143.1版本可使用以下模板</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># repoId、categoryId参考网址修改：https://giscus.app/zh-CN
+</span></span><span class="line"><span class="cl">giscus:
+</span></span><span class="line"><span class="cl">    repo: &#34;xxx/xxx.github.io&#34;
+</span></span><span class="line"><span class="cl">    repoId: &#34;xxx&#34;
+</span></span><span class="line"><span class="cl">    category: &#34;General&#34;
+</span></span><span class="line"><span class="cl">    categoryId: &#34;xxx&#34;
+</span></span><span class="line"><span class="cl">    mapping: &#34;pathname&#34;  # comment value is the default value
+</span></span><span class="line"><span class="cl">    strict: 0
+</span></span><span class="line"><span class="cl">    reactionsEnabled: 1
+</span></span><span class="line"><span class="cl">    # emitMetadata: 0
+</span></span><span class="line"><span class="cl">    inputPosition: &#34;top&#34;
+</span></span><span class="line"><span class="cl">    theme: &#34;dark&#34;
+</span></span><span class="line"><span class="cl">    lang: &#34;zh-CN&#34;
+</span></span><span class="line"><span class="cl">    lazyLoading: true
+</span></span><span class="line"><span class="cl">    crossorigin: &#34;anonymous&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="github部署">Github部署
 </h2><h3 id="常规部署">常规部署
 </h3><p>（1）前往【Github官网】，创建仓库 {github用户名}.github.io</p>
 <p>（2）前往Setting -&gt; Pages -&gt; Branch选择main分支，然后保存，会自动开启 https://{github用户名}.github.io 的地址，这地址也是以后访问博客的地址</p>
@@ -590,7 +647,7 @@ Windows下载版本：hugo_extended_xxxxx_windows_amd64.zip</p>
 
 
         <span>
-            最后更新于 Feb 06, 2025 00:15 &#43;0800
+            最后更新于 Feb 07, 2025 20:30 &#43;0800
         </span>
     </section></footer>
 
@@ -631,46 +688,55 @@ Windows下载版本：hugo_extended_xxxxx_windows_amd64.zip</p>
      
     
         
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="loveleaves/loveleaves.github.io"
+    data-repo-id="R_kgDOHiRxVA"
+    data-category="General"
+    data-category-id="DIC_kwDOHiRxVM4Cmvtx"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading=""
+    crossorigin="anonymous"
+    async
+></script>
 <script>
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
         }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
     }
-</style>
 
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (typeof DISQUS == 'object') {
-            DISQUS.reset({
-                reload: true
-            });
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
         }
-    })
+    })();
 </script>
 
     
