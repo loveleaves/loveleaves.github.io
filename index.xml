@@ -7,6 +7,97 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright><atom:link href="https://loveleaves.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【量化】 神经网络量化介绍</title>
+        <link>https://loveleaves.github.io/p/quantization/</link>
+        <pubDate>Mon, 10 Feb 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/quantization/</guid>
+        <description>&lt;h2 id=&#34;神经网络加速基础知识&#34;&gt;神经网络加速基础知识
+&lt;/h2&gt;&lt;h3 id=&#34;计算机体系结构组成原理&#34;&gt;计算机体系结构/组成原理
+&lt;/h3&gt;&lt;p&gt;主要了解以下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://foxsen.github.io/archbase/sec-ISA.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;指令系统&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://foxsen.github.io/archbase/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86%E5%92%8C%E7%BB%93%E6%9E%84.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;计算机组成原理和结构&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/CorePower/p/CorePower.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;流水线技术&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;指令耗时热点指令&#34;&gt;指令耗时/热点指令
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/quantization_1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;现代处理器&#34;&gt;现代处理器
+&lt;/h3&gt;&lt;h4 id=&#34;经典cpu体系结构&#34;&gt;经典CPU体系结构
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/quantization_2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;x86架构cisc&#34;&gt;x86架构（CISC）
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;胶水typo，多核心&lt;/li&gt;
+&lt;li&gt;部分组件公共化，提高集成度
+&lt;img src=&#34;https://loveleaves.github.io/imgs/quantization_3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;gpu架构&#34;&gt;GPU架构
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;共享指令译码和控制，ALU运行的指令相同（分支发散问题）&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/gpu&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GPU架构介绍&lt;/a&gt;
+&lt;img src=&#34;https://loveleaves.github.io/imgs/quantization_4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;asic专用芯片架构&#34;&gt;ASIC专用芯片架构
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;继续移除非必要指令（浮点、图形支持等）&lt;/li&gt;
+&lt;li&gt;特定领域设计&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;异构计算与主从设备交互&#34;&gt;异构计算与主从设备交互
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/quantization_5.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;找到性能瓶颈performance-bottleneck&#34;&gt;找到性能瓶颈（performance bottleneck）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;高算力场景=》用ASIC等芯片，提高算力，高延迟&lt;/li&gt;
+&lt;li&gt;低延迟场景=》用FPGA等芯片，降低延迟，低算力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;性能热点分析工具&#34;&gt;性能热点分析工具
+&lt;/h2&gt;&lt;h3 id=&#34;torch-profiler&#34;&gt;torch Profiler
+&lt;/h3&gt;&lt;h3 id=&#34;nsight-compute&#34;&gt;Nsight Compute
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/tool&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Nsight Compute&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>【软件设计】 设计模式介绍</title>
         <link>https://loveleaves.github.io/p/design_pattern/</link>
         <pubDate>Sun, 09 Feb 2025 00:00:00 +0000</pubDate>
@@ -1206,6 +1297,1072 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://letere-gzj.github.io/hugo-stack/p/hugo/custom-blog/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://letere-gzj.github.io/hugo-stack/p/hugo/custom-blog/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>【Tool】 记录各种用到的工具</title>
+        <link>https://loveleaves.github.io/p/tool/</link>
+        <pubDate>Sun, 05 Jan 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/tool/</guid>
+        <description>&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/673459718&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;HPC/ML/OS/SW性能工具总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;热点分析&#34;&gt;热点分析
+&lt;/h2&gt;&lt;p&gt;热点分析通常通过使用 性能分析工具 来实现，工具会提供每个函数、方法、代码块的执行时间、调用次数、CPU 占用率等信息，帮助开发人员识别耗时最多的部分。&lt;/p&gt;
+&lt;h3 id=&#34;常见的热点分析方法&#34;&gt;常见的热点分析方法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;调用图（Call Graph）：通过调用图分析函数之间的调用关系，找到调用最频繁的部分。&lt;/li&gt;
+&lt;li&gt;性能剖析（Profiling）：通过工具生成程序运行时的性能数据，分析哪些函数或代码块占用了最多的时间或资源。&lt;/li&gt;
+&lt;li&gt;热代码路径（Hot Code Path）分析：关注那些频繁执行的路径或分支，优化这些路径的性能。&lt;/li&gt;
+&lt;li&gt;内存热点分析：分析程序中哪些数据结构或对象频繁创建、销毁，导致内存管理不善或频繁的垃圾回收。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;实际操作&#34;&gt;实际操作
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;函数级分析：分析程序中的每个函数，找出耗时最多的函数并进行优化。&lt;/li&gt;
+&lt;li&gt;多线程/并发分析：对于并发程序，热点分析还要考虑线程的执行时间、锁竞争和同步问题，识别线程间的性能瓶颈。&lt;/li&gt;
+&lt;li&gt;内存分析：分析内存的分配和释放，找出内存泄漏或频繁的内存分配导致的性能瓶颈。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;性能分析工具&#34;&gt;性能分析工具
+&lt;/h2&gt;&lt;h3 id=&#34;gprofgnu-profile工具&#34;&gt;gprof：GNU profile工具
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;适用语言：C、C++、Pascal、Fortran&lt;/li&gt;
+&lt;li&gt;介绍：用于程序的性能优化以及程序瓶颈问题的查找和解决。通过分析应用程序运行时产生的“flat profile”，可以得到每个函数的调用次数，每个函数消耗的处理器时间，也可以得到函数的“调用关系图”，包括函数调用的层次关系，每个函数调用花费了多少时间。&lt;/li&gt;
+&lt;li&gt;缺点：对并行程序支持较差，不能提供细粒度的分析，主要适用于函数级别的性能分析。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使用步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1、用gcc、g++、xlC编译程序时，使用-pg参数，如：g++ -pg -o test test.cpp。编译器会自动在目标代码中插入用于性能测试的代码片断，这些代码在程序运行时采集并记录函数的调用关系和调用次数，并记录函数自身执行时间和被调用函数的执行时间。&lt;/li&gt;
+&lt;li&gt;2、执行编译后的可执行程序，如：./test。该步骤运行程序的时间会稍慢于正常编译的可执行程序的运行时间。程序运行结束后，会在程序所在路径下生成一个缺省文件名为gmon.out的文件，这个文件就是记录程序运行的性能、调用关系、调用次数等信息的数据文件。&lt;/li&gt;
+&lt;li&gt;3、使用gprof命令来分析记录程序运行信息的gmon.out文件，如：gprof test gmon.out。则可以在显示器上看到函数调用相关的统计、分析信息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;perf&#34;&gt;Perf
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;适用语言： C, C++&lt;/li&gt;
+&lt;li&gt;平台： Linux&lt;/li&gt;
+&lt;li&gt;特点： Perf 是 Linux内置的性能分析工具，可用于分析 CPU 使用率、内存访问、系统调用等。它是一个命令行工具。适用于深度的 Linux 系统级性能分析。&lt;/li&gt;
+&lt;li&gt;缺点：需要一定的学习成本，报告可能较为复杂。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Perf是一个&lt;strong&gt;很大的工具&lt;/strong&gt;，此处仅展示分析某个应用的的用法。
+&lt;strong&gt;使用步骤（使用gprof的那个可执行文件）&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1、perf record ./test，部分性能参数需要root权限&lt;/li&gt;
+&lt;li&gt;2、perf report&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;References&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.brendangregg.com/perf.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.brendangregg.com/perf.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://perfwiki.github.io/main/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;perf tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_17743307/article/details/123081487&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;WSL2安装perf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/530622057&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;perf原理及火焰图&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/134721612&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;perf分析c热点函数&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;perf简单例子-程序调用栈火焰图&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf record -F 99 -p 2347 -g -- sleep 30
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# perf record表示采集系统事件, 没有使用 -e 指定采集事件, 则默认采集 cycles(即 CPU clock 周期), -F 99 表示每秒 99 次, -p 2347 是进程号, 即对哪个进程进行分析, -g 表示记录调用栈, sleep 30 则是持续 30 秒.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 统计每个调用栈出现的百分比, 然后从高到低排列
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf report -n –stdio
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 解析perf收集的信息
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf script -i perf.data &amp;amp;&amp;gt; perf.unfold
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 生成折叠后的调用栈
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 使用开源软件：https://github.com/brendangregg/FlameGraph.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./stackcollapse-perf.pl perf.unfold &amp;amp;&amp;gt; perf.folded
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 生成火焰图
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./flamegraph.pl perf.folded &amp;gt; perf.svg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;perf简单例子-分析热点函数、指令&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 通过-g选项保留源代码信息
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;gcc -g test.c -o test
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 通过perf record命令对test程序采样，-g表示采样调用栈
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf record -F 999 ./test
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 查看热点分布
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf report
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 查看热点函数testA中的热点指令及语句
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf annotate --stdio --symbol=testA
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;intel-vtune-profiler&#34;&gt;Intel VTune Profiler
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;适用语言： 多语言支持&lt;/li&gt;
+&lt;li&gt;平台： Windows、Linux&lt;/li&gt;
+&lt;li&gt;特点： Intel VTune Profiler 是一个功能强大的性能分析工具，可用于分析 CPU 使用率、内存访问、多线程性能等。适用于 &lt;strong&gt;Intel&lt;/strong&gt; 处理器。&lt;/li&gt;
+&lt;li&gt;可以看到 perf 看不到L3cache 等硬件特性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;references&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/bandaoyu/p/16751995.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.cnblogs.com/bandaoyu/p/16751995.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/12642264312&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://zhuanlan.zhihu.com/p/12642264312&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/yaojingqingcheng/article/details/120335335&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.csdn.net/yaojingqingcheng/article/details/120335335&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tau&#34;&gt;TAU
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;适用语言： C、C++、python&lt;/li&gt;
+&lt;li&gt;官网：https://www.cs.uoregon.edu/research/tau/home.php&lt;/li&gt;
+&lt;li&gt;特点： 是一个面向MPI与OpenMP并行程序的profiler，在目前看到的OpenMPI的Profiler中算是比较健全的一个。相比于Intel的vtune面向OpenMPI的时候会有些限制，TAU可以根据不同的MPI发行版重新编译。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;references&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/undermyth/p/17253435.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TAU Profiler安装&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cs.uoregon.edu/research/tau/docs/newguide/ch03s09.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;python&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/Johnsonjjj/article/details/103731954&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;使用性能测试工具TAU测试MPI程序记录&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.showapi.com/news/article/66c15dc24ddd79f11a0f7cee&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;深入解析TAU工具&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;gpu-分析工具&#34;&gt;GPU 分析工具
+&lt;/h2&gt;&lt;p&gt;全部工具：https://developer.nvidia.com/tools-overview&lt;/p&gt;
+&lt;h3 id=&#34;cuda-gdb&#34;&gt;cuda-gdb
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.nvidia.com/cuda-gdb&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cuda-gdb&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-g -G&lt;/code&gt;编译选项&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;nsight-compute&#34;&gt;Nsight Compute
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;nvprof，计算能力8.0以下使用&lt;/li&gt;
+&lt;li&gt;注意系统要求（如win11 ws2才支持）：&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-compute/ReleaseNotes/index.html#system-requirements&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;system-requirements&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://forums.developer.nvidia.com/t/unknown-error-on-device-0-when-running-ncu-on-wsl/313742&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;unknown-error-on-device-0-when-running-ncu-on-wsl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使用方案：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1、用户界面：https://docs.nvidia.com/nsight-compute/NsightCompute/index.html&lt;/li&gt;
+&lt;li&gt;2、CLI方式：https://docs.nvidia.com/nsight-compute/NsightComputeCli/index.html&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;computesanitizer&#34;&gt;ComputeSanitizer
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html#id1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html#id1&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;功能正确性检查工具，包含：memcheck、racecheck、initcheck、synccheck等&lt;/li&gt;
+&lt;li&gt;cuda12.0以下内存检查使用&lt;a class=&#34;link&#34; href=&#34;https://developer.nvidia.com/cuda-memcheck&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CUDA-MEMCHECK&lt;/a&gt;，以上使用ComputeSanitizer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;hpctoolkit&#34;&gt;HPCtoolkit
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;适用语言： C、C++、CUDA&lt;/li&gt;
+&lt;li&gt;官网：&lt;a class=&#34;link&#34; href=&#34;https://github.com/HPCToolkit&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;HPCToolkit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;特点：支持CUDA&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;内存分析工具&#34;&gt;内存分析工具
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;gdb：-g源码调试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tsan&#34;&gt;tsan
+&lt;/h3&gt;&lt;p&gt;TSan（ThreadSanitizer）是一个用于检测多线程程序中的 &lt;strong&gt;数据竞争&lt;/strong&gt; 和 &lt;strong&gt;线程安全问题&lt;/strong&gt; 的工具。它是由 Google 开发的，用于帮助开发者发现并修复多线程程序中的并发问题，这些问题可能导致难以复现的错误和难以调试的行为。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. 什么是数据竞争？&lt;/strong&gt;
+数据竞争是指多个线程并发地访问同一块内存区域，并且至少有一个线程在写入该内存区域，而其他线程可能在读或写该内存。数据竞争通常会导致不可预测的程序行为，比如程序崩溃、结果错误等。数据竞争的问题尤其难以发现，因为它们通常依赖于程序执行的特定时序和上下文。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. TSan 的功能&lt;/strong&gt;
+ThreadSanitizer 是一种 动态检测工具，它能够监测并发程序中的线程交互，并在检测到数据竞争时，给出详细的报告。它通过 **插桩（Instrumentation） **方式，插入检查代码，追踪每个线程对共享内存的访问，以此来检测潜在的数据竞争。&lt;/p&gt;
+&lt;p&gt;具体功能包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检测数据竞争：在多线程程序中，TSan 能够发现不同线程对同一内存位置的并发访问（读-写或写-写），并且报告潜在的数据竞争。&lt;/li&gt;
+&lt;li&gt;报告细节：当 TSan 检测到数据竞争时，会提供详细的错误报告，包含竞争发生的栈信息、线程信息、访问的内存位置等，帮助开发者定位问题。&lt;/li&gt;
+&lt;li&gt;跨平台支持：TSan 支持 Linux、macOS、Android 和其他平台，通常与 Clang 和 GCC 编译器兼容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;3. 如何使用 TSan&lt;/strong&gt;
+TSan 是通过编译器插件实现的，因此需要在编译程序时启用它。以下是启用 TSan 的基本步骤：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 1、编译时启用 TSan，使编译器将 TSan 插桩到代码中，在程序运行时启用线程安全检查。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;g++ -fsanitize=thread -g test.cpp -o test
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 2、运行时，程序将被 TSsan 监控，检测线程间的竞争。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./test
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 如果程序中有数据竞争，TSan 会输出类似以下的报告：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ThreadSanitizer: data race in function &amp;#39;foo&amp;#39; at address 0x601000000020
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  #0 0x7f89b5cb5e6f in foo
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  #1 0x7f89b5cb5e79 in bar
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  #2 0x7f89b5cb5f89 in main
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;TSan 会提供详细的栈跟踪，指出哪些线程、哪些内存地址、在哪些函数中发生了数据竞争。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;4. TSan 的工作原理&lt;/strong&gt;
+TSan 通过对程序进行 &lt;strong&gt;插桩&lt;/strong&gt;，在程序中每次内存访问（读/写）时插入检查代码，追踪每个线程对内存的访问。它会记录每个线程对共享内存的访问并进行比较，以判断是否存在数据竞争。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;主要机制：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;内存访问追踪：TSan 会追踪每个线程对内存地址的访问情况，记录访问的时间戳和线程标识。&lt;/li&gt;
+&lt;li&gt;同步原语检测：TSan 会检查线程之间的同步操作（如 mutex、lock、atomic）是否正确使用，确保线程安全。&lt;/li&gt;
+&lt;li&gt;数据竞争检测：如果两个线程访问同一内存位置，并且至少一个是写操作，TSan 会标记为潜在的数据竞争。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;5. TSan 检测的线程安全问题&lt;/strong&gt;
+除了检测数据竞争，TSan 还可以帮助识别以下并发编程中的常见问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;死锁：如果两个线程因相互等待而导致死锁，TSan 也可以通过检测锁的顺序和依赖关系来帮助识别死锁。&lt;/li&gt;
+&lt;li&gt;非原子操作：在多线程环境中，如果某些操作不是原子的，可能会导致竞态条件。TSan 可以通过对同步操作的检查，帮助发现这些问题。&lt;/li&gt;
+&lt;li&gt;不当的内存同步：如果线程没有适当的同步机制（如 mutex 或 atomic）来协调对共享数据的访问，可能会出现竞态条件，TSan 会标记这些不安全的内存访问。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;6. TSan 的优点和限制&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优点：能够捕获到很难复现的多线程问题，提供详细的报告，包括访问的内存位置、线程栈、数据竞争的上下文，帮助开发者快速定位并修复问题。&lt;/li&gt;
+&lt;li&gt;限制：会有一定的性能开销（开发阶段使用），可能不会检测所有类型的并发问题，特别是某些边缘情况或者深度依赖于硬件的并发问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;addresssanitizer-asan&#34;&gt;AddressSanitizer (ASan)
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;ASan&lt;/strong&gt;（&lt;strong&gt;AddressSanitizer&lt;/strong&gt;）是一个用于检测 &lt;strong&gt;内存错误&lt;/strong&gt; 的强大工具，特别是针对 &lt;strong&gt;缓冲区溢出&lt;/strong&gt;、&lt;strong&gt;堆栈溢出&lt;/strong&gt;、&lt;strong&gt;使用后释放&lt;/strong&gt;（use-after-free）等常见内存问题。ASan 是由 Google 开发的，作为一个 &lt;strong&gt;编译时检测工具&lt;/strong&gt;，它可以在程序运行时检测出许多类型的内存错误，并提供详细的错误报告。ASan 可以用于 &lt;strong&gt;C&lt;/strong&gt; 和 &lt;strong&gt;C++&lt;/strong&gt; 等语言，广泛应用于开发和测试阶段，帮助开发者发现和修复难以调试的内存错误。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;ASan 的功能&lt;/strong&gt;
+ASan 的核心功能是通过 &lt;strong&gt;内存访问跟踪&lt;/strong&gt; 来检测程序中的各种内存错误。它能有效检测以下几类常见的内存问题：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;缓冲区溢出&lt;/strong&gt;（Buffer Overflow）：当程序写入超出分配内存的区域时，会导致数据损坏或程序崩溃。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;堆栈溢出&lt;/strong&gt;（Stack Overflow）：当程序的栈内存超出预定范围时，可能会覆盖局部变量或函数返回地址。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;使用后释放&lt;/strong&gt;（Use-After-Free）：指在内存被释放后，程序仍然访问该内存。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存泄漏&lt;/strong&gt;（Memory Leak）：指程序分配了内存但没有释放，导致内存消耗不断增加。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;双重释放&lt;/strong&gt;（Double Free）：指在释放内存后再次释放该内存，可能导致程序崩溃。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;未初始化内存读取&lt;/strong&gt;（Use of Uninitialized Memory）：程序读取未初始化的内存内容，可能导致不可预测的行为。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;&lt;strong&gt;ASan 的工作原理&lt;/strong&gt;
+ASan 通过 &lt;strong&gt;编译器插桩&lt;/strong&gt;（Instrumenting Compiler）和 &lt;strong&gt;运行时库&lt;/strong&gt;（Runtime Library）的配合工作来检测内存错误。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;编译时插桩&lt;/strong&gt;：在程序的源代码编译过程中，ASan 会插入额外的检查代码，这些代码会在程序运行时检查每个内存访问，确保它们在合法的内存范围内。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存分配替换&lt;/strong&gt;：ASan 会替换程序的 &lt;strong&gt;内存分配函数&lt;/strong&gt;（如 &lt;code&gt;malloc&lt;/code&gt;、&lt;code&gt;free&lt;/code&gt;、&lt;code&gt;new&lt;/code&gt;、&lt;code&gt;delete&lt;/code&gt;）来监控内存的分配和释放操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存红区（Redzones）&lt;/strong&gt;：ASan 在每个内存块的前后插入一些特殊的 &amp;ldquo;红区&amp;rdquo;（Redzones），这些区域用于检测 &lt;strong&gt;越界访问&lt;/strong&gt;。如果程序试图访问红区，ASan 会报告错误。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;运行时检测&lt;/strong&gt;：当程序访问非法内存时，ASan 会触发 &lt;strong&gt;运行时错误检测&lt;/strong&gt;，并输出详细的错误信息（如错误的内存地址、堆栈信息等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;&lt;strong&gt;如何使用 ASan&lt;/strong&gt;
+要启用 AddressSanitizer，您需要在编译时添加 &lt;code&gt;-fsanitize=address&lt;/code&gt; 选项，并启用调试信息 &lt;code&gt;-g&lt;/code&gt;（以便于调试）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;g++ -fsanitize&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;address -g -o &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; test.cpp
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;&lt;strong&gt;ASan 错误报告&lt;/strong&gt;
+当 ASan 检测到内存错误时，它会生成详细的错误报告。该报告通常包含以下信息：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;错误类型&lt;/strong&gt;：如 &lt;strong&gt;use-after-free&lt;/strong&gt;、&lt;strong&gt;buffer overflow&lt;/strong&gt;、&lt;strong&gt;stack overflow&lt;/strong&gt; 等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;错误位置&lt;/strong&gt;：报告发生错误的内存地址，指出程序在哪里进行非法内存访问。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调用栈&lt;/strong&gt;：ASan 会提供程序的调用栈信息，帮助开发者快速定位问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存布局&lt;/strong&gt;：显示内存分配情况，包括程序访问的内存区域和红区位置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;&lt;strong&gt;ASan 检测的内存问题&lt;/strong&gt;
+ASan 可以检测的内存问题包括：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;堆栈溢出（Stack Overflow）&lt;/strong&gt;：当局部变量超出栈边界时，ASan 会报告堆栈溢出。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缓冲区溢出（Buffer Overflow）&lt;/strong&gt;：当访问超出数组或缓冲区的范围时，ASan 会检测到缓冲区溢出。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;使用后释放（Use-After-Free）&lt;/strong&gt;：在内存被释放后，如果程序继续使用该内存，ASan 会报告此错误。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存泄漏（Memory Leak）&lt;/strong&gt;：ASan 可以检测到程序中未释放的内存（通过启用 &lt;code&gt;-fsanitize=address&lt;/code&gt; 和使用 &lt;code&gt;ASAN_OPTIONS=detect_leaks=1&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;双重释放（Double Free）&lt;/strong&gt;：当程序尝试两次释放同一块内存时，ASan 会报告此问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;未初始化内存访问（Use of Uninitialized Memory）&lt;/strong&gt;：当程序访问未初始化的内存时，ASan 会报告此错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;&lt;strong&gt;ASan 的优点和缺点&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;优点：高效的内存错误检测、易于使用、详细的错误报告、广泛支持。&lt;/li&gt;
+&lt;li&gt;缺点：性能开销、仅支持动态检测、依赖编译器。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;valgrind&#34;&gt;valgrind
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;平台：Linux / macOS / Windows（通过 Cygwin）&lt;/li&gt;
+&lt;li&gt;用途：Valgrind 是一款开源的动态分析工具，广泛用于 内存分析，如查找内存泄漏、内存越界等问题。
+&lt;strong&gt;功能：&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Memcheck：用于检测内存泄漏、越界访问和未初始化的内存读取。&lt;/li&gt;
+&lt;li&gt;Cachegrind：用于缓存行为分析，评估 CPU 缓存的命中率。&lt;/li&gt;
+&lt;li&gt;Callgrind：支持函数级别的性能分析，提供详细的 CPU 性能数据。&lt;/li&gt;
+&lt;li&gt;Helgrind：用于检测并发程序中的数据竞争。
+&lt;strong&gt;适用场景&lt;/strong&gt;：适用于内存优化、程序调试和多线程程序的性能分析。
+&lt;strong&gt;使用方式&lt;/strong&gt;：通过命令行运行程序时加上 valgrind，比如 valgrind &amp;ndash;leak-check=full ./my_program。
+&lt;strong&gt;优点&lt;/strong&gt;：强大的内存分析功能，能够检测很多潜在的错误。
+&lt;strong&gt;缺点&lt;/strong&gt;：运行时开销较大，程序执行速度可能会减慢。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ebpf-extended-berkeley-packet-filter&#34;&gt;eBPF (Extended Berkeley Packet Filter)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;类型：内核性能分析工具&lt;/li&gt;
+&lt;li&gt;功能：eBPF 可以用于监控系统的 CPU 使用情况、内存分配、I/O 性能、网络流量 等。&lt;/li&gt;
+&lt;li&gt;使用场景：eBPF 适用于 Linux 系统的全栈性能分析，特别是在容器化环境中（如 Kubernetes、Docker）。&lt;/li&gt;
+&lt;li&gt;优点：能够高效且低开销地进行性能分析，实时提供系统各个层次的性能数据。&lt;/li&gt;
+&lt;li&gt;缺点：需要一定的学习成本，并且工具的设置可能比较复杂。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在现代计算中，性能优化是提高程序效率、响应时间、资源利用率等重要方面的核心工作。不同类型的性能瓶颈可以通过不同的优化策略来解决，常见的优化策略包括&lt;strong&gt;并行度优化&lt;/strong&gt;、&lt;strong&gt;数据传输优化&lt;/strong&gt;、&lt;strong&gt;存储器访问优化&lt;/strong&gt;、&lt;strong&gt;向量化优化&lt;/strong&gt;、&lt;strong&gt;负载均衡优化&lt;/strong&gt;和&lt;strong&gt;多线程扩展性优化&lt;/strong&gt;。下面将详细介绍每个优化策略。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;性能优化策略&#34;&gt;性能优化策略
+&lt;/h2&gt;&lt;h3 id=&#34;1-并行度优化parallelism-optimization&#34;&gt;1. &lt;strong&gt;并行度优化（Parallelism Optimization）&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;并行度优化是指将计算任务拆分成多个独立的子任务，利用多核处理器或多台机器的计算能力来加速计算过程。并行度优化主要关注如何高效地将任务分解并利用多个计算资源。&lt;/p&gt;
+&lt;h4 id=&#34;核心策略&#34;&gt;核心策略：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;任务划分&lt;/strong&gt;：将计算任务划分为多个相对独立的子任务，确保每个子任务都能并行执行。划分可以基于数据分割或功能划分。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;并行模型选择&lt;/strong&gt;：选择合适的并行编程模型，如多线程、分布式计算、SIMD（单指令多数据）等，依赖于硬件架构和应用的需求。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;粒度控制&lt;/strong&gt;：控制任务的划分粒度，避免过多的细小任务带来的上下文切换开销。任务太小可能引发更多的线程启动和调度开销，反而会降低性能。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;避免线程同步问题&lt;/strong&gt;：在并行化时，尽量减少线程间的同步需求，如锁的竞争等，因为锁竞争会增加线程等待时间，影响性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实例&#34;&gt;实例：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;多核处理器利用&lt;/strong&gt;：将计算密集型任务分配给不同的 CPU 核心。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GPU 加速&lt;/strong&gt;：使用图形处理单元（GPU）进行并行计算，例如深度学习中广泛使用的并行训练。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-数据传输优化data-transfer-optimization&#34;&gt;2. &lt;strong&gt;数据传输优化（Data Transfer Optimization）&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;数据传输优化关注的是如何减少计算过程中数据的传输开销，尤其是在多核、多节点或大规模并行计算环境中，数据传输的延迟和带宽限制可能成为性能瓶颈。&lt;/p&gt;
+&lt;h4 id=&#34;核心策略-1&#34;&gt;核心策略：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;减少数据传输量&lt;/strong&gt;：尽量减少进程之间、计算节点之间的通信量。可以通过局部计算、减少数据的复制或压缩数据传输来减少带宽消耗。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据预取&lt;/strong&gt;：根据访问模式预测数据的需求，提前加载数据到缓存中，从而减少等待时间。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存映射与共享内存&lt;/strong&gt;：使用共享内存或内存映射文件来避免频繁的进程间通信，特别是在多进程或多线程的应用程序中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;局部性优化&lt;/strong&gt;：将数据分配到物理内存的本地区域，减少跨节点或跨芯片的数据传输。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实例-1&#34;&gt;实例：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在多节点集群中，避免每次计算都从主存储器加载大量数据，而是通过缓存和局部数据共享来减少传输。&lt;/li&gt;
+&lt;li&gt;在 GPU 和 CPU 之间，使用较小的批次数据传输，以减少 GPU 与主机之间的通信开销。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-存储器访问优化memory-access-optimization&#34;&gt;3. &lt;strong&gt;存储器访问优化（Memory Access Optimization）&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;存储器访问优化主要目的是减少内存访问延迟，提高内存带宽的利用率。内存访问模式的不合理会造成严重的性能瓶颈，尤其是对于大规模数据的计算密集型任务。&lt;/p&gt;
+&lt;h4 id=&#34;核心策略-2&#34;&gt;核心策略：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;数据局部性优化&lt;/strong&gt;：通过优化数据访问模式，提高数据在缓存中的命中率。可分为&lt;strong&gt;时间局部性&lt;/strong&gt;（重复访问相同数据）和&lt;strong&gt;空间局部性&lt;/strong&gt;（访问数据时的空间邻近性）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缓存优化&lt;/strong&gt;：优化程序数据结构，使数据在缓存中更容易命中，从而减少访问主内存的次数。使用&lt;strong&gt;预取技术&lt;/strong&gt;和合理的&lt;strong&gt;缓存对齐&lt;/strong&gt;可以显著提高缓存命中率。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;避免不必要的内存访问&lt;/strong&gt;：减少冗余的内存访问，如不必要的内存复制或多次访问相同的数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;非一致性存储模型优化&lt;/strong&gt;：在多处理器系统中，保持各个缓存一致性可能导致额外的开销，优化缓存一致性协议和访问策略可以提升性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实例-2&#34;&gt;实例：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;优化矩阵运算时，按行或按列的顺序访问数据，以提高缓存命中率。&lt;/li&gt;
+&lt;li&gt;使用 &lt;strong&gt;NUMA&lt;/strong&gt;（Non-Uniform Memory Access）架构时，避免频繁地访问远程内存，尽量保持计算和数据存储在同一个节点的本地内存中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-向量化优化vectorization-optimization&#34;&gt;4. &lt;strong&gt;向量化优化（Vectorization Optimization）&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;向量化是指将标量操作转换为向量操作，在单条指令中处理多个数据元素。现代处理器，尤其是具有SIMD（单指令多数据）指令集的处理器，能够通过向量化提升计算效率。&lt;/p&gt;
+&lt;h4 id=&#34;核心策略-3&#34;&gt;核心策略：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;利用SIMD指令&lt;/strong&gt;：使用 SIMD 指令集（如 AVX、SSE、NEON 等）对数据进行向量化操作，在单个指令周期内处理多个数据元素。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;编译器自动向量化&lt;/strong&gt;：现代编译器（如 GCC、Clang、Intel Compiler）能够自动识别可以向量化的循环，并进行相应优化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;手动优化&lt;/strong&gt;：在一些复杂的场景中，可以手动编写 SIMD 代码，通过内联汇编或编写特定的 SIMD 库来实现向量化优化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据对齐&lt;/strong&gt;：确保数据存储在合适的内存地址对齐，以便在向量化时避免额外的开销。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实例-3&#34;&gt;实例：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在图像处理、科学计算等应用中，使用 SIMD 向量化技术对每个像素或数据点执行并行操作（如加法、乘法等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;5-负载均衡优化load-balancing-optimization&#34;&gt;5. &lt;strong&gt;负载均衡优化（Load Balancing Optimization）&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;负载均衡优化是指在多处理器、多核心或分布式系统中，合理分配计算任务，以避免某些处理器过载或闲置，从而提高计算资源的利用率。&lt;/p&gt;
+&lt;h4 id=&#34;核心策略-4&#34;&gt;核心策略：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;任务划分&lt;/strong&gt;：合理划分任务，将计算负载均匀地分配给不同的计算单元。划分粒度要合适，避免过细的划分导致调度开销。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;动态负载均衡&lt;/strong&gt;：在运行时动态调整任务的分配，以应对负载变化和计算资源的不均衡。例如，在多核环境中，动态地将任务从负载较重的核心转移到空闲的核心上。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据局部性和负载均衡的结合&lt;/strong&gt;：在多核或多节点环境中，除了考虑负载均衡，还要考虑任务和数据的局部性，避免数据传输引发的性能瓶颈。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实例-4&#34;&gt;实例：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在分布式计算中使用负载均衡策略，避免某些计算节点过载，其他节点空闲。&lt;/li&gt;
+&lt;li&gt;在多核处理器上，使用调度算法动态调整任务负载。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;6-多线程扩展性优化multithreading-scalability-optimization&#34;&gt;6. &lt;strong&gt;多线程扩展性优化（Multithreading Scalability Optimization）&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;多线程扩展性优化关注的是如何使程序在多核或多处理器系统上运行时能够保持良好的性能提升，尤其是在线程数增加时，如何避免性能的下降。&lt;/p&gt;
+&lt;h4 id=&#34;核心策略-5&#34;&gt;核心策略：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;避免线程竞争&lt;/strong&gt;：合理设计程序，减少线程间的资源竞争。过多的锁、临界区和线程同步会导致线程间的阻塞，从而影响程序的扩展性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;线程数的调优&lt;/strong&gt;：选择合适的线程数，避免过多线程带来的上下文切换开销。通常，线程数不应超过处理器核心数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;工作窃取（Work Stealing）&lt;/strong&gt;：在多线程应用中，可以使用工作窃取算法，通过让空闲线程从负载较重的线程中窃取任务，平衡负载，提升扩展性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;任务划分粒度&lt;/strong&gt;：避免过小或过大的任务粒度，过小的任务会增加线程调度开销，过大的任务则可能导致资源利用率不足。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实例-5&#34;&gt;实例：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在多核机器上，动态调整线程数，以适应任务的计算需求和机器的硬件能力。&lt;/li&gt;
+&lt;li&gt;在并行计算中，使用线程池和任务队列来有效管理线程的创建和销毁。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;环境模拟&#34;&gt;环境模拟
+&lt;/h2&gt;&lt;h3 id=&#34;docker&#34;&gt;docker
+&lt;/h3&gt;&lt;h3 id=&#34;qemu&#34;&gt;qemu
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.qemu.org/documentation/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;docs&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;qemu安装arm&#34;&gt;qemu安装ARM
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/benkaoya/article/details/129509269&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;QEMU启动ARM64 Linux内核&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;大致思路是：
+&lt;ul&gt;
+&lt;li&gt;安装qemu-system-aarch64（ARM-64bit）模拟器；&lt;/li&gt;
+&lt;li&gt;安装aarch64-linux-gnu（ARM-64bit）交叉编译器；&lt;/li&gt;
+&lt;li&gt;交叉编译linux源码，得到ARM64 Linux内核镜像；&lt;/li&gt;
+&lt;li&gt;交叉编译busybox源码，使用busybox制作initramfs；&lt;/li&gt;
+&lt;li&gt;最后使用qemu-system-aarch64启用ARM64 Linux内核；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;环境管理运维&#34;&gt;环境管理/运维
+&lt;/h2&gt;&lt;h3 id=&#34;微服务&#34;&gt;微服务
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;k8s&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;python&#34;&gt;python
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;conda&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;其他&#34;&gt;其他
+&lt;/h2&gt;&lt;h3 id=&#34;内容比较compare&#34;&gt;内容比较compare
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.52pojie.cn/thread-1945905-1-1.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Beyond Compare&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;代码调用关系&#34;&gt;代码调用关系
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;cflow：静态分析工具，用来生成 C/C++ 程序的调用图。&lt;/li&gt;
+&lt;li&gt;Callgrind：动态函数分析&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>【GPU】 GPU架构及使用介绍</title>
+        <link>https://loveleaves.github.io/p/gpu/</link>
+        <pubDate>Fri, 03 Jan 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/gpu/</guid>
+        <description>&lt;h2 id=&#34;介绍&#34;&gt;介绍
+&lt;/h2&gt;&lt;p&gt;CUDA（Compute Unified Device Architecture，统⼀计算架构）是由 NVIDIA 开发的并行计算平台和编程模型，旨在利用 NVIDIA GPU（图形处理单元）强大的并行计算能力来加速计算密集型任务。CUDA 提供了一种编程接口，让程序员能够直接访问 GPU 上的计算资源。通过并行化计算任务，可以显著提升执行效率。GPU 相较于 CPU，在处理大量并行任务时具有显著的优势，通常拥有成百上千的处理核心（CUDA 核心），能够同时执行大量的操作。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;核心指标：核心数、GPU显存容量、GPU计算峰值、显存带宽&lt;/li&gt;
+&lt;li&gt;GPU不能单独计算，CPU+GPU组成异构计算架构：CPU起到控制作用，一般称为主机（Host）；GPU可以看作CPU的协处理器，一般称为设备（Device）；主机和设备之间内存访问一般通过PCIe总线链接。&lt;/li&gt;
+&lt;li&gt;CUDA 提供两层API接口：CUDA驱动(driver)API和CUDA运行时(runtime)API&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/SeventhBlue/cudaLearningMaterials_2/blob/master/CUDA%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-GPU%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97-%E9%AB%98%E6%B8%85%E6%89%AB%E6%8F%8F-%E4%B8%AD%E8%8B%B1%E6%96%87/CUDA%20Programming%20A%20Developer%27s%20Guide%20to%20Parallel%20Computing%20with%20GPUs.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;《CUDA 并行程序设计-GPU 编程指南》&lt;/a&gt; 第5、6、9章&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/loveleaves/ML_CPP/tree/main/ParallelFramework/CUDA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/loveleaves/ML_CPP/tree/main/ParallelFramework/CUDA&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cuda docs&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;programming-guide&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;best-practices-guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://cis5650-fall-2024.github.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CIS 5650-GPU Programming and Architecture&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://staskaer.github.io/2022/09/05/CUDA%E9%AB%98%E6%80%A7%E8%83%BD%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97-2/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CUDA笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/NVIDIA/CUDALibrarySamples&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CUDALibrarySamples&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;cuda框架&#34;&gt;CUDA框架
+&lt;/h2&gt;&lt;h3 id=&#34;基础编程框架&#34;&gt;基础编程框架
+&lt;/h3&gt;&lt;p&gt;单文件example.cu编程框架&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;header&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;inclusion&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;macro&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;definition&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;declarations&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;functions&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CUDA&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;kernels&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;allocate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;host&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;device&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;memory&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;initialize&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;host&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;memory&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;transfer&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;host&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;device&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;launch&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;call&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;kernel&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calculations&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;device&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;transfer&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;device&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;host&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;free&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;host&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;device&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;memory&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;definitions&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;functions&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CUDA&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;kernels&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;编译指令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nvcc -arch=sm_XY -code=compute_XY -o example example.cu
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;nvcc编译工作原理&#34;&gt;nvcc编译工作原理
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/_images/cuda-compilation-from-cu-to-executable.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;CUDA Compilation Trajectory&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;host code（standard C/C++ compiler）、device code（compiled into PTX/cubin）&lt;/li&gt;
+&lt;li&gt;CUDA程序兼容性考虑：在将源代码编译为 PTX 代码时，需要用选项-arch=compute_XY指定一个虚拟架构的计算能力，用以确定代码中能够使用的CUDA功能。在将PTX代码编译为cubin代码时，需要用选项-code=sm_ZW指定一个真实架构的计算能力，用以确定可执行文件能够使用的GPU。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.kapilsharma.dev/posts/deep-dive-into-triton-internals/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Deep Dive into Triton Internals&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;gpu设备设置&#34;&gt;GPU设备设置
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;1、获取GPU设备数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;int iDeviceCount = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cudaGetDeviceCount(&amp;amp;iDeviceCount);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;2、设置GPU执行时使用的设备&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;int iDev = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cudaSetDevice(iDev)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;内存管理&#34;&gt;内存管理
+&lt;/h3&gt;&lt;p&gt;主设内存管理
+&lt;strong&gt;Note&lt;/strong&gt;：GPU内存管理runtime接口传入的是&lt;strong&gt;双重指针&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;内存分配：malloc、cudaMalloc&lt;/li&gt;
+&lt;li&gt;数据传递：memcpy、cudaMemcpy&lt;/li&gt;
+&lt;li&gt;内存初始化：memset、cudaMemset&lt;/li&gt;
+&lt;li&gt;内存释放：free、cudaFree&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主设内存传递&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cudaError_t cudaMemcpy(dst, src, count, kind);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;枚举类型kind可取值：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cudaMemcpyHostToHost，表示从主机复制到主机。&lt;/li&gt;
+&lt;li&gt;cudaMemcpyHostToDevice，表示从主机复制到设备。&lt;/li&gt;
+&lt;li&gt;cudaMemcpyDeviceToHost，表示从设备复制到主机。&lt;/li&gt;
+&lt;li&gt;cudaMemcpyDeviceToDevice，表示从设备复制到设备。&lt;/li&gt;
+&lt;li&gt;cudaMemcpyDefault，表示根据指针dst和src所指地址自动判断数据传输的方向。这要求系统具有统一虚拟寻址（unifiedvirtualaddressing）的功能（要求64位的主机）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据同步synchronize&#34;&gt;数据同步Synchronize
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;调用输出函数时，输出流是先存放在缓冲区的，而缓冲区不会自动刷新。只有程序遇到某种同步操作时缓冲区才会刷新。所以当要打印某个数据时，要先使用函数cudaDeviceSynchronize显式地同步主机与设备，促使缓冲区刷新。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;核函数kernel-function&#34;&gt;核函数（Kernel function）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;1、核函数&lt;strong&gt;在GPU上&lt;/strong&gt;进行&lt;strong&gt;并行执行&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2、注意：
+&lt;ul&gt;
+&lt;li&gt;（1）限定词__global__ 修饰（可在void前后）&lt;/li&gt;
+&lt;li&gt;（2）返回值必须是void&lt;/li&gt;
+&lt;li&gt;（3）对于N是非blockSize整数倍时，必要时添加if，即使导致条件分支&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意事项：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1、核函数只能访问GPU内存&lt;/li&gt;
+&lt;li&gt;2、核函数不能使用变长参数&lt;/li&gt;
+&lt;li&gt;3、核函数不能使用静态变量&lt;/li&gt;
+&lt;li&gt;4、核函数不能使用函数指针&lt;/li&gt;
+&lt;li&gt;5、核函数具有异步性&lt;/li&gt;
+&lt;li&gt;6、其他：核函数不支持C++的iostream&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;自定义设备函数&#34;&gt;自定义设备函数
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;用__global__修饰的函数称为核函数，一般由主机调用，在设备中执行。如果使用动态并行，则也可以在核函数中调用自己或其他核函数。&lt;/li&gt;
+&lt;li&gt;用__device__修饰的函数叫称为设备函数，只能被核函数或其他设备函数调用，在设备中执行。&lt;/li&gt;
+&lt;li&gt;用__host__修饰的函数就是主机端的普通C++函数，在主机中被调用，在主机中执行。对于主机端的函数，该修饰符可省略。之所以提供这样一个修饰符，是因为有时可以用__host__和__device__同时修饰一个函数，使得该函数既是一个C++中的普通函数，又是一个设备函数。这样做可以减少冗余代码。编译器将针对主机和设备分别编译该函数。&lt;/li&gt;
+&lt;li&gt;不能同时用__device__和__global__修饰一个函数，即不能将一个函数同时定义为设备函数和核函数。&lt;/li&gt;
+&lt;li&gt;也不能同时用__host__和__global__修饰一个函数，即不能将一个函数同时定义为主机函数和核函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线程模型&#34;&gt;线程模型
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;线程的组织结构是由执行配置（executionconfiguration）&amp;laquo;&amp;lt;grid_size,block_size&amp;raquo;&amp;gt;决定的。这里的grid_size（网格大小）和block_size（线程块大小），对应核函数内部的内建变量 gridDim、blockDim、blockIdx、threadIdx&lt;/li&gt;
+&lt;li&gt;注意GPU系列对应框架最大允许的线程块大小，如1024&lt;/li&gt;
+&lt;li&gt;线程束：线程调度、管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;cuda错误检查&#34;&gt;CUDA错误检查
+&lt;/h2&gt;&lt;h3 id=&#34;运行时错误检测&#34;&gt;运行时错误检测
+&lt;/h3&gt;&lt;p&gt;所有CUDA运行时API函数都是以cuda为前缀的，而且都有一个类型为cudaError_t的返回值，代表了一种错误信息。只有返回值为cudaSuccess时才代表成功地调用了API函数。&lt;/p&gt;
+&lt;h3 id=&#34;功能正确性检查&#34;&gt;功能正确性检查
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;内存检查、越界访问、异常检查等&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;./Tools.md&#34; &gt;checktool&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;获得gpu加速的关键&#34;&gt;获得GPU加速的关键
+&lt;/h2&gt;&lt;h3 id=&#34;cuda事件计时&#34;&gt;CUDA事件计时
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cudaEvent_t start, stop;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CHECK(cudaEventCreate(&amp;amp;start));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CHECK(cudaEventCreate(&amp;amp;stop));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CHECK(cudaEventRecord(start));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cudaEventQuery(start); // 此处不能用 CHECK 宏函数，对处于TCC 驱动模式的 GPU 来说可以省略，但对处于 WDDM 驱动模式的GPU来说必须保留。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;需要计时的代码块
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CHECK(cudaEventRecord(stop));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CHECK(cudaEventSynchronize(stop));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;float elapsed_time;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CHECK(cudaEventElapsedTime(&amp;amp;elapsed_time, start, stop));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;printf(&amp;#34;Time = %g ms.\n&amp;#34;, elapsed_time);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CHECK(cudaEventDestroy(start));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CHECK(cudaEventDestroy(stop));
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;程序性能分析&#34;&gt;程序性能分析
+&lt;/h3&gt;&lt;p&gt;Nsight Compute，详见tools.md&lt;/p&gt;
+&lt;h3 id=&#34;影响gpu加速的关键因素&#34;&gt;影响GPU加速的关键因素
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;数据传输的比例：主设数据传输&lt;/li&gt;
+&lt;li&gt;算术强度（arithmeticintensity）：计算相比于数据传输耗时的占比&lt;/li&gt;
+&lt;li&gt;并行规模：数据规模要尽量匹配SM等计算资源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此, 在编写与优化CUDA程序时，一定要想方设法（主要是指仔细设计算法）做到以下几点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;减少主机与设备之间的数据传输。&lt;/li&gt;
+&lt;li&gt;提高核函数的算术强度。&lt;/li&gt;
+&lt;li&gt;增大核函数的并行规模。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cuda中的数学函数库&#34;&gt;CUDA中的数学函数库
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-math-api/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://docs.nvidia.com/cuda/cuda-math-api/&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;单精度浮点数内建函数和数学函数（singleprecisionintrinsics and math functions）。使用该类函数时不需要包含任何额外的头文件。&lt;/li&gt;
+&lt;li&gt;双精度浮点数内建函数和数学函数（doubleprecisionintrinsicsandmathfunctions）。使用该类函数时不需要包含任何额外的头文件。&lt;/li&gt;
+&lt;li&gt;半精度浮点数内建函数和数学函数（halfprecisionintrinsicsandmathfunctions）。使用该类函数时需要包含头文件&amp;lt;cuda_fp16.h&amp;gt;。&lt;/li&gt;
+&lt;li&gt;整数类型的内建函数（integerintrinsics）。使用该类函数时不需要包含任何额外的头文件。&lt;/li&gt;
+&lt;li&gt;类型转换内建函数（typecasting intrinsics）。使用该类函数时不需要包含任何额外的头文件。&lt;/li&gt;
+&lt;li&gt;单指令-多数据内建函数（SIMDintrinsics）。使用该类函数时不需要包含任何额外的头文件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;内存组织&#34;&gt;内存组织
+&lt;/h2&gt;&lt;p&gt;分层思想，平衡成本和效率（在编码中体现为高内聚、低耦合）
+&lt;img src=&#34;https://loveleaves.github.io/imgs/gpu_1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://loveleaves.github.io/imgs/gpu_2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#device-variable-specifier&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#device-variable-specifier&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;不同硬件架构的内存编排不一定相同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;全局内存global-memory&#34;&gt;全局内存（global memory）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;核函数中的所有线程都能够访问其中的数据，容量是所有设备内存中最大的。基本上就是显存容量。&lt;/li&gt;
+&lt;li&gt;主要为核函数提供数据，并在主机与设备及设备与设备之间传递数据。&lt;/li&gt;
+&lt;li&gt;host端访问数据：使用runtime接口&lt;code&gt;cudaGetSymbolAddress() / cudaGetSymbolSize() / cudaMemcpyToSymbol() / cudaMemcpyFromSymbol()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;同步函数&lt;code&gt;__syncthreads()&lt;/code&gt;：只是针对同一个线程块中的线程的，不同线程块中线程的执行次序依然是不确定的（不同线程块数据要保证不依赖）。&lt;/li&gt;
+&lt;li&gt;在CUDA中还有一种内部构造对用户不透明的（nottransparent）全局内存，称为CUDAArray。CUDAArray使用英伟达公司不对用户公开的数据排列方式，专为纹理拾取服务。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;动态全局内存&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;生命周期（lifetime）不是由核函数决定的，而是由主机端决定的（cudaMalloc、cudaFree）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;静态全局内存&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;静态全局内存变量&lt;/strong&gt;由以下方式在任何函数外部定义：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;__device__ T x; // 单个变量
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;__device__ T y[N]; // 固定长度的数组
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;在核函数中，可直接对静态全局内存变量进行访问，并不需要将它们以参数的形式传给核函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;常量内存constant-memory&#34;&gt;常量内存（constant memory）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;有常量缓存的全局内存，一共仅有64KB，位于常量内存空间，核函数外部用&lt;code&gt;__constant__&lt;/code&gt;定义。&lt;/li&gt;
+&lt;li&gt;它的可见范围和生命周期与全局内存一样，host端访问数据与全局内存一样。
+由于有缓存，常量内存的访问速度比全局内存高，但得到高访问速度的前提是一个线程束中的线程（一个线程块中相邻的32个线程）要读取相同的常量内存数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;纹理内存texture-memory和表面内存surface-memory&#34;&gt;纹理内存（texture memory）和表面内存（surface memory）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;类似于常量内存，也是一种具有缓存的全局内存，有相同的可见范围和生命周期，而且一般仅可读（表面内存也可写）。不同的是，纹理内存和表面内存容量更大，而且使用方式和常量内存也不一样。&lt;/li&gt;
+&lt;li&gt;对于计算能力5.0以上的GPU来说，将某些只读全局内存数据用&lt;code&gt;__ldg()&lt;/code&gt;函数通过只读数据缓存（read-onlydatacache）读取，既可达到使用纹理内存的加速效果，又可使代码简洁。对帕斯卡架构和更高的架构来说，全局内存的读取在默认情况下就利用了__ldg()函数，所以不需要明显地使用它。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;寄存器register和-局部内存local-memory&#34;&gt;寄存器（register）和 局部内存（local memory）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;存储函数入参、内建变量和临时变量等，32位。&lt;/li&gt;
+&lt;li&gt;计算能力5.0~9.0的GPU，每个中都是64K的寄存器数量，Fermi架构只有32K；&lt;/li&gt;
+&lt;li&gt;考虑：每个线程块使用的最大数量、每个线程的最大寄存器数量&lt;/li&gt;
+&lt;li&gt;局部内存是全局内存的一部分，寄存器溢出是保存在局部内存中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;共享内存shared-memory&#34;&gt;共享内存（shared memory）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;和寄存器类似，存在于芯片上，具有仅次于寄存器的读写速度，&lt;code&gt;extern __shared__ float shared[]&lt;/code&gt;定义，数组大小在运行时确定,或&lt;code&gt;__shared__ float shared[100]&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;共享内存对整个线程块可见，其生命周期也与整个线程块一致。&lt;/li&gt;
+&lt;li&gt;一个线程块中的所有线程都可以访问该线程块的共享内存变量副本，但是不能访问其他线程块的共享内存变量副本。&lt;/li&gt;
+&lt;li&gt;注意避免n路bank冲突（n很大场景，类似TLB组相联）：共享内存在物理上被分为32个（刚好等于一个线程束中的线程数目，即内建变量warpSize的值）同样宽度的、能被同时访问的内存bank。在所有其他架构中，每个bank的宽度为4字节。当同一线程束内的多个线程不同时访问同一个bank中不同层的数据，该线程束对共享内存的访问就只需要一次内存事务（memory transaction）,就会发生bank冲突。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;l1-和-l2-缓存&#34;&gt;L1 和 L2 缓存
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;从费米架构开始，有了SM层次的L1缓存和设备（一个设备有多个SM）层次的L2缓存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;sm及其占有率&#34;&gt;SM及其占有率
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;SM（Streaming MultiProcessor）构成&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;一个GPU是由多个SM构成的。一个SM包含如下资源（不同架构不一定相同）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一定数量的寄存器。&lt;/li&gt;
+&lt;li&gt;一定数量的共享内存。&lt;/li&gt;
+&lt;li&gt;常量内存的缓存。&lt;/li&gt;
+&lt;li&gt;纹理和表面内存的缓存。&lt;/li&gt;
+&lt;li&gt;L1缓存。&lt;/li&gt;
+&lt;li&gt;两个（计算能力6.0）或4个（其他计算能力）线程束调度器（warpscheduler），用于在不同线程的上下文之间迅速地切换，以及为准备就绪的线程束发出执行指令。&lt;/li&gt;
+&lt;li&gt;执行核心，包括：
+&lt;ul&gt;
+&lt;li&gt;若干整型数运算的核心（INT32）。&lt;/li&gt;
+&lt;li&gt;若干单精度浮点数运算的核心（FP32）。&lt;/li&gt;
+&lt;li&gt;若干双精度浮点数运算的核心（FP64）。&lt;/li&gt;
+&lt;li&gt;若干单精度浮点数超越函数（transcendentalfunctions）的特殊函数单元（Special Function Units，SFUs）。&lt;/li&gt;
+&lt;li&gt;若干混合精度的张量核心（tensorcores，由伏特架构引入，适用于机器学习中的低精度矩阵计算）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SM管理&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GPU中每个SM都可以支持数百个线程&lt;strong&gt;并发&lt;/strong&gt;执行&lt;/li&gt;
+&lt;li&gt;以线程块block为单位，向SM分配线程块，多个线程块可被同时分配到一个可用的SM上&lt;/li&gt;
+&lt;li&gt;当一个线程块被分配好后，就不可以在分配到其他上了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;线程束（warp）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CUDA 采用单指令多线程架构管理执行线程，每32个为一组，构成一个线程束。同一个线程块中相邻的 32个线程构成一个线程束&lt;/li&gt;
+&lt;li&gt;每个线程束中只能包含同一线程块中的线程&lt;/li&gt;
+&lt;li&gt;线程束是GPU硬件上真正的做到了&lt;strong&gt;并行&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;** SM 的占有率**&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一般来说，要尽量让SM的占有率不小于某个值，比如%，才有可能获得较高的性能。&lt;/li&gt;
+&lt;li&gt;SM的理论占有率（theoreticaloccupancy）的两个指标:
+&lt;ul&gt;
+&lt;li&gt;一个SM中最多能拥有的&lt;strong&gt;线程块个数&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;一个SM中最多能拥有的&lt;strong&gt;线程个数&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;根据寄存器、共享内存等具体架构具体分析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;高效正确地并发并行&#34;&gt;高效正确地并发并行
+&lt;/h2&gt;&lt;h3 id=&#34;原子函数atomic-function&#34;&gt;原子函数（atomic function）
+&lt;/h3&gt;&lt;p&gt;cuda提供原子函数来进行控制数据一致性读写。其中&lt;code&gt;atomicCAS&lt;/code&gt;函数是比较特殊的，所有其他原子函数都可以用它实现（指定架构不支持时，但性能可能较差）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Atomic APIs with &lt;code&gt;_system&lt;/code&gt; suffix (example: &lt;code&gt;atomicAdd_system&lt;/code&gt;) are atomic at scope &lt;code&gt;cuda::thread_scope_system&lt;/code&gt; if they meet particular &lt;a class=&#34;link&#34; href=&#34;https://nvidia.github.io/cccl/libcudacxx/extended_api/memory_model.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;conditions&lt;/a&gt;. compute capability must greater than 7.2.&lt;/li&gt;
+&lt;li&gt;Atomic APIs without a suffix (example: &lt;code&gt;atomicAdd&lt;/code&gt;) are atomic at scope &lt;code&gt;cuda::thread_scope_device&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Atomic APIs with &lt;code&gt;_block&lt;/code&gt; suffix (example: &lt;code&gt;atomicAdd_block&lt;/code&gt;) are atomic at scope &lt;code&gt;cuda::thread_scope_block&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/gpu_3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;atomic&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;线程束warp基本函数&#34;&gt;线程束（warp）基本函数
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一个SM以32个线程为单位产生、管理、调度、执行线程。这样的32 个线程称为一个&lt;strong&gt;线程束&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;SM执行属于单指令-多线程（single instruction, multiple thread，&lt;strong&gt;SIMT&lt;/strong&gt;）的执行模式：在同一时刻，一个线程束中的线程只能执行一个共同的指令或者闲置。&lt;/li&gt;
+&lt;li&gt;在伏特架构之前，一个线程束中的线程拥有同一个程序计数器（programcounter），但各自有不同的寄存器状态（registerstate），从而可以根据程序的逻辑判断选择不同的分支。因此当&lt;strong&gt;同一个线程束&lt;/strong&gt;（不同的不会）中的线程顺序地执行判断语句中的不同分支时，会发生&lt;strong&gt;分支发散&lt;/strong&gt;（branch divergence）。&lt;/li&gt;
+&lt;li&gt;从&lt;strong&gt;伏特架构&lt;/strong&gt;开始，引入了独立线程调度（independentthreadscheduling）机制。每个线程有自己的程序计数器。这使得伏特架构有了一些以前的架构所没有的新的线程束内同步与通信的模式，但导致：
+&lt;ul&gt;
+&lt;li&gt;增加了寄存器负担：单个线程的程序计数器一般需要使用两个寄存器。&lt;/li&gt;
+&lt;li&gt;独立线程调度机制使得假设了线程束同步（warpsynchronous）的代码变得不再安全：必须显式同步。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;线程束内的线程同步函数：都在一个线程束内时，可以将线程块同步函数&lt;code&gt;__syncthreads&lt;/code&gt; 换成一个更加廉价的线程束同步函数&lt;code&gt;__syncwarp&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-vote-functions&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;其他基本函数&lt;/a&gt;：
+&lt;ul&gt;
+&lt;li&gt;线程束表决函数（warpvotefunctions）&lt;/li&gt;
+&lt;li&gt;线程束匹配函数（warpmatchfunctions）&lt;/li&gt;
+&lt;li&gt;线程束洗牌函数（warp shuffle functions）&lt;/li&gt;
+&lt;li&gt;线程束矩阵函数（warp matrix functions）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;协作组cooperativegroups&#34;&gt;协作组（cooperativegroups）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;类似线程块和线程束同步机制的推广，它提供了更为灵活的线程协作方式，包括线程块内部的同步与协作、线程块之间的（网格级的）同步与协作及设备之间的同步与协作。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#introduction-cg&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#introduction-cg&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;cuda流cuda-stream&#34;&gt;CUDA流（CUDA stream）
+&lt;/h2&gt;&lt;h3 id=&#34;cuda流介绍&#34;&gt;CUDA流介绍
+&lt;/h3&gt;&lt;p&gt;主要用cuda流解决&lt;strong&gt;核函数外部&lt;/strong&gt;的并行：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;核函数计算与数据传输之间的并行。&lt;/li&gt;
+&lt;li&gt;主机计算与数据传输之间的并行。&lt;/li&gt;
+&lt;li&gt;不同的数据传输（回顾一下cudaMemcpy函数中的第4个参数）之间的并行。&lt;/li&gt;
+&lt;li&gt;核函数计算与主机计算之间的并行。&lt;/li&gt;
+&lt;li&gt;不同核函数之间的并行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;任何CUDA操作都存在于某个CUDA流中，要么是默认流（default stream），也称为空流（null stream），要么是明确指定的非空流。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在主机端产生与销毁。一个CUDA流由类型为cudaStream_t 的变量表示，&lt;code&gt;cudaStreamCreate&lt;/code&gt;和&lt;code&gt;cudaStreamDestroy&lt;/code&gt;创建和销毁。&lt;/li&gt;
+&lt;li&gt;为了实现不同CUDA流之间的并发，主机在向某个CUDA流中发布一系列命令之后必须马上获得程序的控制权，不用等待该CUDA流中的命令在设备中执行完毕。这样，就可以通过主机产生多个相互独立的CUDA流。&lt;/li&gt;
+&lt;li&gt;检查一个CUDA流中的所有操作是否都在设备中执行完毕：&lt;code&gt;cudaStreamSynchronize&lt;/code&gt;同步、&lt;code&gt;cudaStreamQuery&lt;/code&gt;查询&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;默认流default-stream-为空流null-stream&#34;&gt;默认流（default stream）/ 为空流（null stream）
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;两种调用方式：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;my_kernel&amp;lt;&amp;lt;&amp;lt;N_grid, N_block&amp;gt;&amp;gt;&amp;gt;(函数参数);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;my_kernel&amp;lt;&amp;lt;&amp;lt;N_grid, N_block, N_shared&amp;gt;&amp;gt;&amp;gt;(函数参数);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;核函数的启动是异步的（asynchronous），或者说是非阻塞的（non-blocking），所以会host会立即执行下一条语句。该命令如果是CUDA操作不会被device立即执行，因为这是默认流中的CUDA操作，必须等待前一个CUDA操作（即核函数的调用）执行完毕才会开始执行。&lt;/li&gt;
+&lt;li&gt;可以在核函数启动后放置host操作，利用前面CUDA操作完成时间。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;非默认流非空流&#34;&gt;非默认流/非空流
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;调用方式：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;my_kernel&amp;lt;&amp;lt;&amp;lt;N_grid, N_block, N_shared, stream_id&amp;gt;&amp;gt;&amp;gt;(函数参数);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;my_kernel&amp;lt;&amp;lt;&amp;lt;N_grid,N_block, 0 ,stream_id&amp;gt;&amp;gt;&amp;gt;(函数参数); // 不使用动态共享内存
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# stream_id是CUDA流的编号，N_shared是核函数中使用的动态共享内存的字节数。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;用非默认CUDA流重叠核函数的执行与数据传递&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;要实现核函数执行与数据传输的并发（重叠），必须让这两个操作处于&lt;strong&gt;不同的非默认流&lt;/strong&gt;，而且数据传输必须使用cudaMemcpy函数的异步版本，即&lt;code&gt;cudaMemcpyAsync&lt;/code&gt;函数。异步传输由GPU中的DMA（directmemoryaccess）直接实现，不需要主机参与。&lt;/li&gt;
+&lt;li&gt;在使用异步的数据传输函数时，需要将主机内存定义为不可分页内存（non-pageable memory）或者固定内存（pinned memory），在程序运行期间，其物理地址将保持不变，由&lt;code&gt;cudaMallocHost&lt;/code&gt;和&lt;code&gt;cudaFreeHost&lt;/code&gt;申请和释放。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;统一内存unifiedmemory编程&#34;&gt;统一内存（unifiedmemory）编程
+&lt;/h2&gt;&lt;h3 id=&#34;介绍-1&#34;&gt;介绍
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;统一内存是一种逻辑上的概念，一种系统中的任何处理器（CPU或GPU）都可以访问，并能保证一致性的虚拟存储器。这种虚拟存储器是通过CPU和GPU各自内部集成的内存管理单元（memorymanagementunit）实现的。&lt;/li&gt;
+&lt;li&gt;使用统一内存对硬件有较高的要求：不低于开普勒架构等。&lt;/li&gt;
+&lt;li&gt;好处：不用手动内存传输管理；相比手动内存操作可能会有更好的性能；超量分配，类似虚拟内存策略。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;基本使用&#34;&gt;基本使用
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;统一内存在设备中是当作全局内存使用的，而且必须在主机端定义或分配内存，而不能在设备端（核函数和&lt;code&gt;__device__&lt;/code&gt;函数）定义或分配内存。&lt;/li&gt;
+&lt;li&gt;动态申请：&lt;code&gt;cudaMallocManaged&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;静态申请：&lt;code&gt; __device____managed__int ret[1000];&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;数据预取：&lt;code&gt;cudaMemPrefetchAsync&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;多gpu编程&#34;&gt;多GPU编程
+&lt;/h2&gt;&lt;h2 id=&#34;cuda标准库&#34;&gt;CUDA标准库
+&lt;/h2&gt;&lt;p&gt;cuda所以接口及库详见官网：&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cuda docs&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://developer.nvidia.com/cuda-zone&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cuda developer&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;thrust&#34;&gt;Thrust
+&lt;/h3&gt;&lt;p&gt;类似于C++的标准模板库（standard template library）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/NVIDIA/thrust&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;thrust&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/nvidia/cccl&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;NCCL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;数据结构：容器&lt;code&gt;thrust::host_vector&amp;lt;typename&amp;gt;&lt;/code&gt;和&lt;code&gt;thrust::device_vector&amp;lt;typename&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;算法：
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;变换（transformation）。本书多次讨论的数组求和计算就是一种变换操作。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;规约（reduction）。这是本书重点讨论过的算法。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;前缀和（prefixsum）。下一节将详细讨论该算法。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;排序（sorting）与搜索（searching）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;选择性复制、替换、移除、分区等重排（reordering）操作。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cublasbasic-linear-algebra-subprograms&#34;&gt;cuBLAS（basic linear algebra subprograms）
+&lt;/h3&gt;&lt;p&gt;基本线性代数子程序，矩阵在内存中的存储是列主序（column-major order）的Fortran 风格，而不是像C语言中是行主序（row-majororder）的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cublas/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cublas&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://www.netlib.org/blas/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;blas&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;cuBLAS 库包含3个API：
+&lt;ul&gt;
+&lt;li&gt;cuBLAS API：相关数据必须在设备。&lt;/li&gt;
+&lt;li&gt;cuBLASXTAPI：相关数据必须在主机。&lt;/li&gt;
+&lt;li&gt;cuBLASLt API：一个专门处理矩阵乘法的API。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cufft&#34;&gt;cuFFT
+&lt;/h3&gt;&lt;p&gt;快速傅里叶变换（fast Fourier transforms）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cufft/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cufft&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cusparse&#34;&gt;cuSPARSE
+&lt;/h3&gt;&lt;p&gt;稀疏（sparse）矩阵&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cusparse/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cusparse&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;cusparse提供了一些稀疏矩阵、向量和稠密矩阵、向量的运算函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cusolver&#34;&gt;cuSolver
+&lt;/h3&gt;&lt;p&gt;稠密（dense）矩阵和稀疏（sparse）矩阵计算库&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cuSolver 专注于一些比较高级的线性代数方面的计算，如矩阵求逆和矩阵对角化，类似LAPACK库。基于cuBLAS和cuSPARSE两个更基础的库实现。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cusolver/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cusolver&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://www.netlib.org/lapack/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;lapack&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;cuSolver 库由以下3个相互独立的子库组成：
+&lt;ul&gt;
+&lt;li&gt;cuSolverDN（DeNse, DN）：一个处理稠密矩阵线性代数计算的库。&lt;/li&gt;
+&lt;li&gt;cuSolverSP（SParse, SP）：一个处理稀疏矩阵的线性代数计算的库。&lt;/li&gt;
+&lt;li&gt;cuSolverRF（ReFactorization, RF）：一个特殊的处理稀疏矩阵分解的库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;cuSolver 库函数倾向于使用异步执行。为了保证一个cuSolver函数的工作已经完成，可以使用&lt;code&gt;cudaDeviceSynchronize() &lt;/code&gt;函数进行同步。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;curand&#34;&gt;cuRAND
+&lt;/h3&gt;&lt;p&gt;与随机数生成有关的库,包含伪随机数（pseudorandom numbers）和准随机数（quasirandom numbers）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/curand/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;curand&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;cuRand是后向兼容（backward compatible）的，注意cuRAND 和 the CUDA runtime的版本对应&lt;/li&gt;
+&lt;li&gt;提供了两种API：主机API和设备API。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cudnn&#34;&gt;cuDNN
+&lt;/h3&gt;&lt;p&gt;深度神经网络（deep neural networks）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;是一个用于深度神经网络的 GPU 加速基元库。cuDNN 为标准例程（如前向和后向卷积、注意力、matmul、池化和规范化）提供高度优化的实现。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cudnn/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cudnn docs&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://developer.nvidia.com/cudnn&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cudnn developer&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>
