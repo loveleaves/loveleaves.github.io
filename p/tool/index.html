@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录性能优化、环境模拟等各种用到的工具">
 <meta property='og:url' content='https://loveleaves.github.io/p/tool/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-11T00:01:31&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-19T00:00:10&#43;08:00'/>
 <meta name="twitter:title" content="【Tool】 记录各种用到的工具">
 <meta name="twitter:description" content="记录性能优化、环境模拟等各种用到的工具">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -291,6 +291,43 @@
             <nav id="TableOfContents">
   <ol>
     <li><a href="#references">References</a></li>
+    <li><a href="#汇编嵌入式编程工具">汇编/嵌入式编程工具</a>
+      <ol>
+        <li><a href="#汇编工具-assembly-tools">汇编工具 (Assembly Tools)</a>
+          <ol>
+            <li><a href="#gas-gnu-assembler">GAS (GNU Assembler)</a></li>
+          </ol>
+        </li>
+        <li><a href="#交叉编译工具链-cross-compiler-toolchain">交叉编译工具链 (Cross Compiler Toolchain)</a>
+          <ol>
+            <li><a href="#gcc-gnu-compiler-collection">GCC (GNU Compiler Collection)</a></li>
+            <li><a href="#clang">Clang</a></li>
+            <li><a href="#binutils">Binutils</a></li>
+          </ol>
+        </li>
+        <li><a href="#调试工具-debugging-tools">调试工具 (Debugging Tools)</a>
+          <ol>
+            <li><a href="#gdb-gnu-debugger">GDB (GNU Debugger)</a></li>
+            <li><a href="#openocd">OpenOCD</a></li>
+            <li><a href="#jlink-segger-j-link">JLink (SEGGER J-Link)</a></li>
+            <li><a href="#lldb">LLDB</a></li>
+          </ol>
+        </li>
+        <li><a href="#构建工具-build-tools">构建工具 (Build Tools)</a>
+          <ol>
+            <li><a href="#make">Make</a></li>
+            <li><a href="#cmake">CMake</a></li>
+          </ol>
+        </li>
+        <li><a href="#其他工具">其他工具</a>
+          <ol>
+            <li><a href="#nm">nm</a></li>
+            <li><a href="#objdump">Objdump</a></li>
+            <li><a href="#readelf">Readelf</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
     <li><a href="#热点分析">热点分析</a>
       <ol>
         <li><a href="#常见的热点分析方法">常见的热点分析方法</a></li>
@@ -455,7 +492,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 17 分钟
+                    阅读时长: 21 分钟
                 </time>
             </div>
         
@@ -475,7 +512,241 @@
 <li><a class="link" href="https://zhuanlan.zhihu.com/p/673459718"  target="_blank" rel="noopener"
     >HPC/ML/OS/SW性能工具总结</a></li>
 </ul>
-<h2 id="热点分析">热点分析
+<h2 id="汇编嵌入式编程工具">汇编/嵌入式编程工具
+</h2><p>在 Linux 环境下进行汇编或嵌入式编程时，涉及的工具和程序非常广泛，包括编译器、调试工具、构建系统、性能分析工具等。下面是一些常见的汇编或嵌入式编程工具的详细介绍：</p>
+<h3 id="汇编工具-assembly-tools">汇编工具 (Assembly Tools)
+</h3><h4 id="gas-gnu-assembler">GAS (GNU Assembler)
+</h4><p>GAS 是 GNU 编译器集合（GCC）的一部分，专门用于将汇编语言转换成机器代码（即目标文件）。它支持多种体系结构，适用于嵌入式系统开发，通常与 GCC 配合使用。</p>
+<p><strong>常用选项：</strong></p>
+<ul>
+<li><code>-o &lt;file&gt;</code>: 指定输出文件。</li>
+<li><code>-g</code>: 生成调试信息。</li>
+<li><code>-D &lt;macro&gt;</code>: 定义宏。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">as -o main.o main.s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="交叉编译工具链-cross-compiler-toolchain">交叉编译工具链 (Cross Compiler Toolchain)
+</h3><h4 id="gcc-gnu-compiler-collection">GCC (GNU Compiler Collection)
+</h4><p>GCC 是用于 C、C++、Fortran 等语言的编译器，常用于嵌入式编程中。它可以生成目标平台的代码，并支持交叉编译（cross-compilation），即在一种平台上为另一种平台编译代码。</p>
+<p><strong>常用选项：</strong></p>
+<ul>
+<li><code>-o &lt;file&gt;</code>: 输出文件。</li>
+<li><code>-mcpu=&lt;target&gt;</code>: 指定目标架构（如 ARM、MIPS）。</li>
+<li><code>-m32</code> 或 <code>-m64</code>: 设置生成的代码是 32 位或 64 位。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">arm-none-eabi-gcc -o my_program.elf main.c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="clang">Clang
+</h4><p>Clang 是 LLVM 项目的一部分，作为 GCC 的替代品，Clang 提供了高效的编译功能，并且具有更加友好的错误报告。它同样支持交叉编译，特别适合现代嵌入式编程和集成开发环境（IDE）中使用。</p>
+<p><strong>常用选项：</strong></p>
+<ul>
+<li><code>-target &lt;target&gt;</code>: 指定目标平台。</li>
+<li><code>-o &lt;file&gt;</code>: 输出文件。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">clang -target arm-none-eabi -o my_program.elf main.c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="binutils">Binutils
+</h4><p>Binutils 是一组二进制工具，包括汇编器、链接器、调试器等，广泛用于嵌入式系统开发。<code>ld</code> 和 <code>as</code> 工具是其中最常用的，负责汇编、链接以及生成目标文件。</p>
+<p><strong>常用工具：</strong></p>
+<ul>
+<li><code>as</code>：汇编源文件。</li>
+<li><code>ld</code>：链接目标文件生成最终的可执行文件。</li>
+<li><code>objcopy</code>：将目标文件转换为不同格式。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">as -o main.o main.s
+</span></span><span class="line"><span class="cl">ld -o my_program.elf main.o
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="调试工具-debugging-tools">调试工具 (Debugging Tools)
+</h3><h4 id="gdb-gnu-debugger">GDB (GNU Debugger)
+</h4><p>GDB 是一个功能强大的调试工具，适用于 C/C++ 等程序的调试。在嵌入式开发中，GDB 通常配合交叉编译工具链和硬件调试器（如 JTAG、SWD）一起使用。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>run</code>：启动程序。</li>
+<li><code>break &lt;line&gt;</code>：在指定行设置断点。</li>
+<li><code>step</code>：单步执行，进入函数。</li>
+<li><code>next</code>：单步执行，不进入函数。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gdb my_program.elf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="openocd">OpenOCD
+</h4><p>OpenOCD 是一个用于与目标硬件（如 ARM 处理器）进行通信的调试工具。它支持通过 JTAG 或 SWD 接口进行调试，可以与 GDB 配合使用。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>targets</code>：列出连接的目标。</li>
+<li><code>reset halt</code>：复位并停止目标。</li>
+<li><code>flash write_image erase &lt;file&gt; 0x0</code>：将固件烧录到设备。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openocd -f interface/stlink-v2.cfg -f target/stm32f4x.cfg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="jlink-segger-j-link">JLink (SEGGER J-Link)
+</h4><p>JLink 是 SEGGER 提供的一个商业级调试器，支持 JTAG 和 SWD 接口，用于调试各种嵌入式设备。它提供高性能的调试功能，广泛用于工业和开发中。</p>
+<p><strong>主要功能：</strong></p>
+<ul>
+<li>支持高速调试，能够快速读写内存和寄存器。</li>
+<li>与多种 IDE（如 Keil、IAR、Eclipse）兼容。</li>
+<li>提供强大的脚本支持和自动化功能。</li>
+</ul>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li>connect: 连接目标硬件。</li>
+<li>r: 重置目标设备。</li>
+<li>loadfile <file>: 加载二进制文件到目标设备。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">JLinkExe -device STM32F407VG -if SWD
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="lldb">LLDB
+</h4><p>LLDB 是 LLVM 提供的调试工具，类似于 GDB，但更加现代化。它具有更高效的性能，特别适用于基于 Clang 的编译工具链。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>run</code>：启动程序。</li>
+<li><code>breakpoint set</code>：设置断点。</li>
+<li><code>step</code>：单步执行。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lldb my_program.elf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="构建工具-build-tools">构建工具 (Build Tools)
+</h3><h4 id="make">Make
+</h4><p><code>Make</code> 是一个非常常用的构建工具，使用 <code>Makefile</code> 管理项目的编译过程。它会根据 <code>Makefile</code> 中的规则自动执行编译、链接等操作，尤其适合嵌入式项目。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>make</code>：构建项目。</li>
+<li><code>make clean</code>：清理编译结果。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">make -f Makefile
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="cmake">CMake
+</h4><p>CMake 是一个跨平台的自动化构建工具，可以生成适用于不同平台的构建文件（如 Makefile、Ninja 文件等）。它在现代嵌入式开发中非常流行，支持复杂的项目构建配置。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>cmake .</code>：生成构建文件。</li>
+<li><code>make</code>：执行构建。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cmake .
+</span></span><span class="line"><span class="cl">make
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="其他工具">其他工具
+</h3><h4 id="nm">nm
+</h4><p>nm 是一个用于列出二进制文件（例如可执行文件、共享库、目标文件等）符号表的工具。它显示文件中定义和引用的符号，包括函数、变量等。通过 nm，用户可以查看符号的类型和地址信息。</p>
+<p><strong>常用选项：</strong></p>
+<ul>
+<li>nm <file>: 列出指定文件的符号。</li>
+<li>-g: 只显示全局符号。</li>
+<li>-n 或 &ndash;numeric-sort: 按地址排序符号。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nm my_program<span class="p">|</span>grep func
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="objdump">Objdump
+</h4><p><code>objdump</code> 用于反汇编和查看目标文件的详细信息。它可以显示汇编代码、符号表、段信息等，帮助开发人员理解程序的低级结构。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>objdump -d &lt;file&gt;</code>：反汇编文件。</li>
+<li><code>objdump -t &lt;file&gt;</code>：显示符号表。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">objdump -d my_program
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="readelf">Readelf
+</h4><p><code>readelf</code> 用于显示 ELF 文件的详细信息，提供比 <code>objdump</code> 更加专注于 ELF 文件结构的查看。它支持查看 ELF 头、段、节区、符号表等信息。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>readelf -h &lt;file&gt;</code>：显示 ELF 文件头信息。</li>
+<li><code>readelf -S &lt;file&gt;</code>：显示节区信息。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">readelf -h my_program
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="热点分析">热点分析
 </h2><p>热点分析通常通过使用 性能分析工具 来实现，工具会提供每个函数、方法、代码块的执行时间、调用次数、CPU 占用率等信息，帮助开发人员识别耗时最多的部分。</p>
 <h3 id="常见的热点分析方法">常见的热点分析方法
 </h3><ul>
@@ -956,7 +1227,7 @@ ASan 可以检测的内存问题包括：</li>
 
 
         <span>
-            最后更新于 Feb 11, 2025 00:01 &#43;0800
+            最后更新于 Feb 19, 2025 00:00 &#43;0800
         </span>
     </section></footer>
 
@@ -1027,12 +1298,38 @@ ASan 可以检测的内存问题包括：</li>
             
                 
 <article class="">
-    <a href="/p/gpu/">
+    <a href="/p/mpi/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">【GPU】 GPU架构及使用介绍</h2>
+            <h2 class="article-title">【HPC】 MPI介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/openacc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 OpenACC介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/openmp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 OpenMP介绍</h2>
         </div>
     </a>
 </article>
@@ -1101,6 +1398,8 @@ ASan 可以检测的内存问题包括：</li>
     <footer class="site-footer">
     <section class="copyright">
         &copy; 
+        
+            2023 - 
         
         2025 Andrew Stark
     </section>
