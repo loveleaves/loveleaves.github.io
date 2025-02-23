@@ -7,7 +7,89 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Wed, 19 Feb 2025 00:00:10 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/quantization/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 23 Feb 2025 12:05:59 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/quantization/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【ONNX量化】 ONNX量化推理介绍</title>
+        <link>https://loveleaves.github.io/p/onnx_quantization/</link>
+        <pubDate>Thu, 20 Feb 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/onnx_quantization/</guid>
+        <description>&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/loveleaves/onnx-quantization&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;onnx量化推理例子&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://onnxruntime.ai/docs/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;onnxruntime docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;onnxruntime quantization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ONNX Runtime Quantization Example&lt;/a&gt;, Pre-processing step&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview
+&lt;/h2&gt;&lt;p&gt;Quantization in ONNX Runtime refers to 8 bit linear quantization of an ONNX model.&lt;/p&gt;
+&lt;p&gt;During quantization, the floating point values are mapped to an 8 bit quantization space of the form: &lt;code&gt;val_fp32 = scale * (val_quantized - zero_point)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;scale&lt;/code&gt; is a positive real number used to map the floating point numbers to a quantization space. It is calculated as follows:&lt;/p&gt;
+&lt;p&gt;For asymmetric quantization:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; scale = (data_range_max - data_range_min) / (quantization_range_max - quantization_range_min)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;For symmetric quantization:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; scale = max(abs(data_range_max), abs(data_range_min)) * 2 / (quantization_range_max - quantization_range_min)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;zero_point&lt;/code&gt; represents zero in the quantization space. It is important that the floating point zero value be exactly representable in quantization space. This is because zero padding is used in many CNNs. If it is not possible to represent 0 uniquely after quantization, it will result in accuracy errors.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/quantization/1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;quantization&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;onnx-quantization&#34;&gt;ONNX Quantization
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;introduction&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ONNX Runtime provides python APIs for converting 32-bit floating point model to an 8-bit integer model, a.k.a. quantization. These APIs include pre-processing, dynamic/static quantization, and debugging.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pre-processing: Pre-processing is to transform a float32 model to prepare it for quantization. The goal of these steps is to improve quantization quality.&lt;/li&gt;
+&lt;li&gt;Dynamic Quantization: Dynamic quantization calculates the quantization parameters (scale and zero point) for activations dynamically.&lt;/li&gt;
+&lt;li&gt;Static Quantization: quantization parameters are calculated in advance (offline) using a calibration data set.&lt;/li&gt;
+&lt;li&gt;Quantization Debugging: Quantization may negatively affect a model’s accuracy. A solution to this problem is to compare the weights and activations tensors of the original computation graph vs those of the quantized one, identify where they differ most, and avoid quantizing these tensors, or choose another quantization/calibration method.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;create-float16-and-mixed-precision-models&#34;&gt;Create Float16 and Mixed Precision Models
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://onnxruntime.ai/docs/performance/model-optimizations/float16.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;offical web&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Converting a model to use float16 instead of float32 can decrease the model size (up to half) and improve performance on some GPUs. There may be some accuracy loss, but in many models the new accuracy is acceptable. Tuning data is not needed for float16 conversion, which can make it preferable to quantization.&lt;/p&gt;
+&lt;h2 id=&#34;ort-model-format&#34;&gt;ORT model format
+&lt;/h2&gt;&lt;p&gt;The &lt;a class=&#34;link&#34; href=&#34;https://onnxruntime.ai/docs/performance/model-optimizations/ort-format-models.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ORT&lt;/a&gt; format is the format supported by reduced size ONNX Runtime builds. Reduced size builds may be more appropriate for use in size-constrained environments such as mobile and web applications.&lt;/p&gt;
+&lt;p&gt;Both ORT format models and ONNX models are supported by a full ONNX Runtime build.&lt;/p&gt;
+&lt;h2 id=&#34;example&#34;&gt;Example
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The example&lt;/a&gt; has three parts:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Pre-processing&lt;/li&gt;
+&lt;li&gt;Quantization&lt;/li&gt;
+&lt;li&gt;Debugging&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
         <title>【量化】 神经网络量化介绍</title>
         <link>https://loveleaves.github.io/p/quantization/</link>
         <pubDate>Mon, 10 Feb 2025 00:00:00 +0000</pubDate>
@@ -588,6 +670,13 @@
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/NVIDIA/TensorRT/tree/master/tools/pytorch-quantization&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;pytorch-quantization&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;onnx&#34;&gt;ONNX
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;onnxruntime quantization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/onnx_quantization/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;onnx介绍&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;ncnn&#34;&gt;NCNN
 &lt;/h3&gt;&lt;ul&gt;
