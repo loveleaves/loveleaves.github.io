@@ -10,7 +10,7 @@
 <meta property='og:description' content="主要记录C++相关重要的知识点及优秀实践">
 <meta property='og:url' content='https://loveleaves.github.io/p/c_plus_plus/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-13T22:35:13&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-23T11:00:35&#43;08:00'/>
 <meta name="twitter:title" content="【编程语言】 C++高级特性及实战">
 <meta name="twitter:description" content="主要记录C++相关重要的知识点及优秀实践">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -312,7 +312,9 @@
         <li><a href="#类和结构class-and-struct">类和结构（class and struct）</a>
           <ol>
             <li><a href="#类成员">类成员</a></li>
-            <li><a href="#对象生存期和资源管理-raii">对象生存期和资源管理 (RAII)</a></li>
+            <li><a href="#三五零之法则rule-of-three">三/五/零之法则(rule of three)</a></li>
+            <li><a href="#资源获取即初始化resource-acquisition-is-initialization-raai">资源获取即初始化(Resource Acquisition Is Initialization, RAAI)</a></li>
+            <li><a href="#运行时类型识别run-time-type-identificationrtti">运行时类型识别(Run Time Type Identification，RTTI)</a></li>
             <li><a href="#用于编译时封装的-pimpl">用于编译时封装的 Pimpl</a></li>
           </ol>
         </li>
@@ -329,6 +331,23 @@
         <li><a href="#算法algorithms">算法（Algorithms）</a></li>
         <li><a href="#迭代器iterators">迭代器（Iterators）</a></li>
         <li><a href="#函数对象function-objects">函数对象（Function Objects）</a></li>
+      </ol>
+    </li>
+    <li><a href="#c-14新特性">C++ 14新特性</a></li>
+    <li><a href="#c-17新特性">C++ 17新特性</a>
+      <ol>
+        <li><a href="#并行算法库">并行算法库</a></li>
+      </ol>
+    </li>
+    <li><a href="#c-20新特性">C++ 20新特性</a></li>
+    <li><a href="#其他">其他</a>
+      <ol>
+        <li><a href="#宏定义">宏定义</a>
+          <ol>
+            <li><a href="#va_-应用">#、#@、##、<strong>VA_ARGS</strong> 应用</a></li>
+          </ol>
+        </li>
+        <li><a href="#运行时类型反射run-time-type-reflection-rttr">运行时类型反射(Run Time Type Reflection, RTTR)</a></li>
       </ol>
     </li>
   </ol>
@@ -399,7 +418,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 5 分钟
+                    阅读时长: 8 分钟
                 </time>
             </div>
         
@@ -416,6 +435,10 @@
     
     <h2 id="references">References
 </h2><ul>
+<li><a class="link" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#main"  target="_blank" rel="noopener"
+    >C++ Core Guidelines</a></li>
+<li><a class="link" href="https://zh.cppreference.com/w/cpp/language"  target="_blank" rel="noopener"
+    >核心 C++ 语言构造的参考手册</a></li>
 <li><a class="link" href="https://github.com/parallel101/cppguidebook"  target="_blank" rel="noopener"
     >现代 C++ 大典</a></li>
 <li><a class="link" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1252/schedule.html"  target="_blank" rel="noopener"
@@ -426,9 +449,14 @@
     >C++ 语言参考</a></li>
 </ul>
 <h2 id="优秀开源">优秀开源
-</h2><h3 id="abseil">Abseil
+</h2><ul>
+<li><a class="link" href="https://github.com/trending/cpp"  target="_blank" rel="noopener"
+    >github cpp trending</a></li>
+</ul>
+<h3 id="abseil">Abseil
 </h3><ul>
 <li>Abseil 是一个由 Google 开源的 C++/python 库，提供了一组常用的工具和基础设施，用于补充 C++ 标准库中缺失的功能或提高效率。</li>
+<li>C++17的string_view前身就是来自absl::string_view</li>
 <li><a class="link" href="https://github.com/abseil/abseil-cpp"  target="_blank" rel="noopener"
     >abseil-cpp</a></li>
 </ul>
@@ -468,6 +496,7 @@
 </h3><ul>
 <li>功能：Boost 是一个广泛使用的 C++ 库集合，提供了许多扩展标准库的功能，包括智能指针、正则表达式、线程、文件系统、算法等。</li>
 <li>特点：Boost 提供了丰富的功能，经过多年的开发和优化，成为了 C++ 生态中非常重要的工具库之一。很多 C++ 标准库中的特性都源自 Boost（如 std::shared_ptr 和 std::filesystem）。</li>
+<li>c++17中的std::filesystem、std::any、std::varient等直接来自于boost中。boost::program_options用于处理控制台的输入参数也是很方便</li>
 <li>链接：<a class="link" href="https://www.boost.org/"  target="_blank" rel="noopener"
     >Boost官网</a></li>
 </ul>
@@ -526,10 +555,24 @@
 <li>operator ：用于定义或重载类的运算符</li>
 <li>自定义迭代器类：通常需重载==、!=、++、*解引用，实现begin、end</li>
 </ul>
-<h4 id="对象生存期和资源管理-raii">对象生存期和资源管理 (RAII)
+<h4 id="三五零之法则rule-of-three">三/五/零之法则(rule of three)
+</h4><ul>
+<li>因为C++类的特殊成员特性在实际应用可能产生用户非预期的效果，所以总结为法则用以规避可能出现的潜在风险</li>
+<li><a class="link" href="https://zh.cppreference.com/w/cpp/language/rule_of_three"  target="_blank" rel="noopener"
+    >cpp references</a></li>
+</ul>
+<h4 id="资源获取即初始化resource-acquisition-is-initialization-raai">资源获取即初始化(Resource Acquisition Is Initialization, RAAI)
 </h4><ul>
 <li>与托管语言不同，C++ 没有自动回收垃圾机制，易导致内存泄露</li>
+<li>C++ 将资源的生命周期与对象的生命周期所绑定（构造获取资源/析构释放资源，利用了栈上的变量在离开作用域的时候会析构的特性）</li>
+<li>c++11后的四大smart_point(shared_ptr、unique_ptr、weak_ptr、auto_ptr(在17中废除))采用了这种思想</li>
 <li>善于利用析构特性进行自动内存回收管理，如std::lock_guard、Std::make_unique、Std::make_share等</li>
+</ul>
+<h4 id="运行时类型识别run-time-type-identificationrtti">运行时类型识别(Run Time Type Identification，RTTI)
+</h4><ul>
+<li>c++中RTTI的一些体现typeid、dynamic_cast、type traits
+具体可以看runtime的库的函数__RTtypeid，rtti把所需的type_info(不同编译器会有所不同)信息放在vtable前，大概也是dynamic_cast要求父类必须有虚函数的原因吧</li>
+<li>注意，取虚函数表地址时 <em><em>（此处请注意环境在32位和64位下的区别，在32/64位下取对象a(带有虚函数的基类的实例)的首地址(虚函数表地址)有区分，即</em>(int <em>)&amp;a 和 <em>(long <em>)&amp;a的不同，为避免也可直接，（int</em>）</em>(int</em>)(&amp;classname)替换成（intptr_t</em>）<em>(intptr_t</em>)(&amp;classname)）**</li>
 </ul>
 <h4 id="用于编译时封装的-pimpl">用于编译时封装的 Pimpl
 </h4><p>Pimpl（Pointer to Implementation）是一种设计模式，常用于C++编程中以隐藏类的实现细节。Pimpl模式通过将实现细节移到一个私有的实现类中，从而提高代码的可维护性、降低编译时间以及实现二进制兼容性。</p>
@@ -599,7 +642,90 @@
 <h3 id="算法algorithms">算法（Algorithms）
 </h3><h3 id="迭代器iterators">迭代器（Iterators）
 </h3><h3 id="函数对象function-objects">函数对象（Function Objects）
-</h3>
+</h3><h2 id="c-14新特性">C++ 14新特性
+</h2><ul>
+<li><a class="link" href="https://en.cppreference.com/w/cpp/14"  target="_blank" rel="noopener"
+    >cppreference</a></li>
+</ul>
+<h2 id="c-17新特性">C++ 17新特性
+</h2><ul>
+<li><a class="link" href="https://en.cppreference.com/w/cpp/17"  target="_blank" rel="noopener"
+    >cppreference</a></li>
+<li><a class="link" href="https://github.com/MeouSker77/Cpp17"  target="_blank" rel="noopener"
+    >C++17完全指南</a></li>
+</ul>
+<h3 id="并行算法库">并行算法库
+</h3><ul>
+<li>不同编译器对并行算法库的支持: <a class="link" href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features"  target="_blank" rel="noopener"
+    >https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features</a></li>
+<li><a class="link" href="https://en.cppreference.com/w/cpp/experimental/parallelism"  target="_blank" rel="noopener"
+    >支持的算法</a></li>
+<li>依赖<a class="link" href="https://github.com/oneapi-src/oneTBB"  target="_blank" rel="noopener"
+    >tbb</a></li>
+<li>使用示例</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;execution&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">// std::sort(begin, end, comp); // origin
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">exe_policy</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">comp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 执行策略(execution policy)可选：
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 1、std::execution::seq（顺序执行）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 2、std::execution::par（并行执行）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 3、std::execution::par_unseq（并行和向量化执行）
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="c-20新特性">C++ 20新特性
+</h2><ul>
+<li><a class="link" href="https://en.cppreference.com/w/cpp/20"  target="_blank" rel="noopener"
+    >cppreference</a></li>
+</ul>
+<h2 id="其他">其他
+</h2><h3 id="宏定义">宏定义
+</h3><h4 id="va_-应用">#、#@、##、<strong>VA_ARGS</strong> 应用
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#define Conn(x,y)  x##y </span><span class="c1">// 表示x连接y
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define ToChar(x)  #@x  </span><span class="c1">// 给x加上单引号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define ToString(x) #x  </span><span class="c1">// 给x加上双引号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">ToString</span><span class="p">(</span><span class="mi">123132</span><span class="p">);</span>     <span class="c1">// str=&#34;123132&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">Conn</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span><span class="mi">456</span><span class="p">);</span>            <span class="c1">//n=123456;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">Conn</span><span class="p">(</span><span class="s">&#34;asdf&#34;</span><span class="p">,</span> <span class="s">&#34;add&#34;</span><span class="p">)</span>   <span class="c1">//str = &#34;asdfadf&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span> <span class="n">a</span> <span class="o">=</span> <span class="n">ToChar</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>               <span class="c1">// a=&#39;1&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="c1">// char a = ToChar(123);          // 编译器报错
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define debug(...) printf(__VA_ARGS__) </span><span class="c1">// 用于宏定义中代表可变参数
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="运行时类型反射run-time-type-reflection-rttr">运行时类型反射(Run Time Type Reflection, RTTR)
+</h3><ul>
+<li>反射是一个进程检查、反省和修改其自身结构和行为的能力</li>
+<li>众所周知，java、c#、Go等语言在语言层面支持了反射特性。而c++不支持反射，因为C++没有在语言层面提供返回类的metadata的能力，所以很多属性要靠手动注册，于是乎有人自造轮子搞了个反射机制（UE中的U++通过UHT和UBT来支持反射）</li>
+</ul>
+
 </section>
 
 
@@ -628,7 +754,7 @@
 
 
         <span>
-            最后更新于 Feb 13, 2025 22:35 &#43;0800
+            最后更新于 Feb 23, 2025 11:00 &#43;0800
         </span>
     </section></footer>
 

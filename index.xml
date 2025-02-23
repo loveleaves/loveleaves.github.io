@@ -12,7 +12,20 @@
         <pubDate>Tue, 18 Feb 2025 00:00:00 +0000</pubDate>
         
         <guid>https://loveleaves.github.io/p/cs/</guid>
-        <description></description>
+        <description>&lt;h2 id=&#34;计算机体系结构&#34;&gt;计算机体系结构
+&lt;/h2&gt;&lt;h3 id=&#34;存储器层次结构设计&#34;&gt;存储器层次结构设计
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;分层思想/模型：分层解构，更好地理解，分工明确，可维护性高。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缓存cache&#34;&gt;缓存（Cache）
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;特点&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;硬件上：成本高但性能好&lt;/li&gt;
+&lt;li&gt;使用上：部分内容会被重复利用&lt;/li&gt;
+&lt;li&gt;应用场景：&lt;a class=&#34;link&#34; href=&#34;https://plantegg.github.io/2021/05/16/CPU_Cache_Line%E5%92%8C%E6%80%A7%E8%83%BD/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CPU 性能和Cache Line&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
         </item>
         <item>
         <title>【量化】 神经网络量化介绍</title>
@@ -2110,6 +2123,10 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
         <guid>https://loveleaves.github.io/p/c_plus_plus/</guid>
         <description>&lt;h2 id=&#34;references&#34;&gt;References
 &lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#main&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;C++ Core Guidelines&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zh.cppreference.com/w/cpp/language&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;核心 C++ 语言构造的参考手册&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/parallel101/cppguidebook&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;现代 C++ 大典&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1252/schedule.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -2120,9 +2137,14 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
     &gt;C++ 语言参考&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;优秀开源&#34;&gt;优秀开源
-&lt;/h2&gt;&lt;h3 id=&#34;abseil&#34;&gt;Abseil
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/trending/cpp&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;github cpp trending&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;abseil&#34;&gt;Abseil
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;Abseil 是一个由 Google 开源的 C++/python 库，提供了一组常用的工具和基础设施，用于补充 C++ 标准库中缺失的功能或提高效率。&lt;/li&gt;
+&lt;li&gt;C++17的string_view前身就是来自absl::string_view&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/abseil/abseil-cpp&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;abseil-cpp&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -2162,6 +2184,7 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;功能：Boost 是一个广泛使用的 C++ 库集合，提供了许多扩展标准库的功能，包括智能指针、正则表达式、线程、文件系统、算法等。&lt;/li&gt;
 &lt;li&gt;特点：Boost 提供了丰富的功能，经过多年的开发和优化，成为了 C++ 生态中非常重要的工具库之一。很多 C++ 标准库中的特性都源自 Boost（如 std::shared_ptr 和 std::filesystem）。&lt;/li&gt;
+&lt;li&gt;c++17中的std::filesystem、std::any、std::varient等直接来自于boost中。boost::program_options用于处理控制台的输入参数也是很方便&lt;/li&gt;
 &lt;li&gt;链接：&lt;a class=&#34;link&#34; href=&#34;https://www.boost.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Boost官网&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -2220,10 +2243,24 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
 &lt;li&gt;operator ：用于定义或重载类的运算符&lt;/li&gt;
 &lt;li&gt;自定义迭代器类：通常需重载==、!=、++、*解引用，实现begin、end&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;对象生存期和资源管理-raii&#34;&gt;对象生存期和资源管理 (RAII)
+&lt;h4 id=&#34;三五零之法则rule-of-three&#34;&gt;三/五/零之法则(rule of three)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;因为C++类的特殊成员特性在实际应用可能产生用户非预期的效果，所以总结为法则用以规避可能出现的潜在风险&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zh.cppreference.com/w/cpp/language/rule_of_three&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cpp references&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;资源获取即初始化resource-acquisition-is-initialization-raai&#34;&gt;资源获取即初始化(Resource Acquisition Is Initialization, RAAI)
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;与托管语言不同，C++ 没有自动回收垃圾机制，易导致内存泄露&lt;/li&gt;
+&lt;li&gt;C++ 将资源的生命周期与对象的生命周期所绑定（构造获取资源/析构释放资源，利用了栈上的变量在离开作用域的时候会析构的特性）&lt;/li&gt;
+&lt;li&gt;c++11后的四大smart_point(shared_ptr、unique_ptr、weak_ptr、auto_ptr(在17中废除))采用了这种思想&lt;/li&gt;
 &lt;li&gt;善于利用析构特性进行自动内存回收管理，如std::lock_guard、Std::make_unique、Std::make_share等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;运行时类型识别run-time-type-identificationrtti&#34;&gt;运行时类型识别(Run Time Type Identification，RTTI)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;c++中RTTI的一些体现typeid、dynamic_cast、type traits
+具体可以看runtime的库的函数__RTtypeid，rtti把所需的type_info(不同编译器会有所不同)信息放在vtable前，大概也是dynamic_cast要求父类必须有虚函数的原因吧&lt;/li&gt;
+&lt;li&gt;注意，取虚函数表地址时 &lt;em&gt;&lt;em&gt;（此处请注意环境在32位和64位下的区别，在32/64位下取对象a(带有虚函数的基类的实例)的首地址(虚函数表地址)有区分，即&lt;/em&gt;(int &lt;em&gt;)&amp;amp;a 和 &lt;em&gt;(long &lt;em&gt;)&amp;amp;a的不同，为避免也可直接，（int&lt;/em&gt;）&lt;/em&gt;(int&lt;/em&gt;)(&amp;amp;classname)替换成（intptr_t&lt;/em&gt;）&lt;em&gt;(intptr_t&lt;/em&gt;)(&amp;amp;classname)）**&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;用于编译时封装的-pimpl&#34;&gt;用于编译时封装的 Pimpl
 &lt;/h4&gt;&lt;p&gt;Pimpl（Pointer to Implementation）是一种设计模式，常用于C++编程中以隐藏类的实现细节。Pimpl模式通过将实现细节移到一个私有的实现类中，从而提高代码的可维护性、降低编译时间以及实现二进制兼容性。&lt;/p&gt;
@@ -2293,7 +2330,90 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
 &lt;h3 id=&#34;算法algorithms&#34;&gt;算法（Algorithms）
 &lt;/h3&gt;&lt;h3 id=&#34;迭代器iterators&#34;&gt;迭代器（Iterators）
 &lt;/h3&gt;&lt;h3 id=&#34;函数对象function-objects&#34;&gt;函数对象（Function Objects）
-&lt;/h3&gt;</description>
+&lt;/h3&gt;&lt;h2 id=&#34;c-14新特性&#34;&gt;C++ 14新特性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.cppreference.com/w/cpp/14&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cppreference&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;c-17新特性&#34;&gt;C++ 17新特性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.cppreference.com/w/cpp/17&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cppreference&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/MeouSker77/Cpp17&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;C++17完全指南&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;并行算法库&#34;&gt;并行算法库
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;不同编译器对并行算法库的支持: &lt;a class=&#34;link&#34; href=&#34;https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.cppreference.com/w/cpp/experimental/parallelism&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;支持的算法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;依赖&lt;a class=&#34;link&#34; href=&#34;https://github.com/oneapi-src/oneTBB&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;tbb&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;使用示例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#include&lt;/span&gt; &lt;span class=&#34;cpf&#34;&gt;&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#include&lt;/span&gt; &lt;span class=&#34;cpf&#34;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// std::sort(begin, end, comp); // origin
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exe_policy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;begin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;comp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 执行策略(execution policy)可选：
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 1、std::execution::seq（顺序执行）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 2、std::execution::par（并行执行）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 3、std::execution::par_unseq（并行和向量化执行）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;c-20新特性&#34;&gt;C++ 20新特性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.cppreference.com/w/cpp/20&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cppreference&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;其他&#34;&gt;其他
+&lt;/h2&gt;&lt;h3 id=&#34;宏定义&#34;&gt;宏定义
+&lt;/h3&gt;&lt;h4 id=&#34;va_-应用&#34;&gt;#、#@、##、&lt;strong&gt;VA_ARGS&lt;/strong&gt; 应用
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#define Conn(x,y)  x##y &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 表示x连接y
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;#define ToChar(x)  #@x  &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 给x加上单引号
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;#define ToString(x) #x  &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 给x加上双引号
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ToString&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;123132&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;// str=&amp;#34;123132&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Conn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;123&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;456&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;            &lt;span class=&#34;c1&#34;&gt;//n=123456;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Conn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;asdf&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;add&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;//str = &amp;#34;asdfadf&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ToChar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;               &lt;span class=&#34;c1&#34;&gt;// a=&amp;#39;1&amp;#39;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// char a = ToChar(123);          // 编译器报错
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;#define debug(...) printf(__VA_ARGS__) &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 用于宏定义中代表可变参数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;运行时类型反射run-time-type-reflection-rttr&#34;&gt;运行时类型反射(Run Time Type Reflection, RTTR)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;反射是一个进程检查、反省和修改其自身结构和行为的能力&lt;/li&gt;
+&lt;li&gt;众所周知，java、c#、Go等语言在语言层面支持了反射特性。而c++不支持反射，因为C++没有在语言层面提供返回类的metadata的能力，所以很多属性要靠手动注册，于是乎有人自造轮子搞了个反射机制（UE中的U++通过UHT和UBT来支持反射）&lt;/li&gt;
+&lt;/ul&gt;
+</description>
         </item>
         <item>
         <title>【HPC】 MPI介绍</title>
@@ -2462,8 +2582,10 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;编译器选项&#34;&gt;编译器选项
-&lt;/h3&gt;&lt;p&gt;-ta=tesla: Compiler option to target NVIDIA Tesla GPUs.
--Minfo=accel: Provides feedback about the code generated by the compiler.&lt;/p&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;-ta=tesla: Compiler option to target NVIDIA Tesla GPUs.&lt;/li&gt;
+&lt;li&gt;-Minfo=accel: Provides feedback about the code generated by the compiler.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;常用命令&#34;&gt;常用命令
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;循环&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
