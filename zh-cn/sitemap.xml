@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://loveleaves.github.io/p/onnx_quantization/</loc>
-    <lastmod>2025-02-23T12:05:59+08:00</lastmod>
+    <loc>https://loveleaves.github.io/p/tensorrt_deploy/</loc>
+    <lastmod>2025-03-05T20:45:08+08:00</lastmod>
   </url><url>
     <loc>https://loveleaves.github.io/categories/</loc>
-    <lastmod>2025-02-23T12:05:59+08:00</lastmod>
+    <lastmod>2025-03-05T20:45:08+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -19,10 +19,16 @@
                 />
   </url><url>
     <loc>https://loveleaves.github.io/post/</loc>
-    <lastmod>2025-02-23T12:05:59+08:00</lastmod>
+    <lastmod>2025-03-05T20:45:08+08:00</lastmod>
+  </url><url>
+    <loc>https://loveleaves.github.io/categories/tensorrt/</loc>
+    <lastmod>2025-03-05T20:45:08+08:00</lastmod>
+  </url><url>
+    <loc>https://loveleaves.github.io/p/onnx_quantization/</loc>
+    <lastmod>2025-03-05T20:44:48+08:00</lastmod>
   </url><url>
     <loc>https://loveleaves.github.io/categories/quantization/</loc>
-    <lastmod>2025-02-23T12:05:59+08:00</lastmod>
+    <lastmod>2025-03-05T20:45:08+08:00</lastmod>
   </url><url>
     <loc>https://loveleaves.github.io/p/cs/</loc>
     <lastmod>2025-02-23T11:00:43+08:00</lastmod>
@@ -52,7 +58,7 @@
     <lastmod>2025-02-19T00:00:10+08:00</lastmod>
   </url><url>
     <loc>https://loveleaves.github.io/categories/hpc/</loc>
-    <lastmod>2025-02-23T11:00:52+08:00</lastmod>
+    <lastmod>2025-03-05T20:45:08+08:00</lastmod>
   </url><url>
     <loc>https://loveleaves.github.io/categories/simd/</loc>
     <lastmod>2025-02-19T00:00:10+08:00</lastmod>
@@ -85,7 +91,7 @@
     <lastmod>2025-02-19T00:00:10+08:00</lastmod>
   </url><url>
     <loc>https://loveleaves.github.io/p/gpu/</loc>
-    <lastmod>2025-02-19T00:00:10+08:00</lastmod>
+    <lastmod>2025-03-05T20:45:08+08:00</lastmod>
   </url><url>
     <loc>https://loveleaves.github.io/p/mlsys/</loc>
     <lastmod>2025-02-19T00:00:10+08:00</lastmod>

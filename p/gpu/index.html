@@ -10,7 +10,7 @@
 <meta property='og:description' content="主要介绍GPU的架构及其C++使用">
 <meta property='og:url' content='https://loveleaves.github.io/p/gpu/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-03T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-19T00:00:10&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-03T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-05T20:45:08&#43;08:00'/>
 <meta name="twitter:title" content="【GPU】 GPU架构及使用介绍">
 <meta name="twitter:description" content="主要介绍GPU的架构及其C++使用">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -290,7 +290,12 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#介绍">介绍</a></li>
+    <li><a href="#介绍">介绍</a>
+      <ol>
+        <li><a href="#cuda驱动driverapi">CUDA驱动(driver)API</a></li>
+        <li><a href="#cuda运行时runtimeapi">CUDA运行时(runtime)API</a></li>
+      </ol>
+    </li>
     <li><a href="#references">References</a></li>
     <li><a href="#cuda框架">CUDA框架</a>
       <ol>
@@ -433,7 +438,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 18 分钟
+                    阅读时长: 19 分钟
                 </time>
             </div>
         
@@ -454,6 +459,33 @@
 <li>核心指标：核心数、GPU显存容量、GPU计算峰值、显存带宽</li>
 <li>GPU不能单独计算，CPU+GPU组成异构计算架构：CPU起到控制作用，一般称为主机（Host）；GPU可以看作CPU的协处理器，一般称为设备（Device）；主机和设备之间内存访问一般通过PCIe总线链接。</li>
 <li>CUDA 提供两层API接口：CUDA驱动(driver)API和CUDA运行时(runtime)API</li>
+</ul>
+<h3 id="cuda驱动driverapi">CUDA驱动(driver)API
+</h3><ul>
+<li>cuda driver使用方式：libcuda.so和cuda.h，<a class="link" href="https://docs.nvidia.com/cuda/cuda-driver-api/index.html"  target="_blank" rel="noopener"
+    >cuda-driver-api</a></li>
+<li>context管理机制：方便管理device
+<ul>
+<li>
+<ol>
+<li>手动管理的context,cuCtxCreate(手动管理，以堆栈方式push/pop)</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>自动管理的context,cuDevicePrimaryCtxRetain(自动管理，runtime api以此为基础)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>首先需要调用culnit初始化驱动API</li>
+</ul>
+<h3 id="cuda运行时runtimeapi">CUDA运行时(runtime)API
+</h3><ul>
+<li>cuda runtime使用方式：libcudart.so和cuda_runtime.h。<a class="link" href="https://docs.nvidia.com/cuda/cuda-runtime-api/index.html"  target="_blank" rel="noopener"
+    >runtime API</a>随cuda toolkit发布</li>
+<li>主要内容：核函数的使用、线程束布局、内存模型、流的使用</li>
+<li>主要实现：归约求和、仿射变换、矩阵乘法、模型后处理</li>
 </ul>
 <h2 id="references">References
 </h2><ul>
@@ -636,7 +668,8 @@
 <h3 id="功能正确性检查">功能正确性检查
 </h3><ul>
 <li>内存检查、越界访问、异常检查等</li>
-<li><a class="link" href="./Tools.md" >checktool</a></li>
+<li><a class="link" href="https://loveleaves.github.io/p/tool/"  target="_blank" rel="noopener"
+    >checktool</a></li>
 </ul>
 <h2 id="获得gpu加速的关键">获得GPU加速的关键
 </h2><h3 id="cuda事件计时">CUDA事件计时
@@ -677,7 +710,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="程序性能分析">程序性能分析
-</h3><p>Nsight Compute，详见tools.md</p>
+</h3><p>Nsight Compute，详见<a class="link" href="https://loveleaves.github.io/p/tool/"  target="_blank" rel="noopener"
+    >tools</a></p>
 <h3 id="影响gpu加速的关键因素">影响GPU加速的关键因素
 </h3><ul>
 <li>数据传输的比例：主设数据传输</li>
@@ -1070,7 +1104,7 @@
 
 
         <span>
-            最后更新于 Feb 19, 2025 00:00 &#43;0800
+            最后更新于 Mar 05, 2025 20:45 &#43;0800
         </span>
     </section></footer>
 

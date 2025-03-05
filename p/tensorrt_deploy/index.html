@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="主要介绍利用ONNX、ONNXRuntime量化及推理">
-<title>【ONNX量化】 ONNX量化推理介绍</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="主要介绍利用TensorRT部署模型及推理">
+<title>【TensorRT】 TensorRT模型部署介绍</title>
 
-<link rel='canonical' href='https://loveleaves.github.io/p/onnx_quantization/'>
+<link rel='canonical' href='https://loveleaves.github.io/p/tensorrt_deploy/'>
 
-<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="【ONNX量化】 ONNX量化推理介绍">
-<meta property='og:description' content="主要介绍利用ONNX、ONNXRuntime量化及推理">
-<meta property='og:url' content='https://loveleaves.github.io/p/onnx_quantization/'>
+<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="【TensorRT】 TensorRT模型部署介绍">
+<meta property='og:description' content="主要介绍利用TensorRT部署模型及推理">
+<meta property='og:url' content='https://loveleaves.github.io/p/tensorrt_deploy/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-20T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-05T20:44:48&#43;08:00'/>
-<meta name="twitter:title" content="【ONNX量化】 ONNX量化推理介绍">
-<meta name="twitter:description" content="主要介绍利用ONNX、ONNXRuntime量化及推理">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-02T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-05T20:45:08&#43;08:00'/>
+<meta name="twitter:title" content="【TensorRT】 TensorRT模型部署介绍">
+<meta name="twitter:description" content="主要介绍利用TensorRT部署模型及推理">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -291,14 +291,33 @@
             <nav id="TableOfContents">
   <ol>
     <li><a href="#references">References</a></li>
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#onnx-quantization">ONNX Quantization</a></li>
-    <li><a href="#create-float16-and-mixed-precision-models">Create Float16 and Mixed Precision Models</a></li>
-    <li><a href="#ort-model-format">ORT model format</a></li>
-    <li><a href="#example">Example</a>
+    <li><a href="#tensorrt推理部署方案">TensorRT推理部署方案</a>
       <ol>
-        <li><a href="#simple-example">Simple Example</a></li>
-        <li><a href="#yolov8">YOLOv8</a></li>
+        <li><a href="#c硬代码方案">C++硬代码方案</a></li>
+        <li><a href="#onnx方案">ONNX方案</a></li>
+        <li><a href="#tensorrt库文件">TensorRT库文件</a></li>
+      </ol>
+    </li>
+    <li><a href="#tensorrt部署推理模型流程">TensorRT部署推理模型流程</a>
+      <ol>
+        <li><a href="#模型构建">模型构建</a></li>
+        <li><a href="#模型推理">模型推理</a>
+          <ol>
+            <li><a href="#动态shape">动态shape</a></li>
+          </ol>
+        </li>
+        <li><a href="#onnx模型操作">ONNX模型操作</a></li>
+        <li><a href="#onnx-parser">ONNX Parser</a>
+          <ol>
+            <li><a href="#导出trt模型">导出TRT模型</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#plugin">Plugin</a></li>
+    <li><a href="#量化">量化</a>
+      <ol>
+        <li><a href="#int8量化">int8量化</a></li>
       </ol>
     </li>
   </ol>
@@ -319,8 +338,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/quantization/" >
-                Quantization
+            <a href="/categories/tensorrt/" >
+                TensorRT
             </a>
         
     </header>
@@ -328,12 +347,12 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/onnx_quantization/">【ONNX量化】 ONNX量化推理介绍</a>
+            <a href="/p/tensorrt_deploy/">【TensorRT】 TensorRT模型部署介绍</a>
         </h2>
     
         
         <h3 class="article-subtitle">
-            主要介绍利用ONNX、ONNXRuntime量化及推理
+            主要介绍利用TensorRT部署模型及推理
         </h3>
         
     </div>
@@ -354,7 +373,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Feb 20, 2025</time>
+                <time class="article-time--published">Mar 02, 2025</time>
             </div>
         
 
@@ -369,7 +388,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 1 分钟
+                    阅读时长: 11 分钟
                 </time>
             </div>
         
@@ -386,85 +405,532 @@
     
     <h2 id="references">References
 </h2><ul>
-<li><a class="link" href="https://github.com/loveleaves/onnx-quantization"  target="_blank" rel="noopener"
-    >onnx量化推理例子</a></li>
-<li><a class="link" href="https://onnxruntime.ai/docs/"  target="_blank" rel="noopener"
-    >onnxruntime docs</a></li>
-<li><a class="link" href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html"  target="_blank" rel="noopener"
-    >onnxruntime quantization</a></li>
-<li><a class="link" href="https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md"  target="_blank" rel="noopener"
-    >ONNX Runtime Quantization Example</a>, Pre-processing step</li>
+<li><a class="link" href="https://docs.nvidia.com/deeplearning/tensorrt/latest/getting-started/quick-start-guide.html"  target="_blank" rel="noopener"
+    >tensorrt docs</a></li>
+<li><a class="link" href="https://docs.nvidia.com/deeplearning/tensorrt/archives/"  target="_blank" rel="noopener"
+    >tensorrt api</a></li>
+<li><a class="link" href="https://docs.nvidia.com/deeplearning/tensorrt/latest/installing-tensorrt/installing.html"  target="_blank" rel="noopener"
+    >install tensorrt</a></li>
+<li><a class="link" href="https://github.com/NVIDIA/TensorRT/tree/main/samples"  target="_blank" rel="noopener"
+    >TensorRT samples</a></li>
+<li><a class="link" href="https://github.com/wang-xinyu/tensorrtx"  target="_blank" rel="noopener"
+    >Implementation of popular deep learning networks with TensorRT</a></li>
 </ul>
-<h2 id="overview">Overview
-</h2><p>Quantization in ONNX Runtime refers to 8 bit linear quantization of an ONNX model.</p>
-<p>During quantization, the floating point values are mapped to an 8 bit quantization space of the form: <code>val_fp32 = scale * (val_quantized - zero_point)</code></p>
-<p><code>scale</code> is a positive real number used to map the floating point numbers to a quantization space. It is calculated as follows:</p>
-<p>For asymmetric quantization:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> scale = (data_range_max - data_range_min) / (quantization_range_max - quantization_range_min)
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>For symmetric quantization:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> scale = max(abs(data_range_max), abs(data_range_min)) * 2 / (quantization_range_max - quantization_range_min)
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><code>zero_point</code> represents zero in the quantization space. It is important that the floating point zero value be exactly representable in quantization space. This is because zero padding is used in many CNNs. If it is not possible to represent 0 uniquely after quantization, it will result in accuracy errors.</p>
-<p><img src="/imgs/quantization/1.png"
+<h2 id="tensorrt推理部署方案">TensorRT推理部署方案
+</h2><ul>
+<li><a class="link" href="https://github.com/jinmin527/learning-cuda-trt"  target="_blank" rel="noopener"
+    >learning-cuda-trt code</a></li>
+<li><a class="link" href="https://github.com/loveleaves/TensorRT-Quantization"  target="_blank" rel="noopener"
+    >tensorRT quantization</a></li>
+</ul>
+<h3 id="c硬代码方案">C++硬代码方案
+</h3><ul>
+<li>代表：<a class="link" href="https://github.com/wang-xinyu/tensorrtx"  target="_blank" rel="noopener"
+    >tensorrtx</a></li>
+<li>流程：C++硬代码=》TRT API =》 TRT Builder =》 TRT Engine</li>
+</ul>
+<h3 id="onnx方案">ONNX方案
+</h3><ul>
+<li>流程：ONNX(libnvonnxparser.so) =》TRT API =》 TRT Builder =》 TRT Engine</li>
+<li>一般思路：
+<ol>
+<li>导出模型onnx，查看输入和输出。</li>
+<li>查看代码，找到onnx的预处理，分析预处理逻辑</li>
+<li>利用上述信息实现onnx py推理实现</li>
+<li>验证正常可实现转TRT模型用C++实现推理</li>
+</ol>
+</li>
+</ul>
+<h3 id="tensorrt库文件">TensorRT库文件
+</h3><ul>
+<li>libnvinfer.so：TensorRT核心库</li>
+<li>libnvinfer_plugin.so：nvidia官方提供的插件，<a class="link" href="https://github.com/NVIDIA/TensorRT/tree/main/plugin"  target="_blank" rel="noopener"
+    >github</a></li>
+<li>libprotobuf.so：protobuf库</li>
+<li>libnvonnxparser.so：ONNX解析</li>
+</ul>
+<h2 id="tensorrt部署推理模型流程">TensorRT部署推理模型流程
+</h2><h3 id="模型构建">模型构建
+</h3><ul>
+<li>tensorrt的工作流程如下图：
+<ul>
+<li>首先定义网络</li>
+<li>优化builder参数</li>
+<li>通过builder生成engine,用于模型保存、推理等</li>
+<li>engine可以通过序列化和逆序列化转化模型数据类型（转化为二进制byte文件，加快传输速率），再进一步推动模型由输入张量到输出张量的推理。<img src="/imgs/tensorRT/1.jpg"
 	
 	
 	
 	loading="lazy"
 	
-		alt="quantization"
+		alt="avatar"
 	
 	
-></p>
-<h2 id="onnx-quantization">ONNX Quantization
-</h2><ul>
-<li><a class="link" href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html"  target="_blank" rel="noopener"
-    >introduction</a></li>
+></li>
 </ul>
-<p>ONNX Runtime provides python APIs for converting 32-bit floating point model to an 8-bit integer model, a.k.a. quantization. These APIs include pre-processing, dynamic/static quantization, and debugging.</p>
-<ul>
-<li>Pre-processing: Pre-processing is to transform a float32 model to prepare it for quantization. The goal of these steps is to improve quantization quality.</li>
-<li>Dynamic Quantization: Dynamic quantization calculates the quantization parameters (scale and zero point) for activations dynamically.</li>
-<li>Static Quantization: quantization parameters are calculated in advance (offline) using a calibration data set.</li>
-<li>Quantization Debugging: Quantization may negatively affect a model’s accuracy. A solution to this problem is to compare the weights and activations tensors of the original computation graph vs those of the quantized one, identify where they differ most, and avoid quantizing these tensors, or choose another quantization/calibration method.</li>
-</ul>
-<h2 id="create-float16-and-mixed-precision-models">Create Float16 and Mixed Precision Models
-</h2><ul>
-<li><a class="link" href="https://onnxruntime.ai/docs/performance/model-optimizations/float16.html"  target="_blank" rel="noopener"
-    >offical web</a></li>
-</ul>
-<p>Converting a model to use float16 instead of float32 can decrease the model size (up to half) and improve performance on some GPUs. There may be some accuracy loss, but in many models the new accuracy is acceptable. Tuning data is not needed for float16 conversion, which can make it preferable to quantization.</p>
-<h2 id="ort-model-format">ORT model format
-</h2><p>The <a class="link" href="https://onnxruntime.ai/docs/performance/model-optimizations/ort-format-models.html"  target="_blank" rel="noopener"
-    >ORT</a> format is the format supported by reduced size ONNX Runtime builds. Reduced size builds may be more appropriate for use in size-constrained environments such as mobile and web applications.</p>
-<p>Both ORT format models and ONNX models are supported by a full ONNX Runtime build.</p>
-<h2 id="example">Example
-</h2><h3 id="simple-example">Simple Example
-</h3><p><a class="link" href="https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md"  target="_blank" rel="noopener"
-    >The example</a> has three parts:</p>
+</li>
+<li>code structure
 <ol>
-<li>Pre-processing</li>
-<li>Quantization</li>
-<li>Debugging</li>
+<li>定义 builder, config 和network，其中builder表示所创建的构建器，config表示创建的构建配置（指定TensorRT应该如何优化模型），network为创建的网络定义。</li>
+<li>输入，模型结构和输出的基本信息（如下图所示）
+<img src="/imgs/tensorRT/2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="avatar"
+	
+	
+></li>
+<li>生成engine模型文件</li>
+<li>序列化模型文件并存储</li>
 </ol>
-<h3 id="yolov8">YOLOv8
-</h3><ul>
-<li><a class="link" href="https://github.com/loveleaves/onnx-quantization/tree/main/object_detection/YOLOv8"  target="_blank" rel="noopener"
-    >code</a></li>
-<li>Static Quantization</li>
+</li>
 </ul>
+<h3 id="模型推理">模型推理
+</h3><p>执行推理的步骤：</p>
+<ol>
+<li>
+<p>准备模型并加载</p>
+</li>
+<li>
+<p>创建runtime：<code>createInferRuntime(logger)</code></p>
+</li>
+<li>
+<p>使用运行时时，以下步骤：</p>
+<ol>
+<li>
+<p>反序列化创建engine, 得为engine提供数据：<code>runtime-&gt;deserializeCudaEngine(modelData, modelSize)</code>,其中<code>modelData</code>包含的是input和output的名字，形状，大小和数据类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ModelData</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">INPUT_NAME</span> <span class="o">=</span> <span class="s">&#34;data&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">INPUT_SHAPE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span> <span class="c1">// [B, C, H, W]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">OUTPUT_NAME</span> <span class="o">=</span> <span class="s">&#34;prob&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">OUTPUT_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl"><span class="n">DTYPE</span> <span class="o">=</span> <span class="n">trt</span><span class="p">.</span><span class="n">float32</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>从engine创建执行上下文:<code>engine-&gt;createExecutionContext()</code></p>
+</li>
+</ol>
+</li>
+<li>
+<p>创建CUDA流<code>cudaStreamCreate(&amp;stream)</code>：</p>
+<ol>
+<li>CUDA编程流是组织异步工作的一种方式，创建流来确定batch推理的独立</li>
+<li>为每个独立batch使用IExecutionContext(3.2中已经创建了)，并为每个独立批次使用cudaStreamCreate创建CUDA流。</li>
+</ol>
+</li>
+<li>
+<p>数据准备：</p>
+<ol>
+<li>在host上声明<code>input</code>数据和<code>output</code>数组大小，搬运到gpu上</li>
+<li>要执行inference，必须用一个指针数组指定<code>input</code>和<code>output</code>在gpu中的指针。</li>
+<li>推理并将<code>output</code>搬运回CPU</li>
+</ol>
+</li>
+<li>
+<p>启动所有工作后，与所有流同步以等待结果:<code>cudaStreamSynchronize</code></p>
+</li>
+<li>
+<p>按照与创建相反的顺序释放内存</p>
+</li>
+</ol>
+<p><strong>重要接口使用说明</strong>：</p>
+<ul>
+<li>TR10中的节点索引变更为字符串，之前是数值</li>
+<li>必须使用createNetworkV2,并指定为1（表示显性batch）。createNetwork已经废弃，非显性batch官方不推荐。这个方式直接影响推理时enqueue还是enqueueV2（TR10为V3）</li>
+<li>builder、config等指针，记得释放，否则会有内存泄漏，使用ptr-&gt;destroy()（TR10使用delete）释放</li>
+<li>markOutput表示是该模型的输出节点，mark几次，就有几个输出，addlnput几次就有几个输入。这与推理时相呼应</li>
+<li>workspaceSize是工作空间大小，某些layer需要使用额外存储时，不会自己分配空间，而是为了内存复用，直接找tensorRT要workspace空间。</li>
+<li>bindings是tensorRT对输入输出张量的描述，<code>bindings = input-tensor + output-tensor</code>。比如input有a, output有b,c, d,那么<code>bindings = [a, b, c, d],bindings[0] = a, bindings[2] = c</code>。此时看到<code>engine- &gt;getBindingDimensions(0)</code>你得知道获取的是什么（TRT10改成了IOTensors）</li>
+<li><code>enqueueV2</code>是异步推理，加入到stream队列等待执行。输入的bindings则是tensors的指针（注意是device pointer）。其shape对应于编译时指定的输入输出的shape(这里只演示全部shape静态)（TRT10使用<code>enqueueV3</code>）</li>
+</ul>
+<h4 id="动态shape">动态shape
+</h4><ol>
+<li>
+<p>构建网络时：</p>
+<ul>
+<li>1.1. 必须在模型定义时，输入维度给定为-1，否则该维度不会动态。注意一下两点：
+<ul>
+<li>1.1.1. 若onnx文件，则onnx文件打开后应该看到为动态或者-1</li>
+<li>1.1.2. 如果你的模型中存在reshape类操作，那么reshape的参数必须随动态进行计算。而大部分时候这都是问题。除非你是全卷积模型，否则大部分时候只需要为batch_size维度设置为动态，其他维度尽量避免设置动态</li>
+</ul>
+</li>
+<li>1.2. 配置profile:
+<ul>
+<li>1.2.1. create: <code>builder-&gt;createOptimizationProfile()</code></li>
+<li>1.2.2. set: <code>setDimensions()</code>设置<code>kMIN</code>, <code>kOPT</code>, <code>kMAX</code>的一系列输入尺寸范围</li>
+<li>1.2.3. add:<code>config-&gt;addOptimizationProfile(profile);</code>添加profile到网络配置中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>推理阶段时：</p>
+<ul>
+<li>2.1. 您需要在选择profile的索引后设置<code>input</code>维度：<code>execution_context-&gt;setBindingDimensions(0, nvinfer1::Dims4(1, 1, 3, 3));</code> （TR10为<code>setInputShape</code>）
+<ul>
+<li>2.1.1. 关于profile索引:
+<img src="/imgs/tensorRT/3.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="multiple-optimization-profiles"
+	
+	
+></li>
+<li>2.1.2. 在运行时，向engine请求绑定维度会返回用于构建网络的相同维度。这意味着，得到的还是动态的维度[-1, in_channel, -1, -1]：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">engine</span><span class="p">.</span><span class="n">getBindingDimensions</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">// return [-1, 1, -1, -1]
+</span></span></span><span class="line"><span class="cl"><span class="c1">// execution_context-&gt;getTensorShape // TR10接口
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>获取当前的实际维度，需要查询执行上下文：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">context</span><span class="p">.</span><span class="n">getBindingDimensions</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">// return [3, 1, 3, 3]
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>检查正确性</p>
+<ul>
+<li>我们通常可以利用pytorch来校验是否发生了错误</li>
+</ul>
+</li>
+</ol>
+<h3 id="onnx模型操作">ONNX模型操作
+</h3><p><a class="link" href="https://github.com/loveleaves/onnx-quantization/tree/main/onnx-editor"  target="_blank" rel="noopener"
+    >代码实战</a>：</p>
+<ol>
+<li><code>pytorch-gen-onnx.py</code>：是之前讲过的从pytorch转换onnx格式的代码。</li>
+<li>通过<code>onnx-ml.proto</code>和<code>make-onnx-pb.sh</code>了解onnx的结构
+<ul>
+<li>2.1. onnx是基于protobuf来做数据存储和传输,*.proto后缀文件, 其定义是protobuf语法，类似json。</li>
+<li>2.2. 对于变量结构、类型等，我们可以参照<code>onnx-ml.proto</code>里面的定义。这个文件有800多行，放心我们只要搞清楚里面的核心部分就行：
+<ul>
+<li><code>ModelProto</code>:当加载了一个onnx后，会获得一个<code>ModelProto</code>。它包含一个<code>GraphProto</code>和一些版本，生产者的信息。</li>
+<li><code>GraphProto</code>: 包含了四个repeated数组(可以用来存放N个相同类型的内容，key值为数字序列类型.)。这四个数组分别是node(<code>NodeProto</code>类型)，input(<code>ValueInfoProto</code>类型)，output(<code>ValueInfoProto</code>类型)和initializer(<code>TensorProto</code>类型)；</li>
+<li><code>NodeProto</code>: 存node，放了模型中所有的计算节点,语法结构如下：
+<img src="/imgs/tensorRT/4.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="nodeproto"
+	
+	
+>
+<img src="/imgs/tensorRT/2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="avatar"
+	
+	
+></li>
+<li><code>ValueInfoProto</code>: 存input，放了模型的输入节点。存output，放了模型中所有的输出节点；</li>
+<li><code>TensorProto</code>: 存initializer，放了模型的所有权重参数</li>
+<li><code>AttributeProto</code>:每个计算节点中还包含了一个<code>AttributeProto</code>数组，用来描述该节点的属性，比如Conv节点或者说卷积层的属性包含group，pad，strides等等；</li>
+</ul>
+</li>
+<li>2.3. 通过protoc编译<code>onnx-ml.proto</code>，产生<code>onnx-ml.pb.cc</code>文件
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash make-onnx-pb.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>create-onnx.py
+<ul>
+<li>3.1. create-onnx.py直接从构建onnx，不经过任何框架的转换。通过import onnx和onnx.helper提供的make_node，make_graph，make_tensor等等接口我们可以轻易的完成一个ONNX模型的构建。</li>
+<li>3.2. 需要完成对node，initializer，input，output，graph，model的填充</li>
+<li>3.3. 读懂creat-onnx.py以make_node为例：
+<img src="/imgs/tensorRT/5.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="make-node"
+	
+	
+></li>
+</ul>
+</li>
+<li>edit-onnx.py
+<ul>
+<li>4.1. 由于protobuf任何支持的语言，我们可以使用[c/c++/python/java/c#等等]实现对onnx文件的读写操作</li>
+<li>4.2. 掌握onnx和helper实现对onnx文件的各种编辑和修改
+<ul>
+<li>增：一般伴随增加node和tensor
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xxx_tensor</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xxx_node</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>删：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xxx_node</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>改：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">input_node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>read-onnx.py
+<ul>
+<li>5.1 通过<code>graph</code>可以访问参数，数据是以protobuf的格式存储的，因此当中的数值会以bytes的类型保存。需要用<code>np.frombuffer</code>方法还原成类型为<code>float32</code>的<code>ndarray</code>。注意还原出来的<code>ndarray</code>是只读的。</li>
+</ul>
+</li>
+</ol>
+<h3 id="onnx-parser">ONNX Parser
+</h3><p>onnx解析器有两个选项，</p>
+<ol>
+<li><code>libnvonnxparser.so</code>或者</li>
+<li><a class="link" href="https://github.com/onnx/onnx-tensorrt"  target="_blank" rel="noopener"
+    >onnx-tensorrt parser</a>(源代码)。</li>
+<li>使用源代码的目的，是为了更好的进行自定义封装，简化插件开发或者模型编译的过程，更加具有定制化，遇到问题可以调试</li>
+</ol>
+<p><code>onnx-tensorrt parser</code>代码使用：</p>
+<ol>
+<li>什么是onnx:
+<ol>
+<li>先看名字：Open Neural Network Exchange(ONNX) 是一个开放的生态系统，使代码不被局限在框架和平台中。</li>
+<li>具体一点：onnx可以把你的神经网络模型(PyTroch, TF, Caffe)统统转为标准的ONNX格式(一种protobuf格式)，然后就可在各种平台(云平台, windows, linux)和设备(cpu, gpu, npu)上运行
+<img src="/imgs/tensorRT/6.onnx.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="onnx"
+	
+	
+></li>
+</ol>
+</li>
+<li>先看文件<code>gen-onnx.py</code>以pytorch构建的模型为例讲：pytorch模型转onnx格式
+<ol>
+<li>构建一个pytorch网络，并声明一个model对象</li>
+<li>如果进行推理，将模型设为推理状态：这一点很重要，因为像dropout, batchnorm这样的算子在推理和训练模式下的行为是不同的。</li>
+<li>导出为onnx模型：<code>torch.onnx.export()</code></li>
+<li>运行python脚本，生成onnx，在<code>main.cpp</code>中会对其进行解析
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="n">gen</span><span class="o">-</span><span class="n">onnx</span><span class="o">.</span><span class="n">py</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>运行后的图示：
+<img src="/imgs/tensorRT/7.onnx-proto.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="onnx-proto"
+	
+	
+>
+<ul>
+<li>Protobuf则通过onnx-ml.proto编译得到onnx-ml.pb.h和onnx-ml.pb.cc或onnx_ml_pb2.py</li>
+<li>然后用onnx-ml.pb.cc和代码来操作onnx模型文件，实现增删改</li>
+<li>onnx-ml.proto则是描述onnx文件如何组成的，具有什么结构，他是操作onnx经常参照的东西</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>再看文件<code>main.cpp</code>讲解如何解析onnx格式
+<ol>
+<li>使用onnx解析器：<code>createParser</code>的api在文件NvOnnxParser.h中</li>
+<li>在这里使用onnx的结果填充到network中，而手动构建网络则是将输入和算子填入network中，区别如图所示：
+<img src="/imgs/tensorRT/8.onnx-major-difference.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="onnx-major-difference"
+	
+	
+></li>
+<li>导出后，可以使用netron软件进行打开查看:https://github.com/lutzroeder/Netron</li>
+</ol>
+</li>
+<li>除了构建过程的区别，makefile中，库文件也需要加上nvonnxparser：
+<img src="/imgs/tensorRT/9.makefile-difference.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="makefile-difference"
+	
+	
+></li>
+</ol>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>severity_string 和 log仅是工具函数，无需过分关注</li>
+</ul>
+<h4 id="导出trt模型">导出TRT模型
+</h4><p>为了使用onnx导出网络有三种方式：</p>
+<ol>
+<li>我们使用自带的解析器，<code>libnvonnxparser.so</code></li>
+<li>从源代码编译：<a class="link" href="https://github.com/onnx/onnx-tensorrt"  target="_blank" rel="noopener"
+    >onnx-tensorrt</a>，主要protobuf文件：
+<ul>
+<li><a class="link" href="https://github.com/onnx/onnx/blob/main/onnx/onnx-ml.proto"  target="_blank" rel="noopener"
+    >onnx-ml.proto 来源</a></li>
+<li><a class="link" href="https://github.com/onnx/onnx/blob/main/onnx/onnx-operators-ml.proto"  target="_blank" rel="noopener"
+    >onnx-operators-ml.proto 来源</a></li>
+</ul>
+</li>
+<li>利用官方工具<a class="link" href="https://github.com/NVIDIA/TensorRT/tree/main/samples/trtexec"  target="_blank" rel="noopener"
+    ><code>trtexec</code></a>，<a class="link" href="https://github.com/loveleaves/TensorRT-Quantization/tree/main/object_detection/YOLOv8/normal"  target="_blank" rel="noopener"
+    >YOLOv8部署推理案例</a>
+Usage:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/usr/src/tensorrt/bin/trtexec <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--onnx<span class="o">=</span>yolov8s.onnx <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--saveEngine<span class="o">=</span>yolov8s.engine <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--fp16
+</span></span><span class="line"><span class="cl"><span class="c1"># or --int8</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="plugin">Plugin
+</h2><p>1.如何在pytorch里面导出一个插件
+2.插件解析时如何对应，在onnx parser中如何处理
+3.插件的creator实现
+4.插件的具体实现，继承自IPluginV2DynamicExt
+5.插件的序列化与反序列化</p>
+<h2 id="量化">量化
+</h2><h3 id="int8量化">int8量化
+</h3><ol>
+<li>对于int8，需要配置setFlag nvinfer1::BuilderFlag::kINT8，并且配置setInt8Calibrator</li>
+<li>对于Int8EntropyCalibrator，则需要继承自IInt8EntropyCalibrator2</li>
+<li>Int8EntropyCalibrator的作用，是读取并预处理图像数据作为输入
+<ul>
+<li>标定的原理，是通过输入标定图像I，使用参数WInt8推理得到输出结果PInt8，然后不断调整WInt8，使得输出PInt8与PFloat32越接近越好</li>
+<li>因此标定时通常需要使用一些图像，正常发布时，一般使用100张图左右即可</li>
+</ul>
+</li>
+<li>常用的Calibrator
+<ul>
+<li>Int8EntropyCalibrator2
+熵校准选择张量的比例因子来优化量化张量的信息论内容，通常会抑制分布中的异常值。这是当前推荐的熵校准器。默认情况下，校准发生在图层融合之前。推荐用于基于 CNN 的网络。
+<img src="/imgs/tensorRT/10.int8EntropyCalibrator2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="int8EntropyCalibrator2"
+	
+	
+></li>
+<li>Iint8MinMaxCalibrator
+该校准器使用激活分布的整个范围来确定比例因子。它似乎更适合NLP任务。默认情况下，校准发生在图层融合之前。推荐用于NVIDIA BERT等网络。
+<img src="/imgs/tensorRT/11.int8MinMaxCalibrator.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="int8MinMaxCalibrator"
+	
+	
+></li>
+</ul>
+</li>
+<li>计算机中的float计算量是非常大的，而改成int8后，计算量相比可以提升数倍
+<ul>
+<li>对于实际操作时，input[float32], w[int8], bias[float32], output[float32]</li>
+<li>步骤如下：
+<ul>
+<li>input[int8] = to_int8(input[float32])</li>
+<li>y[int16] = input[int8] * w[int8]   # 此处乘法会由计算机转换为int16，保证精度</li>
+<li>output[float32] = to_float32(y[int16]) + bias[float32]</li>
+</ul>
+</li>
+<li>所以整个过程的只是为了减少float32的乘法数量以实现提速</li>
+<li>对于to_int8的过程，并不是直接的线性缩放，而是经过KL散度计算最合适的截断点（最大、最小值），进而进行缩放，使得权重的分布尽可能小的被改变
+<ul>
+<li>可以参照这个地址：https://on-demand.gputechconf.com/gtc/2017/presentation/s7310-8-bit-inference-with-tensorrt.pdf</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
 
 </section>
 
@@ -494,7 +960,7 @@
 
 
         <span>
-            最后更新于 Mar 05, 2025 20:44 &#43;0800
+            最后更新于 Mar 05, 2025 20:45 &#43;0800
         </span>
     </section></footer>
 
@@ -531,41 +997,6 @@
     
 
     
-
-<aside class="related-content--wrapper">
-    <h2 class="section-title">相关文章</h2>
-    <div class="related-content">
-        <div class="flex article-list--tile">
-            
-                
-<article class="">
-    <a href="/p/quantization/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">【量化】 神经网络量化介绍</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/p/gpu/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">【GPU】 GPU架构及使用介绍</h2>
-        </div>
-    </a>
-</article>
-
-            
-        </div>
-    </div>
-</aside>
 
      
     

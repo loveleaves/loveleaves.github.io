@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 23 Feb 2025 11:00:52 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hpc/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 05 Mar 2025 20:45:08 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hpc/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【SIMD】 ARM SIMD指令集NEON等介绍</title>
         <link>https://loveleaves.github.io/p/arm-neon/</link>
         <pubDate>Thu, 06 Feb 2025 00:00:00 +0000</pubDate>
@@ -2056,6 +2056,33 @@ ASan 可以检测的内存问题包括：&lt;/li&gt;
 &lt;li&gt;GPU不能单独计算，CPU+GPU组成异构计算架构：CPU起到控制作用，一般称为主机（Host）；GPU可以看作CPU的协处理器，一般称为设备（Device）；主机和设备之间内存访问一般通过PCIe总线链接。&lt;/li&gt;
 &lt;li&gt;CUDA 提供两层API接口：CUDA驱动(driver)API和CUDA运行时(runtime)API&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;cuda驱动driverapi&#34;&gt;CUDA驱动(driver)API
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;cuda driver使用方式：libcuda.so和cuda.h，&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-driver-api/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cuda-driver-api&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;context管理机制：方便管理device
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;手动管理的context,cuCtxCreate(手动管理，以堆栈方式push/pop)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;自动管理的context,cuDevicePrimaryCtxRetain(自动管理，runtime api以此为基础)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;首先需要调用culnit初始化驱动API&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cuda运行时runtimeapi&#34;&gt;CUDA运行时(runtime)API
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;cuda runtime使用方式：libcudart.so和cuda_runtime.h。&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-runtime-api/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;runtime API&lt;/a&gt;随cuda toolkit发布&lt;/li&gt;
+&lt;li&gt;主要内容：核函数的使用、线程束布局、内存模型、流的使用&lt;/li&gt;
+&lt;li&gt;主要实现：归约求和、仿射变换、矩阵乘法、模型后处理&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;references&#34;&gt;References
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/SeventhBlue/cudaLearningMaterials_2/blob/master/CUDA%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-GPU%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97-%E9%AB%98%E6%B8%85%E6%89%AB%E6%8F%8F-%E4%B8%AD%E8%8B%B1%E6%96%87/CUDA%20Programming%20A%20Developer%27s%20Guide%20to%20Parallel%20Computing%20with%20GPUs.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -2237,7 +2264,8 @@ ASan 可以检测的内存问题包括：&lt;/li&gt;
 &lt;h3 id=&#34;功能正确性检查&#34;&gt;功能正确性检查
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;内存检查、越界访问、异常检查等&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;./Tools.md&#34; &gt;checktool&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/tool/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;checktool&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;获得gpu加速的关键&#34;&gt;获得GPU加速的关键
 &lt;/h2&gt;&lt;h3 id=&#34;cuda事件计时&#34;&gt;CUDA事件计时
@@ -2278,7 +2306,8 @@ ASan 可以检测的内存问题包括：&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;程序性能分析&#34;&gt;程序性能分析
-&lt;/h3&gt;&lt;p&gt;Nsight Compute，详见tools.md&lt;/p&gt;
+&lt;/h3&gt;&lt;p&gt;Nsight Compute，详见&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/tool/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;tools&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;影响gpu加速的关键因素&#34;&gt;影响GPU加速的关键因素
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;数据传输的比例：主设数据传输&lt;/li&gt;
