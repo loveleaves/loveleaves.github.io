@@ -614,7 +614,106 @@ Usage:&lt;/li&gt;
 &lt;/h2&gt;&lt;p&gt;The &lt;a class=&#34;link&#34; href=&#34;https://onnxruntime.ai/docs/performance/model-optimizations/ort-format-models.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ORT&lt;/a&gt; format is the format supported by reduced size ONNX Runtime builds. Reduced size builds may be more appropriate for use in size-constrained environments such as mobile and web applications.&lt;/p&gt;
 &lt;p&gt;Both ORT format models and ONNX models are supported by a full ONNX Runtime build.&lt;/p&gt;
-&lt;h2 id=&#34;example&#34;&gt;Example
+&lt;h2 id=&#34;onnx&#34;&gt;ONNX
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/onnx/tutorials&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;onnx tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;onnx文件介绍&#34;&gt;ONNX文件介绍
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;1、.ONNX的本质，是一种&lt;a class=&#34;link&#34; href=&#34;https://github.com/protocolbuffers/protobuf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Protobuf&lt;/a&gt;格式文件&lt;/li&gt;
+&lt;li&gt;2、Protobuf则通过onnx-ml.proto编译得到onnx-ml.pb.h和onnx-ml.pb.cc或onnx_ml_pb2.py
+&lt;img src=&#34;https://loveleaves.github.io/imgs/2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;3、然后用onnx—ml.pb.cc和代码来操作onnx模型文件，实现增删改&lt;/li&gt;
+&lt;li&gt;4、onnx—ml.proto则是描述onnx文件如何组成的，具有什么结构，他是操作onnx经常参照的东西&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/onnx/onnx/blob/main/docs/IR.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;details&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://onnx.ai/onnx/intro/concepts.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;concepts&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;onnx结构&#34;&gt;ONNX结构
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;model：表示整个onnx的模型，包含图结构和解析器格式、opset版本、导出程序类型model.graph：表示图结构，通常是我们netron看到的主要结构&lt;/li&gt;
+&lt;li&gt;model.graph.node:表示图中的所有节点，数组，例如conv、bn等节点就是在这里的，通过input、output 表示节点之间的连接关系&lt;/li&gt;
+&lt;li&gt;model.graph.initializer:权重类的数据大都储存在这里&lt;/li&gt;
+&lt;li&gt;model.graph.input：整个模型的输入储存在这里，表明哪个节点是输入节点，shape是多少model.graph.output：整个模型的输出储存在这里，表明哪个节点是输出节点，shape是多少&lt;/li&gt;
+&lt;li&gt;对于anchorgrid类的常量数据，通常会储存在model.graph.node中，并指定类型为Constant,该类型节点在 netron中可视化时不会显示出来&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/Rolandxxx/article/details/127713806&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;onnx文件及其结构、正确导出onnx、onnx读取、onnx创建、onnx修改、onnx解析器&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;onnx文件操作&#34;&gt;ONNX文件操作
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;./onnx-editor/readme.md&#34; &gt;code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;1.ONNX的主要结构：graph、graph.node、graph.initializer、graph.input、graph.output&lt;/li&gt;
+&lt;li&gt;2.ONNX的节点构建方式：onnx.helper,各种make函数&lt;/li&gt;
+&lt;li&gt;3.ONNX的proto文件：&lt;a class=&#34;link&#34; href=&#34;https:/github.com/onnx/onnx/blob/main/onnx/onnx-ml.proto&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;onnx-proto2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;4.理解模型结构的储存、权重的储存、常量的储存、netron的解读对应到代码中的部分&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;onnx模型文件正确导出&#34;&gt;ONNX模型文件正确导出
+&lt;/h3&gt;&lt;p&gt;自pytorch2.5以后，onnx的导出有两个版本exporter实现：&lt;a class=&#34;link&#34; href=&#34;https://pytorch.org/tutorials/beginner/onnx/export_simple_model_to_onnx_tutorial.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;export_simple_model_to_onnx_tutorial&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;torchonnxexport&#34;&gt;torch.onnx.export
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;对于任何用到shape、size返回值的参数时，例如：&lt;code&gt;tensor.view(tensor.size(0),-1)&lt;/code&gt;这类操作，避免直接使用tensor.size的返回值，而是加上&lt;strong&gt;int转换&lt;/strong&gt;，&lt;code&gt;tensor.view(int(tensor.size(0),-1)&lt;/code&gt;,&lt;strong&gt;断开跟踪&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;对于nn.Upsample或nn.functional.interpolate函数，使用scale_factor指定倍率，而不是使用size参数指定大小&lt;/li&gt;
+&lt;li&gt;对于reshape、view操作时，—1的指定请放到batch维度。其他维度可以计算出来即可。batch维度禁止指定为大于-1的明确数字&lt;/li&gt;
+&lt;li&gt;torch.onnx.export指定dynamic_axes参数，并且只指定batch维度，禁止其他动态&lt;/li&gt;
+&lt;li&gt;使用opset_version=11,不要低于11&lt;/li&gt;
+&lt;li&gt;避免使用inplace操作，例如&lt;code&gt;y[·,0:2]=y[·,0:2]*2-0.5&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;尽量少的出现5个维度，例如ShuffleNet Module，可以考虑合并wh避免出现5维&lt;/li&gt;
+&lt;li&gt;尽量把让后处理部分在onnx模型中实现，降低后处理复杂度&lt;/li&gt;
+&lt;li&gt;掌握了这些，就可以保证后面各种情况的顺利了&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这些做法的必要性体现在，简化过程的复杂度，去掉gather、shape类的节点，很多时候，部分不这么改看似也是可以但是需求复杂后，依旧存在各类问题。按照说的这么修改，基本总能成。做了这些，就不需要使用onnx—simplifer了&lt;/p&gt;
+&lt;p&gt;以上导出方法在导出自定义算子后，如果要在onnxruntime导入使用，首先需要再&lt;a class=&#34;link&#34; href=&#34;https://onnxruntime.ai/docs/reference/operators/add-custom-op.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;定义onnxruntime算子&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;torchonnxexport-dynamotrue&#34;&gt;torch.onnx.export(&amp;hellip;, dynamo=True)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;using torch.export and Torch FX to capture the graph. It was released with PyTorch 2.5&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Export the ONNX model&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;onnx_program&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;onnx&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;export&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;torch_model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;example_inputs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dynamo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Optimize the ONNX model&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# The ONNX model can be optimized with constant folding, and elimination of redundant nodes.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;onnx_program&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;optimize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Save the ONNX model&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;onnx_program&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;save&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;demo.onnx&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Check the ONNX model&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;onnx_model&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;onnx&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;load&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;deom.onnx&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;onnx&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;checker&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;check_model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;onnx_model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;example&#34;&gt;Example
 &lt;/h2&gt;&lt;h3 id=&#34;simple-example&#34;&gt;Simple Example
 &lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;The example&lt;/a&gt; has three parts:&lt;/p&gt;
