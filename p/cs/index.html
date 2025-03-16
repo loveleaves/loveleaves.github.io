@@ -10,7 +10,7 @@
 <meta property='og:description' content="多思考，多总结">
 <meta property='og:url' content='https://loveleaves.github.io/p/cs/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-18T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-23T11:00:43&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-18T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-16T19:50:03&#43;08:00'/>
 <meta name="twitter:title" content="【CS】计算机科学重要思想、成果记录">
 <meta name="twitter:description" content="多思考，多总结">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -299,6 +299,16 @@
         </li>
       </ol>
     </li>
+    <li><a href="#算法的六种思想">算法的六种思想</a>
+      <ol>
+        <li><a href="#递归算法recursive-algorithm">递归算法(Recursive Algorithm)</a></li>
+        <li><a href="#贪心算法greedy-algorithm">贪心算法(Greedy Algorithm)</a></li>
+        <li><a href="#分治算法-divide-and-conqueralgorithm">分治算法 (Divide and ConquerAlgorithm)</a></li>
+        <li><a href="#回溯算法backtracking-algorithm">回溯算法(Backtracking Algorithm)</a></li>
+        <li><a href="#枚举算法brute-force-algorithm">枚举算法(Brute Force Algorithm)</a></li>
+        <li><a href="#动态规划dynamic-programming">动态规划(Dynamic Programming)</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
@@ -371,7 +381,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 1 分钟
+                    阅读时长: 2 分钟
                 </time>
             </div>
         
@@ -399,6 +409,35 @@
 <li>应用场景：<a class="link" href="https://plantegg.github.io/2021/05/16/CPU_Cache_Line%E5%92%8C%E6%80%A7%E8%83%BD/"  target="_blank" rel="noopener"
     >CPU 性能和Cache Line</a></li>
 </ul>
+<h2 id="算法的六种思想">算法的六种思想
+</h2><blockquote>
+<p><a class="link" href="https://www.cnblogs.com/zhaojinhui/p/18264853"  target="_blank" rel="noopener"
+    >https://www.cnblogs.com/zhaojinhui/p/18264853</a></p></blockquote>
+<h3 id="递归算法recursive-algorithm">递归算法(Recursive Algorithm)
+</h3><p>递归算法是一种自我调用的算法。</p>
+<p>在解决问题时，它将问题拆分成更小的子问题，并通过调用自己来解决这些子问题。每个子问题又可以进一步拆分，直到达到基本情况，然后逐层返回结果，最终得到整个问题的解决方案。
+<a class="link" href="/imgs/cs/1.png" ></a></p>
+<h3 id="贪心算法greedy-algorithm">贪心算法(Greedy Algorithm)
+</h3><p>贪心算法是一种通过在每一步选择当前最优解来解决问题的策略。</p>
+<p>它不考虑全局最优解，而是希望通过每次选择局部最优解来达到整体最优解。
+<a class="link" href="/imgs/cs/2.png" ></a></p>
+<h3 id="分治算法-divide-and-conqueralgorithm">分治算法 (Divide and ConquerAlgorithm)
+</h3><p>分治算法是一种将复杂问题划分为更小的独立子问题，并对这些子问题进行解决的策略。</p>
+<p>它将问题分解为多个部分，然后对每个部分进行处理，最后将它们合并成最终的解决方案。
+<a class="link" href="/imgs/cs/3.png" ></a></p>
+<h3 id="回溯算法backtracking-algorithm">回溯算法(Backtracking Algorithm)
+</h3><p>回溯算法是一种通过不断尝试所有可能的解决方案，直到找到满足条件的解决方案的方法。</p>
+<p>如果尝试的当前解决方案不满足条件，它会回溯到上一步，并继续尝试其他可能的选择，直到找到解决方案或者确定无解。
+<a class="link" href="/imgs/cs/4.png" ></a></p>
+<h3 id="枚举算法brute-force-algorithm">枚举算法(Brute Force Algorithm)
+</h3><p>枚举算法是一种通过穷举所有可能的解决方案来解决问题的方法。</p>
+<p>它不利用任何特定的策略，而是尝试所有可能的选择，直到找到满足条件的解决方案。
+<a class="link" href="/imgs/cs/5.png" ></a></p>
+<h3 id="动态规划dynamic-programming">动态规划(Dynamic Programming)
+</h3><p>动态规划是一种通过将问题拆分为更小的子问题，并将其解决方案存储起来，避免重复计算来优化求解过程的方法。</p>
+<p>它使用一个表格或数组来保存子问题的解决方案，以便在需要时快速查找和使用。</p>
+<p>通过解决子问题，动态规划能够逐步得到整个问题的解决方案。
+<a class="link" href="/imgs/cs/6.png" ></a></p>
 
 </section>
 
@@ -428,7 +467,7 @@
 
 
         <span>
-            最后更新于 Feb 23, 2025 11:00 &#43;0800
+            最后更新于 Mar 16, 2025 19:50 &#43;0800
         </span>
     </section></footer>
 

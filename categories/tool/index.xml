@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Wed, 19 Feb 2025 00:00:10 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/tool/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 16 Mar 2025 19:51:05 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/tool/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【Tool】 记录各种用到的工具</title>
         <link>https://loveleaves.github.io/p/tool/</link>
         <pubDate>Sun, 05 Jan 2025 00:00:00 +0000</pubDate>
@@ -394,7 +394,8 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;gpu-分析工具&#34;&gt;GPU 分析工具
-&lt;/h2&gt;&lt;p&gt;全部工具：https://developer.nvidia.com/tools-overview&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.nvidia.com/tools-overview&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方全部工具&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;cuda-gdb&#34;&gt;cuda-gdb
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.nvidia.com/cuda-gdb&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -407,11 +408,26 @@
 &lt;li&gt;注意系统要求（如win11 ws2才支持）：&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-compute/ReleaseNotes/index.html#system-requirements&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;system-requirements&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://forums.developer.nvidia.com/t/unknown-error-on-device-0-when-running-ncu-on-wsl/313742&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;unknown-error-on-device-0-when-running-ncu-on-wsl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;用于深入分析单个 CUDA 内核的性能瓶颈，帮助你优化内核代码。&lt;/li&gt;
+&lt;li&gt;通常，你可以使用 Nsight Systems 先找到瓶颈的 CUDA 内核，然后使用 Nsight Compute 对这些内核进行详细的性能分析。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;使用方案：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;1、用户界面：https://docs.nvidia.com/nsight-compute/NsightCompute/index.html&lt;/li&gt;
-&lt;li&gt;2、CLI方式：https://docs.nvidia.com/nsight-compute/NsightComputeCli/index.html&lt;/li&gt;
+&lt;li&gt;1、&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-compute/NsightCompute/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;用户界面&lt;/a&gt;：使用&lt;code&gt;ncu-ui&lt;/code&gt;命令&lt;/li&gt;
+&lt;li&gt;2、&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-compute/NsightComputeCli/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CLI方式&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;nsight-system&#34;&gt;Nsight System
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;用于高层次的系统级性能分析，帮助你识别整个应用的瓶颈，例如 GPU 内核启动延迟、数据传输等问题。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-systems/UserGuide/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;UserGuide&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使用方案：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;类似&lt;code&gt;Nsight Compute&lt;/code&gt;，但支持jupyter等&lt;/li&gt;
+&lt;li&gt;可以支持应用执行中的很多系统调用情况&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;computesanitizer&#34;&gt;ComputeSanitizer
 &lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html#id1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;

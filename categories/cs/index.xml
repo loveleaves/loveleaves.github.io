@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 23 Feb 2025 11:00:43 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/cs/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 16 Mar 2025 19:50:03 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/cs/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【CS】计算机科学重要思想、成果记录</title>
         <link>https://loveleaves.github.io/p/cs/</link>
         <pubDate>Tue, 18 Feb 2025 00:00:00 +0000</pubDate>
@@ -26,6 +26,35 @@
 &lt;li&gt;应用场景：&lt;a class=&#34;link&#34; href=&#34;https://plantegg.github.io/2021/05/16/CPU_Cache_Line%E5%92%8C%E6%80%A7%E8%83%BD/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;CPU 性能和Cache Line&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&#34;算法的六种思想&#34;&gt;算法的六种思想
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/zhaojinhui/p/18264853&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.cnblogs.com/zhaojinhui/p/18264853&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;递归算法recursive-algorithm&#34;&gt;递归算法(Recursive Algorithm)
+&lt;/h3&gt;&lt;p&gt;递归算法是一种自我调用的算法。&lt;/p&gt;
+&lt;p&gt;在解决问题时，它将问题拆分成更小的子问题，并通过调用自己来解决这些子问题。每个子问题又可以进一步拆分，直到达到基本情况，然后逐层返回结果，最终得到整个问题的解决方案。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/1.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;贪心算法greedy-algorithm&#34;&gt;贪心算法(Greedy Algorithm)
+&lt;/h3&gt;&lt;p&gt;贪心算法是一种通过在每一步选择当前最优解来解决问题的策略。&lt;/p&gt;
+&lt;p&gt;它不考虑全局最优解，而是希望通过每次选择局部最优解来达到整体最优解。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/2.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;分治算法-divide-and-conqueralgorithm&#34;&gt;分治算法 (Divide and ConquerAlgorithm)
+&lt;/h3&gt;&lt;p&gt;分治算法是一种将复杂问题划分为更小的独立子问题，并对这些子问题进行解决的策略。&lt;/p&gt;
+&lt;p&gt;它将问题分解为多个部分，然后对每个部分进行处理，最后将它们合并成最终的解决方案。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/3.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;回溯算法backtracking-algorithm&#34;&gt;回溯算法(Backtracking Algorithm)
+&lt;/h3&gt;&lt;p&gt;回溯算法是一种通过不断尝试所有可能的解决方案，直到找到满足条件的解决方案的方法。&lt;/p&gt;
+&lt;p&gt;如果尝试的当前解决方案不满足条件，它会回溯到上一步，并继续尝试其他可能的选择，直到找到解决方案或者确定无解。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/4.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;枚举算法brute-force-algorithm&#34;&gt;枚举算法(Brute Force Algorithm)
+&lt;/h3&gt;&lt;p&gt;枚举算法是一种通过穷举所有可能的解决方案来解决问题的方法。&lt;/p&gt;
+&lt;p&gt;它不利用任何特定的策略，而是尝试所有可能的选择，直到找到满足条件的解决方案。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/5.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;动态规划dynamic-programming&#34;&gt;动态规划(Dynamic Programming)
+&lt;/h3&gt;&lt;p&gt;动态规划是一种通过将问题拆分为更小的子问题，并将其解决方案存储起来，避免重复计算来优化求解过程的方法。&lt;/p&gt;
+&lt;p&gt;它使用一个表格或数组来保存子问题的解决方案，以便在需要时快速查找和使用。&lt;/p&gt;
+&lt;p&gt;通过解决子问题，动态规划能够逐步得到整个问题的解决方案。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/6.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
         

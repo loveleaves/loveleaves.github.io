@@ -40,6 +40,304 @@
 </description>
         </item>
         <item>
+        <title>【SE】 DDD领域驱动设计实战-分层架构</title>
+        <link>https://loveleaves.github.io/p/se_ddd/</link>
+        <pubDate>Mon, 10 Mar 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/se_ddd/</guid>
+        <description>&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://segmentfault.com/a/1190000045332157&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://segmentfault.com/a/1190000045332157&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;《实现领域驱动设计》&lt;/li&gt;
+&lt;li&gt;DDD分层架构：有效降低层与层之间的依赖&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/lisheng19870305/article/details/123332886&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MVC和DDD的对比&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/loveleaves/The_Art_of_Coding/blob/main/design_pattern/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E7%8E%8B%E4%BA%89/docs/169600.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;实战一（上）：业务开发常用的基于贫血模型的MVC架构违背OOP吗？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/343388831&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://zhuanlan.zhihu.com/p/343388831&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/342826364&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://zhuanlan.zhihu.com/p/342826364&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ddd分层架构&#34;&gt;DDD分层架构
+&lt;/h2&gt;&lt;h3 id=&#34;分层架构的基本原则&#34;&gt;分层架构的基本原则
+&lt;/h3&gt;&lt;p&gt;每层只与位于其下方的层发生耦合。&lt;/p&gt;
+&lt;h3 id=&#34;分层架构的分类&#34;&gt;分层架构的分类
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;严格分层架构(Strict Layers Architecture)
+某层只能与其直接下层耦合，即我的奴隶的奴隶，不是我的奴隶。&lt;/li&gt;
+&lt;li&gt;松散分层架构(Relaxed Layers Architecture)
+允许任意上层与任意下层耦合。由于用户接口层和应用服务通常需要与基础设施打交道，许多系统都是该架构。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;较低层有时也可与较高层耦合，但只限于采用观察者 (Observer)模式或者调停者(Mediator)模式场景。&lt;/br&gt;
+较低层绝不能直接访问较高层。例如，在使用调停者模式时，较高层可能实现了较低层的接口，然后将实现对象作为参数传递到较低层。当较低层调用该实现时， 它并不知道实现出自何处。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;分层架构演进&#34;&gt;分层架构演进
+&lt;/h3&gt;&lt;h4 id=&#34;传统四层架构&#34;&gt;传统四层架构
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/SE/1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;将领域模型和业务逻辑分离出来，并减少对基础设施、用户界面甚至应用层逻辑的依赖，因为它们不属业务逻辑。将一个夏杂的系统分为不同的层，每层都应该具有良好的内聚性，并且只依赖于比其自身更低的层。&lt;/p&gt;
+&lt;p&gt;传统分层架构的&lt;strong&gt;基础设施层&lt;/strong&gt;位于底层，持久化和消息机制便位于该层。
+这里的消息包含&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MQ消息&lt;/li&gt;
+&lt;li&gt;SMTP&lt;/li&gt;
+&lt;li&gt;文本消息(SMS)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可将基础设施层中所有组件看作应用程序的低层服务，较高层与该层发生耦合以复用技术基础设施。即便如此，依然应&lt;code&gt;避免核心的领域模型对象与基础设施层直接耦合&lt;/code&gt;。&lt;/p&gt;
+&lt;h4 id=&#34;改良版四层架构&#34;&gt;改良版四层架构
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;传统架构的缺陷&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;DDD初创开发团队发现，将基础设施层放在最底层存在缺点，比如此时领域层中的一些技术实现就很困难：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;违背分层架构的基本原则&lt;/li&gt;
+&lt;li&gt;难以编写测试用例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;何解？
+使用&lt;strong&gt;依赖反转设计原则&lt;/strong&gt;：低层服务（如基础设施层）应依赖高层组件（比如用户界面层、应用层和领域层）所提供的接口。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;应用依赖反转原则&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;依赖反转原则后的分层方式：基础设施层在最上方，可实现所有其他层中定义的接口
+&lt;img src=&#34;https://loveleaves.github.io/imgs/SE/2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;依赖反转原则真的可以支持所有层吗？&lt;/br&gt;
+有人认为依赖反转原则中只存在两层：最上方和最下方，上层实现下层定义的抽象接口。因此上图的基础设施层将位于最上方，而用户接口层、应用层和领域层应作同层且都位于下方。对此大家可保留自己意见。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;各层职责&#34;&gt;各层职责
+&lt;/h2&gt;&lt;h3 id=&#34;用户接口层&#34;&gt;用户接口层
+&lt;/h3&gt;&lt;p&gt;一般包括用户接口、Web 服务等。&lt;/p&gt;
+&lt;p&gt;只处理用户显示和用户请求，不应包含领域或业务逻辑。
+有人认为，既然用户接口需验证用户输入，就无可避免应该包含业务逻辑。事实上，用户接口所进行的验证和对领域模型的验证不同：对那些粗制滥造且只面向领域模型的验证行为，应该予以限制。&lt;/p&gt;
+&lt;p&gt;如果用户接口使用了领域模型中的对象，那么此时&lt;strong&gt;领域对象仅限于数据渲染展现&lt;/strong&gt;。在采用这种方式时，可使用展现模型对用户接口与领域对象进行解耦。&lt;/p&gt;
+&lt;p&gt;由于用户可能是人，也可能是其他系统，有时用户接口层将采用开放主机服务的方式向外提供API。&lt;strong&gt;用户接口层是应用层的直接用户&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;用户接口层在于前后端调用的适配。若你的微服务要提供服务给很多外部应用，而对每个外部应用的入参出参都不同，你不可能开发一堆一对一的应用服务，这时Facade接口就起到了很好的作用，包括DO和DTO对象的组装和转换。&lt;/p&gt;
+&lt;h3 id=&#34;应用层&#34;&gt;应用层
+&lt;/h3&gt;&lt;p&gt;主要包含应用服务，理论上不应有业务规则或逻辑，而主要是面向用例和流程相关的操作。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;应用层位于领域层之上，因为领域层包含多个聚合，所以它可协调多个聚合服务和领域对象完成服务编排和组合，协作完成业务。&lt;/li&gt;
+&lt;li&gt;应用层也是微服务间的交互通道，它可调用其它微服务，完成微服务间的服务组合和编排。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;开发设计时，不要将本该放在领域层的业务逻辑放到应用层。因为&lt;strong&gt;庞大的应用层会使领域模型失焦，时间一长，微服务就会退化为MVC架构，导致业务逻辑混乱&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;应用服务是在应用层，负责&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务的组合、编排、转发、转换和传递，处理业务用例的执行顺序以及结果的拼装，以粗粒度服务通过API网关发布到前端&lt;/li&gt;
+&lt;li&gt;安全认证&lt;/li&gt;
+&lt;li&gt;权限校验&lt;/li&gt;
+&lt;li&gt;事务控制&lt;/li&gt;
+&lt;li&gt;发送或订阅领域事件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;领域层&#34;&gt;领域层
+&lt;/h3&gt;&lt;p&gt;主要包含聚合根、实体、值对象、领域服务等领域模型中的领域对象。&lt;/p&gt;
+&lt;p&gt;实现核心业务逻辑，通过各种校验保证业务正确性。领域层主要体现领域模型的业务能力，它用来表达业务概念、业务状态和业务规则。&lt;/p&gt;
+&lt;p&gt;领域模型的业务逻辑主要由实体和领域服务实现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实体采用充血模型 实现所有与之相关的业务功能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实体和领域服务在实现业务逻辑上不是同级，当领域中的某些功能，单一实体或值对象无法实现，就会用到领域服务，它可组合聚合内的多个实体或值对象，实现复杂业务逻辑。&lt;/p&gt;
+&lt;h3 id=&#34;基础层&#34;&gt;基础层
+&lt;/h3&gt;&lt;p&gt;为其它各层提供通用技术基础服务：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;三方工具&lt;/li&gt;
+&lt;li&gt;驱动&lt;/li&gt;
+&lt;li&gt;MQ&lt;/li&gt;
+&lt;li&gt;API网关&lt;/li&gt;
+&lt;li&gt;文件&lt;/li&gt;
+&lt;li&gt;缓存&lt;/li&gt;
+&lt;li&gt;DB&lt;/li&gt;
+&lt;li&gt;最常用的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;基础层包含基础服务，它采用依赖反转，封装基础资源服务，实现应用层、领域层与基础层解耦。&lt;/p&gt;
+&lt;p&gt;MVC架构由于上层应用对DB强耦合，很多公司在架构演进最怕换DB，一旦更换，可能需重写一堆代码。
+但采用依赖反转，应用层即可通过解耦保持独立核心业务逻辑。当DB变更，只需更换DB基础服务。&lt;/p&gt;
+&lt;h2 id=&#34;微服务架构演进&#34;&gt;微服务架构演进
+&lt;/h2&gt;&lt;p&gt;领域模型中对象的层次从内到外依次是：值对象、实体、聚合和限界上下文。&lt;/p&gt;
+&lt;p&gt;实体或值对象的简单变更，一般不会让领域模型和微服务发生大变。但聚合的重组或拆分却可以。因为聚合内业务功能内聚，能独立完成特定业务。那聚合的重组或拆分，势必引起业务模块和系统功能变化。&lt;/p&gt;
+&lt;p&gt;可以聚合为基础单元，完成领域模型和微服务架构的演进。
+聚合可作为整体，在不同领域模型间重组或拆分，或直接将一个聚合独立为微服务。&lt;/p&gt;
+&lt;h3 id=&#34;微服务架构的演进案例&#34;&gt;微服务架构的演进案例
+&lt;/h3&gt;&lt;p&gt;现有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;微服务 1：包含聚合 a、b、c&lt;/li&gt;
+&lt;li&gt;微服务2：&lt;/li&gt;
+&lt;li&gt;微服务3：包含聚合 d、e、f&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;当发现微服务1中聚合a的功能经常被高频访问，以致拖累了整个微服务1的性能，可把聚合a，从微服务1中剥离，独立为微服务2以应对高性能场景&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;随业务发展，发现微服务3的领域模型变化，聚合d会更适合放到微服务1的领域模型。即可将聚合d整体迁移到微服务1。注意定义好聚合间的代码边界&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;架构演进后，微服务1从最初包含聚合a、b、c，演进为包含聚合b、c、d的新领域模型和微服务&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可见，好的聚合和代码模型的边界设计，可让你快速应对业务变化，轻松实现领域模型和微服务架构演进。&lt;/p&gt;
+&lt;h3 id=&#34;微服务内服务的演进&#34;&gt;微服务内服务的演进
+&lt;/h3&gt;&lt;p&gt;在微服务内部，实体的方法被领域服务组合和封装，领域服务又被应用服务组合和封装。在服务逐层组合和封装的过程中，你会发现这样一个有趣的现象。
+&lt;img src=&#34;https://loveleaves.github.io/imgs/SE/3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;服务设计时，你并不一定能完整预测有哪些下层服务会被多少个上层服务组装，因此领域层通常只提供一些原子服务，比如领域服务a、b、c。但随系统功能增强和外部接入越来越多，应用服务不断丰富。终有一日，你会发现领域服务b和c同时多次被多个应用服务调用了，执行顺序也基本一致。这时你可以考虑将b和c合并，再将应用服务中b、c的功能下沉到领域层，演进为新的领域服务（b+c）。这样既减少了服务的数量，也减轻了上层服务组合和编排的复杂度。&lt;/p&gt;
+&lt;p&gt;这就是服务演进，领域模型会越来越能适应需求快速变化。&lt;/p&gt;
+&lt;h2 id=&#34;从mvc跨越到ddd&#34;&gt;从MVC跨越到DDD
+&lt;/h2&gt;&lt;p&gt;由于层间松耦合，可专注本层设计，而不必关心其它层，也不必担心自己的设计会影响其它层。即DDD成功降低层与层之间的依赖。&lt;/p&gt;
+&lt;p&gt;分层架构使得程序结构更清晰，升级和维护更容易。修改某层代码时，只要本层接口参数不变，其它层不必修改。即使本层接口发生变化，也只影响相邻的上层，修改工作量小且可控。&lt;/p&gt;
+&lt;p&gt;传统企业应用大多是单体架构，而单体架构则大多是三层架构。三层架构解决了程序内代码间调用复杂、代码职责不清的问题，但这种分层是逻辑概念，在物理上它是中心化的集中式架构，并不适合分布式微服务架构。&lt;/p&gt;
+&lt;p&gt;DDD分层要类似三层架构，只是在DDD中，这些要素被重新划分了层，确定了层与层之间的交互规则和职责边界。
+&lt;img src=&#34;https://loveleaves.github.io/imgs/SE/4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;DDD分层架构相比MVC（只有API）在用户接口层新增了DTO，给前端提供了更多的可使用数据和更高的展示灵活性。&lt;/p&gt;
+&lt;p&gt;DDD分层架构对三层架构的业务逻辑层进行了更清晰的划分，改善了三层架构核心业务逻辑混乱，代码改动相互影响大的情况。&lt;/p&gt;
+&lt;p&gt;MVC架构向DDD分层架构演进，主要发生在业务逻辑层和数据访问层。
+DDD分层架构将业务逻辑层的服务拆分到了应用层和领域层：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;应用层快速响应前端的变化&lt;/li&gt;
+&lt;li&gt;领域层实现领域模型的能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;数据访问层和基础层之间：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;三层架构数据访问采用DAO方式&lt;/li&gt;
+&lt;li&gt;DDD分层架构的数据库等基础资源访问，采用了仓储（Repository）设计模式，通过依赖倒置实现各层对基础资源的解耦。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;仓储本身属基础层，但考虑到一个聚合对应一个仓储，为了以后聚合代码整体迁移方便，在微服务代码目录设计时，在聚合目录下增加一个Repository的仓储目录，跟仓储相关的代码都在这个目录下。&lt;/br&gt;
+这个目录下的代码与聚合的其它业务代码是分开的。如果未来换数据库，只需将Repository目录下的代码替换。而如果聚合需要整体迁移到其它微服务中去，仓储的代码也会一并迁移。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;仓储又分为两部分：仓储接口和仓储实现。仓储接口放在领域层中，仓储实现放在基础层。原来三层架构通用的第三方工具包、驱动、Common、Utility、Config等通用的公共的资源类统一放到了基础层。&lt;/p&gt;
+&lt;p&gt;MVC 到 DDD 具体操作如下：&lt;/p&gt;
+&lt;h3 id=&#34;抽象数据存储层&#34;&gt;抽象数据存储层
+&lt;/h3&gt;&lt;p&gt;一般将Data Access层做抽象，降低系统对DB的直接依赖。
+举个例子：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;新建Account实体对象：一个实体（Entity）是拥有ID的域对象，除了拥有数据之外，同时拥有行为。Entity和数据库储存格式无关。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对象储存接口类AccountRepository：Repository只负责Entity对象的存储和读取，而Repository的实现类完成数据库存储的细节。通过加入Repository接口，底层数据库连接可以通过不同的实现类而替换。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>【SE】 消息中间件</title>
+        <link>https://loveleaves.github.io/p/se_mq/</link>
+        <pubDate>Mon, 10 Mar 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/se_mq/</guid>
+        <description>&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://segmentfault.com/a/1190000045395117&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://segmentfault.com/a/1190000045395117&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/zhaojinhui/p/16478549.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;消息中间件优缺点对比及选型&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;概念&#34;&gt;概念
+&lt;/h2&gt;&lt;h3 id=&#34;什么是中间件&#34;&gt;什么是中间件？
+&lt;/h3&gt;&lt;p&gt;非底层操作系统软件，非业务应用软件，不是直接给最终用户使用的，不能直接给客户带来价值的软件统称为中间件。&lt;/p&gt;
+&lt;h3 id=&#34;什么是消息中间件&#34;&gt;什么是消息中间件？
+&lt;/h3&gt;&lt;p&gt;关注于数据的发送和接受，利用高效可靠的异步消息传递机制集成分布式系统。&lt;/p&gt;
+&lt;h3 id=&#34;消息中间件的作用解耦并发削峰异步&#34;&gt;消息中间件的作用（解耦，并发，削峰，异步）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;可以在模块、服务、接口等不同粒度上实现解耦&lt;/li&gt;
+&lt;li&gt;订阅/消费模式可以在数据粒度上解耦&lt;/li&gt;
+&lt;li&gt;可提高系统的并发能力，集中力量办大事（同步部分），碎片时间做小时（异步部分）&lt;/li&gt;
+&lt;li&gt;可提高系统可用性，因为缓冲了系统负载&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;消息中间件的弊端&#34;&gt;消息中间件的弊端
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;系统可用性降低：MQ宕机之后整套系统均不能正常使用，如果要保障队列可用，需要额外机制保障（双活或容灾）&lt;/li&gt;
+&lt;li&gt;系统复杂性提高：存在消息重复消费、消息丢失、消息传递顺序不能保证的问题&lt;/li&gt;
+&lt;li&gt;降低数据一致性：多个系统消费存在部分成功部分失败的问题，数据不一致了，如要保持强一致性，需要高代价的补偿（分布式事务，对账）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;重复消费：系统发了两条，两条都插入了数据库&lt;/br&gt;
+消息丢失：系统根本没法请求到目标系统&lt;/br&gt;
+一致性问题：系统要再ABC三个系统都执行成功之后才返回成功，结果AB成功了，C失败了&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;什么是消息队列message-queue简称mq&#34;&gt;什么是消息队列?（Message queue，简称MQ）
+&lt;/h2&gt;&lt;p&gt;从字面理解就是一个保存消息的一个容器。那么我们为何需要这样一个容器呢？&lt;/p&gt;
+&lt;p&gt;其实就是为了解耦各个系统，我们来举个例子：
+&lt;img src=&#34;https://loveleaves.github.io/imgs/SE/5.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;有这么一个简单的场景，系统A负责生成userID，并调用系统B、C。如果系统BC频繁变化是否需要userID参数，则系统A的代码就得不断变化，如果哪天又来了系统DEF……也需要这个参数，则系统A又要加入很多业务逻辑，这样子各他系统之间就容易产生相互影响，另外大量的系统与A发生交互也容易产生问题。
+&lt;img src=&#34;https://loveleaves.github.io/imgs/SE/6.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;加了消息队列后，A只负责产生userID，至于谁要用这个参数，怎么用？系统A不管。对这个数据感兴趣的系统自己去取用即可，各个系统之间就实现了解耦。而且解耦后，整个服务业变成了一个异步的方式，系统A产生数据后，不用依次调用BCD来累计耗时，各系统可以同时来取用消息队列的数据进行处理，加大吞吐。&lt;/p&gt;
+&lt;h3 id=&#34;消息队列的特点&#34;&gt;消息队列的特点
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;先进先出：消息队列的顺序在入队的时候就基本已经确定了，一般是不需人工干预的。&lt;/li&gt;
+&lt;li&gt;发布订阅：发布订阅是一种很高效的处理方式，如果不发生阻塞，基本可以当成是同步操作。&lt;/li&gt;
+&lt;li&gt;持久化：持久化确保消息队列的使用不只是一个部分场景的辅助工具，而是让消息队列能像数据库一样存储核心的数据。&lt;/li&gt;
+&lt;li&gt;分布式：在现在大流量、大数据的使用场景下，支持分布式的部署，才能被广泛使用。消息队列的定位就是一个高性能的中间件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;消息队列的使用场景&#34;&gt;消息队列的使用场景
+&lt;/h3&gt;&lt;p&gt;消息队列的使用场景有很多，最核心的有三个：解耦、异步、削峰&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;解耦：一个系统或者一个模块，调用了多个系统或者模块，相互之间的调用很复杂，维护起来很麻烦。此时可以考虑使用消息队列来实现多个系统之间的解耦&lt;/li&gt;
+&lt;li&gt;异步：系统A接受一个请求，需要在自己本地写库，还需要在系统BCD三个系统写库，同步操作比较费时。&lt;/li&gt;
+&lt;li&gt;削峰：高峰时段系统接收到的请求缓存到消息队列，供系统根据负载慢慢消化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如秒杀、发邮件、发短信、高并发订单等。&lt;/br&gt;
+不适合的场景如银行转账、电信开户、第三方支付等。&lt;/br&gt;
+关键还是要意识到队列的优劣点，然后分析场景是否使用。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;其他使用场景还有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;最终一致性：先写消息再操作，例如&lt;strong&gt;预写日志&lt;/strong&gt;（Write Ahead Log，WAL）&lt;/li&gt;
+&lt;li&gt;日志处理：比如 Kafka 的应用，解决&lt;strong&gt;海量日志&lt;/strong&gt;传输和缓冲的问题。&lt;/li&gt;
+&lt;li&gt;消息通信：消息队列一般都内置了&lt;strong&gt;高效的通信机制&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;mq的6种工作模式&#34;&gt;MQ的6种工作模式:
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;简单模式：一个生产者，一个消费者&lt;/li&gt;
+&lt;li&gt;work模式：一个生产者，多个消费者，每个消费者获取到的消息唯一。&lt;/li&gt;
+&lt;li&gt;发布/订阅模式（Pub/Sub）：一个生产者发送的消息会被多个消费者获取。&lt;/li&gt;
+&lt;li&gt;路由模式：发送消息到交换机并且要指定路由key ，消费者将队列绑定到交换机时需要指定路由key&lt;/li&gt;
+&lt;li&gt;topic模式：将路由键和某模式进行匹配，此时队列需要绑定在一个模式上，“#”匹配一个词或多个词，“*”只匹配一个词。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;消息队列常见问题&#34;&gt;消息队列常见问题
+&lt;/h2&gt;&lt;h3 id=&#34;如何保证消息队列的高可用high-available-ha&#34;&gt;如何保证消息队列的高可用（High Available, HA）？
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;RabbitMQ&lt;/code&gt;&lt;strong&gt;基于主从的高可用&lt;/strong&gt;，分为单机模式、普通集群模式、镜像集群模式三种&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;普通集群模式：多台服务器部署RabbitMQ，一个queue只会保存在一个节点上，其他节点只会同步该queue的元数据，当请求从其他节点获取该queue的数据时，该节点会再次去存储该queue的节点上拉取所需数据。这样就导致使用时要么固定使用其中一个节点，要么随机节点再需要的时候拉取数据。如果存放数据的节点宕机了，其他节点就无法拉取数据，如果开启了消息持久化让RabbitMQ落地存储消息就不一定会丢失消息，得等这个实例恢复后才能继续从这个queue拉取数据。&lt;/li&gt;
+&lt;li&gt;镜像集群模式（&lt;strong&gt;高可用模式&lt;/strong&gt;）：创建的queue会同步到所有实例上来实现高可用。这样会带来同步数据的开销和扩展性降低（扩展机器会导致新增的机器同步queue增加更多同步数据的开销）；配置方式可通过控制台配置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;Kafka&lt;/code&gt;的高可用：&lt;strong&gt;分布式消息队列&lt;/strong&gt;
+Kafka由多个broker组成，每个broker是一个节点，创建的一个topic划分为多个partition，每个partition可放在不同的broker上，每个partition只存放一部分数据。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>【SE/SA】 系统架构师/系统工程师介绍</title>
         <link>https://loveleaves.github.io/p/se_intro/</link>
         <pubDate>Sat, 08 Mar 2025 00:00:00 +0000</pubDate>
@@ -1033,6 +1331,35 @@ Usage:&lt;/li&gt;
 &lt;li&gt;应用场景：&lt;a class=&#34;link&#34; href=&#34;https://plantegg.github.io/2021/05/16/CPU_Cache_Line%E5%92%8C%E6%80%A7%E8%83%BD/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;CPU 性能和Cache Line&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&#34;算法的六种思想&#34;&gt;算法的六种思想
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/zhaojinhui/p/18264853&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.cnblogs.com/zhaojinhui/p/18264853&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;递归算法recursive-algorithm&#34;&gt;递归算法(Recursive Algorithm)
+&lt;/h3&gt;&lt;p&gt;递归算法是一种自我调用的算法。&lt;/p&gt;
+&lt;p&gt;在解决问题时，它将问题拆分成更小的子问题，并通过调用自己来解决这些子问题。每个子问题又可以进一步拆分，直到达到基本情况，然后逐层返回结果，最终得到整个问题的解决方案。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/1.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;贪心算法greedy-algorithm&#34;&gt;贪心算法(Greedy Algorithm)
+&lt;/h3&gt;&lt;p&gt;贪心算法是一种通过在每一步选择当前最优解来解决问题的策略。&lt;/p&gt;
+&lt;p&gt;它不考虑全局最优解，而是希望通过每次选择局部最优解来达到整体最优解。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/2.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;分治算法-divide-and-conqueralgorithm&#34;&gt;分治算法 (Divide and ConquerAlgorithm)
+&lt;/h3&gt;&lt;p&gt;分治算法是一种将复杂问题划分为更小的独立子问题，并对这些子问题进行解决的策略。&lt;/p&gt;
+&lt;p&gt;它将问题分解为多个部分，然后对每个部分进行处理，最后将它们合并成最终的解决方案。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/3.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;回溯算法backtracking-algorithm&#34;&gt;回溯算法(Backtracking Algorithm)
+&lt;/h3&gt;&lt;p&gt;回溯算法是一种通过不断尝试所有可能的解决方案，直到找到满足条件的解决方案的方法。&lt;/p&gt;
+&lt;p&gt;如果尝试的当前解决方案不满足条件，它会回溯到上一步，并继续尝试其他可能的选择，直到找到解决方案或者确定无解。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/4.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;枚举算法brute-force-algorithm&#34;&gt;枚举算法(Brute Force Algorithm)
+&lt;/h3&gt;&lt;p&gt;枚举算法是一种通过穷举所有可能的解决方案来解决问题的方法。&lt;/p&gt;
+&lt;p&gt;它不利用任何特定的策略，而是尝试所有可能的选择，直到找到满足条件的解决方案。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/5.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;动态规划dynamic-programming&#34;&gt;动态规划(Dynamic Programming)
+&lt;/h3&gt;&lt;p&gt;动态规划是一种通过将问题拆分为更小的子问题，并将其解决方案存储起来，避免重复计算来优化求解过程的方法。&lt;/p&gt;
+&lt;p&gt;它使用一个表格或数组来保存子问题的解决方案，以便在需要时快速查找和使用。&lt;/p&gt;
+&lt;p&gt;通过解决子问题，动态规划能够逐步得到整个问题的解决方案。
+&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/imgs/cs/6.png&#34; &gt;&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -4344,7 +4671,8 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;gpu-分析工具&#34;&gt;GPU 分析工具
-&lt;/h2&gt;&lt;p&gt;全部工具：https://developer.nvidia.com/tools-overview&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.nvidia.com/tools-overview&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方全部工具&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;cuda-gdb&#34;&gt;cuda-gdb
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.nvidia.com/cuda-gdb&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -4357,11 +4685,26 @@ giscus app 已安装，否则访客将无法评论和回应。&lt;/li&gt;
 &lt;li&gt;注意系统要求（如win11 ws2才支持）：&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-compute/ReleaseNotes/index.html#system-requirements&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;system-requirements&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://forums.developer.nvidia.com/t/unknown-error-on-device-0-when-running-ncu-on-wsl/313742&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;unknown-error-on-device-0-when-running-ncu-on-wsl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;用于深入分析单个 CUDA 内核的性能瓶颈，帮助你优化内核代码。&lt;/li&gt;
+&lt;li&gt;通常，你可以使用 Nsight Systems 先找到瓶颈的 CUDA 内核，然后使用 Nsight Compute 对这些内核进行详细的性能分析。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;使用方案：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;1、用户界面：https://docs.nvidia.com/nsight-compute/NsightCompute/index.html&lt;/li&gt;
-&lt;li&gt;2、CLI方式：https://docs.nvidia.com/nsight-compute/NsightComputeCli/index.html&lt;/li&gt;
+&lt;li&gt;1、&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-compute/NsightCompute/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;用户界面&lt;/a&gt;：使用&lt;code&gt;ncu-ui&lt;/code&gt;命令&lt;/li&gt;
+&lt;li&gt;2、&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-compute/NsightComputeCli/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CLI方式&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;nsight-system&#34;&gt;Nsight System
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;用于高层次的系统级性能分析，帮助你识别整个应用的瓶颈，例如 GPU 内核启动延迟、数据传输等问题。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/nsight-systems/UserGuide/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;UserGuide&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使用方案：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;类似&lt;code&gt;Nsight Compute&lt;/code&gt;，但支持jupyter等&lt;/li&gt;
+&lt;li&gt;可以支持应用执行中的很多系统调用情况&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;computesanitizer&#34;&gt;ComputeSanitizer
 &lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html#id1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
