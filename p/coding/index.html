@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="多思考，多总结">
-<title>【CS】计算机科学重要思想、成果记录</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一些难理解或易错点记录">
+<title>【Coding】算法题编程记录</title>
 
-<link rel='canonical' href='https://loveleaves.github.io/p/cs/'>
+<link rel='canonical' href='https://loveleaves.github.io/p/coding/'>
 
-<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="【CS】计算机科学重要思想、成果记录">
-<meta property='og:description' content="多思考，多总结">
-<meta property='og:url' content='https://loveleaves.github.io/p/cs/'>
+<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="【Coding】算法题编程记录">
+<meta property='og:description' content="一些难理解或易错点记录">
+<meta property='og:url' content='https://loveleaves.github.io/p/coding/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-18T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-19T23:53:35&#43;08:00'/>
-<meta name="twitter:title" content="【CS】计算机科学重要思想、成果记录">
-<meta name="twitter:description" content="多思考，多总结">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-06-17T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-19T23:53:35&#43;08:00'/>
+<meta name="twitter:title" content="【Coding】算法题编程记录">
+<meta name="twitter:description" content="一些难理解或易错点记录">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -290,23 +290,28 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#计算机体系结构">计算机体系结构</a>
+    <li><a href="#references">References</a></li>
+    <li><a href="#二分查找">二分查找</a>
       <ol>
-        <li><a href="#存储器层次结构设计">存储器层次结构设计</a>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#简单场景单target查找">简单场景：单target查找</a>
           <ol>
-            <li><a href="#缓存cache">缓存（Cache）</a></li>
+            <li><a href="#搜索区间左闭右闭">搜索区间：左闭右闭</a></li>
+            <li><a href="#搜索区间左闭右开">搜索区间：左闭右开</a></li>
+            <li><a href="#搜索区间左开右开">搜索区间：左开右开</a></li>
           </ol>
         </li>
-      </ol>
-    </li>
-    <li><a href="#算法的六种思想">算法的六种思想</a>
-      <ol>
-        <li><a href="#递归算法recursive-algorithm">递归算法(Recursive Algorithm)</a></li>
-        <li><a href="#贪心算法greedy-algorithm">贪心算法(Greedy Algorithm)</a></li>
-        <li><a href="#分治算法-divide-and-conqueralgorithm">分治算法 (Divide and ConquerAlgorithm)</a></li>
-        <li><a href="#回溯算法backtracking-algorithm">回溯算法(Backtracking Algorithm)</a></li>
-        <li><a href="#枚举算法brute-force-algorithm">枚举算法(Brute Force Algorithm)</a></li>
-        <li><a href="#动态规划dynamic-programming">动态规划(Dynamic Programming)</a></li>
+        <li><a href="#利用二分性质第一个或最后一个target位置">利用二分性质：第一个或最后一个target位置</a>
+          <ol>
+            <li><a href="#总结">总结</a></li>
+            <li><a href="#注意">注意</a></li>
+          </ol>
+        </li>
+        <li><a href="#局部可二分">局部可二分</a>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
       </ol>
     </li>
   </ol>
@@ -331,21 +336,17 @@
                 Cs
             </a>
         
-            <a href="/categories/philosophy/" >
-                Philosophy
-            </a>
-        
     </header>
     
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/cs/">【CS】计算机科学重要思想、成果记录</a>
+            <a href="/p/coding/">【Coding】算法题编程记录</a>
         </h2>
     
         
         <h3 class="article-subtitle">
-            多思考，多总结
+            一些难理解或易错点记录
         </h3>
         
     </div>
@@ -366,7 +367,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Feb 18, 2025</time>
+                <time class="article-time--published">Jun 17, 2022</time>
             </div>
         
 
@@ -381,7 +382,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 2 分钟
+                    阅读时长: 5 分钟
                 </time>
             </div>
         
@@ -396,49 +397,441 @@
     <section class="article-content">
     
     
-    <h2 id="计算机体系结构">计算机体系结构
-</h2><h3 id="存储器层次结构设计">存储器层次结构设计
-</h3><ul>
-<li>分层思想/模型：分层解构，更好地理解，分工明确，可维护性高。</li>
+    <h2 id="references">References
+</h2><ul>
+<li><a class="link" href="https://www.bilibili.com/video/BV1fA4y1o715"  target="_blank" rel="noopener"
+    >https://www.bilibili.com/video/BV1fA4y1o715</a></li>
+<li><a class="link" href="https://www.bilibili.com/video/BV1QK411d76w"  target="_blank" rel="noopener"
+    >https://www.bilibili.com/video/BV1QK411d76w</a></li>
 </ul>
-<h4 id="缓存cache">缓存（Cache）
-</h4><p><strong>特点</strong></p>
+<h2 id="二分查找">二分查找
+</h2><h3 id="概念">概念
+</h3><p>二分查找的做法：定义查找的范围 [left,right]，初始查找范围是整个数组。每次取查找范围的中点 mid，比较 nums[mid] 和 target 的大小，如果相等则 mid 即为要寻找的下标，如果不相等则根据 nums[mid] 和 target 的大小关系将查找范围缩小一半。</p>
 <ul>
-<li>硬件上：成本高但性能好</li>
-<li>使用上：部分内容会被重复利用</li>
-<li>应用场景：<a class="link" href="https://plantegg.github.io/2021/05/16/CPU_Cache_Line%E5%92%8C%E6%80%A7%E8%83%BD/"  target="_blank" rel="noopener"
-    >CPU 性能和Cache Line</a></li>
+<li>区间的开闭定义了搜索的范围</li>
+<li>循环不变量</li>
 </ul>
-<h2 id="算法的六种思想">算法的六种思想
-</h2><blockquote>
-<p><a class="link" href="https://www.cnblogs.com/zhaojinhui/p/18264853"  target="_blank" rel="noopener"
-    >https://www.cnblogs.com/zhaojinhui/p/18264853</a></p></blockquote>
-<h3 id="递归算法recursive-algorithm">递归算法(Recursive Algorithm)
-</h3><p>递归算法是一种自我调用的算法。</p>
-<p>在解决问题时，它将问题拆分成更小的子问题，并通过调用自己来解决这些子问题。每个子问题又可以进一步拆分，直到达到基本情况，然后逐层返回结果，最终得到整个问题的解决方案。
-<a class="link" href="/imgs/cs/1.png" ></a></p>
-<h3 id="贪心算法greedy-algorithm">贪心算法(Greedy Algorithm)
-</h3><p>贪心算法是一种通过在每一步选择当前最优解来解决问题的策略。</p>
-<p>它不考虑全局最优解，而是希望通过每次选择局部最优解来达到整体最优解。
-<a class="link" href="/imgs/cs/2.png" ></a></p>
-<h3 id="分治算法-divide-and-conqueralgorithm">分治算法 (Divide and ConquerAlgorithm)
-</h3><p>分治算法是一种将复杂问题划分为更小的独立子问题，并对这些子问题进行解决的策略。</p>
-<p>它将问题分解为多个部分，然后对每个部分进行处理，最后将它们合并成最终的解决方案。
-<a class="link" href="/imgs/cs/3.png" ></a></p>
-<h3 id="回溯算法backtracking-algorithm">回溯算法(Backtracking Algorithm)
-</h3><p>回溯算法是一种通过不断尝试所有可能的解决方案，直到找到满足条件的解决方案的方法。</p>
-<p>如果尝试的当前解决方案不满足条件，它会回溯到上一步，并继续尝试其他可能的选择，直到找到解决方案或者确定无解。
-<a class="link" href="/imgs/cs/4.png" ></a></p>
-<h3 id="枚举算法brute-force-algorithm">枚举算法(Brute Force Algorithm)
-</h3><p>枚举算法是一种通过穷举所有可能的解决方案来解决问题的方法。</p>
-<p>它不利用任何特定的策略，而是尝试所有可能的选择，直到找到满足条件的解决方案。
-<a class="link" href="/imgs/cs/5.png" ></a></p>
-<h3 id="动态规划dynamic-programming">动态规划(Dynamic Programming)
-</h3><p>动态规划是一种通过将问题拆分为更小的子问题，并将其解决方案存储起来，避免重复计算来优化求解过程的方法。</p>
-<p>它使用一个表格或数组来保存子问题的解决方案，以便在需要时快速查找和使用。</p>
-<p>通过解决子问题，动态规划能够逐步得到整个问题的解决方案。
-<a class="link" href="/imgs/cs/6.png" ></a></p>
-
+<h3 id="简单场景单target查找">简单场景：单target查找
+</h3><p>以<a class="link" href="https://leetcode.cn/problems/binary-search/description/"  target="_blank" rel="noopener"
+    >leetcode-704</a>为例：</p>
+<h4 id="搜索区间左闭右闭">搜索区间：左闭右闭
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 标准写法
+</span></span><span class="line"><span class="cl">def search(self, nums: List[int], target: int) -&gt; int:
+</span></span><span class="line"><span class="cl">    left = 0
+</span></span><span class="line"><span class="cl">    # 搜索区间：[left,right]
+</span></span><span class="line"><span class="cl">    right = len(nums) - 1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    while left &lt;= right:
+</span></span><span class="line"><span class="cl">        mid = (left+right)//2
+</span></span><span class="line"><span class="cl">        if nums[mid] &lt; target:
+</span></span><span class="line"><span class="cl">            left = mid + 1
+</span></span><span class="line"><span class="cl">        elif nums[mid] &gt; target:
+</span></span><span class="line"><span class="cl">            right = mid - 1
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            return mid
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里因为定义搜索区间为左闭右闭，所以：</p>
+<ul>
+<li>left、right初始值毫无疑问</li>
+<li>最终搜索子区间索引为：<code>[i,i]</code></li>
+<li>while循环作为子区间搜索，索引子区间<code>[i,i]</code>肯定属于搜索区间，所以判断条件为<code>&lt;=</code></li>
+<li>当<code>nums[mid] &lt; target</code>时，已知条件是<code>target</code>肯定在右边，但为什么不能更新为<code>left = mid</code>，是因为考虑到缩小到的子区间里可能有<code>mid==left</code>情况，此时如果不+1移动更新区间，就是死循环；right值处理跟left类似
+所以只要在<code>mid==left</code>时更新区间，其实也可能设置为mid，因为<code>[mid, right]</code>也是符合条件的搜索区间，代码如下：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 其他写法
+</span></span><span class="line"><span class="cl">def search(self, nums: List[int], target: int) -&gt; int:
+</span></span><span class="line"><span class="cl">    left = 0
+</span></span><span class="line"><span class="cl">    right = len(nums) - 1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    while left &lt;= right:
+</span></span><span class="line"><span class="cl">        mid = (left+right)//2
+</span></span><span class="line"><span class="cl">        if nums[mid] &lt; target:
+</span></span><span class="line"><span class="cl">            if mid == left:
+</span></span><span class="line"><span class="cl">                left = mid + 1
+</span></span><span class="line"><span class="cl">            else:
+</span></span><span class="line"><span class="cl">                # 不为mid+1也没问题，不过部分子区间重复搜索
+</span></span><span class="line"><span class="cl">                left = mid
+</span></span><span class="line"><span class="cl">        elif nums[mid] &gt; target:
+</span></span><span class="line"><span class="cl">            if mid == left:
+</span></span><span class="line"><span class="cl">                right = mid - 1
+</span></span><span class="line"><span class="cl">            else:
+</span></span><span class="line"><span class="cl">                right = mid
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            return mid
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="搜索区间左闭右开">搜索区间：左闭右开
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 标准写法
+</span></span><span class="line"><span class="cl">def search(self, nums: List[int], target: int) -&gt; int:
+</span></span><span class="line"><span class="cl">    left = 0
+</span></span><span class="line"><span class="cl">    # 搜索区间：[left,right)
+</span></span><span class="line"><span class="cl">    right = len(nums)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    while left &lt; right:
+</span></span><span class="line"><span class="cl">        mid = (left+right)//2
+</span></span><span class="line"><span class="cl">        if nums[mid] &lt; target:
+</span></span><span class="line"><span class="cl">            left = mid + 1
+</span></span><span class="line"><span class="cl">        elif nums[mid] &gt; target:
+</span></span><span class="line"><span class="cl">            right = mid
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            return mid
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里因为定义搜索区间为左闭右开，所以：</p>
+<ul>
+<li>left、right初始值毫无疑问</li>
+<li>最终搜索子区间索引为：<code>[i,i+1]</code></li>
+<li>while循环作为子区间搜索，索引子区间<code>[i,i]</code>不属于搜索区间，所以判断条件为<code>&lt;</code></li>
+<li>当<code>nums[mid] &lt; target</code>时，但为什么不能更新为<code>left = mid</code>，和上面类似；当<code>nums[mid] &gt; target</code>时，则已知最小可搜索空间为<code>[left,mid)</code>，当然也可以为<code>[left,mid+i)</code>（mid&lt;=mid+i&lt;=right），但这就多了许多重复搜索
+所以只要在<code>mid==left</code>时更新区间，其实也可能设置为mid，因为<code>[mid, right]</code>也是符合条件的搜索区间，代码如下：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 其他写法
+</span></span><span class="line"><span class="cl">def search(self, nums: List[int], target: int) -&gt; int:
+</span></span><span class="line"><span class="cl">    left = 0
+</span></span><span class="line"><span class="cl">    # 搜索区间：[left,right)
+</span></span><span class="line"><span class="cl">    right = len(nums)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    while left &lt; right:
+</span></span><span class="line"><span class="cl">        mid = (left+right)//2
+</span></span><span class="line"><span class="cl">        if nums[mid] &lt; target:
+</span></span><span class="line"><span class="cl">            if mid == left:
+</span></span><span class="line"><span class="cl">                left = mid + 1
+</span></span><span class="line"><span class="cl">            else:
+</span></span><span class="line"><span class="cl">                left = mid
+</span></span><span class="line"><span class="cl">        elif nums[mid] &gt; target:
+</span></span><span class="line"><span class="cl">            right = mid
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            return mid
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="搜索区间左开右开">搜索区间：左开右开
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 标准写法
+</span></span><span class="line"><span class="cl">def search(self, nums: List[int], target: int) -&gt; int:
+</span></span><span class="line"><span class="cl">    left = -1
+</span></span><span class="line"><span class="cl">    # 搜索区间：(left,right)
+</span></span><span class="line"><span class="cl">    right = len(nums)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    while left + 1 &lt; right:
+</span></span><span class="line"><span class="cl">        mid = (left+right)//2
+</span></span><span class="line"><span class="cl">        if nums[mid] &lt; target:
+</span></span><span class="line"><span class="cl">            left = mid
+</span></span><span class="line"><span class="cl">        elif nums[mid] &gt; target:
+</span></span><span class="line"><span class="cl">            right = mid
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            return mid
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>原因和前两个类似，这里：</p>
+<ul>
+<li>最终搜索子区间索引为：<code>[i,i+1,i+2]</code></li>
+</ul>
+<h3 id="利用二分性质第一个或最后一个target位置">利用二分性质：第一个或最后一个target位置
+</h3><p>以<a class="link" href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/description/"  target="_blank" rel="noopener"
+    >leetcode-34</a>为例，定义搜索空间为左闭右闭：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 搜索第一个target位置
+</span></span><span class="line"><span class="cl">def lowerBound(nums, target):
+</span></span><span class="line"><span class="cl">    left = 0
+</span></span><span class="line"><span class="cl">    right = len(nums) - 1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    while left &lt;= right:
+</span></span><span class="line"><span class="cl">        mid = (left + right)//2
+</span></span><span class="line"><span class="cl">        if nums[mid] &lt; target:
+</span></span><span class="line"><span class="cl">            left = mid + 1
+</span></span><span class="line"><span class="cl">        # 等于情况移动right：不断将子搜索区间移动到小于target的第一个位置
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            right = mid - 1
+</span></span><span class="line"><span class="cl">    return left
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">def searchRange(self, nums: List[int], target: int) -&gt; List[int]:
+</span></span><span class="line"><span class="cl">    first_pos = lowerBound(nums, target)
+</span></span><span class="line"><span class="cl">    # 找不到target情况
+</span></span><span class="line"><span class="cl">    if first_pos == len(nums) or nums[first_pos] != target:
+</span></span><span class="line"><span class="cl">        return [-1, -1]
+</span></span><span class="line"><span class="cl">    end_pos = lowerBound(nums, target+1) - 1
+</span></span><span class="line"><span class="cl">    return [first_pos, end_pos]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上面的<code>nums[mid] == target</code>情况修改为移动left：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">def lowerBound(nums, target):
+</span></span><span class="line"><span class="cl">    left = 0
+</span></span><span class="line"><span class="cl">    right = len(nums) - 1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    while left &lt;= right:
+</span></span><span class="line"><span class="cl">        mid = left + (right - left)//2
+</span></span><span class="line"><span class="cl">        # 等于情况移动left：不断将子搜索区间移动大于target的第一个位置
+</span></span><span class="line"><span class="cl">        if nums[mid] &lt;= target:
+</span></span><span class="line"><span class="cl">            left = mid + 1
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            right = mid - 1
+</span></span><span class="line"><span class="cl">    return left
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">def searchRange(self, nums: List[int], target: int) -&gt; List[int]:
+</span></span><span class="line"><span class="cl">    first_pos = lowerBound(nums, target)
+</span></span><span class="line"><span class="cl">    # 找不到target情况
+</span></span><span class="line"><span class="cl">    if first_pos == 0 or nums[first_pos-1] != target:
+</span></span><span class="line"><span class="cl">        return [-1, -1]
+</span></span><span class="line"><span class="cl">    end_pos = lowerBound(nums, target-1)
+</span></span><span class="line"><span class="cl">    return [end_pos, first_pos-1]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="总结">总结
+</h4><p>由上可以总结如下：</p>
+<ul>
+<li>二分查找在mid和target值相等时，继续移动区间，则在有多个target值的情况时：</li>
+<li>1、相等时移动right，最终结果为等于target的第一个位置</li>
+<li>2、相等时移动left，最终结果为大于target的第一个位置</li>
+</ul>
+<h4 id="注意">注意
+</h4><p>但当相等情况复杂时，如果相等位置切分不当，left最终位置可能与预期位置不一致，可以通过以<a class="link" href="https://leetcode.cn/problems/search-in-rotated-sorted-array/description/"  target="_blank" rel="noopener"
+    >leetcode-33</a>为例思考。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">def search(self, nums: List[int], target: int) -&gt; int:
+</span></span><span class="line"><span class="cl">    def moveLeft(i):
+</span></span><span class="line"><span class="cl">        end = nums[-1]
+</span></span><span class="line"><span class="cl">        if nums[i] &gt; end:
+</span></span><span class="line"><span class="cl">            return target &gt;= nums[i] or target &lt;= end
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            return target &gt;= nums[i] and target &lt;= end
+</span></span><span class="line"><span class="cl">    left = 0
+</span></span><span class="line"><span class="cl">    right = len(nums) - 1
+</span></span><span class="line"><span class="cl">    while left &lt;= right:
+</span></span><span class="line"><span class="cl">        mid = (left+right)//2
+</span></span><span class="line"><span class="cl">        # 如果相等情况不return mid，则moveLeft判断就需要进行仔细考虑该场景下相等情况子区间的移动
+</span></span><span class="line"><span class="cl">        if nums[mid] == target:
+</span></span><span class="line"><span class="cl">            return mid
+</span></span><span class="line"><span class="cl">        elif moveLeft(mid):
+</span></span><span class="line"><span class="cl">            left = mid+1
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            right=mid-1
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">    if left == len(nums) or nums[left] != target:
+</span></span><span class="line"><span class="cl">        return -1
+</span></span><span class="line"><span class="cl">    return left
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="局部可二分">局部可二分
+</h3><p>以<a class="link" href="https://leetcode.cn/problems/find-peak-element/description/"  target="_blank" rel="noopener"
+    >leetcode-162</a>为例，定义搜索空间为左闭右闭：</p>
+<h5 id="为什么可以使用二分">为什么可以使用二分
+</h5><p>简单证明：</p>
+<p>我们可以以下标为x轴，元素值为y轴，在平面直角坐标系里绘制出每个元素的位置，再以直线连接，这样构成了一副折线图。由于题目保证两边界之外的元素为负无穷，相邻值不相等且至少存在一个非负无穷元素，所以必然有峰。那么我们任取相邻两点为m、m+1，则如果<code>nums[m]&lt;nums[m+1]</code>，那么<code>m+i, i=1,2..</code>范围肯定存在一个该范围的最大值且为峰顶，同理，如果小于，那么反方向也肯定存在一个该范围的最大值且为峰顶。因而可以用二分解决。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">def findPeakElement(self, nums: List[int]) -&gt; int:
+</span></span><span class="line"><span class="cl">    left = 0
+</span></span><span class="line"><span class="cl">    right = len(nums) - 2 # 忽略末尾元素，防止越界
+</span></span><span class="line"><span class="cl">    # 或者这样处理
+</span></span><span class="line"><span class="cl">    # right = len(nums) - 1
+</span></span><span class="line"><span class="cl">    # nums.append(-inf)
+</span></span><span class="line"><span class="cl">    while left &lt;= right:
+</span></span><span class="line"><span class="cl">        mid = (left+right)//2
+</span></span><span class="line"><span class="cl">        if nums[mid] &gt; nums[mid+1]:
+</span></span><span class="line"><span class="cl">            right = mid - 1
+</span></span><span class="line"><span class="cl">        else:
+</span></span><span class="line"><span class="cl">            left = mid + 1
+</span></span><span class="line"><span class="cl">    return left
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -512,12 +905,12 @@
             
                 
 <article class="">
-    <a href="/p/coding/">
+    <a href="/p/cs/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">【Coding】算法题编程记录</h2>
+            <h2 class="article-title">【CS】计算机科学重要思想、成果记录</h2>
         </div>
     </a>
 </article>
