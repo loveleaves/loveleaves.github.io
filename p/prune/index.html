@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="世上无难事，只怕有心人">
-<title>404 Page not found</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="模型剪枝入门">
+<title>模型剪枝介绍</title>
 
-<link rel='canonical' href='https://loveleaves.github.io/404.html'>
+<link rel='canonical' href='https://loveleaves.github.io/p/prune/'>
 
-<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="404 Page not found">
-<meta property='og:description' content="世上无难事，只怕有心人">
-<meta property='og:url' content='https://loveleaves.github.io/404.html'>
+<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="模型剪枝介绍">
+<meta property='og:description' content="模型剪枝入门">
+<meta property='og:url' content='https://loveleaves.github.io/p/prune/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2025-03-23T00:19:34&#43;08:00 '/>
-<meta name="twitter:title" content="404 Page not found">
-<meta name="twitter:description" content="世上无难事，只怕有心人">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-06-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-23T00:19:34&#43;08:00'/>
+<meta name="twitter:title" content="模型剪枝介绍">
+<meta name="twitter:description" content="模型剪枝入门">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
-    <body class="">
+    <body class="
+    article-page
+    ">
     <script>
         (function() {
             const colorSchemeKey = 'StackColorScheme';
@@ -266,45 +268,352 @@
     </ol>
 </aside>
 
-            <main class="main full-width">
-    <div class="not-found-card">
-        <h1 class="article-title">404 错误</h1>
-        <h2 class="article-subtitle">页面不存在</h2>
-    </div><form action="/search/" class="search-form widget" data-json="https://loveleaves.github.io/search/index.json">
-            <p>
-                <label>搜索</label>
-                <input id="searchInput" name="keyword" required placeholder="输入关键词..." />
+    <aside class="sidebar right-sidebar sticky">
+        
             
-                <button title="搜索">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
 </svg>
 
 
 
-                </button>
-            </p>
-        </form>
-
-        <div class="search-result">
-            <h3 class="search-result--title section-title"></h3>
-            <div class="search-result--list article-list--compact"></div>
         </div>
+        <h2 class="widget-title section-title">目录</h2>
         
-        <script>
-            window.searchResultTitleTemplate = "#PAGES_COUNT 个结果 （用时 #TIME_SECONDS 秒）"
-        </script><script type="text/javascript" src="/ts/search.js" defer></script>
-
-        <script>
-            const wrongUrl = new URL(window.location.href);
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#references">References</a></li>
+    <li><a href="#介绍">介绍</a></li>
+    <li><a href="#剪枝方法">剪枝方法</a>
+      <ol>
+        <li><a href="#network-slimming">Network Slimming</a>
+          <ol>
+            <li><a href="#基本思想">基本思想</a></li>
+            <li><a href="#batchnorm">BatchNorm</a></li>
+            <li><a href="#剪枝流程">剪枝流程</a></li>
+            <li><a href="#代码">代码</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#paper-with-code">paper with code</a>
+      <ol>
+        <li><a href="#depgraph">DepGraph</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
 
             
-            const searchKeyword = wrongUrl.pathname.split(/[/|-]/).join(' ').trim();
+        
+    </aside>
 
-            document.getElementById('searchInput').setAttribute('value', searchKeyword);
-        </script><footer class="site-footer">
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/deploy/" >
+                Deploy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/prune/">模型剪枝介绍</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            模型剪枝入门
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 21, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="references">References
+</h2><ul>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/692858636?"  target="_blank" rel="noopener"
+    >深度神经网络剪枝综述</a>，<a class="link" href="https://arxiv.org/pdf/2308.06767"  target="_blank" rel="noopener"
+    >A Survey on Deep Neural Network Pruning: Taxonomy, Comparison, Analysis, and Recommendations</a></li>
+<li><a class="link" href="https://www.zhihu.com/question/652126515/answer/3457652467"  target="_blank" rel="noopener"
+    >目前针对大模型剪枝的方法有哪些？</a></li>
+<li><a class="link" href="https://hanlab.mit.edu/courses/2023-fall-65940"  target="_blank" rel="noopener"
+    >MIT 6.5940 TinyML and Efficient Deep Learning Computing</a></li>
+<li><a class="link" href="https://github.com/datawhalechina/awesome-compression"  target="_blank" rel="noopener"
+    >模型压缩的小白入门教程</a></li>
+</ul>
+<h2 id="介绍">介绍
+</h2><p>**模型剪枝（Model Pruning）**是一种用于减少神经网络模型参数数量和计算量的技术。它通过识别和去除在训练过程中对模型性能影响较小的参数或连接，从而实现模型的精简和加速。</p>
+<p>通常，模型剪枝可以分为两种类型：<strong>结构化剪枝（Structured Pruning）<strong>和</strong>非结构化剪枝（Unstructured Pruning）</strong>。</p>
+<p>结构化剪枝和非结构化剪枝的<strong>主要区别在于剪枝目标和由此产生的网络结构</strong>。结构化剪枝根据特定规则删除连接或层结构，同时保留整体网络结构。而非结构化剪枝会剪枝各个参数，从而产生不规则的稀疏结构。</p>
+<p>模型剪枝的一般步骤包括：</p>
+<ol>
+<li><strong>训练初始模型</strong>：首先，需要训练一个初始的大模型，通常是为了达到足够的性能水平。</li>
+<li><strong>评估参数重要性</strong>：使用某种评估方法（如：权重的绝对值、梯度信息等）来确定模型中各个参数的重要性。</li>
+<li><strong>剪枝</strong>：根据评估结果，剪枝掉不重要的参数或连接，可以是结构化的或非结构化的。</li>
+<li><strong>修正和微调</strong>：进行剪枝后，需要进行一定的修正和微调，以确保模型的性能不会显著下降。</li>
+</ol>
+<p>模型剪枝可以带来多方面的好处，包括减少模型的存储需求、加速推理速度、减少模型在边缘设备上的资源消耗等。然而，剪枝可能会带来一定的性能损失，因此需要在剪枝前后进行适当的评估和调整。</p>
+<h2 id="剪枝方法">剪枝方法
+</h2><h3 id="network-slimming">Network Slimming
+</h3><h4 id="基本思想">基本思想
+</h4><p><img src="/imgs/prune/1.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><strong>论文核心点</strong></p>
+<ul>
+<li>以 BN 中的 γ 为切入点，即 γ 越小，其对应的特征图越不重要</li>
+<li>为了使得 γ 能有特征选择的作用，引入 L1 正则来控制 γ
+$$
+L = \sum_{(x,y)} l(f(x, W), y) + \lambda \sum_{\gamma \in \Gamma} g(\gamma)
+$$</li>
+</ul>
+<h4 id="batchnorm">BatchNorm
+</h4><p><strong>如何得到每个特征图的重要性呢？&ndash;BN要解决的问题</strong></p>
+<ul>
+<li>Network slimming，就是利用BN层中的缩放因子Y</li>
+<li>先来回顾下BN是做什么的：$\hat{x}^{(k)} = \frac{x^{(k)} - E[x^{(k)}]}{\sqrt{Var[x^{(k)}]}}$</li>
+<li>整体感觉就是一个归一化操作，但是BN中还额外引入了两个可训练的参数：γ和β。</li>
+</ul>
+<p><strong>BN本质作用</strong></p>
+<ul>
+<li>BN要做的就是把越来越偏离的分布给他拉回来！</li>
+<li>再重新规范化到均值为0方差为1的标准正态分布</li>
+<li>这样能够使得激活函数在数值层面更敏感，训练更快</li>
+<li>有一种感觉：经过BN后，把数值分布强制在了非线性函数的线性区域中</li>
+</ul>
+<p><strong>BN额外参数</strong></p>
+<ul>
+<li>如果都是线性的了，神经网络还有意义吗？</li>
+<li>BN另一方面还需要保证一些非线性，对规范化后的结果再进行变换</li>
+<li>这两个参数是训练得到的：$y^{(k)}=\gamma^{(k)}\hat{x}^{(k)}+\beta^{(k)}$</li>
+<li>感觉就是从正太分布进行一些改变，拉动一下，变一下形状！</li>
+</ul>
+<p><strong>稀疏化原理与效果</strong></p>
+<ul>
+<li>论文中提出：训练时使用 L1 正则化能对参数进行稀疏作用</li>
+<li>L1：稀疏与特征选择；L2：平滑特征</li>
+<li>L1 正则化：$J(\vec{\theta}) = \frac{1}{2} \sum_{i=1}^{m} \left( h_{\vec{\theta}}(x^{(i)}) - y^{(i)} \right)^2 + \lambda \sum_{j=1}^{n} |\theta_j|$，$\theta_j$是要正则化的参数</li>
+<li>L2 正则化：$J(\vec{\theta}) = \frac{1}{2} \sum_{i=1}^{m} \left( h_{\vec{\theta}}(x^{(i)}) - y^{(i)} \right)^2 + \lambda \sum_{j=1}^{n} \theta_j^2$，同上</li>
+</ul>
+<p><img src="/imgs/prune/2.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h4 id="剪枝流程">剪枝流程
+</h4><p><img src="/imgs/prune/3.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h4 id="代码">代码
+</h4><p><a class="link" href="https://github.com/loveleaves/model_prune/tree/main/01NetworkSlimming"  target="_blank" rel="noopener"
+    >github</a></p>
+<h2 id="paper-with-code">paper with code
+</h2><h3 id="depgraph">DepGraph
+</h3><ul>
+<li><a class="link" href="https://github.com/VainF/Torch-Pruning"  target="_blank" rel="noopener"
+    >github</a></li>
+<li><a class="link" href="arxiv.org/abs/2301.12900" >paper</a></li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Mar 23, 2025 00:19 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="loveleaves/loveleaves.github.io"
+    data-repo-id="R_kgDOHiRxVA"
+    data-category="General"
+    data-category-id="DIC_kwDOHiRxVM4Cmvtx"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading=""
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
     <section class="copyright">
         &copy; 
         
@@ -321,6 +630,84 @@
     </section>
 </footer>
 
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
 
             </main>
         </div>
