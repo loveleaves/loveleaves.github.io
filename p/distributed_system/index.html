@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="主要介绍DDD领域驱动设计">
-<title>【SE】 DDD领域驱动设计实战-分层架构</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="理解分布式系统的基本概念">
+<title>【SE】 分布式系统架构设计</title>
 
-<link rel='canonical' href='https://loveleaves.github.io/p/se_ddd/'>
+<link rel='canonical' href='https://loveleaves.github.io/p/distributed_system/'>
 
-<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="【SE】 DDD领域驱动设计实战-分层架构">
-<meta property='og:description' content="主要介绍DDD领域驱动设计">
-<meta property='og:url' content='https://loveleaves.github.io/p/se_ddd/'>
+<link rel="stylesheet" href="/scss/style.min.a00a963d00b92d5989e67ffd9ea944c23805671f73801f23076cb4786f8508ab.css"><meta property='og:title' content="【SE】 分布式系统架构设计">
+<meta property='og:description' content="理解分布式系统的基本概念">
+<meta property='og:url' content='https://loveleaves.github.io/p/distributed_system/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-10T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-16T19:50:22&#43;08:00'/>
-<meta name="twitter:title" content="【SE】 DDD领域驱动设计实战-分层架构">
-<meta name="twitter:description" content="主要介绍DDD领域驱动设计">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-22T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-30T15:47:37&#43;08:00'/>
+<meta name="twitter:title" content="【SE】 分布式系统架构设计">
+<meta name="twitter:description" content="理解分布式系统的基本概念">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -291,35 +291,37 @@
             <nav id="TableOfContents">
   <ol>
     <li><a href="#references">References</a></li>
-    <li><a href="#ddd分层架构">DDD分层架构</a>
+    <li><a href="#背景介绍">背景介绍</a>
       <ol>
-        <li><a href="#分层架构的基本原则">分层架构的基本原则</a></li>
-        <li><a href="#分层架构的分类">分层架构的分类</a></li>
-        <li><a href="#分层架构演进">分层架构演进</a>
+        <li><a href="#分布式系统的发展历程">分布式系统的发展历程</a></li>
+        <li><a href="#分布式系统的特点">分布式系统的特点</a></li>
+        <li><a href="#分布式系统的分类">分布式系统的分类</a></li>
+      </ol>
+    </li>
+    <li><a href="#核心概念与联系">核心概念与联系</a></li>
+    <li><a href="#核心算法原理和实现流程">核心算法原理和实现流程</a>
+      <ol>
+        <li><a href="#一致性算法">一致性算法</a>
           <ol>
-            <li><a href="#传统四层架构">传统四层架构</a></li>
-            <li><a href="#改良版四层架构">改良版四层架构</a></li>
+            <li><a href="#paxos算法">Paxos算法</a></li>
+            <li><a href="#raft算法">Raft算法</a></li>
+            <li><a href="#数学模型公式">数学模型公式</a></li>
           </ol>
         </li>
-      </ol>
-    </li>
-    <li><a href="#各层职责">各层职责</a>
-      <ol>
-        <li><a href="#用户接口层">用户接口层</a></li>
-        <li><a href="#应用层">应用层</a></li>
-        <li><a href="#领域层">领域层</a></li>
-        <li><a href="#基础层">基础层</a></li>
-      </ol>
-    </li>
-    <li><a href="#微服务架构演进">微服务架构演进</a>
-      <ol>
-        <li><a href="#微服务架构的演进案例">微服务架构的演进案例</a></li>
-        <li><a href="#微服务内服务的演进">微服务内服务的演进</a></li>
-      </ol>
-    </li>
-    <li><a href="#从mvc跨越到ddd">从MVC跨越到DDD</a>
-      <ol>
-        <li><a href="#抽象数据存储层">抽象数据存储层</a></li>
+        <li><a href="#故障容错算法">故障容错算法</a>
+          <ol>
+            <li><a href="#chubby算法">Chubby算法</a></li>
+            <li><a href="#zookeeper算法">ZooKeeper算法</a></li>
+            <li><a href="#数学模型公式-1">数学模型公式</a></li>
+          </ol>
+        </li>
+        <li><a href="#负载均衡算法">负载均衡算法</a>
+          <ol>
+            <li><a href="#round-robin算法">Round-robin算法</a></li>
+            <li><a href="#least-connections算法">Least-connections算法</a></li>
+            <li><a href="#random算法">Random算法</a></li>
+          </ol>
+        </li>
       </ol>
     </li>
   </ol>
@@ -340,6 +342,10 @@
     
     <header class="article-category">
         
+            <a href="/categories/distributed_system/" >
+                Distributed_system
+            </a>
+        
             <a href="/categories/se/" >
                 SE
             </a>
@@ -349,12 +355,12 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/se_ddd/">【SE】 DDD领域驱动设计实战-分层架构</a>
+            <a href="/p/distributed_system/">【SE】 分布式系统架构设计</a>
         </h2>
     
         
         <h3 class="article-subtitle">
-            主要介绍DDD领域驱动设计
+            理解分布式系统的基本概念
         </h3>
         
     </div>
@@ -375,7 +381,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Mar 10, 2025</time>
+                <time class="article-time--published">Mar 22, 2025</time>
             </div>
         
 
@@ -407,195 +413,204 @@
     
     <h2 id="references">References
 </h2><ul>
-<li><a class="link" href="https://segmentfault.com/a/1190000045332157"  target="_blank" rel="noopener"
-    >https://segmentfault.com/a/1190000045332157</a></li>
-<li>《实现领域驱动设计》</li>
-<li>DDD分层架构：有效降低层与层之间的依赖</li>
-<li><a class="link" href="https://blog.csdn.net/lisheng19870305/article/details/123332886"  target="_blank" rel="noopener"
-    >MVC和DDD的对比</a></li>
-<li><a class="link" href="https://github.com/loveleaves/The_Art_of_Coding/blob/main/design_pattern/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E7%8E%8B%E4%BA%89/docs/169600.md"  target="_blank" rel="noopener"
-    >实战一（上）：业务开发常用的基于贫血模型的MVC架构违背OOP吗？</a></li>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/343388831"  target="_blank" rel="noopener"
-    >https://zhuanlan.zhihu.com/p/343388831</a></li>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/342826364"  target="_blank" rel="noopener"
-    >https://zhuanlan.zhihu.com/p/342826364</a></li>
+<li><a class="link" href="https://juejin.cn/post/7317170970946191397"  target="_blank" rel="noopener"
+    >分布式系统架构设计原理与实战：理解分布式系统的基本概念</a></li>
+<li><a class="link" href="https://cloud.tencent.com/developer/article/1905374"  target="_blank" rel="noopener"
+    >https://cloud.tencent.com/developer/article/1905374</a></li>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/375847349"  target="_blank" rel="noopener"
+    >https://zhuanlan.zhihu.com/p/375847349</a></li>
+<li>《Designing Data-Intensive Applications》，DDIA，设计数据密集型应用</li>
+<li><a class="link" href="https://github.com/DistSysCorp/ddia"  target="_blank" rel="noopener"
+    >DDIA解读</a></li>
+<li><a class="link" href="https://juejin.cn/post/6844903967701336078?searchId=20250330152955E40832434865ED232D4C"  target="_blank" rel="noopener"
+    >一文读懂分布式架构知识体系</a></li>
 </ul>
-<h2 id="ddd分层架构">DDD分层架构
-</h2><h3 id="分层架构的基本原则">分层架构的基本原则
-</h3><p>每层只与位于其下方的层发生耦合。</p>
-<h3 id="分层架构的分类">分层架构的分类
-</h3><ul>
-<li>严格分层架构(Strict Layers Architecture)
-某层只能与其直接下层耦合，即我的奴隶的奴隶，不是我的奴隶。</li>
-<li>松散分层架构(Relaxed Layers Architecture)
-允许任意上层与任意下层耦合。由于用户接口层和应用服务通常需要与基础设施打交道，许多系统都是该架构。</li>
-</ul>
-<blockquote>
-<p>较低层有时也可与较高层耦合，但只限于采用观察者 (Observer)模式或者调停者(Mediator)模式场景。</br>
-较低层绝不能直接访问较高层。例如，在使用调停者模式时，较高层可能实现了较低层的接口，然后将实现对象作为参数传递到较低层。当较低层调用该实现时， 它并不知道实现出自何处。</p></blockquote>
-<h3 id="分层架构演进">分层架构演进
-</h3><h4 id="传统四层架构">传统四层架构
-</h4><p><img src="/imgs/SE/1.png"
-	
-	
-	
-	loading="lazy"
-	
-	
-></p>
-<p>将领域模型和业务逻辑分离出来，并减少对基础设施、用户界面甚至应用层逻辑的依赖，因为它们不属业务逻辑。将一个夏杂的系统分为不同的层，每层都应该具有良好的内聚性，并且只依赖于比其自身更低的层。</p>
-<p>传统分层架构的<strong>基础设施层</strong>位于底层，持久化和消息机制便位于该层。
-这里的消息包含</p>
+<h2 id="背景介绍">背景介绍
+</h2><p>分布式系统是指由多个独立的计算机节点组成的系统，这些节点通过网络连接在一起，共同完成某个任务或提供某个服务。分布式系统具有高度的可扩展性、高度的可靠性和高度的性能。因此，分布式系统已经成为现代信息技术的核心技术之一，广泛应用于互联网、大数据、人工智能等领域。</p>
+<p>然而，分布式系统也面临着很多挑战，如数据一致性、故障容错、负载均衡等。为了解决这些问题，需要深入理解分布式系统的基本概念和原理，并学习和掌握一些高级的分布式算法和技术。</p>
+<h3 id="分布式系统的发展历程">分布式系统的发展历程
+</h3><p>分布式系统的发展历程可以分为以下几个阶段：</p>
+<ol>
+<li>基于消息传递的分布式系统（1970年代）</li>
+<li>基于文件系统的分布式系统（1980年代）</li>
+<li>基于Web的分布式系统（1990年代）</li>
+<li>基于服务的分布式系统（2000年代）</li>
+<li>基于云计算的分布式系统（2010年代至今）</li>
+</ol>
+<p>每个阶段都有其特点和代表性的系统，如：</p>
+<ol>
+<li>基于消息传递的分布式系统：例如，ACTORS模型的系统。</li>
+<li>基于文件系统的分布式系统：例如，Andrew文件系统。</li>
+<li>基于Web的分布式系统：例如，Amazon的电子商务系统。</li>
+<li>基于服务的分布式系统：例如，微软的.NET框架。</li>
+<li>基于云计算的分布式系统：例如，阿里云、腾讯云、华为云等公有云服务。</li>
+</ol>
+<h3 id="分布式系统的特点">分布式系统的特点
+</h3><p>分布式系统具有以下特点：</p>
 <ul>
-<li>MQ消息</li>
-<li>SMTP</li>
-<li>文本消息(SMS)</li>
+<li>分布式性：节点分布在不同的计算机上，通过网络连接在一起。</li>
+<li>并发性：多个节点可以同时执行任务，实现并行处理。</li>
+<li>异步性：节点之间的通信可能存在延迟，需要处理异步问题。</li>
+<li>故障性：单个节点的故障不会导致整个系统的宕机。</li>
+<li>扩展性：通过增加节点，可以实现系统的扩展。</li>
+<li>数据一致性：在分布式环境下，多个节点共享和修改同一份数据，需要保证数据的一致性。</li>
 </ul>
-<p>可将基础设施层中所有组件看作应用程序的低层服务，较高层与该层发生耦合以复用技术基础设施。即便如此，依然应<code>避免核心的领域模型对象与基础设施层直接耦合</code>。</p>
-<h4 id="改良版四层架构">改良版四层架构
-</h4><p><strong>传统架构的缺陷</strong></p>
-<p>DDD初创开发团队发现，将基础设施层放在最底层存在缺点，比如此时领域层中的一些技术实现就很困难：</p>
+<h3 id="分布式系统的分类">分布式系统的分类
+</h3><p>分布式系统可以分为以下几类：</p>
 <ul>
-<li>违背分层架构的基本原则</li>
-<li>难以编写测试用例</li>
+<li>同步分布式系统：所有节点需要同时执行任务，实现并行处理。</li>
+<li>异步分布式系统：节点之间可以自由地发送和接收消息，不需要同步。</li>
+<li>有状态分布式系统：节点之间可以共享和修改状态信息，实现状态同步。</li>
+<li>无状态分布式系统：节点之间不共享状态信息，实现无状态处理。</li>
+<li>集中式分布式系统：有一个中心节点负责协调和管理其他节点，实现集中式控制。</li>
+<li>去中心化分布式系统：没有中心节点，所有节点相互交互，实现去中心化管理。</li>
 </ul>
-<p>何解？
-使用<strong>依赖反转设计原则</strong>：低层服务（如基础设施层）应依赖高层组件（比如用户界面层、应用层和领域层）所提供的接口。</p>
-<p><strong>应用依赖反转原则</strong></p>
+<h2 id="核心概念与联系">核心概念与联系
+</h2><p>在分布式系统中，有一些核心概念需要理解，如：</p>
 <ul>
-<li>依赖反转原则后的分层方式：基础设施层在最上方，可实现所有其他层中定义的接口
-<img src="/imgs/SE/2.png"
-	
-	
-	
-	loading="lazy"
-	
-	
-></li>
+<li>节点（Node）：分布式系统中的基本组成单元。</li>
+<li>网络（Network）：节点之间的连接。</li>
+<li>通信（Communication）：节点之间的数据交换。</li>
+<li>一致性（Consistency）：多个节点共享和修改同一份数据时，数据的一致性。</li>
+<li>故障容错（Fault Tolerance）：单个节点故障不会导致整个系统宕机。</li>
+<li>负载均衡（Load Balancing）：多个节点共同处理任务，实现资源利用率的均衡。</li>
 </ul>
-<blockquote>
-<p>依赖反转原则真的可以支持所有层吗？</br>
-有人认为依赖反转原则中只存在两层：最上方和最下方，上层实现下层定义的抽象接口。因此上图的基础设施层将位于最上方，而用户接口层、应用层和领域层应作同层且都位于下方。对此大家可保留自己意见。</p></blockquote>
-<h2 id="各层职责">各层职责
-</h2><h3 id="用户接口层">用户接口层
-</h3><p>一般包括用户接口、Web 服务等。</p>
-<p>只处理用户显示和用户请求，不应包含领域或业务逻辑。
-有人认为，既然用户接口需验证用户输入，就无可避免应该包含业务逻辑。事实上，用户接口所进行的验证和对领域模型的验证不同：对那些粗制滥造且只面向领域模型的验证行为，应该予以限制。</p>
-<p>如果用户接口使用了领域模型中的对象，那么此时<strong>领域对象仅限于数据渲染展现</strong>。在采用这种方式时，可使用展现模型对用户接口与领域对象进行解耦。</p>
-<p>由于用户可能是人，也可能是其他系统，有时用户接口层将采用开放主机服务的方式向外提供API。<strong>用户接口层是应用层的直接用户</strong>。</p>
-<p>用户接口层在于前后端调用的适配。若你的微服务要提供服务给很多外部应用，而对每个外部应用的入参出参都不同，你不可能开发一堆一对一的应用服务，这时Facade接口就起到了很好的作用，包括DO和DTO对象的组装和转换。</p>
-<h3 id="应用层">应用层
-</h3><p>主要包含应用服务，理论上不应有业务规则或逻辑，而主要是面向用例和流程相关的操作。</p>
+<p>这些概念之间存在一定的联系，如：</p>
 <ul>
-<li>应用层位于领域层之上，因为领域层包含多个聚合，所以它可协调多个聚合服务和领域对象完成服务编排和组合，协作完成业务。</li>
-<li>应用层也是微服务间的交互通道，它可调用其它微服务，完成微服务间的服务组合和编排。</li>
+<li>节点通过网络进行通信，实现任务的分布和协同。</li>
+<li>通信是实现一致性和故障容错的关键。</li>
+<li>负载均衡是实现系统性能和扩展的关键。</li>
 </ul>
-<p>开发设计时，不要将本该放在领域层的业务逻辑放到应用层。因为<strong>庞大的应用层会使领域模型失焦，时间一长，微服务就会退化为MVC架构，导致业务逻辑混乱</strong>。</p>
-<p>应用服务是在应用层，负责</p>
+<h2 id="核心算法原理和实现流程">核心算法原理和实现流程
+</h2><p>在分布式系统中，有一些核心算法需要理解，如：</p>
+<ol>
+<li>一致性算法：例如，Paxos、Raft等。</li>
+<li>故障容错算法：例如，Chubby、ZooKeeper等。</li>
+<li>负载均衡算法：例如，Round-robin、Least-connections、Random等。</li>
+</ol>
+<h3 id="一致性算法">一致性算法
+</h3><p>一致性算法是用于实现数据一致性的算法，主要解决了分布式系统中多个节点共享和修改同一份数据时的一致性问题。</p>
+<h4 id="paxos算法">Paxos算法
+</h4><p>Paxos算法是一种一致性算法，可以在不需要时间顺序一致性的前提下，实现强一致性。Paxos算法的核心思想是通过多轮投票和选举来实现节点之间的协同。</p>
+<p>Paxos算法的主要组成部分包括：</p>
+<ol>
+<li>提案者（Proposer）：提出一个值进行决定。</li>
+<li>接受者（Acceptor）：接受提案者的提案，并进行投票。</li>
+<li>决策者（Learner）：收到多数接受者的支持，进行决策。</li>
+</ol>
+<p>Paxos算法的具体操作步骤如下：</p>
+<ol>
+<li>提案者随机选择一个数字值，并向所有接受者发送提案。</li>
+<li>接受者收到提案后，如果当前没有多数接受者支持其他提案，则支持当前提案，并向提案者报告支持情况。</li>
+<li>提案者收到多数接受者的支持后，向决策者发送决策请求。</li>
+<li>决策者收到多数接受者的支持后，进行决策，并向所有节点广播决策结果。</li>
+</ol>
+<h4 id="raft算法">Raft算法
+</h4><p>Raft算法是一种一致性算法，可以在有限的时间内实现强一致性。Raft算法的核心思想是通过选举来实现领导者的选举和数据复制。</p>
+<p>Raft算法的主要组成部分包括：</p>
 <ul>
-<li>服务的组合、编排、转发、转换和传递，处理业务用例的执行顺序以及结果的拼装，以粗粒度服务通过API网关发布到前端</li>
-<li>安全认证</li>
-<li>权限校验</li>
-<li>事务控制</li>
-<li>发送或订阅领域事件</li>
+<li>领导者（Leader）：负责接收客户端请求，并向其他节点复制数据。</li>
+<li>追随者（Follower）：等待选举，如果成为领导者，则向其他节点复制数据。</li>
+<li>候选者（Candidate）：尝试成为领导者，通过选举来实现。</li>
 </ul>
-<h3 id="领域层">领域层
-</h3><p>主要包含聚合根、实体、值对象、领域服务等领域模型中的领域对象。</p>
-<p>实现核心业务逻辑，通过各种校验保证业务正确性。领域层主要体现领域模型的业务能力，它用来表达业务概念、业务状态和业务规则。</p>
-<p>领域模型的业务逻辑主要由实体和领域服务实现：</p>
-<ul>
-<li>实体采用充血模型 实现所有与之相关的业务功能。</li>
-</ul>
-<p>实体和领域服务在实现业务逻辑上不是同级，当领域中的某些功能，单一实体或值对象无法实现，就会用到领域服务，它可组合聚合内的多个实体或值对象，实现复杂业务逻辑。</p>
-<h3 id="基础层">基础层
-</h3><p>为其它各层提供通用技术基础服务：</p>
-<ul>
-<li>三方工具</li>
-<li>驱动</li>
-<li>MQ</li>
-<li>API网关</li>
-<li>文件</li>
-<li>缓存</li>
-<li>DB</li>
-<li>最常用的</li>
-</ul>
-<p>基础层包含基础服务，它采用依赖反转，封装基础资源服务，实现应用层、领域层与基础层解耦。</p>
-<p>MVC架构由于上层应用对DB强耦合，很多公司在架构演进最怕换DB，一旦更换，可能需重写一堆代码。
-但采用依赖反转，应用层即可通过解耦保持独立核心业务逻辑。当DB变更，只需更换DB基础服务。</p>
-<h2 id="微服务架构演进">微服务架构演进
-</h2><p>领域模型中对象的层次从内到外依次是：值对象、实体、聚合和限界上下文。</p>
-<p>实体或值对象的简单变更，一般不会让领域模型和微服务发生大变。但聚合的重组或拆分却可以。因为聚合内业务功能内聚，能独立完成特定业务。那聚合的重组或拆分，势必引起业务模块和系统功能变化。</p>
-<p>可以聚合为基础单元，完成领域模型和微服务架构的演进。
-聚合可作为整体，在不同领域模型间重组或拆分，或直接将一个聚合独立为微服务。</p>
-<h3 id="微服务架构的演进案例">微服务架构的演进案例
-</h3><p>现有</p>
-<ul>
-<li>微服务 1：包含聚合 a、b、c</li>
-<li>微服务2：</li>
-<li>微服务3：包含聚合 d、e、f</li>
-</ul>
+<p>Raft算法的具体操作步骤如下：</p>
+<ol>
+<li>每个节点随机选择一个领导者标识，并向其他节点发送请求加入集群。</li>
+<li>其他节点收到请求后，如果当前领导者已经存在，则将请求丢弃；如果当前领导者不存在，则将当前节点设置为候选者状态，并向其</li>
+<li>节点发送自己为候选者的请求。</li>
+<li>候选者收到多数节点的支持后，成为领导者，并向其他节点发送心跳消息。</li>
+<li>追随者收到领导者的心跳消息后，更新自己的领导者标识，并设置为追随者状态。</li>
+<li>客户端向领导者发送请求，领导者将请求广播给其他节点，并将数据复制到其他节点。</li>
+</ol>
+<h4 id="数学模型公式">数学模型公式
+</h4><p>Paxos和Raft算法的数学模型公式如下：</p>
 <ol>
 <li>
-<p>当发现微服务1中聚合a的功能经常被高频访问，以致拖累了整个微服务1的性能，可把聚合a，从微服务1中剥离，独立为微服务2以应对高性能场景</p>
+$$
+n=3f+1n = 3f + 1n=3f+1
+$$<p>
+其中，n是节点数量，f是故障节点数量。</p>
 </li>
 <li>
-<p>随业务发展，发现微服务3的领域模型变化，聚合d会更适合放到微服务1的领域模型。即可将聚合d整体迁移到微服务1。注意定义好聚合间的代码边界</p>
-</li>
-<li>
-<p>架构演进后，微服务1从最初包含聚合a、b、c，演进为包含聚合b、c、d的新领域模型和微服务</p>
+$$
+n=3fn = 3fn=3f
+$$<p>
+其中，n是节点数量，f是故障节点数量。</p>
 </li>
 </ol>
-<p>可见，好的聚合和代码模型的边界设计，可让你快速应对业务变化，轻松实现领域模型和微服务架构演进。</p>
-<h3 id="微服务内服务的演进">微服务内服务的演进
-</h3><p>在微服务内部，实体的方法被领域服务组合和封装，领域服务又被应用服务组合和封装。在服务逐层组合和封装的过程中，你会发现这样一个有趣的现象。
-<img src="/imgs/SE/3.png"
-	
-	
-	
-	loading="lazy"
-	
-	
-></p>
-<p>服务设计时，你并不一定能完整预测有哪些下层服务会被多少个上层服务组装，因此领域层通常只提供一些原子服务，比如领域服务a、b、c。但随系统功能增强和外部接入越来越多，应用服务不断丰富。终有一日，你会发现领域服务b和c同时多次被多个应用服务调用了，执行顺序也基本一致。这时你可以考虑将b和c合并，再将应用服务中b、c的功能下沉到领域层，演进为新的领域服务（b+c）。这样既减少了服务的数量，也减轻了上层服务组合和编排的复杂度。</p>
-<p>这就是服务演进，领域模型会越来越能适应需求快速变化。</p>
-<h2 id="从mvc跨越到ddd">从MVC跨越到DDD
-</h2><p>由于层间松耦合，可专注本层设计，而不必关心其它层，也不必担心自己的设计会影响其它层。即DDD成功降低层与层之间的依赖。</p>
-<p>分层架构使得程序结构更清晰，升级和维护更容易。修改某层代码时，只要本层接口参数不变，其它层不必修改。即使本层接口发生变化，也只影响相邻的上层，修改工作量小且可控。</p>
-<p>传统企业应用大多是单体架构，而单体架构则大多是三层架构。三层架构解决了程序内代码间调用复杂、代码职责不清的问题，但这种分层是逻辑概念，在物理上它是中心化的集中式架构，并不适合分布式微服务架构。</p>
-<p>DDD分层要类似三层架构，只是在DDD中，这些要素被重新划分了层，确定了层与层之间的交互规则和职责边界。
-<img src="/imgs/SE/4.png"
-	
-	
-	
-	loading="lazy"
-	
-	
-></p>
-<p>DDD分层架构相比MVC（只有API）在用户接口层新增了DTO，给前端提供了更多的可使用数据和更高的展示灵活性。</p>
-<p>DDD分层架构对三层架构的业务逻辑层进行了更清晰的划分，改善了三层架构核心业务逻辑混乱，代码改动相互影响大的情况。</p>
-<p>MVC架构向DDD分层架构演进，主要发生在业务逻辑层和数据访问层。
-DDD分层架构将业务逻辑层的服务拆分到了应用层和领域层：</p>
+<h3 id="故障容错算法">故障容错算法
+</h3><p>故障容错算法是用于实现故障容错的算法，主要解决了分布式系统中单个节点故障不会导致整个系统宕机的问题。</p>
+<h4 id="chubby算法">Chubby算法
+</h4><p>Chubby算法是一种故障容错算法，可以实现分布式系统中的共享锁和文件系统。Chubby算法的核心思想是通过集中式控制来实现故障容错。</p>
+<p>Chubby算法的主要组成部分包括：</p>
 <ul>
-<li>应用层快速响应前端的变化</li>
-<li>领域层实现领域模型的能力</li>
+<li>主服务器（Master Server）：负责管理所有节点的状态。</li>
+<li>备份服务器（Backup Server）：负责备份主服务器的状态。</li>
+<li>客户端（Client）：与主服务器和备份服务器进行通信。</li>
 </ul>
-<p>数据访问层和基础层之间：</p>
+<p>Chubby算法的具体操作步骤如下：</p>
+<ol>
+<li>客户端向主服务器发送请求，主服务器处理请求并返回结果。</li>
+<li>主服务器在处理请求时，可以将请求委托给备份服务器处理。</li>
+<li>主服务器和备份服务器之间通过心跳消息来实现故障检测和故障转移。</li>
+</ol>
+<h4 id="zookeeper算法">ZooKeeper算法
+</h4><p>ZooKeeper算法是一种故障容错算法，可以实现分布式系统中的配置管理和集群管理。ZooKeeper算法的核心思想是通过多个服务器实现故障容错，并通过主备模式来实现高可用。</p>
+<p>ZooKeeper算法的主要组成部分包括：</p>
 <ul>
-<li>三层架构数据访问采用DAO方式</li>
-<li>DDD分层架构的数据库等基础资源访问，采用了仓储（Repository）设计模式，通过依赖倒置实现各层对基础资源的解耦。</li>
+<li>主服务器（Leader）：负责处理客户端请求。</li>
+<li>备份服务器（Follower）：负责备份主服务器的状态。</li>
+<li>客户端（Client）：与主服务器和备份服务器进行通信。</li>
 </ul>
-<blockquote>
-<p>仓储本身属基础层，但考虑到一个聚合对应一个仓储，为了以后聚合代码整体迁移方便，在微服务代码目录设计时，在聚合目录下增加一个Repository的仓储目录，跟仓储相关的代码都在这个目录下。</br>
-这个目录下的代码与聚合的其它业务代码是分开的。如果未来换数据库，只需将Repository目录下的代码替换。而如果聚合需要整体迁移到其它微服务中去，仓储的代码也会一并迁移。</p></blockquote>
-<p>仓储又分为两部分：仓储接口和仓储实现。仓储接口放在领域层中，仓储实现放在基础层。原来三层架构通用的第三方工具包、驱动、Common、Utility、Config等通用的公共的资源类统一放到了基础层。</p>
-<p>MVC 到 DDD 具体操作如下：</p>
-<h3 id="抽象数据存储层">抽象数据存储层
-</h3><p>一般将Data Access层做抽象，降低系统对DB的直接依赖。
-举个例子：</p>
-<ul>
-<li>新建Account实体对象：一个实体（Entity）是拥有ID的域对象，除了拥有数据之外，同时拥有行为。Entity和数据库储存格式无关。</li>
-</ul>
-<p>对象储存接口类AccountRepository：Repository只负责Entity对象的存储和读取，而Repository的实现类完成数据库存储的细节。通过加入Repository接口，底层数据库连接可以通过不同的实现类而替换。</p>
+<p>ZooKeeper算法的具体操作步骤如下：</p>
+<ol>
+<li>客户端向主服务器发送请求，主服务器处理请求并返回结果。</li>
+<li>主服务器在处理请求时，可以将请求委托给备份服务器处理。</li>
+<li>主服务器和备份服务器之间通过心跳消息来实现故障检测和故障转移。</li>
+</ol>
+<h4 id="数学模型公式-1">数学模型公式
+</h4><p>Chubby和ZooKeeper算法的数学模型公式如下：</p>
+<ol>
+<li>
+$$
+n=3fn = 3fn=3f
+$$<p>
+其中，n是节点数量，f是故障节点数量。</p>
+</li>
+<li>
+$$
+n=2f+1n = 2f + 1n=2f+1
+$$<p>
+其中，n是节点数量，f是故障节点数量。</p>
+</li>
+</ol>
+<h3 id="负载均衡算法">负载均衡算法
+</h3><p>负载均衡算法是用于实现系统性能和扩展的算法，主要解决了分布式系统中多个节点共同处理任务的问题。</p>
+<h4 id="round-robin算法">Round-robin算法
+</h4><p>Round-robin算法是一种负载均衡算法，可以实现基于轮询的请求分发。Round-robin算法的核心思想是将请求按顺序分发给节点。</p>
+<p>Round-robin算法的具体操作步骤如下：</p>
+<ol>
+<li>创建一个请求队列，将所有请求加入队列。</li>
+<li>从队列中取出第一个请求，将其分发给第一个节点处理。</li>
+<li>将请求队列中的下一个请求分发给第二个节点处理。</li>
+<li>重复步骤2和3，直到队列中的所有请求都被处理。</li>
+</ol>
+<h4 id="least-connections算法">Least-connections算法
+</h4><p>Least-connections算法是一种负载均衡算法，可以实现基于最少连接数的请求分发。Least-connections算法的核心思想是将请求分发给连接数最少的节点。</p>
+<p>Least-connections算法的具体操作步骤如下：</p>
+<ol>
+<li>创建一个节点状态表，记录每个节点的连接数。</li>
+<li>从节点状态表中选择连接数最少的节点，将请求分发给该节点处理。</li>
+<li>处理完请求后，更新节点状态表。</li>
+</ol>
+<h4 id="random算法">Random算法
+</h4><p>Random算法是一种负载均衡算法，可以实现基于随机选择的请求分发。Random算法的核心思想是将请求随机分发给节点。</p>
+<p>Random算法的具体操作步骤如下：</p>
+<ol>
+<li>创建一个请求队列，将所有请求加入队列。</li>
+<li>从队列中随机选择一个请求，将其分发给一个节点处理。</li>
+<li>重复步骤2，直到队列中的所有请求都被处理。</li>
+</ol>
 
 </section>
 
@@ -625,7 +640,7 @@ DDD分层架构将业务逻辑层的服务拆分到了应用层和领域层：</
 
 
         <span>
-            最后更新于 Mar 16, 2025 19:50 &#43;0800
+            最后更新于 Mar 30, 2025 15:47 &#43;0800
         </span>
     </section></footer>
 
@@ -670,12 +685,12 @@ DDD分层架构将业务逻辑层的服务拆分到了应用层和领域层：</
             
                 
 <article class="">
-    <a href="/p/distributed_system/">
+    <a href="/p/se_ddd/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">【SE】 分布式系统架构设计</h2>
+            <h2 class="article-title">【SE】 DDD领域驱动设计实战-分层架构</h2>
         </div>
     </a>
 </article>

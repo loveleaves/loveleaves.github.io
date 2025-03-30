@@ -7,20 +7,28 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 30 Mar 2025 11:34:48 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Life</title>
-        <link>https://loveleaves.github.io/categories/life/</link>
-        <pubDate>Sat, 15 Mar 2025 00:00:00 +0000</pubDate>
+        <lastBuildDate>Sun, 30 Mar 2025 15:47:37 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Distributed_system</title>
+        <link>https://loveleaves.github.io/categories/distributed_system/</link>
+        <pubDate>Sat, 22 Mar 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://loveleaves.github.io/categories/life/</guid>
+        <guid>https://loveleaves.github.io/categories/distributed_system/</guid>
         <description></description>
         </item>
         <item>
         <title>SE</title>
         <link>https://loveleaves.github.io/categories/se/</link>
-        <pubDate>Mon, 10 Mar 2025 00:00:00 +0000</pubDate>
+        <pubDate>Sat, 22 Mar 2025 00:00:00 +0000</pubDate>
         
         <guid>https://loveleaves.github.io/categories/se/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Life</title>
+        <link>https://loveleaves.github.io/categories/life/</link>
+        <pubDate>Sat, 15 Mar 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/categories/life/</guid>
         <description></description>
         </item>
         <item>
