@@ -7,12 +7,87 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Wed, 19 Feb 2025 00:00:10 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hardware/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 06 Oct 2025 11:14:24 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hardware/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【Hardware】PCB设计与开发</title>
+        <link>https://loveleaves.github.io/p/embedded_programing_pcb/</link>
+        <pubDate>Sun, 21 Sep 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/embedded_programing_pcb/</guid>
+        <description>&lt;h2 id=&#34;基础知识&#34;&gt;基础知识
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/loveleaves/Embedded_Development/tree/main/PCB_Design/%e5%85%a5%e9%97%a8%e7%af%87.zip&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;零基础入门PCB设计PPT&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;pcb设计流程&#34;&gt;PCB设计流程
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/pcb_design_steps.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;pipeline&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;元器件选型&#34;&gt;元器件选型
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.szlcsc.com/?c=Q2&amp;amp;lcsc_vid=QlNbUldTQgMPVAFfE1gPV1NTEVJcVFUFEVVcVQUCEQQxVlNTTlVXVF1XRFhbXjsOAxUeFF5JWAIASQYPGQZABAsLWA%3D%3D&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;立创商城（也可大部分数据手册查看）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;pcb版一般包含以下模块：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;单片机最小系统：是指用最少的元件组成的单片机可以工作的系统。对于51系列单片机来说，单片机+晶振电路+复位电路,便组成了一个最小系统。晶振电路是单片机的振荡电路，通过晶振来放大输出信号。复位电路则用于重置单片机的系统状态，使其重新初始化。&lt;/li&gt;
+&lt;li&gt;电源电路：单片机最小系统中的电源是指能量的来源，其中VCC(40脚)将电源的正极和GND(20脚)视为电源的输入和输出。接地端(电源负极)则用于与地面形成电气连接。&lt;/li&gt;
+&lt;li&gt;外围功能电路：包括按键检测，Led指示灯，排针引出等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pcb布局要求&#34;&gt;PCB布局要求
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://hilelectronic.com/zh-CN/blog-pcb-layout/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;如何设计 PCB 布局&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;1、必须根据元器件的电气特性和使用特点来布局（这点非常重要），举例如下：对于各种接口、按键和排针，需要放在板子边缘，方便插接，对于屏幕和主控芯片等，一般放在板子中央，对于电源电路，一般放在板子的电源输入旁边并且要注意电流路径和滤波电容位置（非常重要），对于晶振需要靠近单片机晶振引脚摆放等&lt;/li&gt;
+&lt;li&gt;2、不要把元器件看成二维物体，而是应该看成三维物体，有时空间有干涉的情况需要考虑&lt;/li&gt;
+&lt;li&gt;3、元件的布局应该采用模块化，也就是同一个模块电路的元件应该放同一个区域，按照就近原则来布局，不能东一个西一个&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pcb布线要求&#34;&gt;PCB布线要求
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/zhi_Alanwu/article/details/127588384&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;【硬件设计】布线篇&amp;mdash;&amp;ndash;超实用的PCB布局布线规则&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;布线顺序：&lt;/strong&gt; 关键元件优先、关键信号线优先、密度优先&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;(1) 密度优先原则：从单板上连线最密集的区域开始布线。&lt;/li&gt;
+&lt;li&gt;(2) 优先关键元器件：如DDR、射频等核心部分应优先布线，类似信号传输线应提供专层、电源、地回路。其他次要信号要顾全整体，不可以和关键信号相抵触。&lt;/li&gt;
+&lt;li&gt;(3) 关键信号线优先：电源、模拟小信号、高速信号、时钟信号和同步信号等关键信号优先布线。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;布线要求：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1.顶层优先原则：尽量在顶层布线&lt;/li&gt;
+&lt;li&gt;2.电源线原则上要加粗：因为电源线是要给电路板各个模块供电的，电源线加粗有利于电流在主干道上流通；在日常PCB设计中，在25℃时，对于铜厚为10z(盎司)的导线，10mil线宽能够承载0.65A电流，40mil线宽能够承载2.3A电流。&lt;/li&gt;
+&lt;li&gt;3.同一层内走线大于90°：同一层走线禁止90°或者走锐角，从原理上讲，锐角直角走线会造成走线阻抗不连续，对于信号的传输有影响，推荐走线135°&lt;/li&gt;
+&lt;li&gt;4.注意电流路径和电容的摆放位置：电源要先经过电容滤波再给后级，去耦电容要贴近芯片引脚放置，并就近接地。&lt;/li&gt;
+&lt;li&gt;5.高频信号线尽可能短，并做好与其他信号的屏蔽隔离。为了降低相邻走线之间的串扰，尽量避免相邻层平行走线，走线应遵循3W原则：相邻层信号线应采用正交方向。差分线布线尽量等距等长。&lt;/li&gt;
+&lt;li&gt;6.PCB布线要尽量远离安装孔与电路板边缘：在PCB钻孔加工中，很容易会切掉一部分导线，为了电路板功能，应尽量远离这些位置。&lt;/li&gt;
+&lt;li&gt;7.需要添加泪滴。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;原件符号绘制&#34;&gt;原件符号绘制
+&lt;/h3&gt;&lt;p&gt;对于元件库中没有的但需要使用的原件，进行元件符号绘制与封装。&lt;/p&gt;
+&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1At421h7Ui/?spm_id_from=333.788.player.switch&amp;amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;amp;p=25&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;【教程】零基础入门PCB设计&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1fFAfeZEBE/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&amp;amp;vd_source=239d861d96125b8edb41d49a38169fda&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;【教程】大师篇-零基础入门PCB设计&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://oshwhub.com/expert/works&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Expert电子实验室&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1CoGuzEEeN/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&amp;amp;vd_source=239d861d96125b8edb41d49a38169fda&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;STM32手表教程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>【嵌入式编程】 嵌入式编程介绍</title>
-        <link>https://loveleaves.github.io/p/embedded_programing/</link>
+        <link>https://loveleaves.github.io/p/embedded_programing_intro/</link>
         <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://loveleaves.github.io/p/embedded_programing/</guid>
+        <guid>https://loveleaves.github.io/p/embedded_programing_intro/</guid>
         <description>&lt;h2 id=&#34;嵌入式编程介绍&#34;&gt;嵌入式编程介绍
 &lt;/h2&gt;&lt;p&gt;嵌入式编程（Embedded Programming）是指在嵌入式系统中编写软件的过程，嵌入式系统通常是专门为某一特定任务设计的计算机系统，不像传统计算机那样可以运行多种应用程序。嵌入式系统的应用非常广泛，从智能家居设备、汽车控制系统、工业自动化，到医疗设备等，几乎无处不在。&lt;/p&gt;
 &lt;h3 id=&#34;嵌入式编程是什么&#34;&gt;嵌入式编程是什么？
