@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录PCB从设计到开发的全流程">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-06T11:19:37&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-06T17:55:24&#43;08:00'/>
 <meta name="twitter:title" content="【Hardware】PCB设计与开发">
 <meta name="twitter:description" content="记录PCB从设计到开发的全流程">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -299,6 +299,43 @@
         <li><a href="#原件符号绘制">原件符号绘制</a></li>
       </ol>
     </li>
+    <li><a href="#pcb设计常用知识点">PCB设计常用知识点</a>
+      <ol>
+        <li><a href="#回流路径">回流路径</a>
+          <ol>
+            <li><a href="#回流类型">回流类型</a></li>
+            <li><a href="#设计原则">设计原则</a></li>
+            <li><a href="#跨平面分割">跨平面分割</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#pcb常见模块设计参考">PCB常见模块设计参考</a>
+      <ol>
+        <li><a href="#电源模块">电源模块</a>
+          <ol>
+            <li><a href="#电容滤波">电容滤波</a></li>
+          </ol>
+        </li>
+        <li><a href="#usb接口">USB接口</a></li>
+        <li><a href="#晶振">晶振</a>
+          <ol>
+            <li><a href="#布局参考">布局参考</a></li>
+            <li><a href="#布线参考">布线参考</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#电子设计常用电路">电子设计常用电路</a>
+      <ol>
+        <li><a href="#电源防反接电路">电源防反接电路</a>
+          <ol>
+            <li><a href="#二极管防反接">二极管防反接</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#开源项目">开源项目</a></li>
     <li><a href="#references">References</a></li>
   </ol>
 </nav>
@@ -368,7 +405,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 3 分钟
+                    阅读时长: 6 分钟
                 </time>
             </div>
         
@@ -401,6 +438,8 @@
 </h3><ul>
 <li><a class="link" href="https://www.szlcsc.com/?c=Q2&amp;lcsc_vid=QlNbUldTQgMPVAFfE1gPV1NTEVJcVFUFEVVcVQUCEQQxVlNTTlVXVF1XRFhbXjsOAxUeFF5JWAIASQYPGQZABAsLWA%3D%3D"  target="_blank" rel="noopener"
     >立创商城（也可大部分数据手册查看）</a></li>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/electronic-selection/digital-logic-chip.html"  target="_blank" rel="noopener"
+    >电子设计选型</a></li>
 </ul>
 <p>pcb版一般包含以下模块：</p>
 <ul>
@@ -410,6 +449,8 @@
 </ul>
 <h3 id="pcb布局要求">PCB布局要求
 </h3><ul>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/layout-guidance.html"  target="_blank" rel="noopener"
+    >PCB设计布局指导</a></li>
 <li><a class="link" href="https://hilelectronic.com/zh-CN/blog-pcb-layout/"  target="_blank" rel="noopener"
     >如何设计 PCB 布局</a></li>
 <li>1、必须根据元器件的电气特性和使用特点来布局（这点非常重要），举例如下：对于各种接口、按键和排针，需要放在板子边缘，方便插接，对于屏幕和主控芯片等，一般放在板子中央，对于电源电路，一般放在板子的电源输入旁边并且要注意电流路径和滤波电容位置（非常重要），对于晶振需要靠近单片机晶振引脚摆放等</li>
@@ -418,6 +459,8 @@
 </ul>
 <h3 id="pcb布线要求">PCB布线要求
 </h3><ul>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/routing-guidance.html"  target="_blank" rel="noopener"
+    >PCB设计走线指导</a></li>
 <li><a class="link" href="https://blog.csdn.net/zhi_Alanwu/article/details/127588384"  target="_blank" rel="noopener"
     >【硬件设计】布线篇&mdash;&ndash;超实用的PCB布局布线规则</a></li>
 </ul>
@@ -439,6 +482,82 @@
 </ul>
 <h3 id="原件符号绘制">原件符号绘制
 </h3><p>对于元件库中没有的但需要使用的原件，进行元件符号绘制与封装。</p>
+<h2 id="pcb设计常用知识点">PCB设计常用知识点
+</h2><blockquote>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/knowledge-point/difference-pairs.html"  target="_blank" rel="noopener"
+    >PCB设计常用知识点</a>
+<a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/0ohm-function.html"  target="_blank" rel="noopener"
+    >电子设计常用知识点</a></p></blockquote>
+<h3 id="回流路径">回流路径
+</h3><p>回流路径（return current path）设计是PCB设计中的核心问题之一，涉及信号完整性、电源完整性和EMI性能。</p>
+<p>回流路径是电流从负载返回电源的路径。当信号从驱动器传输到接收器时，电流会通过信号线流向负载，然后通过地平面、电源平面或其他导体返回电源，形成完整的回路。回流路径并不是“地”的专属概念，它可以是地平面、电源平面，甚至是相邻的信号线（例如差分信号的回流路径）。</p>
+<h4 id="回流类型">回流类型
+</h4><ul>
+<li>地回流路径：电流通过地平面返回电源，适用于单端信号传输，地平面通常具有较低的阻抗，能够提供稳定的回流路径，需注意地平面完整，避免分割导致回流路径不连续。</li>
+<li>电源回流路径：电流通过电源平面返回电源，适用于差分信号或某些高速信号，电源平面和地平面之间可以通过去耦电容形成高频回流路径，需要注意电源平面的噪声问题。</li>
+</ul>
+<h4 id="设计原则">设计原则
+</h4><ul>
+<li>最小回流路径：回流路径应尽可能短，以减小环路面积，降低辐射和感应噪声。</li>
+<li>连续平面：尽量使用连续的地平面或电源平面，避免分割平面导致回流路径不连续。</li>
+<li>避免跨分割：信号线不应跨越平面分割区，否则回流路径会绕行，增加环路面积和EMI。</li>
+<li>差分信号：差分信号的回流路径相互抵消，能有效减少EMI。</li>
+</ul>
+<h4 id="跨平面分割">跨平面分割
+</h4><p>  在PCB设计中，参考平面可能会被分割（例如模拟地和数字地的分割），此时，信号线跨越参考平面的分割区域，会导致回流路径不连续，回流路径被迫绕行，路径变长，环路面积增大，可能产生辐射噪声。</p>
+<p>解决方案：</p>
+<ul>
+<li>尽量避免参考平面的分割。</li>
+<li>如果必须分割，确保信号线不跨越分割区域。</li>
+<li>高速信号在分割区域附近放置桥接电容，一般采用100nF，不可使用0Ω电阻。在高频下，电容的阻抗非常低，能够有效传递高频信号。为高频回流电流提供低阻抗路径。</li>
+</ul>
+<h2 id="pcb常见模块设计参考">PCB常见模块设计参考
+</h2><blockquote>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/moduler-design/ldo-moduler.html"  target="_blank" rel="noopener"
+    >PCB常见模块设计参考</a></p></blockquote>
+<h3 id="电源模块">电源模块
+</h3><h4 id="电容滤波">电容滤波
+</h4><blockquote>
+<p><a class="link" href="https://www.bilibili.com/opus/876829663819726903"  target="_blank" rel="noopener"
+    >芯片IC每个电源引脚旁边的电容的作用、选择和放置？</a></p></blockquote>
+<p>在电源输入和IC引脚处，一般会加两个比如10uF和0.1uF的电容，进行滤波，大电容靠近电源，小电容靠近元件。</p>
+<p>电容尽量放到靠近IC引脚处，并且要经过电容再到IC 引脚，而且电源分支尽量在进电容前进行，因为如果摆放很远的话，电容滤除噪声后的电源会在这个段路径上又串扰进新的噪声，那么这个电容的作用就没有太大的意义。</p>
+<h3 id="usb接口">USB接口
+</h3><blockquote>
+<p><a class="link" href="https://www.eet-china.com/mp/a401258.html"  target="_blank" rel="noopener"
+    >USB接口PCB设计全攻略</a>
+<a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/typec-5.1k.html"  target="_blank" rel="noopener"
+    >为什么Type-c接口要加5.1K电阻下拉</a></p></blockquote>
+<p>CC引脚不使用时，一般连接1个5.1K下拉电阻接地。</p>
+<h3 id="晶振">晶振
+</h3><h4 id="布局参考">布局参考
+</h4><ul>
+<li>晶振电路布局需要优先考虑，整体紧凑摆放，晶振尽量靠近 IC，负载电容放置于晶振与 IC 之间，以减少时钟信号传输的延迟和干扰；</li>
+<li>晶振摆放尽量远离板边和接口器件，减少其受外部物理因素干扰的风险，如物理撞击等；</li>
+<li>晶振需远离干扰源，如电感、大功率驱动器、RF天线等；</li>
+<li>晶振区域的底层不可放置其余器件，需保证晶振区域的净空；</li>
+</ul>
+<h4 id="布线参考">布线参考
+</h4><ul>
+<li>晶振电路的时钟信号走线越短越好，可以按照类差分走线，晶振的时钟走线不可打过孔走线连接；</li>
+<li>在晶振走线周围通过GND过孔进行包地，每隔50-100mil间距整齐放置屏蔽地过孔，用以隔离吸收晶振辐射的噪声；</li>
+<li>晶振区域同层需要净空处理，可以使用禁止铺铜区域进行隔离，晶振本体相邻层最好不要走线，保证地的完整性；</li>
+</ul>
+<h2 id="电子设计常用电路">电子设计常用电路
+</h2><blockquote>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/anti-reverse-circuit.html"  target="_blank" rel="noopener"
+    >电子设计常用电路</a></p></blockquote>
+<h3 id="电源防反接电路">电源防反接电路
+</h3><p>在日常电子设计过程中，经常会使用排针、电池等容易插反的接口进行供电，此时一旦电源接反，会导致短路，通常芯片内部也无法承受反向电流，可能会导致芯片损坏。</p>
+<h4 id="二极管防反接">二极管防反接
+</h4><p>使用一个二极管串联在电路中，当电源正常接入时，二极管导通,当电源反接时，二极管反向截止，整个系统不会有电流经过，但是此时二极管需要承担整个电路的电流，且自身会有压降，输出电压与实际输入电压会有一个二极管压差，建议综合电路负载电流情况选择不同型号的肖特基二极管。</p>
+<h2 id="开源项目">开源项目
+</h2><ul>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/course-projects/electronic-fabrication/aluminum-alloy-docking-station.html"  target="_blank" rel="noopener"
+    >嘉立创-USB2.0拓展坞</a></li>
+<li><a class="link" href="https://oshwhub.com/expert/gai-jin-xin-exlink-duo-gong-neng-diao-shi-qi-fen-li-die-ban"  target="_blank" rel="noopener"
+    >Exlink最好用的嵌入式多功能调试器</a></li>
+</ul>
 <h2 id="references">References
 </h2><ul>
 <li><a class="link" href="https://www.bilibili.com/video/BV1At421h7Ui/?spm_id_from=333.788.player.switch&amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;p=25"  target="_blank" rel="noopener"
@@ -479,7 +598,7 @@
 
 
         <span>
-            最后更新于 Oct 06, 2025 11:19 &#43;0800
+            最后更新于 Oct 06, 2025 17:55 &#43;0800
         </span>
     </section></footer>
 
