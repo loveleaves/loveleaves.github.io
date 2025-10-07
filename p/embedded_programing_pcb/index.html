@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录PCB从设计到开发的全流程">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-07T21:48:53&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-07T22:18:21&#43;08:00'/>
 <meta name="twitter:title" content="【Hardware】PCB设计与开发">
 <meta name="twitter:description" content="记录PCB从设计到开发的全流程">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -301,6 +301,12 @@
     </li>
     <li><a href="#pcb设计常用知识点">PCB设计常用知识点</a>
       <ol>
+        <li><a href="#差分信号">差分信号</a>
+          <ol>
+            <li><a href="#差分信号的优点有哪些">差分信号的优点有哪些？</a></li>
+            <li><a href="#差分信号在pcb中的设计要求有哪些">差分信号在PCB中的设计要求有哪些？</a></li>
+          </ol>
+        </li>
         <li><a href="#回流路径">回流路径</a>
           <ol>
             <li><a href="#回流类型">回流类型</a></li>
@@ -417,7 +423,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 10 分钟
+                    阅读时长: 12 分钟
                 </time>
             </div>
         
@@ -500,6 +506,145 @@
     >PCB设计常用知识点</a></p>
 <p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/0ohm-function.html"  target="_blank" rel="noopener"
     >电子设计常用知识点</a></p></blockquote>
+<h3 id="差分信号">差分信号
+</h3><p><strong>单端信号</strong>是相对于差分信号而言的，单端输入指信号有一个参考端和一个信号端构成，参考端一般为地端。当耦合噪声时，接收数据无法正常还原。</p>
+<p><strong>差分信号</strong>是一种信号传输技术，区别于传统的一根信号线一根地线的做法，差分传输在两根数据线上都传输信号，这两个信号的振幅相等，相位相差180°（即相位相反）。在这两根线上传输的信号就是差分信号，而承载差分信号的那一对走线就称为差分走线。</p>
+<h4 id="差分信号的优点有哪些">差分信号的优点有哪些？
+</h4><ul>
+<li>1、抗干扰能力强
+<ul>
+<li>共模干扰抑制：差分信号对外界噪声具有很强的抗扰能力，因为两条信号线上的噪声是相同的（共模），接收端通过计算差值有效消除了共模噪声。</li>
+<li>磁场耦合小：差分信号线之间的电流方向相反，产生的电磁场互相抵消，因此对外部设备的电磁干扰（EMI）小。</li>
+</ul>
+</li>
+<li>2、信号完整度高
+<ul>
+<li>抑制信号反射：两条线之间的特性阻抗匹配更容易实现，从而减少信号反射，保证信号完整性。</li>
+<li>减少地回路问题：差分信号不完全依赖地作为电流的回流路径，减少了地回路的干扰，对于差分信号而言，最大的影响是对地阻抗是否一致，也就是对地平衡度，它们之间相对的阻抗影响并不特别重要，之间分布电容大了只会衰落信号强度，不会引入噪声和干扰，也就是对信噪比不会产生很大影响。</li>
+</ul>
+</li>
+<li>3、支持信号高速传输
+<ul>
+<li>差分信号在高速传输中表现优异，能够更好地保持波形，减少信号失真和抖动，适合用于高速数据总线（如PCIe、USB、HDMI等）。</li>
+</ul>
+</li>
+<li>4、电磁辐射低
+<ul>
+<li>差分信号的电流方向相反，形成的磁场互相抵消，大大降低了电磁辐射，符合更高的EMC（电磁兼容性）要求。</li>
+</ul>
+</li>
+<li>5、传输距离远
+<ul>
+<li>在相同的条件下，差分信号比单端信号能传输更长的距离，同时保持良好的信号质量。</li>
+</ul>
+</li>
+</ul>
+<h4 id="差分信号在pcb中的设计要求有哪些">差分信号在PCB中的设计要求有哪些？
+</h4><ul>
+<li>认识差分信号，在PCB设计中，差分信号的命名通常有“+、-、P、N”等标识</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<p><img src="/imgs/pcb/differential-signal_2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<p><img src="/imgs/pcb/differential-signal_3.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<ul>
+<li>差分信号往往是速度较快、且在整个项目中比较重要的，在布局走线时要重点考虑，尽量保证差分信号顺畅以及距离短。</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_4.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<p><img src="/imgs/pcb/differential-signal_5.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<ul>
+<li>差分信号在走线时，非必要不换层，若一定要换层，在换层的附近添加回流地过孔</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_6.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<ul>
+<li>差分信号内不能有其余走线，若有匹配电阻或上拉电阻，也应该对称摆放。一般差分线间距较小，在电阻的选择上一般不大于0603，否则器件本身尺寸就会导致差分线耦合效果差，影响信号完整性。</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_7.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<p><img src="/imgs/pcb/differential-signal_8.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<ul>
+<li>差分信号在走线时，不可避免会有拐弯或打孔导致线长不一致，差分信号是接收两根信号的差值，需要保证相位的同步，同组差分信号一般不超过±5mil误差，在进行差分等长时，尽量满足小于3W间距（3倍线宽）以及小于2H（2倍间距）规则。</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_9.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
 <h3 id="回流路径">回流路径
 </h3><p>回流路径（return current path）设计是PCB设计中的核心问题之一，涉及信号完整性、电源完整性和EMI性能。</p>
 <p>回流路径是电流从负载返回电源的路径。当信号从驱动器传输到接收器时，电流会通过信号线流向负载，然后通过地平面、电源平面或其他导体返回电源，形成完整的回路。回流路径并不是“地”的专属概念，它可以是地平面、电源平面，甚至是相邻的信号线（例如差分信号的回流路径）。</p>
@@ -634,8 +779,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 		alt="dc-dc"
 	
 	
->
-<img src="/imgs/pcb/dc-dc_3.png"
+></p>
+<p><img src="/imgs/pcb/dc-dc_3.png"
 	
 	
 	
@@ -644,8 +789,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 		alt="dc-dc"
 	
 	
->
-<img src="/imgs/pcb/dc-dc_4.png"
+></p>
+<p><img src="/imgs/pcb/dc-dc_4.png"
 	
 	
 	
@@ -674,8 +819,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 		alt="dc-dc"
 	
 	
->
-<img src="/imgs/pcb/dc-dc_6.png"
+></p>
+<p><img src="/imgs/pcb/dc-dc_6.png"
 	
 	
 	
@@ -684,8 +829,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 		alt="dc-dc"
 	
 	
->
-<img src="/imgs/pcb/dc-dc_7.png"
+></p>
+<p><img src="/imgs/pcb/dc-dc_7.png"
 	
 	
 	
@@ -694,8 +839,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 		alt="dc-dc"
 	
 	
->
-<img src="/imgs/pcb/dc-dc_8.png"
+></p>
+<p><img src="/imgs/pcb/dc-dc_8.png"
 	
 	
 	
@@ -788,7 +933,7 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 
 
         <span>
-            最后更新于 Oct 07, 2025 21:48 &#43;0800
+            最后更新于 Oct 07, 2025 22:18 &#43;0800
         </span>
     </section></footer>
 
