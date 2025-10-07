@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Mon, 06 Oct 2025 17:55:24 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 07 Oct 2025 21:48:53 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【Hardware】PCB设计与开发</title>
         <link>https://loveleaves.github.io/p/embedded_programing_pcb/</link>
         <pubDate>Sun, 21 Sep 2025 00:00:00 +0000</pubDate>
@@ -78,8 +78,8 @@
 &lt;h2 id=&#34;pcb设计常用知识点&#34;&gt;PCB设计常用知识点
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/pcb-design/knowledge-point/difference-pairs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;PCB设计常用知识点&lt;/a&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/0ohm-function.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PCB设计常用知识点&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/0ohm-function.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;电子设计常用知识点&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;回流路径&#34;&gt;回流路径
 &lt;/h3&gt;&lt;p&gt;回流路径（return current path）设计是PCB设计中的核心问题之一，涉及信号完整性、电源完整性和EMI性能。&lt;/p&gt;
@@ -108,6 +108,184 @@
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/pcb-design/moduler-design/ldo-moduler.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PCB常见模块设计参考&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;ldo模块&#34;&gt;LDO模块
+&lt;/h3&gt;&lt;p&gt;LDO（low dropout regulator，低压差线性稳压器）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;注意点：AMS1117一般输出电容使用钽电容而非陶瓷电容。&lt;/li&gt;
+&lt;li&gt;常用款型：1117（如AMS1117）、&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1tU4y1k7cS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;除了1117，还有哪些更好用的线性稳压器？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;优点：
+&lt;ul&gt;
+&lt;li&gt;LDO外围器件少，电路简单，成本低，通常只需要加一两个旁路电容&lt;/li&gt;
+&lt;li&gt;LDO负载响应快，输出纹波小，噪声小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缺点：
+&lt;ul&gt;
+&lt;li&gt;效率低，输入输出压差不能太大&lt;/li&gt;
+&lt;li&gt;体积大、不支持mlcc、只能降压&lt;/li&gt;
+&lt;li&gt;静态电流过高、发热温度高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;布局参考&#34;&gt;布局参考
+&lt;/h4&gt;&lt;p&gt;LDO虽然电路结构简单，但其效率不高，工作时输入输出的电压差都被转换成热能消耗了。所以在进行LDO布局时需考虑散热问题，部分芯片还可添加散热片辅助散热。输入/输出电容尽量靠近输入/输出引脚摆放，滤波电容从大到小依次摆放，LDO两边的电容数量需要保持一致，这样才能保证电源的输入/输出端流入地的电流平衡，布局要点如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;按照电源信号的输入/输出路径，布局时按一字型或者L型摆放；&lt;/li&gt;
+&lt;li&gt;电容按先大后小顺序摆放，就近输入/输出管脚；&lt;/li&gt;
+&lt;li&gt;输入/输出电容GND引脚尽量朝一个方向，保持GND方向一致，减少回流路径。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/ldo_1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ldo&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;走线参考&#34;&gt;走线参考
+&lt;/h4&gt;&lt;p&gt;LDO走线时由于电路连接比较简单，走线时沿着信号方向引出即可，一般只需要考虑线宽是否能够承载整个系统的电流即可。在单面板设计时保持GND信号的完整性，输入输出部分可直接用铜皮填充；当使用双面板以及多层板设计时，需在GND焊盘附近整齐放置一些GND过孔。注意事项如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;电源输入输出信号可直接全填充或粗导线连接，确保铜皮宽度能够过系统最大电流；&lt;/li&gt;
+&lt;li&gt;走线尽可能直，避免不必要拐弯，必须拐弯时走钝角或圆弧；&lt;/li&gt;
+&lt;li&gt;走线时根据信号流向，输入信号先经过电容再到芯片，输出走线也需先过电容再输出；&lt;/li&gt;
+&lt;li&gt;双多层板设计时在加一些整齐统一的过孔保证各层间GND的连接；&lt;/li&gt;
+&lt;li&gt;走线后在板子上可根据电路需要添加必要丝印信息提示，避免焊错或接线错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/ldo_2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ldo&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;dc-dc模块&#34;&gt;DC-DC模块
+&lt;/h3&gt;&lt;p&gt;DC/DC转换器一种是开关电源稳压器，指利用电容、电感的储能的特性，通过可控开关（MOSFET等）进行高频开关的动作，将输入的电能储存在电容（感）里，当开关断开时，电能再释放给负载，提供能量。&lt;/p&gt;
+&lt;p&gt;DC-DC转换器（非隔离式DC-DC）根据其&lt;strong&gt;功能&lt;/strong&gt;可分为三种基本拓扑结构：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;降压转换器(Buck Converter)：当输入电压高于所需输出电压时使用&lt;/li&gt;
+&lt;li&gt;升压转换器(Boost Converter)：当输入电压低于所需输出电压时使用&lt;/li&gt;
+&lt;li&gt;升降压转换器(Buck-Boost Converter)：当输入电压可能高于或低于输出电压时使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优缺点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;缺点：
+&lt;ul&gt;
+&lt;li&gt;外围器件多，电路复杂，成本高&lt;/li&gt;
+&lt;li&gt;负载响应比LDO慢，输出纹波大，噪声大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：
+&lt;ul&gt;
+&lt;li&gt;效率高，输入电压范围宽泛&lt;/li&gt;
+&lt;li&gt;支持降压和升压&lt;/li&gt;
+&lt;li&gt;输出电流高，功率大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;布局参考-1&#34;&gt;布局参考
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/dc-dc_1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dc-dc&#34;
+	
+	
+&gt;
+PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品的稳定性和转换的效果。总结规则如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;旁路去耦电容靠近输入/输出端摆放（如图4-15）&lt;/li&gt;
+&lt;li&gt;从数据手册中看出PH引脚是电源IC的开关节点，那么电感和环流二极管应尽量靠近PH引脚摆放，尽可能的缩小PCB的导体面积，防止电容过度耦合和减小电流环路面积（如图4-16所示）&lt;/li&gt;
+&lt;li&gt;在电源整体布局时，尽量横平竖直的摆放，不要将器件摆放的过于杂乱，避免增加电源路径（如图4-17所示）&lt;/li&gt;
+&lt;li&gt;DC-DC电源芯片在工作时会产生一些热量，所以布局时，应提前注意是否有对热源敏感的器件，避免影响到其他器件的工作（如图4-19所示）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/dc-dc_2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dc-dc&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/dc-dc_3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dc-dc&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/dc-dc_4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dc-dc&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;走线参考-1&#34;&gt;走线参考
+&lt;/h4&gt;&lt;p&gt;   DC-DC模块常用于大电流使用，且走线对其效果影响较大，注意事项如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入和输出的电源走线一定要计算好走线宽度，大电流/电压可以使用铺铜方式或者全填充 方式进行连接；&lt;/li&gt;
+&lt;li&gt;所有的走线尽可能的短和直，减少电源路径&lt;/li&gt;
+&lt;li&gt;GND焊盘使用铺铜或全连接连接，输入输出GND尽可能位于一块铜皮上，同时在底层铺铜（注意避开电感区域），在GND焊盘处打上过孔进行连通，缩短电源的回流路径；&lt;/li&gt;
+&lt;li&gt;DC-DC反馈走线不能直接走在电感、二极管、大电容、IC芯片散热焊盘下面，也不能被大电流环包围，反馈线不是电源走线，不需要加粗，正常信号线宽度（10mil/15mil）即可）；&lt;/li&gt;
+&lt;li&gt;如果芯片下方有热焊盘，则需要使用多个过孔连接到底层，增强散热性&lt;/li&gt;
+&lt;li&gt;电感器件底部尽量不走线，避免电感产生的电磁信号影响到信号线的传输；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/dc-dc_5.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dc-dc&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/dc-dc_6.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dc-dc&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/dc-dc_7.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dc-dc&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/dc-dc_8.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dc-dc&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;h3 id=&#34;电源模块&#34;&gt;电源模块
 &lt;/h3&gt;&lt;h4 id=&#34;电容滤波&#34;&gt;电容滤波
 &lt;/h4&gt;&lt;blockquote&gt;
@@ -118,12 +296,12 @@
 &lt;h3 id=&#34;usb接口&#34;&gt;USB接口
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.eet-china.com/mp/a401258.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;USB接口PCB设计全攻略&lt;/a&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/typec-5.1k.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;USB接口PCB设计全攻略&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/typec-5.1k.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;为什么Type-c接口要加5.1K电阻下拉&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;CC引脚不使用时，一般连接1个5.1K下拉电阻接地。&lt;/p&gt;
 &lt;h3 id=&#34;晶振&#34;&gt;晶振
-&lt;/h3&gt;&lt;h4 id=&#34;布局参考&#34;&gt;布局参考
+&lt;/h3&gt;&lt;h4 id=&#34;布局参考-2&#34;&gt;布局参考
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;晶振电路布局需要优先考虑，整体紧凑摆放，晶振尽量靠近 IC，负载电容放置于晶振与 IC 之间，以减少时钟信号传输的延迟和干扰；&lt;/li&gt;
 &lt;li&gt;晶振摆放尽量远离板边和接口器件，减少其受外部物理因素干扰的风险，如物理撞击等；&lt;/li&gt;
