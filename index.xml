@@ -219,6 +219,190 @@
 	
 	
 &gt;&lt;/p&gt;
+&lt;h3 id=&#34;特性阻抗&#34;&gt;特性阻抗
+&lt;/h3&gt;&lt;p&gt;特性阻抗是电磁波在传输线中传播时遇到的阻抗，反映了信号传输的质量和效率。在PCB设计中，控制特性阻抗对确保信号完整性和减少反射至关重要。&lt;/p&gt;
+&lt;p&gt;特性阻抗（Z₀）是传输线上电压波与电流波的比值。&lt;/p&gt;
+&lt;p&gt;计算公式为：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/Impedance_1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Impedance&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;R 为单位长度电阻；&lt;/li&gt;
+&lt;li&gt;L 为单位长度电感；&lt;/li&gt;
+&lt;li&gt;G 为单位长度电导；&lt;/li&gt;
+&lt;li&gt;C 为单位长度电容；&lt;/li&gt;
+&lt;li&gt;ω 为角频率（ω=2πf，f是频率）；&lt;/li&gt;
+&lt;li&gt;j 为虚数单位（j²=-1）；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;1单端阻抗&#34;&gt;1、单端阻抗
+&lt;/h4&gt;&lt;p&gt;单端阻抗（Single-Ended Impedance）是指信号线与参考平面（通常是地平面或电源平面）之间的阻抗，适用于单端信号传输。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;常见的单端阻抗值有50Ω、75Ω等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在高频下，单端特性阻抗可简化为：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/Impedance_2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Impedance&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L 是单位长度的电感；&lt;/li&gt;
+&lt;li&gt;C 是单位长度的电容；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2差分阻抗&#34;&gt;2、差分阻抗
+&lt;/h4&gt;&lt;p&gt;差分阻抗（Differential Impedance）是指一对差分信号线之间的阻抗，适用于差分信号传输。差分阻抗可分为差模阻抗和共模阻抗，其中差模阻抗用于描述正负差分信号之间的阻抗，而共模阻抗则用于描述这两个信号与地之间的阻抗。常用于高速信号传输（如USB、HDMI、PCIe、以太网等）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;常见的差分阻抗值有90Ω、100Ω等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在高频下，差分特性阻抗可简化为：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/Impedance_3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Impedance&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Z₀是单端阻抗；&lt;/li&gt;
+&lt;li&gt;k 是两条差分线之间的耦合系数（通常为0.1~0.3）；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3阻抗控制作用&#34;&gt;3、阻抗控制作用
+&lt;/h4&gt;&lt;p&gt;在PCB设计中，如果不控制阻抗，可能会对信号完整性、系统性能和可靠性产生严重影响。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当信号在传输线中遇到阻抗不连续点时（如阻抗不匹配），部分信号会被反射回源端。&lt;/li&gt;
+&lt;li&gt;阻抗不匹配会增加信号之间的电磁耦合，导致相邻信号线之间的干扰。&lt;/li&gt;
+&lt;li&gt;阻抗不匹配会导致信号能量损失，信号衰减，可能使得信号在到达接收端时，无法被正确识别。&lt;/li&gt;
+&lt;li&gt;阻抗不匹配会影响信号的传播速度和时序，时序偏差错乱，导致数据错误，系统无法同步。&lt;/li&gt;
+&lt;li&gt;阻抗不匹配会引起时钟信号的反射和失真，时钟信号不稳定或抖动，会导致系统时序紊乱，降低系统性能。&lt;/li&gt;
+&lt;li&gt;阻抗不匹配会影响电源分布网络，导致信号能量通过电源或地线传导，增加电源噪声，影响系统稳定性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阻抗匹配&#34;&gt;阻抗匹配
+&lt;/h3&gt;&lt;p&gt;阻抗匹配是指在电路中，将负载的阻抗与信号源的输出阻抗调整为相等或接近相等，以实现信号能量的最大传输或减少信号反射的过程。&lt;/p&gt;
+&lt;h4 id=&#34;造成阻抗不匹配的原因&#34;&gt;造成阻抗不匹配的原因
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;电路设计不当，比如导线时宽时窄，或GND平面不完整。&lt;/li&gt;
+&lt;li&gt;器件特性不一致，走线以及PCB板会带有寄生电容、电感、电阻等，导致实际阻抗偏离&lt;/li&gt;
+&lt;li&gt;系统参数变化，比如从外接线缆到PCB板，器件本身材质不一致导致阻抗不一致。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;阻抗不匹配的后果&#34;&gt;阻抗不匹配的后果
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;在高频电路中，当传输线与发送端阻抗不匹配时，会产生反射、振荡、过充等现象，并叠加至原本的信号被接收端收到，此时可能会导致接收端数据异常。&lt;/li&gt;
+&lt;li&gt;在模拟信号中，若阻抗不匹配，同样容易造成电压抖动、过充等现象，导致ADC转换数据抖动或异常。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;如何计算阻抗&#34;&gt;如何计算阻抗
+&lt;/h4&gt;&lt;p&gt;影响阻抗的因素有很多，导线宽度、PCB板材、PCB层叠、GND平面等等，在进行阻抗匹配计算时，通常会使用专门的工具来进行计算。比如：&lt;a class=&#34;link&#34; href=&#34;https://tools.jlc.com/jlcTools/index.html#/impedanceCalculatenew&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;嘉立创阻抗计算神器&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;根据输入参数的不同，计算的结果也不相同，在进行阻抗计算时，首先需要清楚所需的阻抗，其次是传输线的传输方式（差分、单端），根据参考平面与阻抗线所在平面的区别分为共面或隔层参考。（共面参考主要影响是阻抗线到参考平面的距离、隔层参考主要影响是参考层与阻抗层的层叠）。&lt;/p&gt;
+&lt;p&gt;阻抗计算结果可能不符合实际生产设计需要，此时需要不断调整相关参数，选择一个价格、设计折中的方案。&lt;/p&gt;
+&lt;h4 id=&#34;常见高速信号阻抗计算&#34;&gt;常见高速信号阻抗计算
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;USB传输线阻抗要求：差分90欧姆，差分对内长度误差≤5mil；传输线长度尽量不超过1800mil；&lt;/li&gt;
+&lt;li&gt;网口传输线阻抗要求：差分100欧姆，差分对内长度误差≤5mil；传输线长度尽量不超过1500mil；&lt;/li&gt;
+&lt;li&gt;HDMI传输线阻抗要求：差分100欧姆，单端50欧姆，差分对内长度误差≤5mil；传输线长度尽量不超过500mil；&lt;/li&gt;
+&lt;li&gt;射频天线阻抗要求：单端50欧姆，走线周围要有良好的接地平面，尽可能保证射频信号区域内净空无其他干扰。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pcb-层压结构&#34;&gt;PCB 层压结构
+&lt;/h3&gt;&lt;h4 id=&#34;pcb叠层的基本组成&#34;&gt;PCB叠层的基本组成
+&lt;/h4&gt;&lt;p&gt;  PCB 叠层（PCB Stack-up）通常由导电铜箔（信号层和电源/地层）和绝缘材料（介质层）交替组成。合理的叠层设计对PCB的电气特性、物理性能、机械性能、可靠稳定性和制造成本等至关重要。&lt;/p&gt;
+&lt;h4 id=&#34;叠层设置的基本原则&#34;&gt;叠层设置的基本原则
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;主芯片相邻层为地平面，在布线时提供良好的参考地平面；&lt;/li&gt;
+&lt;li&gt;信号层尽量避免直接相邻，以减少串扰；&lt;/li&gt;
+&lt;li&gt;所有信号层最好与地平面相邻，以保证完整信号的回流；&lt;/li&gt;
+&lt;li&gt;主电源尽可能与地平面相邻，降低电源平面阻抗；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;常见的叠层结构&#34;&gt;常见的叠层结构
+&lt;/h4&gt;&lt;p&gt;  以下是一些典型的PCB叠层结构，实际设计可根据实际应用情况进行调整。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;双层板：包含两层导电铜箔层，中间是绝缘介电层。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/PCB-Stack-up_1.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;PCB-Stack-up&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;四层板：包含四层导电铜箔层，每两层铜箔中间夹一层绝缘介电层。通常在靠近元器件多的内层里铺一层完整的GND。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/PCB-Stack-up_2.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;PCB-Stack-up&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;六层板及以上：增加了更多的导电铜箔层，每两层铜箔中间夹一层绝缘介电层，提供更好的电源分配和信号隔离。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3w--20h-规则&#34;&gt;3W &amp;amp; 20H 规则
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s/ih6QF9pwmiBS1N1kUzO1mA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;高速板中3W规则和20H规则说明&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;高速设计中-3w-规则指的是什么&#34;&gt;高速设计中 3W 规则指的是什么？
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;3W 规则是指：信号线的中心间距不少于 3 倍线宽时，则可保证 70%的电场不互相干扰，称为 3W 规则。使用原因是一般信号线间距足够大时，可以减少信号线之间的串扰。当满足 2W 间距时，可保证 50%的电场不互相干扰。如果要达到 98%的电场不互相干扰，则需使用 10W 间距。&lt;/li&gt;
+&lt;li&gt;注意 3W 指的是俩根信号线的中心距。例：嘉立创 EDA 软件规则设计中，例如：导线是 5mil，对应 3W 间距，线与线之间的中心距是 15mil,这里安全间 距也就是线与线之间最近的边缘间距是 10mil。图片所示均为中心间距。&lt;/li&gt;
+&lt;li&gt;在 PCB 设计中一般时钟线，差分线，视频信号线，音频信号线，复位信号等需满足 3W 规则；普通的信号线一般满足 2W 规则即可。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/3w-rule_1.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;3w-rule&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;为什么要做-3w-处理&#34;&gt;为什么要做 3W 处理？
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;可以减少串扰：满足3W原则能使信号间的串扰减少70%。串扰是信号线之间的电场和磁场相互作用而产生的干扰，它会影响信号的完整性。通过增大线间距，可以降低这种干扰从而提高信号质量。&lt;/li&gt;
+&lt;li&gt;提高信号完整性：减少串扰有助于保持信号的完整性，降低噪声对信号的影响。这对于高速信号传输尤为重要，因为高速信号对噪声和干扰更为敏感。&lt;/li&gt;
+&lt;li&gt;优化PCB布局：遵循3W规则有助于优化PCB布局，使得信号线之间的距离更加合理，从而提高PCB的可靠性和稳定性。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;高速板中常说的20h指的是什么&#34;&gt;高速板中常说的20H指的是什么？
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;20H规则：将电源层相对于地层内缩，使电场只在接地层的范围内传导。其中，一个H（电源和地之间的介质厚度）为单位，内缩20H可将70%的电场限制在接地层边沿内。若内缩100H则可将98%的电场限制在内。&lt;/li&gt;
+&lt;li&gt;内缩原因是电源层和地层之间的电场是变化的，在板子的边缘会向外辐射电磁干扰，将电源层内缩，可以让电场只在接地层的范围内传导，有效提高了EMC。&lt;/li&gt;
+&lt;li&gt;一般，在PCB设计时把电源层比地层内缩1mm，或者必须≥20mil，优先40mil，基本就可以满足20H的原则。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/3w-rule_2.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;3w-rule&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;h3 id=&#34;回流路径&#34;&gt;回流路径
 &lt;/h3&gt;&lt;p&gt;回流路径（return current path）设计是PCB设计中的核心问题之一，涉及信号完整性、电源完整性和EMI性能。&lt;/p&gt;
 &lt;p&gt;回流路径是电流从负载返回电源的路径。当信号从驱动器传输到接收器时，电流会通过信号线流向负载，然后通过地平面、电源平面或其他导体返回电源，形成完整的回路。回流路径并不是“地”的专属概念，它可以是地平面、电源平面，甚至是相邻的信号线（例如差分信号的回流路径）。&lt;/p&gt;
