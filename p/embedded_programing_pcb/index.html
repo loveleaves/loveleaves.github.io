@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录PCB从设计到开发的全流程">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-08T12:20:41&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-08T12:41:28&#43;08:00'/>
 <meta name="twitter:title" content="【Hardware】PCB设计与开发">
 <meta name="twitter:description" content="记录PCB从设计到开发的全流程">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -371,6 +371,12 @@
             <li><a href="#布线参考">布线参考</a></li>
           </ol>
         </li>
+        <li><a href="#usb-接口">USB 接口</a>
+          <ol>
+            <li><a href="#布局参考-3">布局参考</a></li>
+            <li><a href="#布线参考-1">布线参考</a></li>
+          </ol>
+        </li>
       </ol>
     </li>
     <li><a href="#电子设计常用电路">电子设计常用电路</a>
@@ -452,7 +458,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 17 分钟
+                    阅读时长: 18 分钟
                 </time>
             </div>
         
@@ -1091,6 +1097,58 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 <li>在晶振走线周围通过GND过孔进行包地，每隔50-100mil间距整齐放置屏蔽地过孔，用以隔离吸收晶振辐射的噪声；</li>
 <li>晶振区域同层需要净空处理，可以使用禁止铺铜区域进行隔离，晶振本体相邻层最好不要走线，保证地的完整性；</li>
 </ul>
+<p><img src="/imgs/pcb/crystal_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="crystal"
+	
+	
+></p>
+<h3 id="usb-接口">USB 接口
+</h3><ul>
+<li>实际项目参考：<a class="link" href="https://oshwhub.com/goodyuhuang/ji-yu-VL813de-USB3.0-HUBshe-ji"  target="_blank" rel="noopener"
+    >基于VL813的USB3.0-HUB设计</a></li>
+</ul>
+<h4 id="布局参考-3">布局参考
+</h4><ul>
+<li>USB接口应该靠近板边或按照结构定位摆放，方便插拔；</li>
+<li>USB输入接口和输出接口分开放置，便于分区和使用；</li>
+<li>端接匹配电阻、ESD、共模电感、阻容器件靠近USB接口摆放；</li>
+<li>USB接口远离RF天线、摄像头等高电磁辐射EMI源摆放；</li>
+<li>在布局时，尽量使差分线路最短，以缩短差分线距离；</li>
+</ul>
+<p><img src="/imgs/pcb/usb-interface_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="usb-interface"
+	
+	
+></p>
+<h4 id="布线参考-1">布线参考
+</h4><ul>
+<li>USB走线优先权高于其它器件和信号，优先考虑对高速USB差分（D+/D-、RX/TX）的布线；</li>
+<li>USB要走差分，阻抗控制为90Ω，并包地处理，包地线与差分线距离应大于20mil，每隔一段距离，打上一个回流地过孔，总长度最好不要超过1800mil，尽量缩短走线长度；</li>
+<li>USB的差分对需要做等长处理，长度一旦相差太多，将会影响时序偏差，引起共模干扰，降低信号质量，USB组内等长误差建议控制在±5mil以内；</li>
+<li>差分对尽量少换层打过孔，过孔会造成阻抗改变和信号反射问题，若无法避免使用过孔，需要在打孔换层处加一对回流地过孔，用于信号回流换层，过孔建议不超过2个；</li>
+<li>如果使用了外部终端电阻匹配阻抗时，请确保端接匹配电阻与主控制器信号输出引脚之间的距离小于200mil，以便更好地控制阻抗，避免信号反射；</li>
+<li>USB差分信号布线时，应远离板边或铺地边缘，至少保证90mil以上距离；远离电源网络、大电流信号、DDR、HDMI等高速信号，保证至少50mil的距离，以减小串扰；</li>
+</ul>
+<p><img src="/imgs/pcb/usb-interface_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="usb-interface"
+	
+	
+></p>
 <h2 id="电子设计常用电路">电子设计常用电路
 </h2><blockquote>
 <p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/anti-reverse-circuit.html"  target="_blank" rel="noopener"
@@ -1103,6 +1161,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 </h2><ul>
 <li><a class="link" href="https://wiki.lceda.cn/zh-hans/course-projects/electronic-fabrication/aluminum-alloy-docking-station.html"  target="_blank" rel="noopener"
     >嘉立创-USB2.0拓展坞</a></li>
+<li><a class="link" href="https://oshwhub.com/goodyuhuang/ji-yu-VL813de-USB3.0-HUBshe-ji"  target="_blank" rel="noopener"
+    >基于VL813的USB3.0-HUB设计</a></li>
 <li><a class="link" href="https://oshwhub.com/expert/gai-jin-xin-exlink-duo-gong-neng-diao-shi-qi-fen-li-die-ban"  target="_blank" rel="noopener"
     >Exlink最好用的嵌入式多功能调试器</a></li>
 </ul>
@@ -1146,7 +1206,7 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 
 
         <span>
-            最后更新于 Oct 08, 2025 12:20 &#43;0800
+            最后更新于 Oct 08, 2025 12:41 &#43;0800
         </span>
     </section></footer>
 
