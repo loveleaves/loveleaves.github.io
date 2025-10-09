@@ -80,6 +80,12 @@
     &gt;PCB设计常用知识点&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/0ohm-function.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;电子设计常用知识点&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;芯片封装类型&#34;&gt;芯片封装类型
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/1925070069324583974&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;芯片封装类型简介&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;选择芯片的封装影响到PCB的布局及布线，所以在元件选型时就应该考虑。&lt;/p&gt;
+&lt;p&gt;芯片封装是半导体产业中重要的一环，它不仅保护着脆弱的半导体芯片，还承担着散热、电气连接和信号传输等多重功能。从最早的通孔封装（如DIP）到表面贴装封装（如QFP），再到区域阵列封装（如BGA）和晶圆级封装（如WLCSP），芯片封装技术向着小型化、高性能的方向发展。&lt;/p&gt;
 &lt;h3 id=&#34;差分信号&#34;&gt;差分信号
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;单端信号&lt;/strong&gt;是相对于差分信号而言的，单端输入指信号有一个参考端和一个信号端构成，参考端一般为地端。当耦合噪声时，接收数据无法正常还原。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;差分信号&lt;/strong&gt;是一种信号传输技术，区别于传统的一根信号线一根地线的做法，差分传输在两根数据线上都传输信号，这两个信号的振幅相等，相位相差180°（即相位相反）。在这两根线上传输的信号就是差分信号，而承载差分信号的那一对走线就称为差分走线。&lt;/p&gt;
@@ -403,8 +409,112 @@
 	
 	
 &gt;&lt;/p&gt;
+&lt;h3 id=&#34;pcb-铺铜&#34;&gt;PCB 铺铜
+&lt;/h3&gt;&lt;p&gt;PCB铺铜是指在电路板上未布线的空白区域铺设一层铜箔（通常称为“铜皮”）的操作，目的是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为了减小地线阻抗，提高抗干扰能力；&lt;/li&gt;
+&lt;li&gt;降低压降，提高电源效率；&lt;/li&gt;
+&lt;li&gt;与地线相连，还可以减小环路面积；&lt;/li&gt;
+&lt;li&gt;提高散热性能及抗干扰能力；&lt;/li&gt;
+&lt;li&gt;增强板材的机械强度和稳定性等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;  数字电路中存在大量尖峰脉冲电流，因此降低地线阻抗显得更有必要，普遍认为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对于全由&lt;strong&gt;数字器件&lt;/strong&gt;组成的电路，应该大面积铺地；&lt;/li&gt;
+&lt;li&gt;但对于一些&lt;strong&gt;模拟电路&lt;/strong&gt;，铺铜所形成的地线环路，反而会引起电磁耦合干扰得不偿失。因此，不是所有电路都需要铺铜操作的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;铺铜的连接形式&#34;&gt;铺铜的连接形式
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;全填充铺铜：正常的实体铺铜填充样式，可以承载较大的电流，适用于需要大电流的电路‌。例如，在电源模块、地线连接等需要稳定电流和电磁屏蔽的场合，实体铺铜能够提供更好的性能表现‌。实体铺铜在过波峰焊时，由于热胀冷缩的拉力，可能会导致铜箔起泡或板子翘起‌。&lt;/li&gt;
+&lt;li&gt;网格铺铜：主要起到屏蔽作用，网格铺铜可以减少铜箔的使用量，从而降低制造成本‌，有助于提升散热性能，特别适用于需要良好散热的场合‌。由于铜箔呈网格状分布，其导电性能相对全填充会有所降低，适用于对导电性能要求不高的场合‌。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/copper_1.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;copper&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;铺铜的注意事项&#34;&gt;铺铜的注意事项
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;避免出现孤岛/游离/悬空铜，如果铺铜区域未连接到电源、信号或地，出现孤岛铜，会形成天线效应，引入干扰信号。&lt;/li&gt;
+&lt;li&gt;GND铺铜的尺寸应该足够覆盖整个电路板，并且尽可能均匀分布电流负载，使得PCB的散热分布均匀。&lt;/li&gt;
+&lt;li&gt;高多层板，为确保信号完整性，需要有完整的GND参考平面铜，多层铺铜可以提供更好的信号完整性。&lt;/li&gt;
+&lt;li&gt;在天线等高频信号区域，铺铜容易导致信号弱，容易受到干扰，铺铜的阻抗会影响到放大电路的性能，一般不会铺铜或者及放置禁止铺铜区域净空处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;gnd过孔&#34;&gt;GND过孔
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s/Tmr48c0XjTYKxFiMPsRmWg?cur_album_id=3752849276242690049&amp;amp;scene=189&amp;amp;from=industrynews&amp;amp;nwr_flag=1#wechat_redirect&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PCB设计时板边为什么要打地过孔？&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;在PCB设计中，板边打地过孔是一种常见做法，目的是为了抑制电磁干扰（EMI）、提供接地路径、屏蔽与抗干扰、增强PCB的机械强度、增强PCB板的散热能力。这种设计方法对电路的整体性能和元件的稳定性有显著影响，具体原因如下：&lt;/p&gt;
+&lt;h4 id=&#34;抑制电磁干扰emi&#34;&gt;抑制电磁干扰（EMI）
+&lt;/h4&gt;&lt;p&gt;  板边的地过孔形成屏蔽，抑制电磁辐射的散射，有效减少电磁干扰（EMI），保证PCB的电磁兼容性。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/gnd-via_1.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;gnd-via&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;提供接地回流路径&#34;&gt;提供接地回流路径
+&lt;/h4&gt;&lt;p&gt;  地过孔为电路中的接地信号提供了一个直接的路径，有助于降低接地阻抗，确保电路中的接地信号能够稳定、高效地传递到地层，这有助于改善电路的整体性能，特别是在高频和高速电路中，降低接地阻抗能够减少信号干扰和噪声，提高信号的完整性和稳定性。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/gnd-via_2.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;gnd-via&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;屏蔽与抗干扰&#34;&gt;屏蔽与抗干扰
+&lt;/h4&gt;&lt;p&gt;  地过孔在板边形成连续的接地网络，能够阻挡或减弱外部电磁场对电路内部信号的干扰。同时，它们还能将电路内部的干扰信号引导至地层，防止其干扰其他电路部分。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/gnd-via_3.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;gnd-via&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;增强-pcb-的机械强度&#34;&gt;增强 PCB 的机械强度
+&lt;/h4&gt;&lt;p&gt;  在 PCB 板边打地过孔还可以增强电路板各层之间的电气连接，使电路更加稳定可靠，避免在插拔、震动等情况下对电路造成机械损坏。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/gnd-via_4.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;gnd-via&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;增强-pcb-板的散热能力&#34;&gt;增强 PCB 板的散热能力
+&lt;/h4&gt;&lt;p&gt;  板边打地过孔的设计不仅能提升 PCB 的电磁兼容性和机械强度，还能提供额外的散热路径，有效缓解高功率和高频电路的过热问题，提升电路的热稳定性和使用寿命。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/gnd-via_5.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;gnd-via&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;h3 id=&#34;回流路径&#34;&gt;回流路径
-&lt;/h3&gt;&lt;p&gt;回流路径（return current path）设计是PCB设计中的核心问题之一，涉及信号完整性、电源完整性和EMI性能。&lt;/p&gt;
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1N24y1K7iv/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;回流路径&lt;/a&gt;
+回流路径（return current path）设计是PCB设计中的核心问题之一，涉及信号完整性、电源完整性和EMI性能。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;回流路径是电流从负载返回电源的路径。当信号从驱动器传输到接收器时，电流会通过信号线流向负载，然后通过地平面、电源平面或其他导体返回电源，形成完整的回路。回流路径并不是“地”的专属概念，它可以是地平面、电源平面，甚至是相邻的信号线（例如差分信号的回流路径）。&lt;/p&gt;
 &lt;h4 id=&#34;回流类型&#34;&gt;回流类型
 &lt;/h4&gt;&lt;ul&gt;
@@ -426,7 +536,156 @@
 &lt;li&gt;如果必须分割，确保信号线不跨越分割区域。&lt;/li&gt;
 &lt;li&gt;高速信号在分割区域附近放置桥接电容，一般采用100nF，不可使用0Ω电阻。在高频下，电容的阻抗非常低，能够有效传递高频信号。为高频回流电流提供低阻抗路径。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;pcb常见模块设计参考&#34;&gt;PCB常见模块设计参考
+&lt;h3 id=&#34;两层板设计规范&#34;&gt;两层板设计规范
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s/uyzbFrvh6ywOcO4kJBnsIg&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;两层板设计规范&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;对于两层板的设计，两层板的设计难点在于没有完整的GND参考平面和没完整的电源平面，对于电源和地的处理，在两层板当中尤为重要，其中高密度两层板的布线难度也相对较大，需要在有限的布线空间内完成所有信号的连接，同时还得保证信号的质量和完整性；那么如何去设计两层板，可以根据两层板设计规范去设计。&lt;/p&gt;
+&lt;h4 id=&#34;布局设计&#34;&gt;布局设计
+&lt;/h4&gt;&lt;p&gt;布局建议是进行单面布局，这样子可以在设计合理的情况下更好的节省成本而且没有层间信号干扰的问题，这有助于提高信号的稳定性和可靠性。如果不能保证，最起码主要的元器件要和主控芯片放在同一面，合理布局可以方便走线不拥挤，而且信号走线间距保持等距减少线间串扰。&lt;/p&gt;
+&lt;h4 id=&#34;布线设计&#34;&gt;布线设计
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;优先考虑关键信号的布线，确保它们有最短、最直接的路径。&lt;/li&gt;
+&lt;li&gt;顶层尽量去处理大部分的信号线，能直接连接的条件下，就进行网络顶层直连。&lt;/li&gt;
+&lt;li&gt;合理利用顶层和底层的空间进行布线，必要时可以通过打孔来实现层间的连接。&lt;/li&gt;
+&lt;li&gt;对于关键信号可进行包地线处理，以提高关键信号的抗干扰能力。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;电源设计&#34;&gt;电源设计
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;两层板的电源布线，建议是在顶层去进行布线，能在顶层处理完成最好，如不能满足，也可以通过打孔走线在地层，要注意避免大面积分割问题，尽量保持底层平面完整。&lt;/li&gt;
+&lt;li&gt;电源线应尽可能宽以满足电源载流，减少电源波动对电路的影响。&lt;/li&gt;
+&lt;li&gt;避免电源线与信号线交叉，电源线和敏感信号线要保持一定的安全间距，必要时候可以适当包地隔离处理，以减少干扰。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;地层设计&#34;&gt;地层设计
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;底层一般是用于处理地网络，底层进行地铜全铺，提供一个完整的地参考平面有助于确保信号能够顺畅地回流，减少电磁干扰。&lt;/li&gt;
+&lt;li&gt;注意地平面跨分割免问题，因为分割会破坏回流路径的连续性，导致信号回流时产生不必要的绕行，增加电磁辐射，如不能保证平面跨分割问题，可以在跨分割的区域，使用地孔来连接分割的地层，确保回流路径的连续性。&lt;/li&gt;
+&lt;li&gt;顶层空白区域也可以进行一个铺地铜进行处理，同时打孔将顶层和底层的地网络连接起来，为信号提供一个更直接的回流路径。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;两层板如何控制阻抗&#34;&gt;两层板如何控制阻抗
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s/SUPKD7fOGtarrF_K4oQ27Q&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;两层板如何控制阻抗&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;  在 PCB 设计当中，两层板控阻抗是一个具有难度的问题，因为和多层板去相比，两层板没有一个专门的参考平面层构成地返回路径，那么两层板应该如何去控制阻抗？以下是关键的控制方法和控制阻抗验证：&lt;/p&gt;
+&lt;h4 id=&#34;1共面阻抗法包地法&#34;&gt;1、共面阻抗法（包地法）
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;设计方式：由于两层板没有专门的参考平面，因此需要人为地构造一个电流返回路径，即共面阻抗。这通常通过“包地”的方式实现，即在信号线的周围加上地线，以形成共面结构。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/two-layer-board-impedance_1.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;two-layer-board-impedance&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;走线宽度：走线宽度对阻抗有直接影响。在两层板上，为了获得所需的阻抗值，可能需要调整走线的宽度。一般来说，走线越宽，阻抗越小；走线越窄，阻抗越大。但需要注意的是，走线宽度过窄可能会导致加工难度增加和可靠性降低。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/two-layer-board-impedance_2.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;two-layer-board-impedance&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;包地间距：包地间距是指信号线与地线之间的距离。这个距离对阻抗也有重要影响。包地间距越小，分布电容越小，阻抗越大。因此，在设计时需要仔细调整包地间距以获得所需的阻抗值。&lt;/li&gt;
+&lt;li&gt;保持连贯性：为了保证阻抗的均匀性，包地应该保持连贯，不应出现断裂或不规则的情况。这有助于减少信号的反射和失真。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2阻抗控制和验证&#34;&gt;2、阻抗控制和验证
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;获取材料参数：与 PCB 厂家合作，获取实际使用的电路板材料的详细参数。这些参数对于阻抗计算至关重要，因为它们直接影响阻抗值的计算结果。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/two-layer-board-impedance_3.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;two-layer-board-impedance&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;生产工艺咨询：了解厂家的生产工艺和限制，以便在设计时考虑到这些因素。例如，某些生产工艺可能会对阻抗值产生影响，需要在设计时进行补偿或调整。&lt;/li&gt;
+&lt;li&gt;阻抗测量与验证：在生产前，可以要求厂家进行阻抗测量，以确保设计的阻抗值与实际生产的电路板相符。这有助于及时发现并解决问题，提高电路板的可靠性和性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pcb设计中电流与线宽的关系&#34;&gt;PCB设计中电流与线宽的关系
+&lt;/h3&gt;&lt;h4 id=&#34;pcb设计中电流与线宽的关系-1&#34;&gt;PCB设计中电流与线宽的关系
+&lt;/h4&gt;&lt;p&gt;在 PCB 设计里，电流和线宽的关联十分紧密。通常情况下，线宽越宽，其能够承载的电流也就越大。不过，这个关系并非简单的线性关系，还会受到铜箔厚度、环境温度以及允许温升等诸多因素的综合作用。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;线宽增加&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;  增加线宽，电流承载能力会有一定程度的提升。但这种提升并非呈线性，而是遵循类似指数的规律。比如，线宽从 1mm 增加到 2mm，电流承载能力大概会提高 40%，而不是翻倍。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;铜箔厚度&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;   铜箔厚度一般用盎司（oz）来表示，常见的有1盎司（厚度约35um）、1.5盎司（厚度约50um）、2盎司（厚度约70um），在相同线宽条件下，铜箔越厚，载流能力越强，但加厚铜箔会导致成本上升较大，当电流较大且线宽加宽不了的情况时，一般常见的处理是在PCB顶底层共同处理电源或在表面开窗镀锡操作。对于多层板电源处理，需要注意默认内层铜厚仅为0.5盎司（约为17.5um），若需要在内层进行电源处理，需要保证较大面积的接触或增加铜厚。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;温升限制&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;  导体温升（高出环境温度的温度增量）是影响PCB导体载流能力的决定性因素，PCB温升与导线电流、走线宽度、走线厚度、PCB板材、相邻走线、层间距离、有无涂层、环境条件等诸多因素的关系。相同条件下，电流越大，温升越高，载流能力下降（温度升高导致导线内阻增加）；加宽导线/铜箔变厚/改变板材可以带来更好的散热与载流能力。&lt;/p&gt;
+&lt;p&gt;可前往嘉立创EDA微信公众号/实用工具/电子硬件助手/PCB走线宽度计算器进行相关计算，通常实际值会将其增加1.3被进行应用。&lt;/p&gt;
+&lt;h4 id=&#34;过孔与电流的关系&#34;&gt;过孔与电流的关系
+&lt;/h4&gt;&lt;p&gt;  在PCB设计中，连接顶底层的方式通常是使用过孔来进行，过孔内壁镀铜支持电流传输；过孔内径越大，单个过孔传输电流越大，常用过孔20/10mil（0.8A电流）、24/12mil（1A）、32/16mil（1.3A）；注意，过孔越大，占用空间越大，对平面分割越严重。&lt;/p&gt;
+&lt;p&gt;  同时，过孔传输电流,与导线一致，不是倍数递增，且电流传输并不是均匀分配到每一个过孔，比如2个24/12mil过孔理论上传输2A没问题，实际可能一个过孔走了1.4A，1个过孔只走了0.6A，这导致部分过孔存在载流风险，所以通常会增加过孔数量且均匀分布。&lt;/p&gt;
+&lt;h3 id=&#34;pcb设计中的安全间距&#34;&gt;PCB设计中的安全间距
+&lt;/h3&gt;&lt;p&gt;‌  在PCB设计中，考虑到可制造性、电气安全性、可使用性等方面，会有各类间距要求需要遵守；包括导线到导线、导线到焊盘、过孔到导线、过孔到焊盘、电源爬电距离、铜皮到板框距离等等；&lt;/p&gt;
+&lt;p&gt;‌  下方是嘉立创EDA设计规则中默认的安全间距要求；在日常器件不密、板框较大的场合，通常都不需要修改规则；但当板框较小、器件较多且密集的适合，默认的间距规则就会成为设计阻碍，导致拉不出来线、产生drc报错。此时，可以尝试减少设计规则中安全间距、导线默认线宽等规则。注意，此时的修改一定是要在板厂的生产要求内，且留有一定余量，否则最终设计出来不能生产或次品率过高。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;常规PCB通常是2层、4层且铜厚1oz居多，此时最小线宽线距为4mil或3.5mil；注意，这里是“最小”，在实际项目设计过程中，不应挑战工艺极限，通常≤6mil；已经足够满足绝大多少项目设计需求了；&lt;/li&gt;
+&lt;li&gt;常规PCB设计中，常用过孔孔径有，8/16mil，10/20mil，12/24mil，11.8/19.7mil，13.8/27.6mil，23.6/39.4mil；在实际项目实际过程中，不建议随意改变过孔尺寸，因为工厂钻头都是有固定大小的，当设计尺寸不符合实际钻头尺寸时，切割就会有误差，可能影响不良率；同时免费打样过孔应大于11.8/17.7mil。&lt;/li&gt;
+&lt;li&gt;20H规则：将电源层相对于地层内缩，使电场只只在接地层的范围内传导。其中，一个 H（电源和地之间的介质厚度）为单位，内缩 20H 可将 70%的电场 限制在接地层边沿内。若内缩 100H 则可将 98%的电场限制在内。一般，在 PCB 设计时把电源层比地层内缩 1mm，或者必须≥20mil，优先 40mil，基本就可以满足 20H 的原则。当然，这是建立在内缩后GND平面仍然完整的前提下，若内缩后导致GND平面不完成或有割裂，则需减少内缩距离。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pcb常见丝印标识&#34;&gt;PCB常见丝印标识
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/pcb-design/knowledge-point/pcb-silkscreen.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PCB常见丝印标识&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;1-元件位号标识&#34;&gt;1 元件位号标识
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;ANT：天线（Antenna）；&lt;/li&gt;
+&lt;li&gt;B ：电池（Battery）；&lt;/li&gt;
+&lt;li&gt;BT：蓝牙模块（Bluetooth）；&lt;/li&gt;
+&lt;li&gt;BZ：蜂鸣器（Buzzer）；&lt;/li&gt;
+&lt;li&gt;C : 电容（Capacitor）；&lt;/li&gt;
+&lt;li&gt;D : 二极管（Diode）；&lt;/li&gt;
+&lt;li&gt;DS：显示器件（Display）;&lt;/li&gt;
+&lt;li&gt;F : 保险丝（Fuse）；&lt;/li&gt;
+&lt;li&gt;FB：磁珠滤波器（Ferrite Bead）；&lt;/li&gt;
+&lt;li&gt;FS：快速熔断保险丝（Fast Blow Fuse）;&lt;/li&gt;
+&lt;li&gt;H : 排针排母（Header）；&lt;/li&gt;
+&lt;li&gt;IR：红外二极管（Infared Diode）；&lt;/li&gt;
+&lt;li&gt;JP：跳线（Jumper）；&lt;/li&gt;
+&lt;li&gt;K : 继电器（Relay）；&lt;/li&gt;
+&lt;li&gt;KEY：按键（Key）；&lt;/li&gt;
+&lt;li&gt;L ：电感（Inductance）；&lt;/li&gt;
+&lt;li&gt;M ：电机（Motor）；&lt;/li&gt;
+&lt;li&gt;MIC：麦克风（Microphone）；&lt;/li&gt;
+&lt;li&gt;NTC: 负温度系数热敏电阻（Negative Temperature Coefficient Thermistor）;&lt;/li&gt;
+&lt;li&gt;LDR：光敏电阻（Light Dependent Resistor）；&lt;/li&gt;
+&lt;li&gt;LED：发光二极管（Light Emitting Diode）；&lt;/li&gt;
+&lt;li&gt;Q ：晶体管/三极管/场效应管（Transistor）；&lt;/li&gt;
+&lt;li&gt;R : 电阻（Resistor）；&lt;/li&gt;
+&lt;li&gt;RP：电位器/可调电阻；&lt;/li&gt;
+&lt;li&gt;RN：排阻（Resistor Network）；&lt;/li&gt;
+&lt;li&gt;RT：热敏电阻（Thermistor）；&lt;/li&gt;
+&lt;li&gt;S ：开关（Switch）；&lt;/li&gt;
+&lt;li&gt;T ：变压器（Transformer）；&lt;/li&gt;
+&lt;li&gt;TP：测试点（Test Point）；&lt;/li&gt;
+&lt;li&gt;U ：集成电路（IC）；&lt;/li&gt;
+&lt;li&gt;USB：USB接口；&lt;/li&gt;
+&lt;li&gt;X : 晶振（Crystal Oscillator）；&lt;/li&gt;
+&lt;li&gt;ZD：稳压二极管/齐纳二极管（Zener Diode）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-常见认证标识&#34;&gt;2 常见认证标识
+&lt;/h4&gt;&lt;h4 id=&#34;3-常见符号标识&#34;&gt;3 常见符号标识
+&lt;/h4&gt;&lt;h2 id=&#34;pcb常见模块设计参考&#34;&gt;PCB常见模块设计参考
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/pcb-design/moduler-design/ldo-moduler.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PCB常见模块设计参考&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
