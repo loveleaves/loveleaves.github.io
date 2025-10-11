@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录PCB从设计到开发的全流程">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-10T23:10:04&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-11T21:00:44&#43;08:00'/>
 <meta name="twitter:title" content="【Hardware】PCB设计与开发">
 <meta name="twitter:description" content="记录PCB从设计到开发的全流程">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -438,6 +438,8 @@
             <li><a href="#5-保护与熔断">5 保护与熔断</a></li>
           </ol>
         </li>
+        <li><a href="#为什么type-c接口要加51k电阻下拉">为什么Type-c接口要加5.1K电阻下拉</a></li>
+        <li><a href="#adc分压电阻的选择">ADC分压电阻的选择</a></li>
       </ol>
     </li>
     <li><a href="#电子设计常用电路">电子设计常用电路</a>
@@ -519,7 +521,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 31 分钟
+                    阅读时长: 33 分钟
                 </time>
             </div>
         
@@ -1545,6 +1547,97 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 	
 	
 ></p>
+<h3 id="为什么type-c接口要加51k电阻下拉">为什么Type-c接口要加5.1K电阻下拉
+</h3><blockquote>
+<p><a class="link" href="https://www.usb.org/documents?search=USB&#43;Type-C&#43;Specification&#43;Release&amp;items_per_page=50"  target="_blank" rel="noopener"
+    >usb official docs</a></p></blockquote>
+<p> USB是主从模式的结构，设备与设备之间、主机与主机之间是不能互联的，所有的数据传输都是由主机发起，而设备只能被动的负责应答，在USB-Typec接口中，是没有ID引脚来标识当前是主机或设备的，此时CC引脚就可以充当一个检测作用了。</p>
+<p>  在主机和设备连接上后，主机的cc引脚检测到设备CC引脚的下拉电阻，表示接入到设备，此时主机可以打开Vbus的FET开关，输出Vbus电源给设备。</p>
+<p><img src="/imgs/pcb/typec-5.1k_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<p><img src="/imgs/pcb/typec-5.1k_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<p> 事实上，CC引脚的作用远不止于此，在usb协议规范中指出，cc引脚用于连接检测、接口配置与Vconn功能；</p>
+<p><img src="/imgs/pcb/typec-5.1k_3.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<p>  CC引脚的简要概述中指出，cc引脚主要用于一下目的：</p>
+<ul>
+<li>检测USB端口的连接，例如源端到接收端的连接；</li>
+<li>解决电缆方向和扭转连接问题，以建立USB数据总线路由</li>
+<li>在两个连接端口之间建立数据角色</li>
+<li>发现并配置Vbus：USB Type-C电流模式或USB Power Deliver</li>
+<li>配置Vconn</li>
+<li>发现并配置可选的备用和辅助模式；</li>
+</ul>
+<p>  由于USB-Typec接口指出正反插，对于USB2.0标准，主机和设备接口的两组USB_DP/DM信需要各种短接以实现这一功能；在USB3.2超高速或USB4双通道传输方案中，主机和设备需要配置对应的传输通道，需要自行解决通道顺序问题，此时将单个CC引脚和1组TX/RX进行匹配，通过检测cc引脚的方向来实现正反插功能，从而判断使用哪组tx/rx信号进行传输，如果是双通道，也同样可以根据cc引脚判断通道序号，为0/1通道。</p>
+<p><img src="/imgs/pcb/typec-5.1k_4.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<p><img src="/imgs/pcb/typec-5.1k_5.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<h3 id="adc分压电阻的选择">ADC分压电阻的选择
+</h3><p>在实际使用过程中，adc分压检测常用于检测外部输入电压的变化，用于将一个外部电压分压到0~3.3V被adc采集到，一般用于低功耗设备或对电压敏感设备中，此时会有精度以及耗散电流的要求。虽然电阻分压简单易懂，但事实上，外部的输入电阻的选择会直接影响采样的精度和耗散电流的大小，它是搭配内部的adc电路一起工作的，这就要求我们需要对其adc检测原理进行一定的了解。</p>
+<p><img src="/imgs/pcb/adc-divider-res_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="adc-divider-res"
+	
+	
+></p>
+<p>  ADC 转换包括采样、保持、量化、编码四个步骤。采样阶段需要在规定的采样时间内将外部信号的电压完整无误的采样到 ADC 的采样电容上，即在采样开关 SW 关闭的过程中，外部输入信号通过外部的输入电阻 RAIN 和以及 ADC 采样电阻 Radc 对采样电容 Cadc 充电；每次采样过程可以简化为外部信号通过输入阻抗以及采样电阻对采样电容的充电。</p>
+<p><img src="/imgs/pcb/adc-divider-res_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="adc-divider-res"
+	
+	
+></p>
+<p>从上方的原理分析中可知，adc采集电路本质上是一个rc延迟电路，我们需要在使信号在规定的时间内被达到一个平稳的值。其中内部adc电阻以及内部adc电容是固定不变的，在数据手册中都能找到，那我们能改变的就只有外部的电阻值，也就是输入阻抗了。</p>
 <h2 id="电子设计常用电路">电子设计常用电路
 </h2><blockquote>
 <p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/anti-reverse-circuit.html"  target="_blank" rel="noopener"
@@ -1602,7 +1695,7 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 
 
         <span>
-            最后更新于 Oct 10, 2025 23:10 &#43;0800
+            最后更新于 Oct 11, 2025 21:00 &#43;0800
         </span>
     </section></footer>
 

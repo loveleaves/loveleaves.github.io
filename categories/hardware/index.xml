@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Fri, 10 Oct 2025 23:10:04 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hardware/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 11 Oct 2025 21:00:44 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hardware/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【Hardware】PCB设计与开发</title>
         <link>https://loveleaves.github.io/p/embedded_programing_pcb/</link>
         <pubDate>Sun, 21 Sep 2025 00:00:00 +0000</pubDate>
@@ -1024,6 +1024,97 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 	
 	
 &gt;&lt;/p&gt;
+&lt;h3 id=&#34;为什么type-c接口要加51k电阻下拉&#34;&gt;为什么Type-c接口要加5.1K电阻下拉
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.usb.org/documents?search=USB&amp;#43;Type-C&amp;#43;Specification&amp;#43;Release&amp;amp;items_per_page=50&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;usb official docs&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt; USB是主从模式的结构，设备与设备之间、主机与主机之间是不能互联的，所有的数据传输都是由主机发起，而设备只能被动的负责应答，在USB-Typec接口中，是没有ID引脚来标识当前是主机或设备的，此时CC引脚就可以充当一个检测作用了。&lt;/p&gt;
+&lt;p&gt;  在主机和设备连接上后，主机的cc引脚检测到设备CC引脚的下拉电阻，表示接入到设备，此时主机可以打开Vbus的FET开关，输出Vbus电源给设备。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/typec-5.1k_1.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;typec-5.1k&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/typec-5.1k_2.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;typec-5.1k&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt; 事实上，CC引脚的作用远不止于此，在usb协议规范中指出，cc引脚用于连接检测、接口配置与Vconn功能；&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/typec-5.1k_3.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;typec-5.1k&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;  CC引脚的简要概述中指出，cc引脚主要用于一下目的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检测USB端口的连接，例如源端到接收端的连接；&lt;/li&gt;
+&lt;li&gt;解决电缆方向和扭转连接问题，以建立USB数据总线路由&lt;/li&gt;
+&lt;li&gt;在两个连接端口之间建立数据角色&lt;/li&gt;
+&lt;li&gt;发现并配置Vbus：USB Type-C电流模式或USB Power Deliver&lt;/li&gt;
+&lt;li&gt;配置Vconn&lt;/li&gt;
+&lt;li&gt;发现并配置可选的备用和辅助模式；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;  由于USB-Typec接口指出正反插，对于USB2.0标准，主机和设备接口的两组USB_DP/DM信需要各种短接以实现这一功能；在USB3.2超高速或USB4双通道传输方案中，主机和设备需要配置对应的传输通道，需要自行解决通道顺序问题，此时将单个CC引脚和1组TX/RX进行匹配，通过检测cc引脚的方向来实现正反插功能，从而判断使用哪组tx/rx信号进行传输，如果是双通道，也同样可以根据cc引脚判断通道序号，为0/1通道。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/typec-5.1k_4.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;typec-5.1k&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/typec-5.1k_5.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;typec-5.1k&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;adc分压电阻的选择&#34;&gt;ADC分压电阻的选择
+&lt;/h3&gt;&lt;p&gt;在实际使用过程中，adc分压检测常用于检测外部输入电压的变化，用于将一个外部电压分压到0~3.3V被adc采集到，一般用于低功耗设备或对电压敏感设备中，此时会有精度以及耗散电流的要求。虽然电阻分压简单易懂，但事实上，外部的输入电阻的选择会直接影响采样的精度和耗散电流的大小，它是搭配内部的adc电路一起工作的，这就要求我们需要对其adc检测原理进行一定的了解。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/adc-divider-res_1.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;adc-divider-res&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;  ADC 转换包括采样、保持、量化、编码四个步骤。采样阶段需要在规定的采样时间内将外部信号的电压完整无误的采样到 ADC 的采样电容上，即在采样开关 SW 关闭的过程中，外部输入信号通过外部的输入电阻 RAIN 和以及 ADC 采样电阻 Radc 对采样电容 Cadc 充电；每次采样过程可以简化为外部信号通过输入阻抗以及采样电阻对采样电容的充电。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/adc-divider-res_2.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;adc-divider-res&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;从上方的原理分析中可知，adc采集电路本质上是一个rc延迟电路，我们需要在使信号在规定的时间内被达到一个平稳的值。其中内部adc电阻以及内部adc电容是固定不变的，在数据手册中都能找到，那我们能改变的就只有外部的电阻值，也就是输入阻抗了。&lt;/p&gt;
 &lt;h2 id=&#34;电子设计常用电路&#34;&gt;电子设计常用电路
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/anti-reverse-circuit.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
