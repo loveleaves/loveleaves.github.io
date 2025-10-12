@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录PCB从设计到开发的全流程">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-12T12:09:45&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-12T19:28:17&#43;08:00'/>
 <meta name="twitter:title" content="【Hardware】PCB设计与开发">
 <meta name="twitter:description" content="记录PCB从设计到开发的全流程">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -404,11 +404,6 @@
             <li><a href="#走线参考-1">走线参考</a></li>
           </ol>
         </li>
-        <li><a href="#电源模块">电源模块</a>
-          <ol>
-            <li><a href="#电容滤波">电容滤波</a></li>
-          </ol>
-        </li>
         <li><a href="#usb接口">USB接口</a></li>
         <li><a href="#晶振">晶振</a>
           <ol>
@@ -439,6 +434,7 @@
           </ol>
         </li>
         <li><a href="#为什么type-c接口要加51k电阻下拉">为什么Type-c接口要加5.1K电阻下拉</a></li>
+        <li><a href="#为什么ic电源引脚旁边的电容的作用选择和放置">为什么IC电源引脚旁边的电容的作用、选择和放置</a></li>
         <li><a href="#adc分压电阻的选择">ADC分压电阻的选择</a></li>
       </ol>
     </li>
@@ -479,7 +475,12 @@
         </li>
       </ol>
     </li>
-    <li><a href="#开源项目">开源项目</a></li>
+    <li><a href="#开源项目">开源项目</a>
+      <ol>
+        <li><a href="#入门2层板">入门（2层板）</a></li>
+        <li><a href="#进阶4层板">进阶（4层板）</a></li>
+      </ol>
+    </li>
     <li><a href="#references">References</a></li>
   </ol>
 </nav>
@@ -1466,13 +1467,6 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 	
 	
 ></p>
-<h3 id="电源模块">电源模块
-</h3><h4 id="电容滤波">电容滤波
-</h4><blockquote>
-<p><a class="link" href="https://www.bilibili.com/opus/876829663819726903"  target="_blank" rel="noopener"
-    >芯片IC每个电源引脚旁边的电容的作用、选择和放置？</a></p></blockquote>
-<p>在电源输入和IC引脚处，一般会加两个比如10uF和0.1uF的电容，进行滤波，大电容靠近电源，小电容靠近元件。</p>
-<p>电容尽量放到靠近IC引脚处，并且要经过电容再到IC 引脚，而且电源分支尽量在进电容前进行，因为如果摆放很远的话，电容滤除噪声后的电源会在这个段路径上又串扰进新的噪声，那么这个电容的作用就没有太大的意义。</p>
 <h3 id="usb接口">USB接口
 </h3><blockquote>
 <p><a class="link" href="https://www.eet-china.com/mp/a401258.html"  target="_blank" rel="noopener"
@@ -1646,6 +1640,22 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 	
 	
 ></p>
+<h3 id="为什么ic电源引脚旁边的电容的作用选择和放置">为什么IC电源引脚旁边的电容的作用、选择和放置
+</h3><blockquote>
+<p><a class="link" href="https://www.bilibili.com/opus/876829663819726903"  target="_blank" rel="noopener"
+    >芯片IC每个电源引脚旁边的电容的作用、选择和放置？</a></p></blockquote>
+<p>在电源输入和IC引脚处，一般会加两个比如10uF和0.1uF的电容，进行滤波，大电容靠近电源，小电容靠近元件。一般不会直接放置一个电容，因为对于实际电容来说，它有等效串联电阻（ESR）和等效串联电感（ESL），从频率响应曲线来看，呈现V子形。一般电容越小，能过滤的频率越大，反之越小。</p>
+<p><img src="/imgs/pcb/ic_capacitor_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="ic_capacitor"
+	
+	
+></p>
+<p>电容尽量放到靠近IC引脚处，并且要经过电容再到IC 引脚，而且电源分支尽量在进电容前进行，因为如果摆放很远的话，电容滤除噪声后的电源会在这个段路径上又串扰进新的噪声，那么这个电容的作用就没有太大的意义。</p>
 <h3 id="adc分压电阻的选择">ADC分压电阻的选择
 </h3><p>在实际使用过程中，adc分压检测常用于检测外部输入电压的变化，用于将一个外部电压分压到0~3.3V被adc采集到，一般用于低功耗设备或对电压敏感设备中，此时会有精度以及耗散电流的要求。虽然电阻分压简单易懂，但事实上，外部的输入电阻的选择会直接影响采样的精度和耗散电流的大小，它是搭配内部的adc电路一起工作的，这就要求我们需要对其adc检测原理进行一定的了解。</p>
 <p><img src="/imgs/pcb/adc-divider-res_1.jpg"
@@ -1791,7 +1801,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 <h4 id="二极管防反接">二极管防反接
 </h4><p>使用一个二极管串联在电路中，当电源正常接入时，二极管导通,当电源反接时，二极管反向截止，整个系统不会有电流经过，但是此时二极管需要承担整个电路的电流，且自身会有压降，输出电压与实际输入电压会有一个二极管压差，建议综合电路负载电流情况选择不同型号的肖特基二极管。</p>
 <h2 id="开源项目">开源项目
-</h2><ul>
+</h2><h3 id="入门2层板">入门（2层板）
+</h3><ul>
 <li><a class="link" href="https://wiki.lceda.cn/zh-hans/course-projects/electronic-fabrication/aluminum-alloy-docking-station.html"  target="_blank" rel="noopener"
     >嘉立创-USB2.0拓展坞</a></li>
 <li><a class="link" href="https://oshwhub.com/goodyuhuang/ji-yu-VL813de-USB3.0-HUBshe-ji"  target="_blank" rel="noopener"
@@ -1800,6 +1811,14 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
     >Exlink最好用的嵌入式多功能调试器</a></li>
 <li><a class="link" href="https://wiki.lceda.cn/zh-hans/course-projects/smart-internet/eda-robot/eda-robot-enclosure.html"  target="_blank" rel="noopener"
     >EDA-Robot机器狗</a></li>
+<li><a class="link" href="https://www.bilibili.com/video/BV1CoGuzEEeN/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&amp;vd_source=239d861d96125b8edb41d49a38169fda"  target="_blank" rel="noopener"
+    >STM32手表教程</a></li>
+</ul>
+<h3 id="进阶4层板">进阶（4层板）
+</h3><ul>
+<li><a class="link" href="https://oshwhub.com/li-chuang-kai-fa-ban/liang-shan"  target="_blank" rel="noopener"
+    >立创·梁山派开发板</a>、<a class="link" href="https://www.bilibili.com/video/BV1sbTTzwEmj/"  target="_blank" rel="noopener"
+    >立创梁山派4层PCB实战教程</a></li>
 </ul>
 <h2 id="references">References
 </h2><ul>
@@ -1809,8 +1828,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
     >【教程】大师篇-零基础入门PCB设计</a></li>
 <li><a class="link" href="https://oshwhub.com/expert/works"  target="_blank" rel="noopener"
     >Expert电子实验室</a></li>
-<li><a class="link" href="https://www.bilibili.com/video/BV1CoGuzEEeN/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&amp;vd_source=239d861d96125b8edb41d49a38169fda"  target="_blank" rel="noopener"
-    >STM32手表教程</a></li>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/gain-knowledge.html"  target="_blank" rel="noopener"
+    >eda教程</a></li>
 </ul>
 
 </section>
@@ -1841,7 +1860,7 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 
 
         <span>
-            最后更新于 Oct 12, 2025 12:09 &#43;0800
+            最后更新于 Oct 12, 2025 19:28 &#43;0800
         </span>
     </section></footer>
 
