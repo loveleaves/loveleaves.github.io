@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sat, 11 Oct 2025 21:00:44 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hardware/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 12 Oct 2025 12:09:45 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hardware/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【Hardware】PCB设计与开发</title>
         <link>https://loveleaves.github.io/p/embedded_programing_pcb/</link>
         <pubDate>Sun, 21 Sep 2025 00:00:00 +0000</pubDate>
@@ -16,6 +16,10 @@
         <description>&lt;h2 id=&#34;基础知识&#34;&gt;基础知识
 &lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://pan.quark.cn/s/05650fad6466&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;零基础入门PCB设计PPT&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/pcb-design/schematic-guidance.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;嘉立创EDA设计教程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;pcb设计流程&#34;&gt;PCB设计流程
 &lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/pcb_design_steps.png&#34;
 	
@@ -1115,6 +1119,118 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;从上方的原理分析中可知，adc采集电路本质上是一个rc延迟电路，我们需要在使信号在规定的时间内被达到一个平稳的值。其中内部adc电阻以及内部adc电容是固定不变的，在数据手册中都能找到，那我们能改变的就只有外部的电阻值，也就是输入阻抗了。&lt;/p&gt;
+&lt;h2 id=&#34;元器件选型知识点&#34;&gt;元器件选型知识点
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.nodpcba.com/news/3192-cn.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PCBA电子工程师必须要知道的元器件选型完全指南&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;刚入门时应优先考虑：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;封装：封装与pcb板相关，封装不对会导致无法焊接使用&lt;/li&gt;
+&lt;li&gt;电气属性：比如电容等支持最大电压，如果设计的电路超过选型的电容，会导致击穿风险。&lt;/li&gt;
+&lt;li&gt;性价比和可重用：满足目前pcb的所需功能，并考虑后续可能的扩展复用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;电阻&#34;&gt;电阻
+&lt;/h3&gt;&lt;h4 id=&#34;电阻类型&#34;&gt;电阻类型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;固定电阻器：通过内部材料的特性来设定阻值，适用于稳定电流的场合。&lt;/li&gt;
+&lt;li&gt;可变电阻器（如电位器）：可调节电阻值，用于调节电路中的电流和电压。&lt;/li&gt;
+&lt;li&gt;热敏电阻（NTC、PTC）：其阻值随温度变化，广泛用于温度补偿与电流保护。&lt;/li&gt;
+&lt;li&gt;光敏电阻：其阻值受光照强度影响，主要用于光传感器电路。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;电阻器的选型考虑因素&#34;&gt;电阻器的选型考虑因素
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;阻值：根据电路的工作要求选择合适的阻值。&lt;/li&gt;
+&lt;li&gt;功率：电阻器需要根据电路中流过的电流和电压承受相应的功率。过高的功率负载可能会导致电阻器过热，甚至损坏。功率单位是瓦特（W）。&lt;/li&gt;
+&lt;li&gt;精度：对于一些高精度电路（如测量电路），需要选择精度高的电阻器。电阻的精度通常以“±”表示，例如±1%、±5%等。&lt;/li&gt;
+&lt;li&gt;温度系数：电阻的阻值可能随温度的变化而变化，温度系数越小，电阻的稳定性越好，适合对温度变化敏感的电路。&lt;/li&gt;
+&lt;li&gt;耐用性与环境适应性：不同类型的电阻器适用于不同的环境，例如高温、高湿或腐蚀性环境。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;电容&#34;&gt;电容
+&lt;/h3&gt;&lt;h4 id=&#34;电容类型&#34;&gt;电容类型
+&lt;/h4&gt;&lt;p&gt;电容器是用来储存电能并在需要时释放的电子元件。电容器的基本功能包括滤波、平滑电流、信号耦合等。根据其构造和材料的不同，电容器的类型也有所差异。&lt;/p&gt;
+&lt;p&gt;常见的电容器种类有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;陶瓷电容器：广泛用于高频电路，具有稳定的性能。&lt;/li&gt;
+&lt;li&gt;电解电容器：通常用于电源滤波电路，具有较大电容值，但需要注意极性。&lt;/li&gt;
+&lt;li&gt;薄膜电容器：适用于精密电路，具有较高的稳定性和低损耗。&lt;/li&gt;
+&lt;li&gt;铝电解电容器：主要应用于直流电源的滤波、去耦等方面，具有较大电容值。&lt;/li&gt;
+&lt;li&gt;钽电容器：与铝电解电容器类似，但具有更小的体积和更高的可靠性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;电容器的选型考虑因素&#34;&gt;电容器的选型考虑因素
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;电容值：电容器的容量通常以法拉（F）为单位，常见的单位有微法（µF）、皮法（pF）等。电容值决定了电容器储存电能的能力，需要根据电路的需求来选择合适的电容值。&lt;/li&gt;
+&lt;li&gt;耐压值：电容器的耐压值需要高于电路中所施加的电压，避免电容器损坏。一般来说，选择一个比电路最大工作电压高20%-30%的耐压值是比较安全的。&lt;/li&gt;
+&lt;li&gt;ESR（等效串联电阻）：ESR是电容器的一个重要参数，影响电容器的效率和性能。低ESR值适用于高频电路。&lt;/li&gt;
+&lt;li&gt;温度范围与稳定性：对于高温或特殊环境下使用的电容器，需要选择具有较高温度稳定性的产品。&lt;/li&gt;
+&lt;li&gt;极性：部分电容器（如电解电容器）具有极性，在电路设计时需要特别注意极性连接。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;电感&#34;&gt;电感
+&lt;/h3&gt;&lt;h4 id=&#34;电感类型&#34;&gt;电感类型
+&lt;/h4&gt;&lt;p&gt;电感器主要用于存储电能和限制电流的变化。电感器的基本功能包括滤波、耦合、储能和信号传输等。其工作原理是基于电流变化产生的磁场。&lt;/p&gt;
+&lt;p&gt;常见的电感器类型有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;固定电感器：用于稳定电流和滤波的电路中。&lt;/li&gt;
+&lt;li&gt;可调电感器：能够调节电感值，适用于频率调节电路。&lt;/li&gt;
+&lt;li&gt;铁氧体磁芯电感器：用于高频滤波和电源管理。&lt;/li&gt;
+&lt;li&gt;线圈电感器：多用于信号处理和电磁兼容性控制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;电感器的选型考虑因素&#34;&gt;电感器的选型考虑因素
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;电感值：电感值的单位是亨利（H），常见的单位有毫亨（mH）和微亨（µH）。选择时需要考虑电路的工作频率以及电流大小。&lt;/li&gt;
+&lt;li&gt;工作频率：不同类型的电感器适用于不同频率范围的电路。高频电路通常需要选择小型化、低损耗的电感器。&lt;/li&gt;
+&lt;li&gt;电流承载能力：电感器的电流承载能力需要高于电路中流过的电流，否则可能会导致过热甚至损坏。&lt;/li&gt;
+&lt;li&gt;饱和电流：饱和电流是指电感器在工作时，电流超过一定值后其电感性能急剧下降的现象。选择时需要考虑电感器的饱和电流值，以确保其在工作过程中稳定性。&lt;/li&gt;
+&lt;li&gt;DC电阻（DCR）：电感器的DC电阻决定了其直流电流损耗，选择时需要确保DCR尽可能低，以提高电路的效率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;晶振-1&#34;&gt;晶振
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.troq.com/zxbk/info_itemid_807.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;有源晶振和无源晶振该怎么选择&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;晶振中的有源和无源到底有什么不同&#34;&gt;晶振中的有源和无源到底有什么不同?
+&lt;/h4&gt;&lt;p&gt;  晶振是一种电子元件，它在电子设备中提供精确和稳定的时钟信号。晶振根据其工作原理的不同，可以分为有源晶振和无源晶振。&lt;/p&gt;
+&lt;p&gt;**有源晶振( Oscillator)**是一种带有放大器的晶振，它可以提供更高的输出功率和更好的信号质量。有源晶振通常由振荡器、放大器和输出级组成。振荡器提供基本的振荡信号，放大器放大振荡信号的幅度，输出级将放大后的信号输出。有源晶振通常用在需要高信号质量和长距离传输的应用中，例如无线电通信、广播电视等。&lt;/p&gt;
+&lt;p&gt;**无源晶振(Crystal)**是一种没有放大器的晶振，它的输出功率较低，但也具有精确和稳定的时钟信号。无源晶振通常由振荡器和输出级组成，没有放大器。无源晶振通常用在需要低功率和小体积的应用中，例如计算机、手机等。&lt;/p&gt;
+&lt;p&gt;有源晶振和无源晶振在使用时需要注意以下几点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;有源晶振通常需要使用外部电源，而无源晶振则可以直接使用被控设备的电源。&lt;/li&gt;
+&lt;li&gt;有源晶振的输出功率较高，可以传输更远的距离，但也需要更多的功耗。无源晶振的输出功率较低，但功耗也更小。&lt;/li&gt;
+&lt;li&gt;有源晶振的信号质量更好，但也更复杂，需要更多的电路来实现。无源晶振的信号质量较好，但也更简单，可以更容易地集成到电路中。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;  总之，有源晶振和无源晶振都是提供精确和稳定的时钟信号的重要元件。它们的区别在于工作原理的不同，有源晶振带有放大器可以提供更高的输出功率和更好的信号质量，而无源晶振没有放大器，功率较低，但更适合需要低功耗和小体积的应用。&lt;/p&gt;
+&lt;p&gt;以下是一些选择有源晶振和无源晶振的建议：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;稳定性要求：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;  如果需要高精度、高稳定性的时钟信号，或者用于频率合成等要求较高的应用，建议选择无源晶振。因为无源晶振的稳定性更高，可以提供更加精确和稳定的输出信号。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;输出功率要求：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;  如果需要较高的输出功率和较低的输出阻抗，建议选择有源晶振。因为有源晶振具有较高的输出功率和较低的输出阻抗，可以满足一些需要高输出功率的应用场景。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;工作电压和电流要求：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;  有源晶振需要外部电源或电池等能量源来驱动，因此需要考虑其工作电压和电流要求是否符合实际应用需求。而无源晶振则无需外部电源驱动，因此不需要考虑其工作电压和电流要求。&lt;/p&gt;
+&lt;h4 id=&#34;贴片晶振四个脚与两个脚的区别&#34;&gt;贴片晶振四个脚与两个脚的区别
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;类型的区别&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;无源晶振&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;两个脚的无源晶振：这种类型的晶振没有内置振荡电路，需要依赖外部电路来产生振荡信号。这种类型的晶振主要用于提供稳定的时钟信号，以确保电路的正常运行。&lt;/li&gt;
+&lt;li&gt;四个脚的无源晶振：尽管有四个脚，但真正称之为功能脚位的只有两个，即脚1和脚3。另外两个脚则起固定作用。这类无源晶振同样需要外部电路来产生振荡信号。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有源晶振&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;四个脚的有源晶振：有源晶振是一种内部集成了振荡电路的晶振，不需要额外的外部元件就能产生振荡信号。它通常用于要求更高稳定性的场合，如GPS、蓝牙、WIFI等应用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;功能的区别&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;  无源晶振需要外部的时钟电路来产生振荡信号，而有源晶振内部集成了振荡电路，可以自行产生振荡信号。此外，有源晶振通常具有更高的稳定性和精度，但也需要额外的电源输入。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方式的区别&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;  无源晶振在四脚的情况下，只有两个脚是功能脚，另外两脚是悬空的，用于接GND。而对于有源晶振，一般情况下有源晶振印字上面会标注脚位方向，即在左下角一个点，有点的代表引脚1。按逆时针(管脚向下)通常的用法是：一脚悬空，二脚接地，三脚接输出，四脚接电压。在安装有源晶振时，应当确保正确的脚位方向。如果安装错误，可能会导致晶振无法正常工作，甚至可能被电流击穿&lt;/p&gt;
 &lt;h2 id=&#34;电子设计常用电路&#34;&gt;电子设计常用电路
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/anti-reverse-circuit.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1131,6 +1247,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
     &gt;基于VL813的USB3.0-HUB设计&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://oshwhub.com/expert/gai-jin-xin-exlink-duo-gong-neng-diao-shi-qi-fen-li-die-ban&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Exlink最好用的嵌入式多功能调试器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lceda.cn/zh-hans/course-projects/smart-internet/eda-robot/eda-robot-enclosure.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;EDA-Robot机器狗&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;references&#34;&gt;References
 &lt;/h2&gt;&lt;ul&gt;
