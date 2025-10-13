@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录PCB从设计到开发的全流程">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-12T19:28:17&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-13T13:17:12&#43;08:00'/>
 <meta name="twitter:title" content="【Hardware】PCB设计与开发">
 <meta name="twitter:description" content="记录PCB从设计到开发的全流程">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -426,10 +426,7 @@
             <li><a href="#1-方便调试与兼容设计">1 方便调试与兼容设计</a></li>
             <li><a href="#2-参数匹配">2 参数匹配</a></li>
             <li><a href="#3-模数电路单点接地">3 模数电路单点接地</a></li>
-          </ol>
-        </li>
-        <li><a href="#4-跨接跳线">4 跨接跳线</a>
-          <ol>
+            <li><a href="#4-跨接跳线">4 跨接跳线</a></li>
             <li><a href="#5-保护与熔断">5 保护与熔断</a></li>
           </ol>
         </li>
@@ -468,6 +465,13 @@
     </li>
     <li><a href="#电子设计常用电路">电子设计常用电路</a>
       <ol>
+        <li><a href="#外围电路">外围电路</a>
+          <ol>
+            <li><a href="#mcu-与外围电路的关系">MCU 与外围电路的关系</a></li>
+            <li><a href="#必学外围电路模块按功能分类">必学外围电路模块（按功能分类）</a></li>
+            <li><a href="#入门实践建议">入门实践建议</a></li>
+          </ol>
+        </li>
         <li><a href="#电源防反接电路">电源防反接电路</a>
           <ol>
             <li><a href="#二极管防反接">二极管防反接</a></li>
@@ -550,7 +554,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 39 分钟
+                    阅读时长: 46 分钟
                 </time>
             </div>
         
@@ -1549,8 +1553,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 </h4><p>  在不确定电路参数时，用0Ω电阻作为过渡元件，待调试后更换为实际电阻值。 ‌</p>
 <h4 id="3-模数电路单点接地">3 模数电路单点接地
 </h4><p>  在模拟电路和数字电路等混合电路中，往往要求地分开，避免信号干扰，不同地线可以通过0Ω电阻单点连接在一起。</p>
-<h3 id="4-跨接跳线">4 跨接跳线
-</h3><p>‌  在PCB布线时，可能会出现布线走不通的情况，如铝基板单层布线，不允许打过孔，可以使用0Ω电阻充当跳线进行连接。</p>
+<h4 id="4-跨接跳线">4 跨接跳线
+</h4><p>‌  在PCB布线时，可能会出现布线走不通的情况，如铝基板单层布线，不允许打过孔，可以使用0Ω电阻充当跳线进行连接。</p>
 <p><img src="/imgs/pcb/0ohm-function_1.jpg"
 	
 	
@@ -1796,6 +1800,247 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 </h2><blockquote>
 <p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/anti-reverse-circuit.html"  target="_blank" rel="noopener"
     >电子设计常用电路</a></p></blockquote>
+<h3 id="外围电路">外围电路
+</h3><p>MCU（微控制单元，Microcontroller Unit）是嵌入式系统的&quot;大脑&quot;，但需通过外围电路实现供电、信号输入/ 输出、通信、存储等功能，才能构成完整的工作系统。外围电路的设计直接决定 MCU 的稳定性、功能扩展性和适用场景，入门需先掌握核心电路模块的作用与设计逻辑。</p>
+<h4 id="mcu-与外围电路的关系">MCU 与外围电路的关系
+</h4><p>MCU 芯片内部集成了 CPU、RAM、ROM（或 Flash）、定时器、ADC 等核心模块，但存在两个关键局限：</p>
+<ol>
+<li>内部资源有限：如 IO 口驱动能力弱（通常仅能驱动 LED、小型传感器，无法直接驱动电机）、无外部供电接口、无远距离通信物理层等；</li>
+<li>需外部交互：需接收传感器信号（如温度、按键）、控制外部执行器（如电机、继电器）、与其他设备（如电脑、模块）通信。</li>
+</ol>
+<p><strong>外围电路的核心作用</strong>：弥补 MCU 内部资源缺陷，搭建&quot;大脑&quot;与外部世界的连接桥梁，保障系统稳定运行。</p>
+<h4 id="必学外围电路模块按功能分类">必学外围电路模块（按功能分类）
+</h4><h5 id="供电电路mcu-的能量来源">供电电路：MCU 的&quot;能量来源&quot;
+</h5><p>MCU 无法直接使用 220V 市电或锂电池（3.7V）等非标准电压，需供电电路将外部电压转换为 MCU 的核心工作电压（常见 3.3V 或 5V，需严格匹配芯片手册），同时滤除电压波动，避免 MCU 死机或损坏。</p>
+<p><strong>核心组件与设计逻辑</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>组件类型</th>
+          <th>作用</th>
+          <th>典型场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>线性稳压器（LDO）</td>
+          <td>输入电压＞输出电压，输出稳定、纹波小</td>
+          <td>对电压稳定性要求高的场景（如传感器采集），如 AMS1117-3.3V（输入 4.75-12V，输出 3.3V）</td>
+      </tr>
+      <tr>
+          <td>DC-DC 转换器</td>
+          <td>输入电压可高于/ 低于输出电压，效率高</td>
+          <td>对功耗敏感的场景（如电池供电设备），如 MP1584（输入 4-28V，输出可调至 3.3V）</td>
+      </tr>
+      <tr>
+          <td>滤波电容</td>
+          <td>滤除电源线上的高频噪声，稳定电压</td>
+          <td>每个稳压器输出端并联 1 个 100nF 陶瓷电容（滤高频）+ 1 个 10μF 电解电容（滤低频）</td>
+      </tr>
+      <tr>
+          <td>电源指示灯<br></td>
+          <td>直观判断供电是否正常</td>
+          <td>串联 1 个 1kΩ限流电阻+LED（电流＜20mA，避免烧毁）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>必须参考 MCU 手册的&quot;供电参数&quot;：如最大输入电压、工作电流，避免过压烧毁；</li>
+<li>若系统有大功率模块（如电机），需单独为其设计供电电路，避免电流波动干扰 MCU。</li>
+</ul>
+<h5 id="复位电路让-mcu重启归零">复位电路：让 MCU&quot;重启归零&quot;
+</h5><p>复位电路用于在系统上电、死机或异常时，强制 MCU 回到初始状态（类似电脑重启），保障程序正常运行。常见复位方式有上电复位 和手动复位。</p>
+<p><strong>两种复位电路设计</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>复位类型</th>
+          <th>核心组件</th>
+          <th>工作原理</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>上电复位</td>
+          <td>电容（10μF）+ 电阻（10kΩ）</td>
+          <td>上电时电容充电，复位引脚（如 RST）短暂保持高电平，电容充满后变为低电平，MCU 开始运行</td>
+          <td>系统上电时自动复位，无需手动操作</td>
+      </tr>
+      <tr>
+          <td>手动复位</td>
+          <td>复位按键 + 电阻（10kΩ）</td>
+          <td>按下按键时，复位引脚接高电平，松开后恢复低电平，触发 MCU 复位</td>
+          <td>需要手动重启的场景（如程序调试）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>复位引脚电平需匹配 MCU 要求（多数 51 单片机为高电平复位，STM32 部分型号为低电平复位）；</li>
+<li>复位时间需足够（通常＞1ms），避免电容/ 电阻参数过小导致复位不彻底。</li>
+</ul>
+<h5 id="时钟电路mcu-的心跳">时钟电路：MCU 的&quot;心跳&quot;
+</h5><p>MCU 的 CPU、定时器、UART 等模块需依赖 <strong>时钟信号</strong> 同步工作（类似人的心跳节奏），时钟频率决定 MCU 的运行速度（如 11.0592MHz 时钟下，51 单片机指令执行速度约 1MHz）。常见时钟源有__外部晶振__ （精准）和__内部 RC 振荡器__（便捷）。</p>
+<blockquote>
+<p><strong>时钟信号</strong> 是 MCU 的 &ldquo;电子节拍器&rdquo; &mdash;&mdash; 它定义了 &ldquo;时间单位&rdquo;，让所有模块的动作在 &ldquo;统一时间基准&rdquo; 下有序执行，避免因 &ldquo;动作不同步&rdquo; 导致的功能混乱或错误</p></blockquote>
+<p><strong>两种时钟电路对比</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>时钟类型</th>
+          <th>核心组件</th>
+          <th>优点</th>
+          <th>缺点</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>外部晶振</td>
+          <td>晶振（如 11.0592MHz）+ 两个电容（22pF）</td>
+          <td>频率精准、稳定，适合串口通信（需精准波特率）</td>
+          <td>需额外焊接元件，占 PCB 空间</td>
+          <td>对时序要求高的场景（如 UART、SPI 通信）</td>
+      </tr>
+      <tr>
+          <td>内部 RC 振荡器</td>
+          <td>MCU 内部集成（无需外部元件）</td>
+          <td>无需外部元件，设计简单，成本低</td>
+          <td>频率误差较大（±5%），稳定性差</td>
+          <td>对精度要求低的场景（如 LED 闪烁）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>晶振频率需在 MCU 支持范围内（如 STM32F103 支持 4-16MHz 晶振）；</li>
+<li>晶振与电容需靠近 MCU 时钟引脚（X1、X2），避免引线过长导致信号干扰。</li>
+</ul>
+<h5 id="io-口扩展与驱动电路连接外部设备">IO 口扩展与驱动电路：连接外部设备
+</h5><p>MCU 的 IO 口（输入/ 输出引脚）是与外部设备交互的&quot;接口&quot;，但存在两个核心限制：</p>
+<ul>
+<li>输出驱动能力弱：多数 IO 口最大输出电流仅 20-50mA，无法直接驱动电机、继电器等大功率设备；</li>
+<li>输入信号敏感：需处理传感器的弱信号（如光敏电阻）或避免高压信号烧毁 IO 口。</li>
+</ul>
+<p>因此需通过__驱动电路__扩展 IO 口能力，常见场景如下：</p>
+<p><strong>典型 IO 口驱动场景</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>外部设备</th>
+          <th>驱动电路设计</th>
+          <th>原理说明</th>
+          <th>注意事项</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>LED 指示灯</td>
+          <td>IO 口 → 限流电阻（1kΩ）→ LED → GND</td>
+          <td>IO 口输出高电平时，电流通过 LED 发光（电流＜20mA）</td>
+          <td>电阻不可省略，否则 LED 过流烧毁；LED 正负极不可接反</td>
+      </tr>
+      <tr>
+          <td>按键（输入）</td>
+          <td>IO 口 → 上拉电阻（10kΩ）→ VCC；按键另一端接 GND</td>
+          <td>未按按键时，IO 口通过上拉电阻接高电平；按下时接地，IO 口变为低电平，MCU 检测到按键动作</td>
+          <td>可使用 MCU 内部上拉电阻（如 STM32 的 PU 模式），减少外部元件</td>
+      </tr>
+      <tr>
+          <td>继电器/ 电机</td>
+          <td>IO 口 → 三极管（如 S8050）→ 继电器/ 电机；续流二极管（保护三极管）</td>
+          <td>IO 口输出高电平驱动三极管导通，继电器/ 电机得电工作；续流二极管吸收电机断电时的反向电动势</td>
+          <td>三极管需匹配负载电流（如 S8050 最大集电极电流 1.5A）；大功率电机需加 MOS 管</td>
+      </tr>
+  </tbody>
+</table></div>
+<h5 id="通信接口电路让-mcu联网对话">通信接口电路：让 MCU&quot;联网对话&quot;
+</h5><p>MCU 需通过通信接口与其他设备（如电脑、传感器模块、显示屏）交换数据，常见通信协议有__UART（串口）__ 、<strong>I2C</strong> 、<strong>SPI</strong>，不同协议对应不同外围电路。</p>
+<p><strong>三种常用通信接口对比</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>通信协议</th>
+          <th>引脚数量</th>
+          <th>核心电路设计</th>
+          <th>特点</th>
+          <th>典型应用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>UART（串口）</td>
+          <td>2（TX 发送、RX 接收）</td>
+          <td>电脑端需 USB 转串口模块（如 CH340），MCU 端直接接 TX/RX</td>
+          <td>异步通信，波特率需一致（如 9600bps），距离短（＜10m）</td>
+          <td>电脑与 MCU 通信（如程序下载、数据打印）</td>
+      </tr>
+      <tr>
+          <td>I2C</td>
+          <td>2（SDA 数据线、SCL 时钟线）</td>
+          <td>两根线均需接 4.7kΩ上拉电阻到 VCC</td>
+          <td>同步通信，多主多从（可挂多个设备），距离短（＜1m）</td>
+          <td>连接传感器（如温湿度传感器 SHT30）、OLED 显示屏</td>
+      </tr>
+      <tr>
+          <td>SPI</td>
+          <td>4（SCK 时钟、MOSI 主发从收、MISO 主收从发、CS 片选）</td>
+          <td>无需上拉电阻，通过 CS 引脚选择通信设备</td>
+          <td>同步通信，速度快（＞10Mbps），距离短（＜1m）</td>
+          <td>连接 Flash 存储芯片（如 W25Q64）、LCD 显示屏</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>通信引脚需&quot;交叉连接&quot;：MCU 的 TX 接 USB 转串口模块的 RX，MCU 的 RX 接模块的 TX；</li>
+<li>I2C 的上拉电阻不可省略，否则信号传输不稳定；</li>
+<li>SPI 的 CS 引脚需单独控制（同一时刻仅一个设备被选中）。</li>
+</ul>
+<h5 id="存储电路保存数据不掉电">存储电路：保存数据&quot;不掉电&quot;
+</h5><p>MCU 内部 Flash/RAM 容量有限（如 51 单片机仅 4KB Flash、128B RAM），需外部存储电路扩展容量，用于保存程序、日志或参数（如设备配置信息）。常见存储芯片有__SPI Flash__ （存程序/ 大文件）和__EEPROM__（存小参数）。</p>
+<p><strong>两种存储电路设计</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>存储类型</th>
+          <th>核心芯片</th>
+          <th>通信协议</th>
+          <th>特点</th>
+          <th>典型应用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>SPI Flash</td>
+          <td>W25Q64（64MBit=8MB）</td>
+          <td>SPI</td>
+          <td>容量大、擦写次数多（＞10 万次）、掉电不丢失</td>
+          <td>存储固件、图片、日志文件</td>
+      </tr>
+      <tr>
+          <td>EEPROM</td>
+          <td>AT24C02（2KB）</td>
+          <td>I2C</td>
+          <td>容量小、可字节级擦写、掉电不丢失</td>
+          <td>存储设备参数（如校准值、用户设置）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>存储芯片需通过对应通信协议（SPI/I2C）与 MCU 连接，程序中需调用相应驱动函数；</li>
+<li>EEPROM 擦写次数有限（通常 100 万次），避免频繁写入同一地址。</li>
+</ul>
+<h4 id="入门实践建议">入门实践建议
+</h4><ol>
+<li>从最小系统开始：先搭建 MCU 的&quot;最小系统&quot;（供电+ 复位+ 时钟），确保 MCU 能正常上电运行（如点亮一个 LED），再逐步扩展其他模块；</li>
+<li>参考经典电路：新手可直接复用成熟设计（如 51 单片机最小系统、STM32 核心板电路），避免从零设计导致错误；</li>
+<li>重视 datasheet：所有外围电路参数（如稳压器输入电压、晶振频率）需严格参考 MCU 和元件的 datasheet（芯片手册），这是设计的核心依据；</li>
+<li>先仿真后焊接：使用 Proteus、Multisim 等软件仿真电路，验证功能正常后再实际焊接，减少硬件损坏风险。</li>
+</ol>
 <h3 id="电源防反接电路">电源防反接电路
 </h3><p>在日常电子设计过程中，经常会使用排针、电池等容易插反的接口进行供电，此时一旦电源接反，会导致短路，通常芯片内部也无法承受反向电流，可能会导致芯片损坏。</p>
 <h4 id="二极管防反接">二极管防反接
@@ -1830,6 +2075,10 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
     >Expert电子实验室</a></li>
 <li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/gain-knowledge.html"  target="_blank" rel="noopener"
     >eda教程</a></li>
+<li><a class="link" href="https://www.pcbbar.com/?mod=forumdisplay&amp;fid=114"  target="_blank" rel="noopener"
+    >pcb联盟网</a></li>
+<li><a class="link" href="https://geekdaxue.co/read/aiyanjiudexiaohutongxue@pt7221/aCT0H44Glqj8ii_n"  target="_blank" rel="noopener"
+    >嵌入式硬件知识</a></li>
 </ul>
 
 </section>
@@ -1860,7 +2109,7 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 
 
         <span>
-            最后更新于 Oct 12, 2025 19:28 &#43;0800
+            最后更新于 Oct 13, 2025 13:17 &#43;0800
         </span>
     </section></footer>
 
