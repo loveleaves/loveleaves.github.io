@@ -2339,7 +2339,8 @@ ASan 可以检测的内存问题包括：&lt;/li&gt;
 &lt;h3 id=&#34;cuda中的数学函数库&#34;&gt;CUDA中的数学函数库
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.nvidia.com/cuda/cuda-math-api/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://docs.nvidia.com/cuda/cuda-math-api/&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+    &gt;https://docs.nvidia.com/cuda/cuda-math-api/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;单精度浮点数内建函数和数学函数（singleprecisionintrinsics and math functions）。使用该类函数时不需要包含任何额外的头文件。&lt;/li&gt;
 &lt;li&gt;双精度浮点数内建函数和数学函数（doubleprecisionintrinsicsandmathfunctions）。使用该类函数时不需要包含任何额外的头文件。&lt;/li&gt;

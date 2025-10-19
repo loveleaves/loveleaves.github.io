@@ -29,7 +29,8 @@
 &lt;h2 id=&#34;算法的六种思想&#34;&gt;算法的六种思想
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/zhaojinhui/p/18264853&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://www.cnblogs.com/zhaojinhui/p/18264853&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+    &gt;https://www.cnblogs.com/zhaojinhui/p/18264853&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h3 id=&#34;递归算法recursive-algorithm&#34;&gt;递归算法(Recursive Algorithm)
 &lt;/h3&gt;&lt;p&gt;递归算法是一种自我调用的算法。&lt;/p&gt;
 &lt;p&gt;在解决问题时，它将问题拆分成更小的子问题，并通过调用自己来解决这些子问题。每个子问题又可以进一步拆分，直到达到基本情况，然后逐层返回结果，最终得到整个问题的解决方案。

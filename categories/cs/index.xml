@@ -29,7 +29,8 @@
 &lt;h2 id=&#34;算法的六种思想&#34;&gt;算法的六种思想
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/zhaojinhui/p/18264853&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://www.cnblogs.com/zhaojinhui/p/18264853&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+    &gt;https://www.cnblogs.com/zhaojinhui/p/18264853&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h3 id=&#34;递归算法recursive-algorithm&#34;&gt;递归算法(Recursive Algorithm)
 &lt;/h3&gt;&lt;p&gt;递归算法是一种自我调用的算法。&lt;/p&gt;
 &lt;p&gt;在解决问题时，它将问题拆分成更小的子问题，并通过调用自己来解决这些子问题。每个子问题又可以进一步拆分，直到达到基本情况，然后逐层返回结果，最终得到整个问题的解决方案。
@@ -829,7 +830,8 @@
 &lt;/div&gt;&lt;h2 id=&#34;动态规划&#34;&gt;动态规划
 &lt;/h2&gt;&lt;h3 id=&#34;动态规划的定义&#34;&gt;动态规划的定义
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;动态规划（Dynamic Programming）&lt;/strong&gt;：简称 &lt;strong&gt;DP&lt;/strong&gt;，是一种求解多阶段决策过程最优化问题的方法。在动态规划中，通过把原问题分解为相对简单的子问题，先求解子问题，再由子问题的解而得到原问题的解。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;动态规划（Dynamic Programming）&lt;/strong&gt;：简称 &lt;strong&gt;DP&lt;/strong&gt;，是一种求解多阶段决策过程最优化问题的方法。在动态规划中，通过把原问题分解为相对简单的子问题，先求解子问题，再由子问题的解而得到原问题的解。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;动态规划最早由理查德 · 贝尔曼于 1957 年在其著作「动态规划（Dynamic Programming）」一书中提出。这里的 Programming 并不是编程的意思，而是指一种「表格处理方法」，即将每一步计算的结果存储在表格中，供随后的计算查询使用。&lt;/p&gt;
 &lt;h3 id=&#34;动态规划的核心思想&#34;&gt;动态规划的核心思想
 &lt;/h3&gt;&lt;blockquote&gt;
@@ -837,7 +839,8 @@
 &lt;ol&gt;
 &lt;li&gt;把「原问题」分解为「若干个重叠的子问题」，每个子问题的求解过程都构成一个 &lt;strong&gt;「阶段」&lt;/strong&gt;。在完成一个阶段的计算之后，动态规划方法才会执行下一个阶段的计算。&lt;/li&gt;
 &lt;li&gt;在求解子问题的过程中，按照「自顶向下的记忆化搜索方法」或者「自底向上的递推方法」求解出「子问题的解」，把结果存储在表格中，当需要再次求解此子问题时，直接从表格中查询该子问题的解，从而避免了大量的重复计算。&lt;/li&gt;
-&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;这看起来很像是分治算法，但动态规划与分治算法的不同点在于：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;适用于动态规划求解的问题，在分解之后得到的子问题往往是相互联系的，会出现若干个重叠子问题。&lt;/li&gt;
@@ -853,7 +856,8 @@
 &lt;/ol&gt;
 &lt;h4 id=&#34;最优子结构性质&#34;&gt;最优子结构性质
 &lt;/h4&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;最优子结构&lt;/strong&gt;：指的是一个问题的最优解包含其子问题的最优解。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最优子结构&lt;/strong&gt;：指的是一个问题的最优解包含其子问题的最优解。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;举个例子，如下图所示，原问题 $S = \lbrace a_1, a_2, a_3, a_4 \rbrace$，在 $a_1$ 步我们选出一个当前最优解之后，问题就转换为求解子问题 $S_{\text{子问题}} = \lbrace a_2, a_3, a_4 \rbrace$。如果原问题 $S$ 的最优解可以由「第 $a_1$ 步得到的局部最优解」和「 $S_{\text{子问题}}$ 的最优解」构成，则说明该问题满足最优子结构性质。&lt;/p&gt;
 &lt;p&gt;也就是说，如果原问题的最优解包含子问题的最优解，则说明该问题满足最优子结构性质。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/cs/program/1.png&#34;
@@ -868,7 +872,8 @@
 &gt;&lt;/p&gt;
 &lt;h4 id=&#34;重叠子问题性质&#34;&gt;重叠子问题性质
 &lt;/h4&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;重叠子问题性质&lt;/strong&gt;：指的是在求解子问题的过程中，有大量的子问题是重复的，一个子问题在下一阶段的决策中可能会被多次用到。如果有大量重复的子问题，那么只需要对其求解一次，然后用表格将结果存储下来，以后使用时可以直接查询，不需要再次求解。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;重叠子问题性质&lt;/strong&gt;：指的是在求解子问题的过程中，有大量的子问题是重复的，一个子问题在下一阶段的决策中可能会被多次用到。如果有大量重复的子问题，那么只需要对其求解一次，然后用表格将结果存储下来，以后使用时可以直接查询，不需要再次求解。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/cs/program/2.png&#34;
 	
 	
@@ -882,7 +887,8 @@
 &lt;p&gt;之前我们提到的「斐波那契数列」例子中，$f(0)$、$f(1)$、$f(2)$、$f(3)$ 都进行了多次重复计算。动态规划算法利用了子问题重叠的性质，在第一次计算 $f(0)$、$f(1)$、$f(2)$、$f(3)$ 时就将其结果存入表格，当再次使用时可以直接查询，无需再次求解，从而提升效率。&lt;/p&gt;
 &lt;h4 id=&#34;无后效性&#34;&gt;无后效性
 &lt;/h4&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;无后效性&lt;/strong&gt;：指的是子问题的解（状态值）只与之前阶段有关，而与后面阶段无关。当前阶段的若干状态值一旦确定，就不再改变，不会再受到后续阶段决策的影响。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;无后效性&lt;/strong&gt;：指的是子问题的解（状态值）只与之前阶段有关，而与后面阶段无关。当前阶段的若干状态值一旦确定，就不再改变，不会再受到后续阶段决策的影响。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;也就是说，&lt;strong&gt;一旦某一个子问题的求解结果确定以后，就不会再被修改&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;举个例子，下图是一个有向无环带权图，我们在求解从 $A$ 点到 $F$ 点的最短路径问题时，假设当前已知从 $A$ 点到 $D$ 点的最短路径（$2 + 7 = 9$）。那么无论之后的路径如何选择，都不会影响之前从 $A$ 点到 $D$ 点的最短路径长度。这就是「无后效性」。&lt;/p&gt;
 &lt;p&gt;而如果一个问题具有「后效性」，则可能需要先将其转化或者逆向求解来消除后效性，然后才可以使用动态规划算法。&lt;/p&gt;
