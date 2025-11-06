@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 19 Oct 2025 23:00:55 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/diy/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 06 Nov 2025 22:14:30 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/diy/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【建模】 3D建模、打印</title>
         <link>https://loveleaves.github.io/p/3d_modeling/</link>
         <pubDate>Mon, 13 Oct 2025 00:00:00 +0000</pubDate>
@@ -57,6 +57,73 @@
 	
 	
 &gt;&lt;/p&gt;
+&lt;h3 id=&#34;专业pcb设计流程&#34;&gt;专业pcb设计流程
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/pcb/pcb_design_steps2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;pipeline&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;资料准备&#34;&gt;资料准备
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;原理图：硬件工程师提供的原理图设计文件结构图&lt;/li&gt;
+&lt;li&gt;DXF文件：用于确认板框大小，是否存在限高、禁布的信息&lt;/li&gt;
+&lt;li&gt;设计说明：PCB Layout设计要求、设计问题记录表等信息&lt;/li&gt;
+&lt;li&gt;器件手册：进行封装绘制，以及推荐布局或走线参考&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;网表导入结构导入&#34;&gt;网表导入&amp;amp;结构导入
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;网表导入：将原理图网表导入到pcb中，确保原理图中的网络连接性、器件完全导入成功。&lt;/li&gt;
+&lt;li&gt;结构导入：将结构文件导入到pcb中，确保板框大小、结构器件信息、禁布区、限高区等信息，默认1：1导入，单位mm&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;模块抓取&#34;&gt;模块抓取
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;按功能或者模块将器件进行抓取，确认主控的位置和方向，将各个模块根据飞线情况放置在主控芯片的周围。&lt;/li&gt;
+&lt;li&gt;立创EDA快捷键：ctrl+shift+x&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;器件布局和布局优化&#34;&gt;器件布局和布局优化
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;器件布局：优先进行结构器件布局—特殊器件—主要器件，布局采取先大后小的原则，主要IC器件按飞线流向放置合适位置，滤波器件靠近滤波管脚。&lt;/li&gt;
+&lt;li&gt;布局优化：对预布局文件进行布局优化，器件中心对齐，大器件尽量对齐原则，相同模块必须一致，保证PCB布局合理、美观。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;叠层设置和规则设置&#34;&gt;叠层设置和规则设置
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;叠层设置：确定每层对应的放置层标识&lt;/li&gt;
+&lt;li&gt;规则设置：常用规则（线宽、线距、过孔）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;pcb扇孔&#34;&gt;PCB扇孔
+&lt;/h4&gt;&lt;p&gt;通常对于引脚多的芯片：先扇孔，再走线。&lt;/p&gt;
+&lt;h4 id=&#34;pcb走线和pcb修线&#34;&gt;PCB走线和PCB修线
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;PCB走线：走线优先对重要信号走线，优先参考GND层走线。对重要信号线进行包地打孔处理，如差分信号，时钟信号。电源信号最后处理。&lt;/li&gt;
+&lt;li&gt;PCB修线：对走线进行优化调整、检查，不存在信号跨分
+割，满足载流要求，回流路径短，不存在环形、U形路径。走线需美观，尽量耦合。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;pcb等长布线优化&#34;&gt;PCB等长&amp;amp;布线优化
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;PCB等长：对高速信号，有时序要求的信号线进行等长，3W原则。差分信号等长尽量在不耦合处等长。&lt;/li&gt;
+&lt;li&gt;布线优化：对整板走线进行优化，检查关键信号、电源信号载流，路径、过孔是否合理，让其走线更加美观、合理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;drc检查丝印处理光绘输出&#34;&gt;DRC检查&amp;amp;丝印处理&amp;amp;光绘输出
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;DRC检查：对整板进行DRC检查，检查信号是否全部连通，
+是否存在开短路。检查是否未避开禁布区、限高区。检查规则优先级是否正确&lt;/li&gt;
+&lt;li&gt;丝印处理：进行丝印调整，丝印方向一致，丝印清楚，不
+能上阻焊。座子丝印添加是否正确。版本号、L0G0是否添加。&lt;/li&gt;
+&lt;li&gt;光绘输出：
+&lt;ul&gt;
+&lt;li&gt;ASM:装配图文件夹&lt;/li&gt;
+&lt;li&gt;CAM:Gerber文件夹，用于制版&lt;/li&gt;
+&lt;li&gt;SMT:贴片文件夹，用于贴片&lt;/li&gt;
+&lt;li&gt;PRJ:工程文件夹&lt;/li&gt;
+&lt;li&gt;XXX.docx:制版工艺说明文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;元器件选型&#34;&gt;元器件选型
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.szlcsc.com/?c=Q2&amp;amp;lcsc_vid=QlNbUldTQgMPVAFfE1gPV1NTEVJcVFUFEVVcVQUCEQQxVlNTTlVXVF1XRFhbXjsOAxUeFF5JWAIASQYPGQZABAsLWA%3D%3D&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -86,6 +153,8 @@
     &gt;PCB设计走线指导&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/zhi_Alanwu/article/details/127588384&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;【硬件设计】布线篇&amp;mdash;&amp;ndash;超实用的PCB布局布线规则&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1AT421Y7DS?spm_id_from=333.788.videopod.episodes&amp;amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;amp;p=94&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;线宽、过孔大小如何计算&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;布线顺序：&lt;/strong&gt; 关键元件优先、关键信号线优先、密度优先&lt;/p&gt;
 &lt;ul&gt;
@@ -1227,10 +1296,17 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;从上方的原理分析中可知，adc采集电路本质上是一个rc延迟电路，我们需要在使信号在规定的时间内被达到一个平稳的值。其中内部adc电阻以及内部adc电容是固定不变的，在数据手册中都能找到，那我们能改变的就只有外部的电阻值，也就是输入阻抗了。&lt;/p&gt;
+&lt;h3 id=&#34;蓝牙模块&#34;&gt;蓝牙模块
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1aDndzEEk1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;蓝牙模块&amp;amp;蓝牙串口小程序 使用教程&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id=&#34;元器件选型知识点&#34;&gt;元器件选型知识点
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.nodpcba.com/news/3192-cn.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;PCBA电子工程师必须要知道的元器件选型完全指南&lt;/a&gt;&lt;/p&gt;
+    &gt;PCBA电子工程师必须要知道的元器件选型完全指南&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1ho9vYFE7b&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;电子元器件+模拟电路硬件零基础入门&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;刚入门时应优先考虑：&lt;/p&gt;
 &lt;ul&gt;
@@ -1648,6 +1724,8 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;/ul&gt;
 &lt;h3 id=&#34;进阶4层板&#34;&gt;进阶（4层板）
 &lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1nj411v7Lu?spm_id_from=333.788.videopod.sections&amp;amp;vd_source=239d861d96125b8edb41d49a38169fda&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;四层板PCB设计保姆级教程 3.0集线器&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://oshwhub.com/li-chuang-kai-fa-ban/liang-shan&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;立创·梁山派开发板&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sbTTzwEmj/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;立创梁山派4层PCB实战教程&lt;/a&gt;&lt;/li&gt;
@@ -1662,7 +1740,15 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;li&gt;CircuitJS&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;电路分析工具&#34;&gt;电路分析工具
-&lt;/h3&gt;&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://bbs.eda365.com/article-12-1.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PCB走线载流计算器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://bbs.eda365.com/article-11-1.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PCB过孔载流计算器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://tools.jlc.com/jlcTools/index.html#/impedanceCalculatenew?spm=PCB.Homepage.functionbar.1003&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;嘉立创阻抗计算神器&lt;/a&gt;、Si9000&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;references&#34;&gt;References
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1At421h7Ui/?spm_id_from=333.788.player.switch&amp;amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;amp;p=25&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;【教程】零基础入门PCB设计&lt;/a&gt;&lt;/li&gt;
