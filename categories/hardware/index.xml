@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sat, 08 Nov 2025 23:53:32 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hardware/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 09 Nov 2025 16:35:38 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/hardware/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【DIY】电子DIY设计与实现</title>
         <link>https://loveleaves.github.io/p/diy_intro/</link>
         <pubDate>Sat, 08 Nov 2025 00:00:00 +0000</pubDate>
@@ -206,6 +206,10 @@
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.circuito.io/blog/diy-electronics-best-online-tools/?utm_source=chatgpt.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;33 DIY Electronics Online Tools and Guides for Makers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/embedded_programing_pcb/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;硬件设计与选型&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/3d_modeling/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;3D建模、打印&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>
@@ -2001,7 +2005,317 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;li&gt;&lt;strong&gt;调试工具&lt;/strong&gt;：JTAG调试器、SWD（Serial Wire Debug）调试器等，用于硬件级调试，帮助开发者实时查看代码执行状态。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;仿真器&lt;/strong&gt;：一些开发环境如Proteus提供硬件仿真，帮助开发者在没有实际硬件的情况下测试代码。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;references&#34;&gt;References
+&lt;h2 id=&#34;通信协议&#34;&gt;通信协议
+&lt;/h2&gt;&lt;h3 id=&#34;一-核心基石uart-与-usart&#34;&gt;&lt;strong&gt;一、 核心基石：UART 与 USART&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;这是理解所有串行通信的起点。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;特性&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;UART&lt;/strong&gt; (通用异步收发器)&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;USART&lt;/strong&gt; (通用同步/异步收发器)&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;核心特点&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;异步&lt;/strong&gt;通信&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;同步&lt;/strong&gt; + &lt;strong&gt;异步&lt;/strong&gt;通信&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;时钟信号&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;无&lt;/strong&gt;单独的时钟线。依靠预定义的&lt;strong&gt;波特率&lt;/strong&gt;同步。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;有&lt;/strong&gt;单独的时钟线（CLK）。同步模式依赖此时钟。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;连接线&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;最少2根：&lt;strong&gt;TXD&lt;/strong&gt; (发送) 和 &lt;strong&gt;RXD&lt;/strong&gt; (接收)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;异步模式：2根 (TXD, RXD) 同步模式：3+根 (TXD, RXD, &lt;strong&gt;CLK&lt;/strong&gt;)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;关系&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;USART 是 UART 的超集&lt;/strong&gt;。一个USART模块可以配置为UART模式工作。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;关键区别&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;简单、常见、成本低。速率和可靠性受双方时钟精度影响。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;更灵活。同步模式速度更高、可靠性更强，但多占一根引脚。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;通俗比喻&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;两个人聊天&lt;/strong&gt;：仅靠语速（波特率）来理解对方。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;一个人唱歌，一个人打拍子&lt;/strong&gt;：唱的人按拍子唱，听的人按拍子听，节奏精准。&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;现状&lt;/strong&gt;：在现代单片机中，标为“UART”的接口实质上绝大多数都是“USART”功能，只是大家习惯统称为UART。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;二-理解层次物理层-vs-数据链路层&#34;&gt;&lt;strong&gt;二、 理解层次：物理层 vs. 数据链路层&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;这是理清所有协议关系的&lt;strong&gt;最关键概念&lt;/strong&gt;。请参考OSI模型（简化版）：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;物理层 (Physical Layer)&lt;/strong&gt;：规定“&lt;strong&gt;如何传输0和1&lt;/strong&gt;”，解决电气特性、电平标准、接口形状的问题。&lt;strong&gt;好比公路的材料和结构（柏油路、水泥路、铁轨）&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据链路层 (Data Link Layer)&lt;/strong&gt;：规定“&lt;strong&gt;数据包如何组织、如何校验、谁先说话&lt;/strong&gt;”，解决帧格式、差错控制、寻址、仲裁的问题。&lt;strong&gt;好比交通规则（红绿灯、停让标志、车道线）&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;常见的物理层标准协议&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;&#34; &gt;&lt;/a&gt;&lt;strong&gt;常见的物理层标准/协议&lt;/strong&gt;
+&lt;/h5&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;协议&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;描述&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;特点&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;与UART的关系&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;TTL电平&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;单片机引脚直出电平 (0V=0, 3.3V/5V=1)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;距离极短(&amp;lt;0.5m)，易受干扰&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;UART &lt;strong&gt;产生&lt;/strong&gt; TTL电平信号&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;RS-232&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;通过芯片(如MAX232)将TTL电平转换为(±3~±15V)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;抗干扰增强，距离可达15米，点对点&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;UART -&amp;gt; &lt;strong&gt;MAX232芯片&lt;/strong&gt; -&amp;gt; RS-232接口&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;RS-485&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;通过芯片(如MAX485)将TTL转换为&lt;strong&gt;差分信号&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;抗干扰极强&lt;/strong&gt;，距离远(1200m)，&lt;strong&gt;支持多点&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;UART -&amp;gt; &lt;strong&gt;MAX485芯片&lt;/strong&gt; -&amp;gt; RS-485网络&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;CAN收发器&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;将CAN控制器的TTL信号转换为CAN差分电平(CAN_H, CAN_L)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;高速、高可靠，用于汽车和工业领域&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;单片机&lt;strong&gt;CAN控制器&lt;/strong&gt; -&amp;gt; &lt;strong&gt;CAN收发器&lt;/strong&gt; -&amp;gt; CAN总线&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;常见的数据链路层协议&#34;&gt;&lt;strong&gt;常见的数据链路层协议&lt;/strong&gt;
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;协议&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;描述&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;特点&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;与UART的关系&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;UART帧&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;UART硬件本身定义的简单帧格式(起始位+数据位+校验位+停止位)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;非常简单，无地址、无复杂校验&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;UART &lt;strong&gt;自身&lt;/strong&gt;的规则&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;SPI&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;同步、全双工、高速通信协议。有CLK, MOSI, MISO, CS线&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;速度快，通常&lt;strong&gt;有独立的硬件控制器&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;独立&lt;/strong&gt;，不依赖UART&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;I2C&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;同步、半双工、两线制(SCL, SDA)。支持多主多从，通过地址寻址&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;引脚节省，&lt;strong&gt;有独立的硬件控制器&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;独立&lt;/strong&gt;，不依赖UART&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;CAN&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;高速、可靠、多主仲裁的工业级总线协议。有复杂的帧格式和错误检测&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;可靠性极高，&lt;strong&gt;有独立的硬件控制器和收发器&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;独立&lt;/strong&gt;，不依赖UART&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;LIN&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;低速、低成本、单主多从的汽车网络协议&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;其物理层和帧格式基于UART&lt;/strong&gt;，是UART的上层应用协议&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;基于&lt;/strong&gt; UART构建&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;三-无线协议分析蓝牙wifi24g&#34;&gt;&lt;strong&gt;三、 无线协议分析：蓝牙、WiFi、2.4G&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;无线协议是&lt;strong&gt;完整的协议栈&lt;/strong&gt;，包含了从物理层到应用层的所有定义。单片机通常通过串口与实现这些协议的“模组”交互。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;技术&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;物理层 (公路)&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;数据链路层及更高层 (交通规则)&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;单片机如何与其交互&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;蓝牙 (Bluetooth)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;2.4GHz无线电波 (GFSK调制)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;基带/L2CAP层&lt;/strong&gt;：管理连接、分包、加密。 &lt;strong&gt;应用层Profile&lt;/strong&gt;：如SPP(串口透传)、GATT(低功耗蓝牙)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;单片机通过 &lt;strong&gt;UART&lt;/strong&gt; 连接蓝牙模块(如HC-05)，发送AT指令或数据。模块内部完成所有复杂协议处理。&lt;strong&gt;UART是模块的输入口&lt;/strong&gt;。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;WiFi&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;2.4GHz/5GHz无线电波 (DSSS/OFDM调制)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;MAC层&lt;/strong&gt;：帧结构、CSMA/CA访问控制、加密(WPA2)。 &lt;strong&gt;TCP/IP协议栈&lt;/strong&gt;：运行在更上层。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;单片机通过 &lt;strong&gt;UART&lt;/strong&gt; 或 &lt;strong&gt;SPI&lt;/strong&gt; 连接WiFi模块(如ESP8266)，发送AT指令控制其联网和收发TCP/IP数据包。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;2.4G私有协议&lt;/strong&gt; (如NRF24L01)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;2.4GHz无线电波 (GFSK调制)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;厂商自定义的简单链路层&lt;/strong&gt;：定义自己的数据包结构(地址、载荷、CRC)。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;单片机通过 &lt;strong&gt;SPI&lt;/strong&gt; 接口直接控制射频芯片的寄存器，配置参数并收发原始数据包。&lt;strong&gt;这里用了SPI，因为速度要求比UART高&lt;/strong&gt;。&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;四-总结与全局关系图&#34;&gt;&lt;strong&gt;四、 总结与全局关系图&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;所有协议与单片机核心的关系，可以通过下图一目了然：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/diy/com_protocol.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;com&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;图例与说明&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;关键路径&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;UART路径&lt;/strong&gt;：展示了UART数据如何通过不同物理层芯片（RS232/RS485）转换为不同的网络标准，以及如何作为高层协议（LIN/PPP）的基础和无线模组（BLE/Wi-Fi）的输入通道。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;独立协议路径&lt;/strong&gt;：展示了SPI、I2C、CAN作为独立且平行的通信方式，直接由专用控制器管理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;无线路径&lt;/strong&gt;：展示了单片机通过UART或SPI与无线模组交互，由模组处理所有无线通信的复杂性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;常用模块&#34;&gt;常用模块
+&lt;/h2&gt;&lt;h3 id=&#34;蓝牙模块&#34;&gt;蓝牙模块
+&lt;/h3&gt;&lt;h4 id=&#34;简介&#34;&gt;简介
+&lt;/h4&gt;&lt;p&gt;蓝牙模块可以将有线串口数据流转换为无线蓝牙数据流，实现无线串口功能。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;蓝牙类别&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;标志&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;特性&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;经典蓝牙&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;SPP，蓝牙3.0及以下&lt;/td&gt;
+          &lt;td&gt;功耗高，速率较快，先配对后连接&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;低功耗蓝牙&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;BLE，蓝牙4.0及以上&lt;/td&gt;
+          &lt;td&gt;功耗低，速率较慢，快速连接 增加组网、广播、定位等新功能&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;双模蓝牙&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;SPP + BLE&lt;/td&gt;
+          &lt;td&gt;同时集成经典蓝牙和低功耗蓝牙，兼容性更强&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;主从类别&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;特性&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;单从机&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;仅能被动等待主设备连接，无法主动发起连接请求&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;主从一体&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;可切换角色为主设备或从设备，作为主设备时，可主动发起连接请求&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;常见模组&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HC-04&lt;/li&gt;
+&lt;li&gt;HC-05&lt;/li&gt;
+&lt;li&gt;HC-08&lt;/li&gt;
+&lt;li&gt;JDY-31&lt;/li&gt;
+&lt;li&gt;JDY-33&lt;/li&gt;
+&lt;li&gt;BT16&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;硬件连接&#34;&gt;硬件连接
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/diy/blueteeth_connection.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;blueteeth_connection&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;蓝牙模块配置at模式&#34;&gt;蓝牙模块配置（AT模式）
+&lt;/h4&gt;&lt;p&gt;蓝牙未连接或者连接后按住KEY不放，可以使模块进入AT模式，此时通过串口发送AT指令，可对蓝牙模块进行配置。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;AT指令&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;功能&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AT&lt;/td&gt;
+          &lt;td&gt;测试通讯&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AT+BAUD&lt;/td&gt;
+          &lt;td&gt;查询和设置串口波特率&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AT+DEFAULT&lt;/td&gt;
+          &lt;td&gt;参数恢复默认值&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AT+ROLE&lt;/td&gt;
+          &lt;td&gt;查询和设置角色（主设备/从设备）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AT+NAME&lt;/td&gt;
+          &lt;td&gt;查询和设置经典蓝牙名称&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AT+PIN&lt;/td&gt;
+          &lt;td&gt;查询和设置经典蓝牙配对密码&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AT+BNAME&lt;/td&gt;
+          &lt;td&gt;查询和设置BLE蓝牙名称&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;注：以上仅以HC-04为例介绍AT模式，不同蓝牙模块的AT指令和进入AT模式的方法都可能不同，详细介绍请参考模块对应的手册&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/diy/Bluetooth_1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Bluetooth_1&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;imu&#34;&gt;IMU
+&lt;/h3&gt;&lt;h3 id=&#34;tf卡&#34;&gt;TF卡
+&lt;/h3&gt;&lt;h2 id=&#34;references&#34;&gt;References
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://cloud.tencent.com/developer/news/442444&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;soc介绍&lt;/a&gt;&lt;/li&gt;

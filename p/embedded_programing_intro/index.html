@@ -10,7 +10,7 @@
 <meta property='og:description' content="主要介绍嵌入式编程入门知识">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_intro/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-03-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-10-19T23:00:55&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-03-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-09T16:35:38&#43;08:00'/>
 <meta name="twitter:title" content="【嵌入式编程】 嵌入式编程介绍">
 <meta name="twitter:description" content="主要介绍嵌入式编程入门知识">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -303,6 +303,32 @@
         </li>
       </ol>
     </li>
+    <li><a href="#通信协议">通信协议</a>
+      <ol>
+        <li><a href="#一-核心基石uart-与-usart"><strong>一、 核心基石：UART 与 USART</strong></a></li>
+        <li><a href="#二-理解层次物理层-vs-数据链路层"><strong>二、 理解层次：物理层 vs. 数据链路层</strong></a>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+        <li><a href="#常见的数据链路层协议"><strong>常见的数据链路层协议</strong></a></li>
+        <li><a href="#三-无线协议分析蓝牙wifi24g"><strong>三、 无线协议分析：蓝牙、WiFi、2.4G</strong></a></li>
+        <li><a href="#四-总结与全局关系图"><strong>四、 总结与全局关系图</strong></a></li>
+      </ol>
+    </li>
+    <li><a href="#常用模块">常用模块</a>
+      <ol>
+        <li><a href="#蓝牙模块">蓝牙模块</a>
+          <ol>
+            <li><a href="#简介">简介</a></li>
+            <li><a href="#硬件连接">硬件连接</a></li>
+            <li><a href="#蓝牙模块配置at模式">蓝牙模块配置（AT模式）</a></li>
+          </ol>
+        </li>
+        <li><a href="#imu">IMU</a></li>
+        <li><a href="#tf卡">TF卡</a></li>
+      </ol>
+    </li>
     <li><a href="#references">References</a></li>
   </ol>
 </nav>
@@ -376,7 +402,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 3 分钟
+                    阅读时长: 8 分钟
                 </time>
             </div>
         
@@ -439,7 +465,317 @@
 <li><strong>调试工具</strong>：JTAG调试器、SWD（Serial Wire Debug）调试器等，用于硬件级调试，帮助开发者实时查看代码执行状态。</li>
 <li><strong>仿真器</strong>：一些开发环境如Proteus提供硬件仿真，帮助开发者在没有实际硬件的情况下测试代码。</li>
 </ul>
-<h2 id="references">References
+<h2 id="通信协议">通信协议
+</h2><h3 id="一-核心基石uart-与-usart"><strong>一、 核心基石：UART 与 USART</strong>
+</h3><p>这是理解所有串行通信的起点。</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">特性</th>
+          <th style="text-align: left"><strong>UART</strong> (通用异步收发器)</th>
+          <th style="text-align: left"><strong>USART</strong> (通用同步/异步收发器)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>核心特点</strong></td>
+          <td style="text-align: left"><strong>异步</strong>通信</td>
+          <td style="text-align: left"><strong>同步</strong> + <strong>异步</strong>通信</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>时钟信号</strong></td>
+          <td style="text-align: left"><strong>无</strong>单独的时钟线。依靠预定义的<strong>波特率</strong>同步。</td>
+          <td style="text-align: left"><strong>有</strong>单独的时钟线（CLK）。同步模式依赖此时钟。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>连接线</strong></td>
+          <td style="text-align: left">最少2根：<strong>TXD</strong> (发送) 和 <strong>RXD</strong> (接收)</td>
+          <td style="text-align: left">异步模式：2根 (TXD, RXD) 同步模式：3+根 (TXD, RXD, <strong>CLK</strong>)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>关系</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"><strong>USART 是 UART 的超集</strong>。一个USART模块可以配置为UART模式工作。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>关键区别</strong></td>
+          <td style="text-align: left">简单、常见、成本低。速率和可靠性受双方时钟精度影响。</td>
+          <td style="text-align: left">更灵活。同步模式速度更高、可靠性更强，但多占一根引脚。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>通俗比喻</strong></td>
+          <td style="text-align: left"><strong>两个人聊天</strong>：仅靠语速（波特率）来理解对方。</td>
+          <td style="text-align: left"><strong>一个人唱歌，一个人打拍子</strong>：唱的人按拍子唱，听的人按拍子听，节奏精准。</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>现状</strong>：在现代单片机中，标为“UART”的接口实质上绝大多数都是“USART”功能，只是大家习惯统称为UART。</p>
+<hr>
+<h3 id="二-理解层次物理层-vs-数据链路层"><strong>二、 理解层次：物理层 vs. 数据链路层</strong>
+</h3><p>这是理清所有协议关系的<strong>最关键概念</strong>。请参考OSI模型（简化版）：</p>
+<ol>
+<li><strong>物理层 (Physical Layer)</strong>：规定“<strong>如何传输0和1</strong>”，解决电气特性、电平标准、接口形状的问题。<strong>好比公路的材料和结构（柏油路、水泥路、铁轨）</strong>。</li>
+<li><strong>数据链路层 (Data Link Layer)</strong>：规定“<strong>数据包如何组织、如何校验、谁先说话</strong>”，解决帧格式、差错控制、寻址、仲裁的问题。<strong>好比交通规则（红绿灯、停让标志、车道线）</strong>。</li>
+</ol>
+<h5 id="常见的物理层标准协议"><a class="link" href="" ></a><strong>常见的物理层标准/协议</strong>
+</h5><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">协议</th>
+          <th style="text-align: left">描述</th>
+          <th style="text-align: left">特点</th>
+          <th style="text-align: left">与UART的关系</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>TTL电平</strong></td>
+          <td style="text-align: left">单片机引脚直出电平 (0V=0, 3.3V/5V=1)</td>
+          <td style="text-align: left">距离极短(&lt;0.5m)，易受干扰</td>
+          <td style="text-align: left">UART <strong>产生</strong> TTL电平信号</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>RS-232</strong></td>
+          <td style="text-align: left">通过芯片(如MAX232)将TTL电平转换为(±3~±15V)</td>
+          <td style="text-align: left">抗干扰增强，距离可达15米，点对点</td>
+          <td style="text-align: left">UART -&gt; <strong>MAX232芯片</strong> -&gt; RS-232接口</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>RS-485</strong></td>
+          <td style="text-align: left">通过芯片(如MAX485)将TTL转换为<strong>差分信号</strong></td>
+          <td style="text-align: left"><strong>抗干扰极强</strong>，距离远(1200m)，<strong>支持多点</strong></td>
+          <td style="text-align: left">UART -&gt; <strong>MAX485芯片</strong> -&gt; RS-485网络</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>CAN收发器</strong></td>
+          <td style="text-align: left">将CAN控制器的TTL信号转换为CAN差分电平(CAN_H, CAN_L)</td>
+          <td style="text-align: left">高速、高可靠，用于汽车和工业领域</td>
+          <td style="text-align: left">单片机<strong>CAN控制器</strong> -&gt; <strong>CAN收发器</strong> -&gt; CAN总线</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="常见的数据链路层协议"><strong>常见的数据链路层协议</strong>
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">协议</th>
+          <th style="text-align: left">描述</th>
+          <th style="text-align: left">特点</th>
+          <th style="text-align: left">与UART的关系</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>UART帧</strong></td>
+          <td style="text-align: left">UART硬件本身定义的简单帧格式(起始位+数据位+校验位+停止位)</td>
+          <td style="text-align: left">非常简单，无地址、无复杂校验</td>
+          <td style="text-align: left">UART <strong>自身</strong>的规则</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>SPI</strong></td>
+          <td style="text-align: left">同步、全双工、高速通信协议。有CLK, MOSI, MISO, CS线</td>
+          <td style="text-align: left">速度快，通常<strong>有独立的硬件控制器</strong></td>
+          <td style="text-align: left"><strong>独立</strong>，不依赖UART</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>I2C</strong></td>
+          <td style="text-align: left">同步、半双工、两线制(SCL, SDA)。支持多主多从，通过地址寻址</td>
+          <td style="text-align: left">引脚节省，<strong>有独立的硬件控制器</strong></td>
+          <td style="text-align: left"><strong>独立</strong>，不依赖UART</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>CAN</strong></td>
+          <td style="text-align: left">高速、可靠、多主仲裁的工业级总线协议。有复杂的帧格式和错误检测</td>
+          <td style="text-align: left">可靠性极高，<strong>有独立的硬件控制器和收发器</strong></td>
+          <td style="text-align: left"><strong>独立</strong>，不依赖UART</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>LIN</strong></td>
+          <td style="text-align: left">低速、低成本、单主多从的汽车网络协议</td>
+          <td style="text-align: left"><strong>其物理层和帧格式基于UART</strong>，是UART的上层应用协议</td>
+          <td style="text-align: left"><strong>基于</strong> UART构建</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<h3 id="三-无线协议分析蓝牙wifi24g"><strong>三、 无线协议分析：蓝牙、WiFi、2.4G</strong>
+</h3><p>无线协议是<strong>完整的协议栈</strong>，包含了从物理层到应用层的所有定义。单片机通常通过串口与实现这些协议的“模组”交互。</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">技术</th>
+          <th style="text-align: left">物理层 (公路)</th>
+          <th style="text-align: left">数据链路层及更高层 (交通规则)</th>
+          <th style="text-align: left">单片机如何与其交互</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>蓝牙 (Bluetooth)</strong></td>
+          <td style="text-align: left">2.4GHz无线电波 (GFSK调制)</td>
+          <td style="text-align: left"><strong>基带/L2CAP层</strong>：管理连接、分包、加密。 <strong>应用层Profile</strong>：如SPP(串口透传)、GATT(低功耗蓝牙)</td>
+          <td style="text-align: left">单片机通过 <strong>UART</strong> 连接蓝牙模块(如HC-05)，发送AT指令或数据。模块内部完成所有复杂协议处理。<strong>UART是模块的输入口</strong>。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>WiFi</strong></td>
+          <td style="text-align: left">2.4GHz/5GHz无线电波 (DSSS/OFDM调制)</td>
+          <td style="text-align: left"><strong>MAC层</strong>：帧结构、CSMA/CA访问控制、加密(WPA2)。 <strong>TCP/IP协议栈</strong>：运行在更上层。</td>
+          <td style="text-align: left">单片机通过 <strong>UART</strong> 或 <strong>SPI</strong> 连接WiFi模块(如ESP8266)，发送AT指令控制其联网和收发TCP/IP数据包。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>2.4G私有协议</strong> (如NRF24L01)</td>
+          <td style="text-align: left">2.4GHz无线电波 (GFSK调制)</td>
+          <td style="text-align: left"><strong>厂商自定义的简单链路层</strong>：定义自己的数据包结构(地址、载荷、CRC)。</td>
+          <td style="text-align: left">单片机通过 <strong>SPI</strong> 接口直接控制射频芯片的寄存器，配置参数并收发原始数据包。<strong>这里用了SPI，因为速度要求比UART高</strong>。</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<h3 id="四-总结与全局关系图"><strong>四、 总结与全局关系图</strong>
+</h3><p>所有协议与单片机核心的关系，可以通过下图一目了然：</p>
+<p><img src="/imgs/diy/com_protocol.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="com"
+	
+	
+></p>
+<p><strong>图例与说明</strong>：</p>
+<ul>
+<li>
+<p><strong>关键路径</strong>：</p>
+<ul>
+<li><strong>UART路径</strong>：展示了UART数据如何通过不同物理层芯片（RS232/RS485）转换为不同的网络标准，以及如何作为高层协议（LIN/PPP）的基础和无线模组（BLE/Wi-Fi）的输入通道。</li>
+<li><strong>独立协议路径</strong>：展示了SPI、I2C、CAN作为独立且平行的通信方式，直接由专用控制器管理。</li>
+<li><strong>无线路径</strong>：展示了单片机通过UART或SPI与无线模组交互，由模组处理所有无线通信的复杂性。</li>
+</ul>
+</li>
+</ul>
+<h2 id="常用模块">常用模块
+</h2><h3 id="蓝牙模块">蓝牙模块
+</h3><h4 id="简介">简介
+</h4><p>蓝牙模块可以将有线串口数据流转换为无线蓝牙数据流，实现无线串口功能。</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>蓝牙类别</strong></th>
+          <th><strong>标志</strong></th>
+          <th><strong>特性</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>经典蓝牙</strong></td>
+          <td>SPP，蓝牙3.0及以下</td>
+          <td>功耗高，速率较快，先配对后连接</td>
+      </tr>
+      <tr>
+          <td><strong>低功耗蓝牙</strong></td>
+          <td>BLE，蓝牙4.0及以上</td>
+          <td>功耗低，速率较慢，快速连接 增加组网、广播、定位等新功能</td>
+      </tr>
+      <tr>
+          <td><strong>双模蓝牙</strong></td>
+          <td>SPP + BLE</td>
+          <td>同时集成经典蓝牙和低功耗蓝牙，兼容性更强</td>
+      </tr>
+  </tbody>
+</table></div>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>主从类别</strong></th>
+          <th>特性</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>单从机</strong></td>
+          <td>仅能被动等待主设备连接，无法主动发起连接请求</td>
+      </tr>
+      <tr>
+          <td><strong>主从一体</strong></td>
+          <td>可切换角色为主设备或从设备，作为主设备时，可主动发起连接请求</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>常见模组</strong></p>
+<ul>
+<li>HC-04</li>
+<li>HC-05</li>
+<li>HC-08</li>
+<li>JDY-31</li>
+<li>JDY-33</li>
+<li>BT16</li>
+</ul>
+<h4 id="硬件连接">硬件连接
+</h4><p><img src="/imgs/diy/blueteeth_connection.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="blueteeth_connection"
+	
+	
+></p>
+<h4 id="蓝牙模块配置at模式">蓝牙模块配置（AT模式）
+</h4><p>蓝牙未连接或者连接后按住KEY不放，可以使模块进入AT模式，此时通过串口发送AT指令，可对蓝牙模块进行配置。</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>AT指令</strong></th>
+          <th>功能</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>AT</td>
+          <td>测试通讯</td>
+      </tr>
+      <tr>
+          <td>AT+BAUD</td>
+          <td>查询和设置串口波特率</td>
+      </tr>
+      <tr>
+          <td>AT+DEFAULT</td>
+          <td>参数恢复默认值</td>
+      </tr>
+      <tr>
+          <td>AT+ROLE</td>
+          <td>查询和设置角色（主设备/从设备）</td>
+      </tr>
+      <tr>
+          <td>AT+NAME</td>
+          <td>查询和设置经典蓝牙名称</td>
+      </tr>
+      <tr>
+          <td>AT+PIN</td>
+          <td>查询和设置经典蓝牙配对密码</td>
+      </tr>
+      <tr>
+          <td>AT+BNAME</td>
+          <td>查询和设置BLE蓝牙名称</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>注：以上仅以HC-04为例介绍AT模式，不同蓝牙模块的AT指令和进入AT模式的方法都可能不同，详细介绍请参考模块对应的手册</p>
+<p><img src="/imgs/diy/Bluetooth_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Bluetooth_1"
+	
+	
+></p>
+<h3 id="imu">IMU
+</h3><h3 id="tf卡">TF卡
+</h3><h2 id="references">References
 </h2><ul>
 <li><a class="link" href="https://cloud.tencent.com/developer/news/442444"  target="_blank" rel="noopener"
     >soc介绍</a></li>
@@ -477,7 +813,7 @@
 
 
         <span>
-            最后更新于 Oct 19, 2025 23:00 &#43;0800
+            最后更新于 Nov 09, 2025 16:35 &#43;0800
         </span>
     </section></footer>
 
