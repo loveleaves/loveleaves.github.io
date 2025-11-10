@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 09 Nov 2025 17:27:29 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 10 Nov 2025 21:22:03 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【DIY】电子DIY设计与实现</title>
         <link>https://loveleaves.github.io/p/diy_intro/</link>
         <pubDate>Sat, 08 Nov 2025 00:00:00 +0000</pubDate>
@@ -8753,15 +8753,14 @@ $$&lt;/li&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;&lt;strong&gt;现状&lt;/strong&gt;：在现代单片机中，标为“UART”的接口实质上绝大多数都是“USART”功能，只是大家习惯统称为UART。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h3 id=&#34;二-理解层次物理层-vs-数据链路层&#34;&gt;&lt;strong&gt;二、 理解层次：物理层 vs. 数据链路层&lt;/strong&gt;
 &lt;/h3&gt;&lt;p&gt;这是理清所有协议关系的&lt;strong&gt;最关键概念&lt;/strong&gt;。请参考OSI模型（简化版）：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;物理层 (Physical Layer)&lt;/strong&gt;：规定“&lt;strong&gt;如何传输0和1&lt;/strong&gt;”，解决电气特性、电平标准、接口形状的问题。&lt;strong&gt;好比公路的材料和结构（柏油路、水泥路、铁轨）&lt;/strong&gt;。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;数据链路层 (Data Link Layer)&lt;/strong&gt;：规定“&lt;strong&gt;数据包如何组织、如何校验、谁先说话&lt;/strong&gt;”，解决帧格式、差错控制、寻址、仲裁的问题。&lt;strong&gt;好比交通规则（红绿灯、停让标志、车道线）&lt;/strong&gt;。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h5 id=&#34;常见的物理层标准协议&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;&#34; &gt;&lt;/a&gt;&lt;strong&gt;常见的物理层标准/协议&lt;/strong&gt;
-&lt;/h5&gt;&lt;table&gt;
+&lt;h4 id=&#34;常见的物理层标准协议&#34;&gt;&lt;strong&gt;常见的物理层标准/协议&lt;/strong&gt;
+&lt;/h4&gt;&lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
           &lt;th style=&#34;text-align: left&#34;&gt;协议&lt;/th&gt;
@@ -8797,8 +8796,8 @@ $$&lt;/li&gt;
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h3 id=&#34;常见的数据链路层协议&#34;&gt;&lt;strong&gt;常见的数据链路层协议&lt;/strong&gt;
-&lt;/h3&gt;&lt;table&gt;
+&lt;h4 id=&#34;常见的数据链路层协议&#34;&gt;&lt;strong&gt;常见的数据链路层协议&lt;/strong&gt;
+&lt;/h4&gt;&lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
           &lt;th style=&#34;text-align: left&#34;&gt;协议&lt;/th&gt;
@@ -8840,7 +8839,68 @@ $$&lt;/li&gt;
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;hr&gt;
+&lt;h5 id=&#34;i2c&#34;&gt;I2C
+&lt;/h5&gt;&lt;p&gt;I2C协议是一种多主机的串行通信协议，它只需要两条线：SDA（数据线）和SCL（时钟线）。它支持多个从设备连接到同一总线上，每个设备都有一个唯一的地址。&lt;/p&gt;
+&lt;p&gt;I2C协议通过地址来选择不同的从设备进行数据交换，因此相比SPI节省了引脚资源。其通信速率低于SPI，但足以应对多数应用。&lt;/p&gt;
+&lt;p&gt;ESP32S3初始化I2C示例&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;esp_err_t&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;bsp_i2c_init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;i2c_config_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i2c_conf&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mode&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;I2C_MODE_MASTER&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 主模式
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sda_io_num&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BSP_I2C_SDA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// sda引脚
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sda_pullup_en&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GPIO_PULLUP_ENABLE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scl_io_num&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BSP_I2C_SCL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// scl引脚
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scl_pullup_en&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GPIO_PULLUP_ENABLE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;master&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;clk_speed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BSP_I2C_FREQ_HZ&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 时钟频率
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;i2c_param_config&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BSP_I2C_NUM&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i2c_conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i2c_driver_install&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BSP_I2C_NUM&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i2c_conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 不设置buffer
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h5 id=&#34;spi&#34;&gt;SPI
+&lt;/h5&gt;&lt;p&gt;SPI协议是一种高速的、全双工、同步的通信总线。它通常由四条线组成：SCK（时钟线）、MOSI（主设备数据输出，从设备数据输入线）、MISO（主设备数据输入，从设备数据输出线）和CS（片选线）。&lt;/p&gt;
+&lt;p&gt;当多个从设备被连接到同一个主设备时，每个从设备都有一个单独的片选信号。数据在时钟信号的边沿被采样，通常是在上升沿或下降沿。SPI的速率比I2C高，但需要更多的引脚资源。&lt;/p&gt;
+&lt;h5 id=&#34;i2s&#34;&gt;I2S
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/1901602416996090882&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;I2S协议：特点、工作原理、差异及其应用&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://docs.espressif.com/projects/esp-idf/zh_CN/stable/esp32/api-reference/peripherals/i2s.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ESP32 I2S使用&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;2S（Inter-IC Sound）协议 是一种用于将数字音频数据从一个设备传输到另一个设备的协议。该协议在电子设备内的集成电路（IC）之间传输脉冲编码调制（PCM）音频数据。I2S在将预录的音频文件从微控制器（MCU）传输到DAC或放大器的过程中起关键作用。此协议还可通过麦克风实现音频数字化。I2S协议不涉及压缩，因此无法播放OGG、MP3等压缩音频格式，但支持WAV文件。&lt;/p&gt;
+&lt;p&gt;ESP32 包含 2 个 I2S 外设。通过配置这些外设，可以借助 I2S 驱动来输入和输出采样数据。&lt;/p&gt;
+&lt;p&gt;标准 模式下的 I2S 总线包含以下几条线路：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MCLK：主时钟线。该信号线可选，具体取决于从机，主要用于向 I2S 从机提供参考时钟。&lt;/li&gt;
+&lt;li&gt;BCLK：位时钟线。用于数据线的位时钟。&lt;/li&gt;
+&lt;li&gt;WS：字（声道）选择线。通常用于识别声道（除 PDM 模式外）。&lt;/li&gt;
+&lt;li&gt;DIN/DOUT：串行数据输入/输出线。如果 DIN 和 DOUT 被配置到相同的 GPIO，数据将在内部回环。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;PDM 通信模式下的 I2S 总线包含以下几条线路：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CLK：PDM 时钟线。&lt;/li&gt;
+&lt;li&gt;DIN/DOUT：串行数据输入/输出线。&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;三-无线协议分析蓝牙wifi24g&#34;&gt;&lt;strong&gt;三、 无线协议分析：蓝牙、WiFi、2.4G&lt;/strong&gt;
 &lt;/h3&gt;&lt;p&gt;无线协议是&lt;strong&gt;完整的协议栈&lt;/strong&gt;，包含了从物理层到应用层的所有定义。单片机通常通过串口与实现这些协议的“模组”交互。&lt;/p&gt;
 &lt;table&gt;
@@ -9017,36 +9077,39 @@ $$&lt;/li&gt;
 	
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;imu&#34;&gt;IMU
-&lt;/h3&gt;&lt;div class=&#34;embed-pdf-container&#34; id=&#34;embed-pdf-container-f443014d&#34;&gt;
-    &lt;div class=&#34;pdf-loadingWrapper&#34; id=&#34;pdf-loadingWrapper-f443014d&#34;&gt;
-        &lt;div class=&#34;pdf-loading&#34; id=&#34;pdf-loading-f443014d&#34;&gt;&lt;/div&gt;
+&lt;/h3&gt;&lt;p&gt;IMU芯片通常通过SPI（Serial Peripheral Interface）或I2C（Inter-Integrated Circuit）两种通信协议与微控制器进行数据交换。&lt;/p&gt;
+&lt;p&gt;在选择SPI或I2C时，需要考虑到系统的需求。例如，如果对速度和数据吞吐量有较高要求，则SPI可能是更好的选择；如果引脚资源有限或者需要支持多设备通信，I2C则更为合适。&lt;/p&gt;
+&lt;h4 id=&#34;mpu6050&#34;&gt;mpu6050
+&lt;/h4&gt;&lt;div class=&#34;embed-pdf-container&#34; id=&#34;embed-pdf-container-e97cd62b&#34;&gt;
+    &lt;div class=&#34;pdf-loadingWrapper&#34; id=&#34;pdf-loadingWrapper-e97cd62b&#34;&gt;
+        &lt;div class=&#34;pdf-loading&#34; id=&#34;pdf-loading-e97cd62b&#34;&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div id=&#34;overlayText&#34;&gt;
-      &lt;a href=&#34;https://loveleaves.github.io/imgs/diy/test.pdf&#34; aria-label=&#34;Download&#34; download&gt;
+      &lt;a href=&#34;https://loveleaves.github.io/pdf/diy/mpu6050.pdf&#34; aria-label=&#34;Download&#34; download&gt;
         &lt;svg aria-hidden=&#34;true&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 18 18&#34;&gt;
             &lt;path d=&#34;M9 13c.3 0 .5-.1.7-.3L15.4 7 14 5.6l-4 4V1H8v8.6l-4-4L2.6 7l5.7 5.7c.2.2.4.3.7.3zm-7 2h14v2H2z&#34; /&gt;
         &lt;/svg&gt;
       &lt;/a&gt;
     &lt;/div&gt;
-    &lt;canvas class=&#34;pdf-canvas&#34; id=&#34;pdf-canvas-f443014d&#34;&gt;&lt;/canvas&gt;
+    &lt;canvas class=&#34;pdf-canvas&#34; id=&#34;pdf-canvas-e97cd62b&#34;&gt;&lt;/canvas&gt;
 &lt;/div&gt;
 
-&lt;div class=&#34;pdf-paginator&#34; id=&#34;pdf-paginator-f443014d&#34;&gt;
-    &lt;button id=&#34;pdf-prev-f443014d&#34;&gt;Previous&lt;/button&gt;
-    &lt;button id=&#34;pdf-next-f443014d&#34;&gt;Next&lt;/button&gt; &amp;nbsp; &amp;nbsp;
+&lt;div class=&#34;pdf-paginator&#34; id=&#34;pdf-paginator-e97cd62b&#34;&gt;
+    &lt;button id=&#34;pdf-prev-e97cd62b&#34;&gt;Previous&lt;/button&gt;
+    &lt;button id=&#34;pdf-next-e97cd62b&#34;&gt;Next&lt;/button&gt; &amp;nbsp; &amp;nbsp;
     &lt;span&gt;
-      &lt;span class=&#34;pdf-pagenum&#34; id=&#34;pdf-pagenum-f443014d&#34;&gt;&lt;/span&gt; / &lt;span class=&#34;pdf-pagecount&#34; id=&#34;pdf-pagecount-f443014d&#34;&gt;&lt;/span&gt;
+      &lt;span class=&#34;pdf-pagenum&#34; id=&#34;pdf-pagenum-e97cd62b&#34;&gt;&lt;/span&gt; / &lt;span class=&#34;pdf-pagecount&#34; id=&#34;pdf-pagecount-e97cd62b&#34;&gt;&lt;/span&gt;
     &lt;/span&gt;
-    &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-f443014d&#34; href=&#34;https://loveleaves.github.io/imgs/diy/test.pdf&#34;&gt;[pdf]&lt;/a&gt;
+    &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-e97cd62b&#34; href=&#34;https://loveleaves.github.io/pdf/diy/mpu6050.pdf&#34;&gt;[pdf]&lt;/a&gt;
 &lt;/div&gt;
 
 &lt;noscript&gt;
-View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-f443014d&#34; href=&#34;https://loveleaves.github.io/imgs/diy/test.pdf&#34;&gt;here&lt;/a&gt;.
+View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-e97cd62b&#34; href=&#34;https://loveleaves.github.io/pdf/diy/mpu6050.pdf&#34;&gt;here&lt;/a&gt;.
 &lt;/noscript&gt;
 
 &lt;script type=&#34;text/javascript&#34;&gt;
     (function(){
-    var url = &#39;\/imgs\/diy\/test.pdf&#39;;
+    var url = &#39;\/pdf\/diy\/mpu6050.pdf&#39;;
 
     var hidePaginator = &#34;&#34; === &#34;true&#34;;
     var hideLoader = &#34;&#34; === &#34;true&#34;;
@@ -9065,10 +9128,10 @@ View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-f
         pageRendering = false,
         pageNumPending = null,
         scale = 3,
-        canvas = document.getElementById(&#39;pdf-canvas-f443014d&#39;),
+        canvas = document.getElementById(&#39;pdf-canvas-e97cd62b&#39;),
         ctx = canvas.getContext(&#39;2d&#39;),
-        paginator = document.getElementById(&#34;pdf-paginator-f443014d&#34;),
-        loadingWrapper = document.getElementById(&#39;pdf-loadingWrapper-f443014d&#39;);
+        paginator = document.getElementById(&#34;pdf-paginator-e97cd62b&#34;),
+        loadingWrapper = document.getElementById(&#39;pdf-loadingWrapper-e97cd62b&#39;);
 
 
     
@@ -9106,7 +9169,7 @@ View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-f
       });
 
       
-      document.getElementById(&#39;pdf-pagenum-f443014d&#39;).textContent = num;
+      document.getElementById(&#39;pdf-pagenum-e97cd62b&#39;).textContent = num;
     }
 
     
@@ -9150,7 +9213,7 @@ View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-f
       pageNum--;
       queueRenderPage(pageNum);
     }
-    document.getElementById(&#39;pdf-prev-f443014d&#39;).addEventListener(&#39;click&#39;, onPrevPage);
+    document.getElementById(&#39;pdf-prev-e97cd62b&#39;).addEventListener(&#39;click&#39;, onPrevPage);
 
     
 
@@ -9161,14 +9224,14 @@ View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-f
       pageNum++;
       queueRenderPage(pageNum);
     }
-    document.getElementById(&#39;pdf-next-f443014d&#39;).addEventListener(&#39;click&#39;, onNextPage);
+    document.getElementById(&#39;pdf-next-e97cd62b&#39;).addEventListener(&#39;click&#39;, onNextPage);
 
     
 
     pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
       pdfDoc = pdfDoc_;
       var numPages = pdfDoc.numPages;
-      document.getElementById(&#39;pdf-pagecount-f443014d&#39;).textContent = numPages;
+      document.getElementById(&#39;pdf-pagecount-e97cd62b&#39;).textContent = numPages;
 
       
       if(pageNum &gt; numPages) {
@@ -9181,8 +9244,67 @@ View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-f
     })();
 &lt;/script&gt;
 
-&lt;h3 id=&#34;tf卡&#34;&gt;TF卡
-&lt;/h3&gt;&lt;h2 id=&#34;references&#34;&gt;References
+&lt;h4 id=&#34;qmi8658&#34;&gt;QMI8658
+&lt;/h4&gt;&lt;p&gt;国产芯片&lt;/p&gt;
+&lt;p&gt;ESP32示例代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 初始化qmi8658
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;qmi8658_init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint8_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 芯片的ID号
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_read&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_WHO_AM_I&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 读芯片的ID号
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x05&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 判断读到的ID号是否是0x05
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nf&#34;&gt;vTaskDelay&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1000&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;portTICK_PERIOD_MS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 延时1秒
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nf&#34;&gt;qmi8658_register_read&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_WHO_AM_I&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 读取ID号
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nf&#34;&gt;ESP_LOGI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TAG&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;QMI8658 OK!&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 打印信息
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_write_byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_RESET&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0xb0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 复位  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;vTaskDelay&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;portTICK_PERIOD_MS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 延时10ms
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_write_byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_CTRL1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x40&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// CTRL1 设置地址自动增加
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_write_byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_CTRL7&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x03&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// CTRL7 允许加速度和陀螺仪
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_write_byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_CTRL2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x95&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// CTRL2 设置ACC 4g 250Hz
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_write_byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_CTRL3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0xd5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// CTRL3 设置GRY 512dps 250Hz 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h4 id=&#34;滤波&#34;&gt;滤波
+&lt;/h4&gt;&lt;h3 id=&#34;tf卡&#34;&gt;TF卡
+&lt;/h3&gt;&lt;p&gt;esp-idf官方例程：https://github.com/espressif/esp-idf/tree/bbe8aabca0/examples/storage/sd_card&lt;/p&gt;
+&lt;p&gt;ESP32与TF卡通信主要有两种方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SSPI：串行外设接口&lt;/li&gt;
+&lt;li&gt;SDIO：安全数字输入输出接口。其中SDIO又分为两种模式：
+&lt;ul&gt;
+&lt;li&gt;四线模式：有四个数据引脚&lt;/li&gt;
+&lt;li&gt;一线模式：只有一个数据引脚&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;references&#34;&gt;References
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://cloud.tencent.com/developer/news/442444&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;soc介绍&lt;/a&gt;&lt;/li&gt;
