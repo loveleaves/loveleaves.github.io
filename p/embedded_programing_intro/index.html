@@ -10,7 +10,7 @@
 <meta property='og:description' content="主要介绍嵌入式编程入门知识">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_intro/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-03-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-10T21:22:03&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-03-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-11T22:55:12&#43;08:00'/>
 <meta name="twitter:title" content="【嵌入式编程】 嵌入式编程介绍">
 <meta name="twitter:description" content="主要介绍嵌入式编程入门知识">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -318,6 +318,12 @@
     </li>
     <li><a href="#常用模块">常用模块</a>
       <ol>
+        <li><a href="#lcd">LCD</a>
+          <ol>
+            <li><a href="#lvgl--gui-guider">LVGL &amp; gui guider</a></li>
+            <li><a href="#常见问题">常见问题</a></li>
+          </ol>
+        </li>
         <li><a href="#蓝牙模块">蓝牙模块</a>
           <ol>
             <li><a href="#简介">简介</a></li>
@@ -721,7 +727,77 @@
 </li>
 </ul>
 <h2 id="常用模块">常用模块
-</h2><h3 id="蓝牙模块">蓝牙模块
+</h2><h3 id="lcd">LCD
+</h3><h4 id="lvgl--gui-guider">LVGL &amp; gui guider
+</h4><p>参考资料：</p>
+<ul>
+<li><a class="link" href="https://lvgl.io/"  target="_blank" rel="noopener"
+    >lvgl官网</a></li>
+<li><a class="link" href="https://www.bilibili.com/video/BV1K3HvzEEDj?spm_id_from=333.788.player.switch&amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;p=36"  target="_blank" rel="noopener"
+    >lvgl控件</a></li>
+</ul>
+<p>常用控件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">lv_XXX_create() // 如btn按键等
+</span></span><span class="line"><span class="cl">lv_label_create() // label
+</span></span><span class="line"><span class="cl">lv_timer_create() // timer
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>事件Event</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">交互类：点击、长按、释放、拖动
+</span></span><span class="line"><span class="cl">状态变化：失去焦点、获得焦点
+</span></span><span class="line"><span class="cl">对象变化：创建、删除、页面（屏）加载
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">添加事件接口：lv_obj_add_event_cb()
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/imgs/diy/add_event.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="add_event"
+	
+	
+></p>
+<p>定时器timer</p>
+<p><img src="/imgs/diy/add_timer.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="add_timer"
+	
+	
+></p>
+<h4 id="常见问题">常见问题
+</h4><p>1、长文件名无法正常显示或其中中文无法显示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">settting里面设置fat的Long filename support，API character encoding使用utf-8，记得保存
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="蓝牙模块">蓝牙模块
 </h3><h4 id="简介">简介
 </h4><p>蓝牙模块可以将有线串口数据流转换为无线蓝牙数据流，实现无线串口功能。</p>
 <div class="table-wrapper"><table>
@@ -1189,7 +1265,7 @@ View the PDF file <a class="pdf-source" id="pdf-source-noscript-e97cd62b" href="
 
 
         <span>
-            最后更新于 Nov 10, 2025 21:22 &#43;0800
+            最后更新于 Nov 11, 2025 22:55 &#43;0800
         </span>
     </section></footer>
 
