@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录PCB从设计到开发的全流程，包含电子设计常见知识点、PCB设计与开发、元器件选型等">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-06T22:14:30&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-26T22:40:09&#43;08:00'/>
 <meta name="twitter:title" content="【Hardware】硬件设计与选型">
 <meta name="twitter:description" content="记录PCB从设计到开发的全流程，包含电子设计常见知识点、PCB设计与开发、元器件选型等">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -486,7 +486,17 @@
             <li><a href="#贴片晶振四个脚与两个脚的区别">贴片晶振四个脚与两个脚的区别</a></li>
           </ol>
         </li>
+        <li><a href="#蓝牙ble">蓝牙BLE</a>
+          <ol>
+            <li><a href="#天线">天线</a></li>
+          </ol>
+        </li>
         <li><a href="#led">LED</a></li>
+        <li><a href="#oled显示屏">OLED显示屏</a>
+          <ol>
+            <li><a href="#lcd背光">LCD背光</a></li>
+          </ol>
+        </li>
         <li><a href="#排针">排针</a></li>
         <li><a href="#mos管">MOS管</a></li>
       </ol>
@@ -593,7 +603,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 51 分钟
+                    阅读时长: 52 分钟
                 </time>
             </div>
         
@@ -1992,6 +2002,18 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 <p>  无源晶振需要外部的时钟电路来产生振荡信号，而有源晶振内部集成了振荡电路，可以自行产生振荡信号。此外，有源晶振通常具有更高的稳定性和精度，但也需要额外的电源输入。</p>
 <p><strong>使用方式的区别</strong></p>
 <p>  无源晶振在四脚的情况下，只有两个脚是功能脚，另外两脚是悬空的，用于接GND。而对于有源晶振，一般情况下有源晶振印字上面会标注脚位方向，即在左下角一个点，有点的代表引脚1。按逆时针(管脚向下)通常的用法是：一脚悬空，二脚接地，三脚接输出，四脚接电压。在安装有源晶振时，应当确保正确的脚位方向。如果安装错误，可能会导致晶振无法正常工作，甚至可能被电流击穿</p>
+<h3 id="蓝牙ble">蓝牙BLE
+</h3><blockquote>
+<p><a class="link" href="https://www.bilibili.com/video/BV1Cq4y1n7H1/?spm_id_from=333.337.search-card.all.click&amp;vd_source=d9b7ec77b1ff343b8bdf167e228e5b3e"  target="_blank" rel="noopener"
+    >蓝牙BLE开发实战教程-硬件电路设计</a></p>
+</blockquote>
+<h4 id="天线">天线
+</h4><ul>
+<li>陶瓷贴片天线</li>
+<li>PCB天线</li>
+<li>FPC天线</li>
+<li>SMA IPEX天线连接器</li>
+</ul>
 <h3 id="led">LED
 </h3><ul>
 <li>结构： 发光二极管的核心部分是由P型半导体和N型半导体组成的晶片，在 P 型半导体和 N 型半导体之间有一个过渡层，称为PN结。在有些半导体材料的PN结中，注入的少数载流子与多数载流子复合时会把多余的能量以光的形式释放出来，从而把电能直接转换为光能。</li>
@@ -1999,6 +2021,98 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 <li>一般压降为2V（颜色不同不一样），安全电流20mA，所以一般需要串联一个限流电阻。<a class="link" href="https://ledcalculator.net/zh?mode=schematic"  target="_blank" rel="noopener"
     >Led计算器
 </a></li>
+</ul>
+<h3 id="oled显示屏">OLED显示屏
+</h3><h4 id="lcd背光">LCD背光
+</h4><blockquote>
+<p><a class="link" href="https://blog.csdn.net/weixin_50082444/article/details/145790808"  target="_blank" rel="noopener"
+    >LCD背光电路连接图分析</a></p>
+</blockquote>
+<h5 id="为什么不能用-gpio-直接驱动-lcd-背光">为什么不能用 GPIO 直接驱动 LCD 背光？
+</h5><p><strong>① 背光 LED 电流很大（几十 mA~几百 mA）</strong></p>
+<ul>
+<li>STM32（或任意 MCU）一个 GPIO 典型最大只允许 5mA~20mA。</li>
+<li>而一块 LCD/IPS/TFT 屏的背光 LED 通常要：</li>
+<li>20–40mA（小屏）</li>
+<li>100–200mA（中等屏）</li>
+<li>300mA+（亮度高的 IPS 屏）</li>
+</ul>
+<p>如果用 GPIO 直推背光，会直接烧毁 MCU 引脚。</p>
+<p><strong>② 背光需要恒流驱动或 PWM 调光</strong></p>
+<p>许多 LCD 背光需要 PWM 调光（亮度控制），而 PWM 肯定要让电流快速变化。</p>
+<p><strong>GPIO 不适合作为大电流 PWM 驱动器，原因包括</strong>：</p>
+<ul>
+<li>输出电流太小</li>
+<li>输出阻抗高</li>
+<li>开关速度不适合驱动大负载</li>
+<li>在快速 PWM 下会发热甚至损坏</li>
+</ul>
+<p>而 MOSFET/三极管非常适合做低损耗、大电流开关管。</p>
+<p><strong>③ 背光供电电压可能不是 MCU 的电压</strong></p>
+<p>MCU 多为 3.3V，LCD 背光常见：</p>
+<ul>
+<li>5V</li>
+<li>6V</li>
+<li>12V</li>
+<li>甚至高达 20–30V（串联 LED 时）</li>
+</ul>
+<p>GPIO 根本不能承受 MCU 电压之外的电压。</p>
+<p>加 MOSFET/三极管后可轻松实现：</p>
+<ul>
+<li>3.3V 控制 5V/12V 背光</li>
+<li>电平隔离</li>
+<li>安全驱动不烧 MCU</li>
+</ul>
+<p><strong>④ GPIO 无法提供背光启动瞬间冲击电流</strong></p>
+<p>LED 背光在启动的一瞬间会有 <strong>浪涌电流</strong>，比稳定电流大很多。</p>
+<p>如果直接接 GPIO：</p>
+<ul>
+<li>可能瞬间电压跌落</li>
+<li>MCU 复位</li>
+<li>GPIO 过流损坏</li>
+</ul>
+<p>加开关管后，这些电流由 MOS 管承受，MCU 无压力。</p>
+<p><strong>⑤ 设计需要保护与隔离</strong></p>
+<p>使用 MOSFET/BJT 可以加入：</p>
+<ul>
+<li>限流电阻</li>
+<li>TVS/ESD 保护</li>
+<li>电流检测</li>
+<li>软启动</li>
+<li>PWM 调光</li>
+</ul>
+<p>这些功能都不能由 GPIO 单独实现。</p>
+<p><strong>典型背光驱动电路</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 使用 N 沟道 MOS 管（最常用）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// R1（1K）：限流作用，防止通向NMOS管栅极的电流过大，保护栅极。
+</span></span></span><span class="line"><span class="cl"><span class="c1">// R2（10K）：作为下拉电阻，确保在BL引脚未被驱动时，NMOS管的栅极电压接近地电平，保持NMOS管处于截止状态。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">MCU</span> <span class="n">GPIO</span> <span class="o">--</span><span class="n">R1</span><span class="o">---</span><span class="n">Rgate</span><span class="o">--|&gt;</span> <span class="n">MOSFET</span> <span class="o">|-----</span> <span class="n">LED</span><span class="o">+</span> <span class="p">(</span><span class="err">背光</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">              <span class="o">|</span>
+</span></span><span class="line"><span class="cl">              <span class="n">R2</span>
+</span></span><span class="line"><span class="cl">              <span class="o">|</span>
+</span></span><span class="line"><span class="cl">            <span class="n">GND</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特点：</strong></p>
+<ul>
+<li>GPIO 只负责控制 栅极，几乎无电流压力</li>
+<li>大电流由 MOS 承受</li>
+<li>可高频 PWM 调光</li>
+<li>可靠性强</li>
 </ul>
 <h3 id="排针">排针
 </h3><p>通常注意与pcb的以下参数对应：</p>
@@ -2367,7 +2481,7 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 
 
         <span>
-            最后更新于 Nov 06, 2025 22:14 &#43;0800
+            最后更新于 Nov 26, 2025 22:40 &#43;0800
         </span>
     </section></footer>
 

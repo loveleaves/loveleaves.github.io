@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Tue, 11 Nov 2025 22:55:12 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/diy/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 26 Nov 2025 22:40:09 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/diy/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【DIY】电子DIY设计与实现</title>
         <link>https://loveleaves.github.io/p/diy_intro/</link>
         <pubDate>Sat, 08 Nov 2025 00:00:00 +0000</pubDate>
@@ -1623,6 +1623,18 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;p&gt;  无源晶振需要外部的时钟电路来产生振荡信号，而有源晶振内部集成了振荡电路，可以自行产生振荡信号。此外，有源晶振通常具有更高的稳定性和精度，但也需要额外的电源输入。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;使用方式的区别&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;  无源晶振在四脚的情况下，只有两个脚是功能脚，另外两脚是悬空的，用于接GND。而对于有源晶振，一般情况下有源晶振印字上面会标注脚位方向，即在左下角一个点，有点的代表引脚1。按逆时针(管脚向下)通常的用法是：一脚悬空，二脚接地，三脚接输出，四脚接电压。在安装有源晶振时，应当确保正确的脚位方向。如果安装错误，可能会导致晶振无法正常工作，甚至可能被电流击穿&lt;/p&gt;
+&lt;h3 id=&#34;蓝牙ble&#34;&gt;蓝牙BLE
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1Cq4y1n7H1/?spm_id_from=333.337.search-card.all.click&amp;amp;vd_source=d9b7ec77b1ff343b8bdf167e228e5b3e&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;蓝牙BLE开发实战教程-硬件电路设计&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;天线&#34;&gt;天线
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;陶瓷贴片天线&lt;/li&gt;
+&lt;li&gt;PCB天线&lt;/li&gt;
+&lt;li&gt;FPC天线&lt;/li&gt;
+&lt;li&gt;SMA IPEX天线连接器&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&#34;led&#34;&gt;LED
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;结构： 发光二极管的核心部分是由P型半导体和N型半导体组成的晶片，在 P 型半导体和 N 型半导体之间有一个过渡层，称为PN结。在有些半导体材料的PN结中，注入的少数载流子与多数载流子复合时会把多余的能量以光的形式释放出来，从而把电能直接转换为光能。&lt;/li&gt;
@@ -1630,6 +1642,98 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;li&gt;一般压降为2V（颜色不同不一样），安全电流20mA，所以一般需要串联一个限流电阻。&lt;a class=&#34;link&#34; href=&#34;https://ledcalculator.net/zh?mode=schematic&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Led计算器
 &lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;oled显示屏&#34;&gt;OLED显示屏
+&lt;/h3&gt;&lt;h4 id=&#34;lcd背光&#34;&gt;LCD背光
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/weixin_50082444/article/details/145790808&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LCD背光电路连接图分析&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;为什么不能用-gpio-直接驱动-lcd-背光&#34;&gt;为什么不能用 GPIO 直接驱动 LCD 背光？
+&lt;/h5&gt;&lt;p&gt;&lt;strong&gt;① 背光 LED 电流很大（几十 mA~几百 mA）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;STM32（或任意 MCU）一个 GPIO 典型最大只允许 5mA~20mA。&lt;/li&gt;
+&lt;li&gt;而一块 LCD/IPS/TFT 屏的背光 LED 通常要：&lt;/li&gt;
+&lt;li&gt;20–40mA（小屏）&lt;/li&gt;
+&lt;li&gt;100–200mA（中等屏）&lt;/li&gt;
+&lt;li&gt;300mA+（亮度高的 IPS 屏）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果用 GPIO 直推背光，会直接烧毁 MCU 引脚。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;② 背光需要恒流驱动或 PWM 调光&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;许多 LCD 背光需要 PWM 调光（亮度控制），而 PWM 肯定要让电流快速变化。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;GPIO 不适合作为大电流 PWM 驱动器，原因包括&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输出电流太小&lt;/li&gt;
+&lt;li&gt;输出阻抗高&lt;/li&gt;
+&lt;li&gt;开关速度不适合驱动大负载&lt;/li&gt;
+&lt;li&gt;在快速 PWM 下会发热甚至损坏&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;而 MOSFET/三极管非常适合做低损耗、大电流开关管。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;③ 背光供电电压可能不是 MCU 的电压&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;MCU 多为 3.3V，LCD 背光常见：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;5V&lt;/li&gt;
+&lt;li&gt;6V&lt;/li&gt;
+&lt;li&gt;12V&lt;/li&gt;
+&lt;li&gt;甚至高达 20–30V（串联 LED 时）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;GPIO 根本不能承受 MCU 电压之外的电压。&lt;/p&gt;
+&lt;p&gt;加 MOSFET/三极管后可轻松实现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;3.3V 控制 5V/12V 背光&lt;/li&gt;
+&lt;li&gt;电平隔离&lt;/li&gt;
+&lt;li&gt;安全驱动不烧 MCU&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;④ GPIO 无法提供背光启动瞬间冲击电流&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;LED 背光在启动的一瞬间会有 &lt;strong&gt;浪涌电流&lt;/strong&gt;，比稳定电流大很多。&lt;/p&gt;
+&lt;p&gt;如果直接接 GPIO：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可能瞬间电压跌落&lt;/li&gt;
+&lt;li&gt;MCU 复位&lt;/li&gt;
+&lt;li&gt;GPIO 过流损坏&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;加开关管后，这些电流由 MOS 管承受，MCU 无压力。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;⑤ 设计需要保护与隔离&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;使用 MOSFET/BJT 可以加入：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;限流电阻&lt;/li&gt;
+&lt;li&gt;TVS/ESD 保护&lt;/li&gt;
+&lt;li&gt;电流检测&lt;/li&gt;
+&lt;li&gt;软启动&lt;/li&gt;
+&lt;li&gt;PWM 调光&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些功能都不能由 GPIO 单独实现。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;典型背光驱动电路&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 使用 N 沟道 MOS 管（最常用）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// R1（1K）：限流作用，防止通向NMOS管栅极的电流过大，保护栅极。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// R2（10K）：作为下拉电阻，确保在BL引脚未被驱动时，NMOS管的栅极电压接近地电平，保持NMOS管处于截止状态。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;MCU&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GPIO&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;R1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Rgate&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--|&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MOSFET&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|-----&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LED&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;背光&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;              &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;              &lt;span class=&#34;n&#34;&gt;R2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;              &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;GND&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GPIO 只负责控制 栅极，几乎无电流压力&lt;/li&gt;
+&lt;li&gt;大电流由 MOS 承受&lt;/li&gt;
+&lt;li&gt;可高频 PWM 调光&lt;/li&gt;
+&lt;li&gt;可靠性强&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;排针&#34;&gt;排针
 &lt;/h3&gt;&lt;p&gt;通常注意与pcb的以下参数对应：&lt;/p&gt;
@@ -2157,7 +2261,11 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h5 id=&#34;i2c&#34;&gt;I2C
-&lt;/h5&gt;&lt;p&gt;I2C协议是一种多主机的串行通信协议，它只需要两条线：SDA（数据线）和SCL（时钟线）。它支持多个从设备连接到同一总线上，每个设备都有一个唯一的地址。&lt;/p&gt;
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.wangdali.net/i2c/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;I2C总线协议&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I2C协议是一种多主机的串行通信协议，它只需要两条线：SDA（数据线）和SCL（时钟线）。它支持多个从设备连接到同一总线上，每个设备都有一个唯一的地址。&lt;/p&gt;
 &lt;p&gt;I2C协议通过地址来选择不同的从设备进行数据交换，因此相比SPI节省了引脚资源。其通信速率低于SPI，但足以应对多数应用。&lt;/p&gt;
 &lt;p&gt;ESP32S3初始化I2C示例&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2195,16 +2303,22 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h5 id=&#34;spi&#34;&gt;SPI
-&lt;/h5&gt;&lt;p&gt;SPI协议是一种高速的、全双工、同步的通信总线。它通常由四条线组成：SCK（时钟线）、MOSI（主设备数据输出，从设备数据输入线）、MISO（主设备数据输入，从设备数据输出线）和CS（片选线）。&lt;/p&gt;
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.wangdali.net/spi/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;SPI总线协议&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;SPI协议是一种高速的、全双工、同步的通信总线。它通常由四条线组成：SCK（时钟线）、MOSI（主设备数据输出，从设备数据输入线）、MISO（主设备数据输入，从设备数据输出线）和CS（片选线）。&lt;/p&gt;
 &lt;p&gt;当多个从设备被连接到同一个主设备时，每个从设备都有一个单独的片选信号。数据在时钟信号的边沿被采样，通常是在上升沿或下降沿。SPI的速率比I2C高，但需要更多的引脚资源。&lt;/p&gt;
 &lt;h5 id=&#34;i2s&#34;&gt;I2S
 &lt;/h5&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/1901602416996090882&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;I2S协议：特点、工作原理、差异及其应用&lt;/a&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://docs.espressif.com/projects/esp-idf/zh_CN/stable/esp32/api-reference/peripherals/i2s.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;ESP32 I2S使用&lt;/a&gt;&lt;/p&gt;
+    &gt;ESP32 I2S使用&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;http://www.wangdali.net/i2s/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;数字音频接口&lt;/a&gt;，常见数字音频信号传输标准，如I2S、PCM（TDM）、PDM等&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;2S（Inter-IC Sound）协议 是一种用于将数字音频数据从一个设备传输到另一个设备的协议。该协议在电子设备内的集成电路（IC）之间传输脉冲编码调制（PCM）音频数据。I2S在将预录的音频文件从微控制器（MCU）传输到DAC或放大器的过程中起关键作用。此协议还可通过麦克风实现音频数字化。I2S协议不涉及压缩，因此无法播放OGG、MP3等压缩音频格式，但支持WAV文件。&lt;/p&gt;
+&lt;p&gt;I2S（Inter-IC Sound）协议 是一种用于将数字音频数据从一个设备传输到另一个设备的协议。该协议在电子设备内的集成电路（IC）之间传输脉冲编码调制（PCM）音频数据。I2S在将预录的音频文件从微控制器（MCU）传输到DAC或放大器的过程中起关键作用。此协议还可通过麦克风实现音频数字化。I2S协议不涉及压缩，因此无法播放OGG、MP3等压缩音频格式，但支持WAV文件。&lt;/p&gt;
 &lt;p&gt;ESP32 包含 2 个 I2S 外设。通过配置这些外设，可以借助 I2S 驱动来输入和输出采样数据。&lt;/p&gt;
 &lt;p&gt;标准 模式下的 I2S 总线包含以下几条线路：&lt;/p&gt;
 &lt;ul&gt;
@@ -2218,6 +2332,19 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;li&gt;CLK：PDM 时钟线。&lt;/li&gt;
 &lt;li&gt;DIN/DOUT：串行数据输入/输出线。&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h5 id=&#34;can&#34;&gt;CAN
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.wangdali.net/can/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CAN总线&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;CAN（Controller Area Network）总线协议是由 BOSCH 发明的一种基于消息广播模式的串行通信总线，它起初用于实现汽车内ECU之间可靠的通信，后因其简单实用可靠等特点，而广泛应用于工业自动化、船舶、医疗等其它领域。相比于其它网络类型，如局域网（LAN, Local Area Network）、广域网（WAN, Wide Area Network）和个人网（PAN, Personal Area Network）等，CAN 更加适合应用于现场控制领域，因此得名。&lt;/p&gt;
+&lt;p&gt;CAN总线是一种多主控（Multi-Master）的总线系统，它不同于USB或以太网等传统总线系统是在总线控制器的协调下，实现A节点到B节点大量数据的传输，CAN网络的消息是广播式的，亦即在同一时刻网络上所有节点侦测的数据是一致的，因此比较适合传输诸如控制、温度、转速等短消息。&lt;/p&gt;
+&lt;h5 id=&#34;lin-bus&#34;&gt;LIN Bus
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.wangdali.net/lin/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LIN Bus&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;由于不同车厂定义的协议兼容性的问题，在 1998 年由欧洲五大车厂（BMW, Volkswagen Group, Audi Group, Volvo Cars, Mercedes-Benz）成立联合工作组，由 Volcano Automotive Group 和 Motorola 提供技术支持，开发一种定位于车身电子领域传感器（Sensors）和执行器（Actuators）组网的串行通信总线，要求该总线系统的协议和时序控制尽可能简单，即使低端MCU没有专用通信单元也可以实现基于该总线的通信。这种总线即为 LIN 总线。&lt;/p&gt;
 &lt;h3 id=&#34;三-无线协议分析蓝牙wifi24g&#34;&gt;&lt;strong&gt;三、 无线协议分析：蓝牙、WiFi、2.4G&lt;/strong&gt;
 &lt;/h3&gt;&lt;p&gt;无线协议是&lt;strong&gt;完整的协议栈&lt;/strong&gt;，包含了从物理层到应用层的所有定义。单片机通常通过串口与实现这些协议的“模组”交互。&lt;/p&gt;
 &lt;table&gt;

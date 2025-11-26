@@ -10,7 +10,7 @@
 <meta property='og:description' content="主要介绍嵌入式编程入门知识">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_intro/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-03-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-11T22:55:12&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-03-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-26T22:40:09&#43;08:00'/>
 <meta name="twitter:title" content="【嵌入式编程】 嵌入式编程介绍">
 <meta name="twitter:description" content="主要介绍嵌入式编程入门知识">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -414,7 +414,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 11 分钟
+                    阅读时长: 12 分钟
                 </time>
             </div>
         
@@ -609,7 +609,11 @@
   </tbody>
 </table></div>
 <h5 id="i2c">I2C
-</h5><p>I2C协议是一种多主机的串行通信协议，它只需要两条线：SDA（数据线）和SCL（时钟线）。它支持多个从设备连接到同一总线上，每个设备都有一个唯一的地址。</p>
+</h5><blockquote>
+<p><a class="link" href="http://www.wangdali.net/i2c/"  target="_blank" rel="noopener"
+    >I2C总线协议</a></p>
+</blockquote>
+<p>I2C协议是一种多主机的串行通信协议，它只需要两条线：SDA（数据线）和SCL（时钟线）。它支持多个从设备连接到同一总线上，每个设备都有一个唯一的地址。</p>
 <p>I2C协议通过地址来选择不同的从设备进行数据交换，因此相比SPI节省了引脚资源。其通信速率低于SPI，但足以应对多数应用。</p>
 <p>ESP32S3初始化I2C示例</p>
 <div class="highlight"><div class="chroma">
@@ -647,16 +651,22 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h5 id="spi">SPI
-</h5><p>SPI协议是一种高速的、全双工、同步的通信总线。它通常由四条线组成：SCK（时钟线）、MOSI（主设备数据输出，从设备数据输入线）、MISO（主设备数据输入，从设备数据输出线）和CS（片选线）。</p>
+</h5><blockquote>
+<p><a class="link" href="http://www.wangdali.net/spi/"  target="_blank" rel="noopener"
+    >SPI总线协议</a></p>
+</blockquote>
+<p>SPI协议是一种高速的、全双工、同步的通信总线。它通常由四条线组成：SCK（时钟线）、MOSI（主设备数据输出，从设备数据输入线）、MISO（主设备数据输入，从设备数据输出线）和CS（片选线）。</p>
 <p>当多个从设备被连接到同一个主设备时，每个从设备都有一个单独的片选信号。数据在时钟信号的边沿被采样，通常是在上升沿或下降沿。SPI的速率比I2C高，但需要更多的引脚资源。</p>
 <h5 id="i2s">I2S
 </h5><blockquote>
 <p><a class="link" href="https://zhuanlan.zhihu.com/p/1901602416996090882"  target="_blank" rel="noopener"
     >I2S协议：特点、工作原理、差异及其应用</a>
 <a class="link" href="https://docs.espressif.com/projects/esp-idf/zh_CN/stable/esp32/api-reference/peripherals/i2s.html"  target="_blank" rel="noopener"
-    >ESP32 I2S使用</a></p>
+    >ESP32 I2S使用</a>
+<a class="link" href="http://www.wangdali.net/i2s/"  target="_blank" rel="noopener"
+    >数字音频接口</a>，常见数字音频信号传输标准，如I2S、PCM（TDM）、PDM等</p>
 </blockquote>
-<p>2S（Inter-IC Sound）协议 是一种用于将数字音频数据从一个设备传输到另一个设备的协议。该协议在电子设备内的集成电路（IC）之间传输脉冲编码调制（PCM）音频数据。I2S在将预录的音频文件从微控制器（MCU）传输到DAC或放大器的过程中起关键作用。此协议还可通过麦克风实现音频数字化。I2S协议不涉及压缩，因此无法播放OGG、MP3等压缩音频格式，但支持WAV文件。</p>
+<p>I2S（Inter-IC Sound）协议 是一种用于将数字音频数据从一个设备传输到另一个设备的协议。该协议在电子设备内的集成电路（IC）之间传输脉冲编码调制（PCM）音频数据。I2S在将预录的音频文件从微控制器（MCU）传输到DAC或放大器的过程中起关键作用。此协议还可通过麦克风实现音频数字化。I2S协议不涉及压缩，因此无法播放OGG、MP3等压缩音频格式，但支持WAV文件。</p>
 <p>ESP32 包含 2 个 I2S 外设。通过配置这些外设，可以借助 I2S 驱动来输入和输出采样数据。</p>
 <p>标准 模式下的 I2S 总线包含以下几条线路：</p>
 <ul>
@@ -670,6 +680,19 @@
 <li>CLK：PDM 时钟线。</li>
 <li>DIN/DOUT：串行数据输入/输出线。</li>
 </ul>
+<h5 id="can">CAN
+</h5><blockquote>
+<p><a class="link" href="http://www.wangdali.net/can/"  target="_blank" rel="noopener"
+    >CAN总线</a></p>
+</blockquote>
+<p>CAN（Controller Area Network）总线协议是由 BOSCH 发明的一种基于消息广播模式的串行通信总线，它起初用于实现汽车内ECU之间可靠的通信，后因其简单实用可靠等特点，而广泛应用于工业自动化、船舶、医疗等其它领域。相比于其它网络类型，如局域网（LAN, Local Area Network）、广域网（WAN, Wide Area Network）和个人网（PAN, Personal Area Network）等，CAN 更加适合应用于现场控制领域，因此得名。</p>
+<p>CAN总线是一种多主控（Multi-Master）的总线系统，它不同于USB或以太网等传统总线系统是在总线控制器的协调下，实现A节点到B节点大量数据的传输，CAN网络的消息是广播式的，亦即在同一时刻网络上所有节点侦测的数据是一致的，因此比较适合传输诸如控制、温度、转速等短消息。</p>
+<h5 id="lin-bus">LIN Bus
+</h5><blockquote>
+<p><a class="link" href="http://www.wangdali.net/lin/"  target="_blank" rel="noopener"
+    >LIN Bus</a></p>
+</blockquote>
+<p>由于不同车厂定义的协议兼容性的问题，在 1998 年由欧洲五大车厂（BMW, Volkswagen Group, Audi Group, Volvo Cars, Mercedes-Benz）成立联合工作组，由 Volcano Automotive Group 和 Motorola 提供技术支持，开发一种定位于车身电子领域传感器（Sensors）和执行器（Actuators）组网的串行通信总线，要求该总线系统的协议和时序控制尽可能简单，即使低端MCU没有专用通信单元也可以实现基于该总线的通信。这种总线即为 LIN 总线。</p>
 <h3 id="三-无线协议分析蓝牙wifi24g"><strong>三、 无线协议分析：蓝牙、WiFi、2.4G</strong>
 </h3><p>无线协议是<strong>完整的协议栈</strong>，包含了从物理层到应用层的所有定义。单片机通常通过串口与实现这些协议的“模组”交互。</p>
 <div class="table-wrapper"><table>
@@ -1265,7 +1288,7 @@ View the PDF file <a class="pdf-source" id="pdf-source-noscript-e97cd62b" href="
 
 
         <span>
-            最后更新于 Nov 11, 2025 22:55 &#43;0800
+            最后更新于 Nov 26, 2025 22:40 &#43;0800
         </span>
     </section></footer>
 
