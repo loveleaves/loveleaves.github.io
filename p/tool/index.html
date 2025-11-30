@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="记录性能优化、环境模拟等各种用到的工具">
+<title>【Tool】 记录各种用到的工具</title>
+
+<link rel='canonical' href='https://loveleaves.github.io/p/tool/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f655c339a336b15a106fd248f9170c8064dfc6f1990313665402f49a0c0831e.css"><meta property='og:title' content="【Tool】 记录各种用到的工具">
+<meta property='og:description' content="记录性能优化、环境模拟等各种用到的工具">
+<meta property='og:url' content='https://loveleaves.github.io/p/tool/'>
+<meta property='og:site_name' content='安哲睿'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-16T19:51:05&#43;08:00'/>
+<meta name="twitter:title" content="【Tool】 记录各种用到的工具">
+<meta name="twitter:description" content="记录性能优化、环境模拟等各种用到的工具">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b4d2f495c38e1067.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😁</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">安哲睿</a></h1>
+            <h2 class="site-description">世上无难事，只怕有心人</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/loveleaves'
+                        target="_blank"
+                        title="Github"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/loveleaves'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://loveleaves.github.io/en/" >English</option>
+                                
+                                    <option value="https://loveleaves.github.io/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#references">References</a></li>
+    <li><a href="#汇编嵌入式编程工具">汇编/嵌入式编程工具</a>
+      <ol>
+        <li><a href="#汇编工具-assembly-tools">汇编工具 (Assembly Tools)</a>
+          <ol>
+            <li><a href="#gas-gnu-assembler">GAS (GNU Assembler)</a></li>
+          </ol>
+        </li>
+        <li><a href="#交叉编译工具链-cross-compiler-toolchain">交叉编译工具链 (Cross Compiler Toolchain)</a>
+          <ol>
+            <li><a href="#gcc-gnu-compiler-collection">GCC (GNU Compiler Collection)</a></li>
+            <li><a href="#clang">Clang</a></li>
+            <li><a href="#binutils">Binutils</a></li>
+          </ol>
+        </li>
+        <li><a href="#调试工具-debugging-tools">调试工具 (Debugging Tools)</a>
+          <ol>
+            <li><a href="#gdb-gnu-debugger">GDB (GNU Debugger)</a></li>
+            <li><a href="#openocd">OpenOCD</a></li>
+            <li><a href="#jlink-segger-j-link">JLink (SEGGER J-Link)</a></li>
+            <li><a href="#lldb">LLDB</a></li>
+          </ol>
+        </li>
+        <li><a href="#构建工具-build-tools">构建工具 (Build Tools)</a>
+          <ol>
+            <li><a href="#make">Make</a></li>
+            <li><a href="#cmake">CMake</a></li>
+          </ol>
+        </li>
+        <li><a href="#其他工具">其他工具</a>
+          <ol>
+            <li><a href="#nm">nm</a></li>
+            <li><a href="#objdump">Objdump</a></li>
+            <li><a href="#readelf">Readelf</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#热点分析">热点分析</a>
+      <ol>
+        <li><a href="#常见的热点分析方法">常见的热点分析方法</a></li>
+        <li><a href="#实际操作">实际操作</a></li>
+      </ol>
+    </li>
+    <li><a href="#性能分析工具">性能分析工具</a>
+      <ol>
+        <li><a href="#gprofgnu-profile工具">gprof：GNU profile工具</a></li>
+        <li><a href="#perf">Perf</a></li>
+        <li><a href="#intel-vtune-profiler">Intel VTune Profiler</a></li>
+        <li><a href="#tau">TAU</a></li>
+      </ol>
+    </li>
+    <li><a href="#gpu-分析工具">GPU 分析工具</a>
+      <ol>
+        <li><a href="#cuda-gdb">cuda-gdb</a></li>
+        <li><a href="#nsight-compute">Nsight Compute</a></li>
+        <li><a href="#nsight-system">Nsight System</a></li>
+        <li><a href="#computesanitizer">ComputeSanitizer</a></li>
+        <li><a href="#hpctoolkit">HPCtoolkit</a></li>
+      </ol>
+    </li>
+    <li><a href="#内存分析工具">内存分析工具</a>
+      <ol>
+        <li><a href="#tsan">tsan</a></li>
+        <li><a href="#addresssanitizer-asan">AddressSanitizer (ASan)</a></li>
+        <li><a href="#valgrind">valgrind</a></li>
+        <li><a href="#ebpf-extended-berkeley-packet-filter">eBPF (Extended Berkeley Packet Filter)</a></li>
+      </ol>
+    </li>
+    <li><a href="#性能优化策略">性能优化策略</a>
+      <ol>
+        <li><a href="#1-并行度优化parallelism-optimization">1. <strong>并行度优化（Parallelism Optimization）</strong></a>
+          <ol>
+            <li><a href="#核心策略">核心策略：</a></li>
+            <li><a href="#实例">实例：</a></li>
+          </ol>
+        </li>
+        <li><a href="#2-数据传输优化data-transfer-optimization">2. <strong>数据传输优化（Data Transfer Optimization）</strong></a>
+          <ol>
+            <li><a href="#核心策略-1">核心策略：</a></li>
+            <li><a href="#实例-1">实例：</a></li>
+          </ol>
+        </li>
+        <li><a href="#3-存储器访问优化memory-access-optimization">3. <strong>存储器访问优化（Memory Access Optimization）</strong></a>
+          <ol>
+            <li><a href="#核心策略-2">核心策略：</a></li>
+            <li><a href="#实例-2">实例：</a></li>
+          </ol>
+        </li>
+        <li><a href="#4-向量化优化vectorization-optimization">4. <strong>向量化优化（Vectorization Optimization）</strong></a>
+          <ol>
+            <li><a href="#核心策略-3">核心策略：</a></li>
+            <li><a href="#实例-3">实例：</a></li>
+          </ol>
+        </li>
+        <li><a href="#5-负载均衡优化load-balancing-optimization">5. <strong>负载均衡优化（Load Balancing Optimization）</strong></a>
+          <ol>
+            <li><a href="#核心策略-4">核心策略：</a></li>
+            <li><a href="#实例-4">实例：</a></li>
+          </ol>
+        </li>
+        <li><a href="#6-多线程扩展性优化multithreading-scalability-optimization">6. <strong>多线程扩展性优化（Multithreading Scalability Optimization）</strong></a>
+          <ol>
+            <li><a href="#核心策略-5">核心策略：</a></li>
+            <li><a href="#实例-5">实例：</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#环境模拟">环境模拟</a>
+      <ol>
+        <li><a href="#docker">docker</a></li>
+        <li><a href="#qemu">qemu</a>
+          <ol>
+            <li><a href="#qemu安装arm">qemu安装ARM</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#环境管理运维">环境管理/运维</a>
+      <ol>
+        <li><a href="#微服务">微服务</a></li>
+        <li><a href="#python">python</a></li>
+      </ol>
+    </li>
+    <li><a href="#其他">其他</a>
+      <ol>
+        <li><a href="#内容比较compare">内容比较compare</a></li>
+        <li><a href="#代码调用关系">代码调用关系</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tool/" >
+                Tool
+            </a>
+        
+            <a href="/categories/hpc/" >
+                HPC
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/tool/">【Tool】 记录各种用到的工具</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            记录性能优化、环境模拟等各种用到的工具
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 05, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 21 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="references">References
+</h2><ul>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/673459718"  target="_blank" rel="noopener"
+    >HPC/ML/OS/SW性能工具总结</a></li>
+</ul>
+<h2 id="汇编嵌入式编程工具">汇编/嵌入式编程工具
+</h2><p>在 Linux 环境下进行汇编或嵌入式编程时，涉及的工具和程序非常广泛，包括编译器、调试工具、构建系统、性能分析工具等。下面是一些常见的汇编或嵌入式编程工具的详细介绍：</p>
+<h3 id="汇编工具-assembly-tools">汇编工具 (Assembly Tools)
+</h3><h4 id="gas-gnu-assembler">GAS (GNU Assembler)
+</h4><p>GAS 是 GNU 编译器集合（GCC）的一部分，专门用于将汇编语言转换成机器代码（即目标文件）。它支持多种体系结构，适用于嵌入式系统开发，通常与 GCC 配合使用。</p>
+<p><strong>常用选项：</strong></p>
+<ul>
+<li><code>-o &lt;file&gt;</code>: 指定输出文件。</li>
+<li><code>-g</code>: 生成调试信息。</li>
+<li><code>-D &lt;macro&gt;</code>: 定义宏。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">as -o main.o main.s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="交叉编译工具链-cross-compiler-toolchain">交叉编译工具链 (Cross Compiler Toolchain)
+</h3><h4 id="gcc-gnu-compiler-collection">GCC (GNU Compiler Collection)
+</h4><p>GCC 是用于 C、C++、Fortran 等语言的编译器，常用于嵌入式编程中。它可以生成目标平台的代码，并支持交叉编译（cross-compilation），即在一种平台上为另一种平台编译代码。</p>
+<p><strong>常用选项：</strong></p>
+<ul>
+<li><code>-o &lt;file&gt;</code>: 输出文件。</li>
+<li><code>-mcpu=&lt;target&gt;</code>: 指定目标架构（如 ARM、MIPS）。</li>
+<li><code>-m32</code> 或 <code>-m64</code>: 设置生成的代码是 32 位或 64 位。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">arm-none-eabi-gcc -o my_program.elf main.c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="clang">Clang
+</h4><p>Clang 是 LLVM 项目的一部分，作为 GCC 的替代品，Clang 提供了高效的编译功能，并且具有更加友好的错误报告。它同样支持交叉编译，特别适合现代嵌入式编程和集成开发环境（IDE）中使用。</p>
+<p><strong>常用选项：</strong></p>
+<ul>
+<li><code>-target &lt;target&gt;</code>: 指定目标平台。</li>
+<li><code>-o &lt;file&gt;</code>: 输出文件。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">clang -target arm-none-eabi -o my_program.elf main.c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="binutils">Binutils
+</h4><p>Binutils 是一组二进制工具，包括汇编器、链接器、调试器等，广泛用于嵌入式系统开发。<code>ld</code> 和 <code>as</code> 工具是其中最常用的，负责汇编、链接以及生成目标文件。</p>
+<p><strong>常用工具：</strong></p>
+<ul>
+<li><code>as</code>：汇编源文件。</li>
+<li><code>ld</code>：链接目标文件生成最终的可执行文件。</li>
+<li><code>objcopy</code>：将目标文件转换为不同格式。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">as -o main.o main.s
+</span></span><span class="line"><span class="cl">ld -o my_program.elf main.o
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="调试工具-debugging-tools">调试工具 (Debugging Tools)
+</h3><h4 id="gdb-gnu-debugger">GDB (GNU Debugger)
+</h4><p>GDB 是一个功能强大的调试工具，适用于 C/C++ 等程序的调试。在嵌入式开发中，GDB 通常配合交叉编译工具链和硬件调试器（如 JTAG、SWD）一起使用。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>run</code>：启动程序。</li>
+<li><code>break &lt;line&gt;</code>：在指定行设置断点。</li>
+<li><code>step</code>：单步执行，进入函数。</li>
+<li><code>next</code>：单步执行，不进入函数。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gdb my_program.elf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="openocd">OpenOCD
+</h4><p>OpenOCD 是一个用于与目标硬件（如 ARM 处理器）进行通信的调试工具。它支持通过 JTAG 或 SWD 接口进行调试，可以与 GDB 配合使用。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>targets</code>：列出连接的目标。</li>
+<li><code>reset halt</code>：复位并停止目标。</li>
+<li><code>flash write_image erase &lt;file&gt; 0x0</code>：将固件烧录到设备。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openocd -f interface/stlink-v2.cfg -f target/stm32f4x.cfg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="jlink-segger-j-link">JLink (SEGGER J-Link)
+</h4><p>JLink 是 SEGGER 提供的一个商业级调试器，支持 JTAG 和 SWD 接口，用于调试各种嵌入式设备。它提供高性能的调试功能，广泛用于工业和开发中。</p>
+<p><strong>主要功能：</strong></p>
+<ul>
+<li>支持高速调试，能够快速读写内存和寄存器。</li>
+<li>与多种 IDE（如 Keil、IAR、Eclipse）兼容。</li>
+<li>提供强大的脚本支持和自动化功能。</li>
+</ul>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li>connect: 连接目标硬件。</li>
+<li>r: 重置目标设备。</li>
+<li>loadfile <file>: 加载二进制文件到目标设备。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">JLinkExe -device STM32F407VG -if SWD
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="lldb">LLDB
+</h4><p>LLDB 是 LLVM 提供的调试工具，类似于 GDB，但更加现代化。它具有更高效的性能，特别适用于基于 Clang 的编译工具链。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>run</code>：启动程序。</li>
+<li><code>breakpoint set</code>：设置断点。</li>
+<li><code>step</code>：单步执行。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lldb my_program.elf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="构建工具-build-tools">构建工具 (Build Tools)
+</h3><h4 id="make">Make
+</h4><p><code>Make</code> 是一个非常常用的构建工具，使用 <code>Makefile</code> 管理项目的编译过程。它会根据 <code>Makefile</code> 中的规则自动执行编译、链接等操作，尤其适合嵌入式项目。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>make</code>：构建项目。</li>
+<li><code>make clean</code>：清理编译结果。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">make -f Makefile
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="cmake">CMake
+</h4><p>CMake 是一个跨平台的自动化构建工具，可以生成适用于不同平台的构建文件（如 Makefile、Ninja 文件等）。它在现代嵌入式开发中非常流行，支持复杂的项目构建配置。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>cmake .</code>：生成构建文件。</li>
+<li><code>make</code>：执行构建。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cmake .
+</span></span><span class="line"><span class="cl">make
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="其他工具">其他工具
+</h3><h4 id="nm">nm
+</h4><p>nm 是一个用于列出二进制文件（例如可执行文件、共享库、目标文件等）符号表的工具。它显示文件中定义和引用的符号，包括函数、变量等。通过 nm，用户可以查看符号的类型和地址信息。</p>
+<p><strong>常用选项：</strong></p>
+<ul>
+<li>nm <file>: 列出指定文件的符号。</li>
+<li>-g: 只显示全局符号。</li>
+<li>-n 或 &ndash;numeric-sort: 按地址排序符号。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nm my_program<span class="p">|</span>grep func
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="objdump">Objdump
+</h4><p><code>objdump</code> 用于反汇编和查看目标文件的详细信息。它可以显示汇编代码、符号表、段信息等，帮助开发人员理解程序的低级结构。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>objdump -d &lt;file&gt;</code>：反汇编文件。</li>
+<li><code>objdump -t &lt;file&gt;</code>：显示符号表。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">objdump -d my_program
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="readelf">Readelf
+</h4><p><code>readelf</code> 用于显示 ELF 文件的详细信息，提供比 <code>objdump</code> 更加专注于 ELF 文件结构的查看。它支持查看 ELF 头、段、节区、符号表等信息。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><code>readelf -h &lt;file&gt;</code>：显示 ELF 文件头信息。</li>
+<li><code>readelf -S &lt;file&gt;</code>：显示节区信息。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">readelf -h my_program
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="热点分析">热点分析
+</h2><p>热点分析通常通过使用 性能分析工具 来实现，工具会提供每个函数、方法、代码块的执行时间、调用次数、CPU 占用率等信息，帮助开发人员识别耗时最多的部分。</p>
+<h3 id="常见的热点分析方法">常见的热点分析方法
+</h3><ul>
+<li>调用图（Call Graph）：通过调用图分析函数之间的调用关系，找到调用最频繁的部分。</li>
+<li>性能剖析（Profiling）：通过工具生成程序运行时的性能数据，分析哪些函数或代码块占用了最多的时间或资源。</li>
+<li>热代码路径（Hot Code Path）分析：关注那些频繁执行的路径或分支，优化这些路径的性能。</li>
+<li>内存热点分析：分析程序中哪些数据结构或对象频繁创建、销毁，导致内存管理不善或频繁的垃圾回收。</li>
+</ul>
+<h3 id="实际操作">实际操作
+</h3><ul>
+<li>函数级分析：分析程序中的每个函数，找出耗时最多的函数并进行优化。</li>
+<li>多线程/并发分析：对于并发程序，热点分析还要考虑线程的执行时间、锁竞争和同步问题，识别线程间的性能瓶颈。</li>
+<li>内存分析：分析内存的分配和释放，找出内存泄漏或频繁的内存分配导致的性能瓶颈。</li>
+</ul>
+<hr>
+<h2 id="性能分析工具">性能分析工具
+</h2><h3 id="gprofgnu-profile工具">gprof：GNU profile工具
+</h3><ul>
+<li>适用语言：C、C++、Pascal、Fortran</li>
+<li>介绍：用于程序的性能优化以及程序瓶颈问题的查找和解决。通过分析应用程序运行时产生的“flat profile”，可以得到每个函数的调用次数，每个函数消耗的处理器时间，也可以得到函数的“调用关系图”，包括函数调用的层次关系，每个函数调用花费了多少时间。</li>
+<li>缺点：对并行程序支持较差，不能提供细粒度的分析，主要适用于函数级别的性能分析。</li>
+</ul>
+<p><strong>使用步骤：</strong></p>
+<ul>
+<li>1、用gcc、g++、xlC编译程序时，使用-pg参数，如：g++ -pg -o test test.cpp。编译器会自动在目标代码中插入用于性能测试的代码片断，这些代码在程序运行时采集并记录函数的调用关系和调用次数，并记录函数自身执行时间和被调用函数的执行时间。</li>
+<li>2、执行编译后的可执行程序，如：./test。该步骤运行程序的时间会稍慢于正常编译的可执行程序的运行时间。程序运行结束后，会在程序所在路径下生成一个缺省文件名为gmon.out的文件，这个文件就是记录程序运行的性能、调用关系、调用次数等信息的数据文件。</li>
+<li>3、使用gprof命令来分析记录程序运行信息的gmon.out文件，如：gprof test gmon.out。则可以在显示器上看到函数调用相关的统计、分析信息。</li>
+</ul>
+<h3 id="perf">Perf
+</h3><ul>
+<li>适用语言： C, C++</li>
+<li>平台： Linux</li>
+<li>特点： Perf 是 Linux内置的性能分析工具，可用于分析 CPU 使用率、内存访问、系统调用等。它是一个命令行工具。适用于深度的 Linux 系统级性能分析。</li>
+<li>缺点：需要一定的学习成本，报告可能较为复杂。</li>
+</ul>
+<p>Perf是一个<strong>很大的工具</strong>，此处仅展示分析某个应用的的用法。
+<strong>使用步骤（使用gprof的那个可执行文件）</strong>：</p>
+<ul>
+<li>1、perf record ./test，部分性能参数需要root权限</li>
+<li>2、perf report</li>
+</ul>
+<p><strong>References</strong></p>
+<ul>
+<li><a class="link" href="https://www.brendangregg.com/perf.html"  target="_blank" rel="noopener"
+    >https://www.brendangregg.com/perf.html</a></li>
+<li><a class="link" href="https://perfwiki.github.io/main/"  target="_blank" rel="noopener"
+    >perf tutorial</a></li>
+<li><a class="link" href="https://blog.csdn.net/qq_17743307/article/details/123081487"  target="_blank" rel="noopener"
+    >WSL2安装perf</a></li>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/530622057"  target="_blank" rel="noopener"
+    >perf原理及火焰图</a></li>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/134721612"  target="_blank" rel="noopener"
+    >perf分析c热点函数</a></li>
+</ul>
+<p><strong>perf简单例子-程序调用栈火焰图</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">perf record -F 99 -p 2347 -g -- sleep 30
+</span></span><span class="line"><span class="cl"># perf record表示采集系统事件, 没有使用 -e 指定采集事件, 则默认采集 cycles(即 CPU clock 周期), -F 99 表示每秒 99 次, -p 2347 是进程号, 即对哪个进程进行分析, -g 表示记录调用栈, sleep 30 则是持续 30 秒.
+</span></span><span class="line"><span class="cl"># 统计每个调用栈出现的百分比, 然后从高到低排列
+</span></span><span class="line"><span class="cl">perf report -n –stdio
+</span></span><span class="line"><span class="cl"># 解析perf收集的信息
+</span></span><span class="line"><span class="cl">perf script -i perf.data &amp;&gt; perf.unfold
+</span></span><span class="line"><span class="cl"># 生成折叠后的调用栈
+</span></span><span class="line"><span class="cl"># 使用开源软件：https://github.com/brendangregg/FlameGraph.git
+</span></span><span class="line"><span class="cl">./stackcollapse-perf.pl perf.unfold &amp;&gt; perf.folded
+</span></span><span class="line"><span class="cl"># 生成火焰图
+</span></span><span class="line"><span class="cl">./flamegraph.pl perf.folded &gt; perf.svg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>perf简单例子-分析热点函数、指令</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 通过-g选项保留源代码信息
+</span></span><span class="line"><span class="cl">gcc -g test.c -o test
+</span></span><span class="line"><span class="cl"># 通过perf record命令对test程序采样，-g表示采样调用栈
+</span></span><span class="line"><span class="cl">perf record -F 999 ./test
+</span></span><span class="line"><span class="cl"># 查看热点分布
+</span></span><span class="line"><span class="cl">perf report
+</span></span><span class="line"><span class="cl"># 查看热点函数testA中的热点指令及语句
+</span></span><span class="line"><span class="cl">perf annotate --stdio --symbol=testA
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="intel-vtune-profiler">Intel VTune Profiler
+</h3><ul>
+<li>适用语言： 多语言支持</li>
+<li>平台： Windows、Linux</li>
+<li>特点： Intel VTune Profiler 是一个功能强大的性能分析工具，可用于分析 CPU 使用率、内存访问、多线程性能等。适用于 <strong>Intel</strong> 处理器。</li>
+<li>可以看到 perf 看不到L3cache 等硬件特性</li>
+</ul>
+<p><strong>references</strong></p>
+<ul>
+<li><a class="link" href="https://www.cnblogs.com/bandaoyu/p/16751995.html"  target="_blank" rel="noopener"
+    >https://www.cnblogs.com/bandaoyu/p/16751995.html</a></li>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/12642264312"  target="_blank" rel="noopener"
+    >https://zhuanlan.zhihu.com/p/12642264312</a></li>
+<li><a class="link" href="https://blog.csdn.net/yaojingqingcheng/article/details/120335335"  target="_blank" rel="noopener"
+    >https://blog.csdn.net/yaojingqingcheng/article/details/120335335</a></li>
+</ul>
+<h3 id="tau">TAU
+</h3><ul>
+<li>适用语言： C、C++、python</li>
+<li>官网：https://www.cs.uoregon.edu/research/tau/home.php</li>
+<li>特点： 是一个面向MPI与OpenMP并行程序的profiler，在目前看到的OpenMPI的Profiler中算是比较健全的一个。相比于Intel的vtune面向OpenMPI的时候会有些限制，TAU可以根据不同的MPI发行版重新编译。</li>
+</ul>
+<p><strong>references</strong></p>
+<ul>
+<li><a class="link" href="https://www.cnblogs.com/undermyth/p/17253435.html"  target="_blank" rel="noopener"
+    >TAU Profiler安装</a></li>
+<li><a class="link" href="https://www.cs.uoregon.edu/research/tau/docs/newguide/ch03s09.html"  target="_blank" rel="noopener"
+    >python</a></li>
+<li><a class="link" href="https://blog.csdn.net/Johnsonjjj/article/details/103731954"  target="_blank" rel="noopener"
+    >使用性能测试工具TAU测试MPI程序记录</a></li>
+<li><a class="link" href="https://www.showapi.com/news/article/66c15dc24ddd79f11a0f7cee"  target="_blank" rel="noopener"
+    >深入解析TAU工具</a></li>
+</ul>
+<hr>
+<h2 id="gpu-分析工具">GPU 分析工具
+</h2><p><a class="link" href="https://developer.nvidia.com/tools-overview"  target="_blank" rel="noopener"
+    >官方全部工具</a></p>
+<h3 id="cuda-gdb">cuda-gdb
+</h3><ul>
+<li><a class="link" href="https://developer.nvidia.com/cuda-gdb"  target="_blank" rel="noopener"
+    >cuda-gdb</a></li>
+<li><code>-g -G</code>编译选项</li>
+</ul>
+<h3 id="nsight-compute">Nsight Compute
+</h3><ul>
+<li>nvprof，计算能力8.0以下使用</li>
+<li>注意系统要求（如win11 ws2才支持）：<a class="link" href="https://docs.nvidia.com/nsight-compute/ReleaseNotes/index.html#system-requirements"  target="_blank" rel="noopener"
+    >system-requirements</a>、<a class="link" href="https://forums.developer.nvidia.com/t/unknown-error-on-device-0-when-running-ncu-on-wsl/313742"  target="_blank" rel="noopener"
+    >unknown-error-on-device-0-when-running-ncu-on-wsl</a></li>
+<li>用于深入分析单个 CUDA 内核的性能瓶颈，帮助你优化内核代码。</li>
+<li>通常，你可以使用 Nsight Systems 先找到瓶颈的 CUDA 内核，然后使用 Nsight Compute 对这些内核进行详细的性能分析。</li>
+</ul>
+<p><strong>使用方案：</strong></p>
+<ul>
+<li>1、<a class="link" href="https://docs.nvidia.com/nsight-compute/NsightCompute/index.html"  target="_blank" rel="noopener"
+    >用户界面</a>：使用<code>ncu-ui</code>命令</li>
+<li>2、<a class="link" href="https://docs.nvidia.com/nsight-compute/NsightComputeCli/index.html"  target="_blank" rel="noopener"
+    >CLI方式</a></li>
+</ul>
+<h3 id="nsight-system">Nsight System
+</h3><ul>
+<li>用于高层次的系统级性能分析，帮助你识别整个应用的瓶颈，例如 GPU 内核启动延迟、数据传输等问题。</li>
+<li><a class="link" href="https://docs.nvidia.com/nsight-systems/UserGuide/index.html"  target="_blank" rel="noopener"
+    >UserGuide</a></li>
+</ul>
+<p><strong>使用方案：</strong></p>
+<ul>
+<li>类似<code>Nsight Compute</code>，但支持jupyter等</li>
+<li>可以支持应用执行中的很多系统调用情况</li>
+</ul>
+<h3 id="computesanitizer">ComputeSanitizer
+</h3><p><a class="link" href="https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html#id1"  target="_blank" rel="noopener"
+    >https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html#id1</a></p>
+<ul>
+<li>功能正确性检查工具，包含：memcheck、racecheck、initcheck、synccheck等</li>
+<li>cuda12.0以下内存检查使用<a class="link" href="https://developer.nvidia.com/cuda-memcheck"  target="_blank" rel="noopener"
+    >CUDA-MEMCHECK</a>，以上使用ComputeSanitizer</li>
+</ul>
+<h3 id="hpctoolkit">HPCtoolkit
+</h3><ul>
+<li>适用语言： C、C++、CUDA</li>
+<li>官网：<a class="link" href="https://github.com/HPCToolkit"  target="_blank" rel="noopener"
+    >HPCToolkit</a></li>
+<li>特点：支持CUDA</li>
+</ul>
+<hr>
+<h2 id="内存分析工具">内存分析工具
+</h2><ul>
+<li>gdb：-g源码调试</li>
+</ul>
+<h3 id="tsan">tsan
+</h3><p>TSan（ThreadSanitizer）是一个用于检测多线程程序中的 <strong>数据竞争</strong> 和 <strong>线程安全问题</strong> 的工具。它是由 Google 开发的，用于帮助开发者发现并修复多线程程序中的并发问题，这些问题可能导致难以复现的错误和难以调试的行为。</p>
+<p><strong>1. 什么是数据竞争？</strong>
+数据竞争是指多个线程并发地访问同一块内存区域，并且至少有一个线程在写入该内存区域，而其他线程可能在读或写该内存。数据竞争通常会导致不可预测的程序行为，比如程序崩溃、结果错误等。数据竞争的问题尤其难以发现，因为它们通常依赖于程序执行的特定时序和上下文。</p>
+<p><strong>2. TSan 的功能</strong>
+ThreadSanitizer 是一种 动态检测工具，它能够监测并发程序中的线程交互，并在检测到数据竞争时，给出详细的报告。它通过 **插桩（Instrumentation） **方式，插入检查代码，追踪每个线程对共享内存的访问，以此来检测潜在的数据竞争。</p>
+<p>具体功能包括：</p>
+<ul>
+<li>检测数据竞争：在多线程程序中，TSan 能够发现不同线程对同一内存位置的并发访问（读-写或写-写），并且报告潜在的数据竞争。</li>
+<li>报告细节：当 TSan 检测到数据竞争时，会提供详细的错误报告，包含竞争发生的栈信息、线程信息、访问的内存位置等，帮助开发者定位问题。</li>
+<li>跨平台支持：TSan 支持 Linux、macOS、Android 和其他平台，通常与 Clang 和 GCC 编译器兼容。</li>
+</ul>
+<p><strong>3. 如何使用 TSan</strong>
+TSan 是通过编译器插件实现的，因此需要在编译程序时启用它。以下是启用 TSan 的基本步骤：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 1、编译时启用 TSan，使编译器将 TSan 插桩到代码中，在程序运行时启用线程安全检查。
+</span></span><span class="line"><span class="cl">g++ -fsanitize=thread -g test.cpp -o test
+</span></span><span class="line"><span class="cl"># 2、运行时，程序将被 TSsan 监控，检测线程间的竞争。
+</span></span><span class="line"><span class="cl">./test
+</span></span><span class="line"><span class="cl"># 如果程序中有数据竞争，TSan 会输出类似以下的报告：
+</span></span><span class="line"><span class="cl">ThreadSanitizer: data race in function &#39;foo&#39; at address 0x601000000020
+</span></span><span class="line"><span class="cl">  #0 0x7f89b5cb5e6f in foo
+</span></span><span class="line"><span class="cl">  #1 0x7f89b5cb5e79 in bar
+</span></span><span class="line"><span class="cl">  #2 0x7f89b5cb5f89 in main
+</span></span><span class="line"><span class="cl">TSan 会提供详细的栈跟踪，指出哪些线程、哪些内存地址、在哪些函数中发生了数据竞争。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>4. TSan 的工作原理</strong>
+TSan 通过对程序进行 <strong>插桩</strong>，在程序中每次内存访问（读/写）时插入检查代码，追踪每个线程对内存的访问。它会记录每个线程对共享内存的访问并进行比较，以判断是否存在数据竞争。</p>
+<p><strong>主要机制：</strong></p>
+<ul>
+<li>内存访问追踪：TSan 会追踪每个线程对内存地址的访问情况，记录访问的时间戳和线程标识。</li>
+<li>同步原语检测：TSan 会检查线程之间的同步操作（如 mutex、lock、atomic）是否正确使用，确保线程安全。</li>
+<li>数据竞争检测：如果两个线程访问同一内存位置，并且至少一个是写操作，TSan 会标记为潜在的数据竞争。</li>
+</ul>
+<p><strong>5. TSan 检测的线程安全问题</strong>
+除了检测数据竞争，TSan 还可以帮助识别以下并发编程中的常见问题：</p>
+<ul>
+<li>死锁：如果两个线程因相互等待而导致死锁，TSan 也可以通过检测锁的顺序和依赖关系来帮助识别死锁。</li>
+<li>非原子操作：在多线程环境中，如果某些操作不是原子的，可能会导致竞态条件。TSan 可以通过对同步操作的检查，帮助发现这些问题。</li>
+<li>不当的内存同步：如果线程没有适当的同步机制（如 mutex 或 atomic）来协调对共享数据的访问，可能会出现竞态条件，TSan 会标记这些不安全的内存访问。</li>
+</ul>
+<p><strong>6. TSan 的优点和限制</strong></p>
+<ul>
+<li>优点：能够捕获到很难复现的多线程问题，提供详细的报告，包括访问的内存位置、线程栈、数据竞争的上下文，帮助开发者快速定位并修复问题。</li>
+<li>限制：会有一定的性能开销（开发阶段使用），可能不会检测所有类型的并发问题，特别是某些边缘情况或者深度依赖于硬件的并发问题。</li>
+</ul>
+<h3 id="addresssanitizer-asan">AddressSanitizer (ASan)
+</h3><p><strong>ASan</strong>（<strong>AddressSanitizer</strong>）是一个用于检测 <strong>内存错误</strong> 的强大工具，特别是针对 <strong>缓冲区溢出</strong>、<strong>堆栈溢出</strong>、<strong>使用后释放</strong>（use-after-free）等常见内存问题。ASan 是由 Google 开发的，作为一个 <strong>编译时检测工具</strong>，它可以在程序运行时检测出许多类型的内存错误，并提供详细的错误报告。ASan 可以用于 <strong>C</strong> 和 <strong>C++</strong> 等语言，广泛应用于开发和测试阶段，帮助开发者发现和修复难以调试的内存错误。</p>
+<ol>
+<li><strong>ASan 的功能</strong>
+ASan 的核心功能是通过 <strong>内存访问跟踪</strong> 来检测程序中的各种内存错误。它能有效检测以下几类常见的内存问题：</li>
+</ol>
+<ul>
+<li><strong>缓冲区溢出</strong>（Buffer Overflow）：当程序写入超出分配内存的区域时，会导致数据损坏或程序崩溃。</li>
+<li><strong>堆栈溢出</strong>（Stack Overflow）：当程序的栈内存超出预定范围时，可能会覆盖局部变量或函数返回地址。</li>
+<li><strong>使用后释放</strong>（Use-After-Free）：指在内存被释放后，程序仍然访问该内存。</li>
+<li><strong>内存泄漏</strong>（Memory Leak）：指程序分配了内存但没有释放，导致内存消耗不断增加。</li>
+<li><strong>双重释放</strong>（Double Free）：指在释放内存后再次释放该内存，可能导致程序崩溃。</li>
+<li><strong>未初始化内存读取</strong>（Use of Uninitialized Memory）：程序读取未初始化的内存内容，可能导致不可预测的行为。</li>
+</ul>
+<ol start="2">
+<li><strong>ASan 的工作原理</strong>
+ASan 通过 <strong>编译器插桩</strong>（Instrumenting Compiler）和 <strong>运行时库</strong>（Runtime Library）的配合工作来检测内存错误。</li>
+</ol>
+<ul>
+<li><strong>编译时插桩</strong>：在程序的源代码编译过程中，ASan 会插入额外的检查代码，这些代码会在程序运行时检查每个内存访问，确保它们在合法的内存范围内。</li>
+<li><strong>内存分配替换</strong>：ASan 会替换程序的 <strong>内存分配函数</strong>（如 <code>malloc</code>、<code>free</code>、<code>new</code>、<code>delete</code>）来监控内存的分配和释放操作。</li>
+<li><strong>内存红区（Redzones）</strong>：ASan 在每个内存块的前后插入一些特殊的 &ldquo;红区&rdquo;（Redzones），这些区域用于检测 <strong>越界访问</strong>。如果程序试图访问红区，ASan 会报告错误。</li>
+<li><strong>运行时检测</strong>：当程序访问非法内存时，ASan 会触发 <strong>运行时错误检测</strong>，并输出详细的错误信息（如错误的内存地址、堆栈信息等）。</li>
+</ul>
+<ol start="3">
+<li><strong>如何使用 ASan</strong>
+要启用 AddressSanitizer，您需要在编译时添加 <code>-fsanitize=address</code> 选项，并启用调试信息 <code>-g</code>（以便于调试）。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">g++ -fsanitize<span class="o">=</span>address -g -o <span class="nb">test</span> test.cpp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li><strong>ASan 错误报告</strong>
+当 ASan 检测到内存错误时，它会生成详细的错误报告。该报告通常包含以下信息：</li>
+</ol>
+<ul>
+<li><strong>错误类型</strong>：如 <strong>use-after-free</strong>、<strong>buffer overflow</strong>、<strong>stack overflow</strong> 等。</li>
+<li><strong>错误位置</strong>：报告发生错误的内存地址，指出程序在哪里进行非法内存访问。</li>
+<li><strong>调用栈</strong>：ASan 会提供程序的调用栈信息，帮助开发者快速定位问题。</li>
+<li><strong>内存布局</strong>：显示内存分配情况，包括程序访问的内存区域和红区位置。</li>
+</ul>
+<ol start="5">
+<li><strong>ASan 检测的内存问题</strong>
+ASan 可以检测的内存问题包括：</li>
+</ol>
+<ul>
+<li><strong>堆栈溢出（Stack Overflow）</strong>：当局部变量超出栈边界时，ASan 会报告堆栈溢出。</li>
+<li><strong>缓冲区溢出（Buffer Overflow）</strong>：当访问超出数组或缓冲区的范围时，ASan 会检测到缓冲区溢出。</li>
+<li><strong>使用后释放（Use-After-Free）</strong>：在内存被释放后，如果程序继续使用该内存，ASan 会报告此错误。</li>
+<li><strong>内存泄漏（Memory Leak）</strong>：ASan 可以检测到程序中未释放的内存（通过启用 <code>-fsanitize=address</code> 和使用 <code>ASAN_OPTIONS=detect_leaks=1</code>）。</li>
+<li><strong>双重释放（Double Free）</strong>：当程序尝试两次释放同一块内存时，ASan 会报告此问题。</li>
+<li><strong>未初始化内存访问（Use of Uninitialized Memory）</strong>：当程序访问未初始化的内存时，ASan 会报告此错误。</li>
+</ul>
+<ol start="6">
+<li><strong>ASan 的优点和缺点</strong></li>
+</ol>
+<ul>
+<li>优点：高效的内存错误检测、易于使用、详细的错误报告、广泛支持。</li>
+<li>缺点：性能开销、仅支持动态检测、依赖编译器。</li>
+</ul>
+<h3 id="valgrind">valgrind
+</h3><ul>
+<li>平台：Linux / macOS / Windows（通过 Cygwin）</li>
+<li>用途：Valgrind 是一款开源的动态分析工具，广泛用于 内存分析，如查找内存泄漏、内存越界等问题。
+<strong>功能：</strong></li>
+<li>Memcheck：用于检测内存泄漏、越界访问和未初始化的内存读取。</li>
+<li>Cachegrind：用于缓存行为分析，评估 CPU 缓存的命中率。</li>
+<li>Callgrind：支持函数级别的性能分析，提供详细的 CPU 性能数据。</li>
+<li>Helgrind：用于检测并发程序中的数据竞争。
+<strong>适用场景</strong>：适用于内存优化、程序调试和多线程程序的性能分析。
+<strong>使用方式</strong>：通过命令行运行程序时加上 valgrind，比如 valgrind &ndash;leak-check=full ./my_program。
+<strong>优点</strong>：强大的内存分析功能，能够检测很多潜在的错误。
+<strong>缺点</strong>：运行时开销较大，程序执行速度可能会减慢。</li>
+</ul>
+<h3 id="ebpf-extended-berkeley-packet-filter">eBPF (Extended Berkeley Packet Filter)
+</h3><ul>
+<li>类型：内核性能分析工具</li>
+<li>功能：eBPF 可以用于监控系统的 CPU 使用情况、内存分配、I/O 性能、网络流量 等。</li>
+<li>使用场景：eBPF 适用于 Linux 系统的全栈性能分析，特别是在容器化环境中（如 Kubernetes、Docker）。</li>
+<li>优点：能够高效且低开销地进行性能分析，实时提供系统各个层次的性能数据。</li>
+<li>缺点：需要一定的学习成本，并且工具的设置可能比较复杂。</li>
+</ul>
+<p>在现代计算中，性能优化是提高程序效率、响应时间、资源利用率等重要方面的核心工作。不同类型的性能瓶颈可以通过不同的优化策略来解决，常见的优化策略包括<strong>并行度优化</strong>、<strong>数据传输优化</strong>、<strong>存储器访问优化</strong>、<strong>向量化优化</strong>、<strong>负载均衡优化</strong>和<strong>多线程扩展性优化</strong>。下面将详细介绍每个优化策略。</p>
+<hr>
+<h2 id="性能优化策略">性能优化策略
+</h2><h3 id="1-并行度优化parallelism-optimization">1. <strong>并行度优化（Parallelism Optimization）</strong>
+</h3><p>并行度优化是指将计算任务拆分成多个独立的子任务，利用多核处理器或多台机器的计算能力来加速计算过程。并行度优化主要关注如何高效地将任务分解并利用多个计算资源。</p>
+<h4 id="核心策略">核心策略：
+</h4><ul>
+<li><strong>任务划分</strong>：将计算任务划分为多个相对独立的子任务，确保每个子任务都能并行执行。划分可以基于数据分割或功能划分。</li>
+<li><strong>并行模型选择</strong>：选择合适的并行编程模型，如多线程、分布式计算、SIMD（单指令多数据）等，依赖于硬件架构和应用的需求。</li>
+<li><strong>粒度控制</strong>：控制任务的划分粒度，避免过多的细小任务带来的上下文切换开销。任务太小可能引发更多的线程启动和调度开销，反而会降低性能。</li>
+<li><strong>避免线程同步问题</strong>：在并行化时，尽量减少线程间的同步需求，如锁的竞争等，因为锁竞争会增加线程等待时间，影响性能。</li>
+</ul>
+<h4 id="实例">实例：
+</h4><ul>
+<li><strong>多核处理器利用</strong>：将计算密集型任务分配给不同的 CPU 核心。</li>
+<li><strong>GPU 加速</strong>：使用图形处理单元（GPU）进行并行计算，例如深度学习中广泛使用的并行训练。</li>
+</ul>
+<h3 id="2-数据传输优化data-transfer-optimization">2. <strong>数据传输优化（Data Transfer Optimization）</strong>
+</h3><p>数据传输优化关注的是如何减少计算过程中数据的传输开销，尤其是在多核、多节点或大规模并行计算环境中，数据传输的延迟和带宽限制可能成为性能瓶颈。</p>
+<h4 id="核心策略-1">核心策略：
+</h4><ul>
+<li><strong>减少数据传输量</strong>：尽量减少进程之间、计算节点之间的通信量。可以通过局部计算、减少数据的复制或压缩数据传输来减少带宽消耗。</li>
+<li><strong>数据预取</strong>：根据访问模式预测数据的需求，提前加载数据到缓存中，从而减少等待时间。</li>
+<li><strong>内存映射与共享内存</strong>：使用共享内存或内存映射文件来避免频繁的进程间通信，特别是在多进程或多线程的应用程序中。</li>
+<li><strong>局部性优化</strong>：将数据分配到物理内存的本地区域，减少跨节点或跨芯片的数据传输。</li>
+</ul>
+<h4 id="实例-1">实例：
+</h4><ul>
+<li>在多节点集群中，避免每次计算都从主存储器加载大量数据，而是通过缓存和局部数据共享来减少传输。</li>
+<li>在 GPU 和 CPU 之间，使用较小的批次数据传输，以减少 GPU 与主机之间的通信开销。</li>
+</ul>
+<h3 id="3-存储器访问优化memory-access-optimization">3. <strong>存储器访问优化（Memory Access Optimization）</strong>
+</h3><p>存储器访问优化主要目的是减少内存访问延迟，提高内存带宽的利用率。内存访问模式的不合理会造成严重的性能瓶颈，尤其是对于大规模数据的计算密集型任务。</p>
+<h4 id="核心策略-2">核心策略：
+</h4><ul>
+<li><strong>数据局部性优化</strong>：通过优化数据访问模式，提高数据在缓存中的命中率。可分为<strong>时间局部性</strong>（重复访问相同数据）和<strong>空间局部性</strong>（访问数据时的空间邻近性）。</li>
+<li><strong>缓存优化</strong>：优化程序数据结构，使数据在缓存中更容易命中，从而减少访问主内存的次数。使用<strong>预取技术</strong>和合理的<strong>缓存对齐</strong>可以显著提高缓存命中率。</li>
+<li><strong>避免不必要的内存访问</strong>：减少冗余的内存访问，如不必要的内存复制或多次访问相同的数据。</li>
+<li><strong>非一致性存储模型优化</strong>：在多处理器系统中，保持各个缓存一致性可能导致额外的开销，优化缓存一致性协议和访问策略可以提升性能。</li>
+</ul>
+<h4 id="实例-2">实例：
+</h4><ul>
+<li>优化矩阵运算时，按行或按列的顺序访问数据，以提高缓存命中率。</li>
+<li>使用 <strong>NUMA</strong>（Non-Uniform Memory Access）架构时，避免频繁地访问远程内存，尽量保持计算和数据存储在同一个节点的本地内存中。</li>
+</ul>
+<h3 id="4-向量化优化vectorization-optimization">4. <strong>向量化优化（Vectorization Optimization）</strong>
+</h3><p>向量化是指将标量操作转换为向量操作，在单条指令中处理多个数据元素。现代处理器，尤其是具有SIMD（单指令多数据）指令集的处理器，能够通过向量化提升计算效率。</p>
+<h4 id="核心策略-3">核心策略：
+</h4><ul>
+<li><strong>利用SIMD指令</strong>：使用 SIMD 指令集（如 AVX、SSE、NEON 等）对数据进行向量化操作，在单个指令周期内处理多个数据元素。</li>
+<li><strong>编译器自动向量化</strong>：现代编译器（如 GCC、Clang、Intel Compiler）能够自动识别可以向量化的循环，并进行相应优化。</li>
+<li><strong>手动优化</strong>：在一些复杂的场景中，可以手动编写 SIMD 代码，通过内联汇编或编写特定的 SIMD 库来实现向量化优化。</li>
+<li><strong>数据对齐</strong>：确保数据存储在合适的内存地址对齐，以便在向量化时避免额外的开销。</li>
+</ul>
+<h4 id="实例-3">实例：
+</h4><ul>
+<li>在图像处理、科学计算等应用中，使用 SIMD 向量化技术对每个像素或数据点执行并行操作（如加法、乘法等）。</li>
+</ul>
+<h3 id="5-负载均衡优化load-balancing-optimization">5. <strong>负载均衡优化（Load Balancing Optimization）</strong>
+</h3><p>负载均衡优化是指在多处理器、多核心或分布式系统中，合理分配计算任务，以避免某些处理器过载或闲置，从而提高计算资源的利用率。</p>
+<h4 id="核心策略-4">核心策略：
+</h4><ul>
+<li><strong>任务划分</strong>：合理划分任务，将计算负载均匀地分配给不同的计算单元。划分粒度要合适，避免过细的划分导致调度开销。</li>
+<li><strong>动态负载均衡</strong>：在运行时动态调整任务的分配，以应对负载变化和计算资源的不均衡。例如，在多核环境中，动态地将任务从负载较重的核心转移到空闲的核心上。</li>
+<li><strong>数据局部性和负载均衡的结合</strong>：在多核或多节点环境中，除了考虑负载均衡，还要考虑任务和数据的局部性，避免数据传输引发的性能瓶颈。</li>
+</ul>
+<h4 id="实例-4">实例：
+</h4><ul>
+<li>在分布式计算中使用负载均衡策略，避免某些计算节点过载，其他节点空闲。</li>
+<li>在多核处理器上，使用调度算法动态调整任务负载。</li>
+</ul>
+<h3 id="6-多线程扩展性优化multithreading-scalability-optimization">6. <strong>多线程扩展性优化（Multithreading Scalability Optimization）</strong>
+</h3><p>多线程扩展性优化关注的是如何使程序在多核或多处理器系统上运行时能够保持良好的性能提升，尤其是在线程数增加时，如何避免性能的下降。</p>
+<h4 id="核心策略-5">核心策略：
+</h4><ul>
+<li><strong>避免线程竞争</strong>：合理设计程序，减少线程间的资源竞争。过多的锁、临界区和线程同步会导致线程间的阻塞，从而影响程序的扩展性。</li>
+<li><strong>线程数的调优</strong>：选择合适的线程数，避免过多线程带来的上下文切换开销。通常，线程数不应超过处理器核心数。</li>
+<li><strong>工作窃取（Work Stealing）</strong>：在多线程应用中，可以使用工作窃取算法，通过让空闲线程从负载较重的线程中窃取任务，平衡负载，提升扩展性。</li>
+<li><strong>任务划分粒度</strong>：避免过小或过大的任务粒度，过小的任务会增加线程调度开销，过大的任务则可能导致资源利用率不足。</li>
+</ul>
+<h4 id="实例-5">实例：
+</h4><ul>
+<li>在多核机器上，动态调整线程数，以适应任务的计算需求和机器的硬件能力。</li>
+<li>在并行计算中，使用线程池和任务队列来有效管理线程的创建和销毁。</li>
+</ul>
+<h2 id="环境模拟">环境模拟
+</h2><h3 id="docker">docker
+</h3><h3 id="qemu">qemu
+</h3><p><a class="link" href="https://www.qemu.org/documentation/"  target="_blank" rel="noopener"
+    >docs</a></p>
+<h4 id="qemu安装arm">qemu安装ARM
+</h4><ul>
+<li><a class="link" href="https://blog.csdn.net/benkaoya/article/details/129509269"  target="_blank" rel="noopener"
+    >QEMU启动ARM64 Linux内核</a></li>
+<li>大致思路是：
+<ul>
+<li>安装qemu-system-aarch64（ARM-64bit）模拟器；</li>
+<li>安装aarch64-linux-gnu（ARM-64bit）交叉编译器；</li>
+<li>交叉编译linux源码，得到ARM64 Linux内核镜像；</li>
+<li>交叉编译busybox源码，使用busybox制作initramfs；</li>
+<li>最后使用qemu-system-aarch64启用ARM64 Linux内核；</li>
+</ul>
+</li>
+</ul>
+<h2 id="环境管理运维">环境管理/运维
+</h2><h3 id="微服务">微服务
+</h3><ul>
+<li>k8s</li>
+</ul>
+<h3 id="python">python
+</h3><ul>
+<li>conda</li>
+</ul>
+<h2 id="其他">其他
+</h2><h3 id="内容比较compare">内容比较compare
+</h3><ul>
+<li><a class="link" href="https://www.52pojie.cn/thread-1945905-1-1.html"  target="_blank" rel="noopener"
+    >Beyond Compare</a></li>
+</ul>
+<h3 id="代码调用关系">代码调用关系
+</h3><ul>
+<li>cflow：静态分析工具，用来生成 C/C++ 程序的调用图。</li>
+<li>Callgrind：动态函数分析</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Mar 16, 2025 19:51 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/arm-neon/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【SIMD】 ARM SIMD指令集NEON等介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/rvv/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【SIMD】 Risc-v SIMD指令集RVV介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mpi/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 MPI介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/openacc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 OpenACC介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/openmp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 OpenMP介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="loveleaves/loveleaves.github.io"
+    data-repo-id="R_kgDOHiRxVA"
+    data-category="General"
+    data-category-id="DIC_kwDOHiRxVM4Cmvtx"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading=""
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 Andrew Stark
+    </section>
+    
+    <section class="powerby">
+        
+            loveleaves <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<div id="aplayer"></div>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script>
+const staticDir = "https://loveleaves.github.io/";
+const musicDir = staticDir + '/music/';
+const songs = [
+    'Dream_It_Possible-Delacey',
+    'Love_Story-Taylor_Swift',
+    'Never_Gonna_Give_You_Up-Rick_Astley',
+    'Natural-Imagine_Dragons',
+    'Rolling_In_the_Deep-Adele',
+    'Apologize-OneRepublic',
+    'Salt-Ava_Max',
+    'Try-P!nk',
+    'That_Girl-Olly_Murs',
+    'Hymn_for_the_Weekend-Coldplay',
+    'Hall_of_Fame-The_Script',
+    'My_Stupid_Heart-Walk_Off_the_Earth&Luminati_Suns',
+    'My_Songs_Know_What_You_Did_In_the_Dark-Taylor_Swift&Fall_Out_Boy',
+    'See_You_Again-Wiz_Khalifa&Charlie_Puth',
+    'Uptown_Funk-Mark_Ronson&Bruno_Mars',
+    'Right_Now-Akon',
+    'Whistle-Flo_Rida',
+    'Numb-Linkin_Park',
+    'Immortals-Fall_Out_Boy',
+    'DJ_Got_Us_Falling_In_Love-Krusher',
+    'Faded-Alan_Walker',
+    'Something_Just_Like_This-The_Chainsmokers&Coldplay',
+    'The_Phoenix-Fall_Out_Boy',
+    'Umbrella-Rihanna&Jay_Z',
+    'Animals_(Big_Boi_Remix)-Maroon_5',
+    'Monsters-Katie_Sky',
+    'Turnin’-Young_Rising_Sons',
+    'What_Are_Words-Chris_Medina',
+    'Normal_No_More-Tysm',
+    'Go_Solo-Tom_Rosenthal',
+    'Peter_Pan_Was_Right-Anson_Seabra',
+    'Free_Loop-Daniel_Powter',
+    'Empty_Love-Lulleaux&Kid_Princess',
+    '青空-Candy_Wind',
+    'Take_Me_Hand-DAISHI_DANCE',
+    'Proud_Of_You-冯曦妤',
+    'Please_Don’t_Go-Joel_Adams',
+    'Forgettable-Project_46&Olivia',
+    'Creep-Gamper_And_Dadoni',
+    'Ferrari-Bebe_Rexha',
+    'Legends_Never_Die(Alan_Walker_Remix)-Alan_Walker&Against_The_Current',
+    'Love_the_Way_You_Lie-Eminem&Rihanna',
+    'Lone_Ranger-Rachel_Platten',
+    'What_Makes_You_Beautiful-One_Direction',
+    'Let_Me_Down_Slowly-Alec_Benjamin',
+    'My_Love-Westlife',
+    'Counting_Stars-OneRepublic',
+    'STAY-The_Kid_LAROI&Justin_Bieber',
+    'Shape_of_You-Ed_Sheeran',
+    'Booty_Music-Deep_Side',
+    'Because_Of_You-Kelly_Clarkson',
+    'Far_Away_from_Home-Groove_Coverage',
+    'Move_Your_Body(Single_Mix)-Sia',
+    'The_Nights(Original_Mix)-Avicii',
+    'We_Dont_Talk_Anymore-Charlie_Puth&Selena_Gomez',
+    'Moves_Like_Jagger(Radio_Edit)-Maroon_5',
+    'You_Raise_Me_Up-Westlife',
+    'Call_Me_Maybe(10_Kings_vs_Ollie_Green_Remix)-Carly_Rae_Jepsen',
+    'Senorita-Shawn_Mendes&Camila_Cabello',
+    'We_Will_Rock_You-Queen',
+    'My_Heart_Will_Go_On-Celine_Dion&Webster'
+];
+let audios = [];
+songs.forEach((item) => {
+    const songInfo = item.split('-');
+    audios.push({
+        name: songInfo[0],
+        artist: songInfo[1],
+        url: musicDir + item + '/song.mp3',
+        lrc: musicDir + item + '/song.lrc',
+        cover: musicDir + 'cover.jpg', 
+    })
+});
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    
+    fixed: true,
+    
+    lrcType: 3,
+    audio: audios
+});
+</script>
+
+
+
+
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d-widget-v3/';
+  const myCdnPath = "https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d/live2d-moc3/";
+  
+  const cssPath = "https://loveleaves.github.io/waifu/waifu.css";
+  const tipsJsonPath = "https://loveleaves.github.io/waifu/waifu-tips.json";
+  const tipsJsPath = "https://loveleaves.github.io/waifu/waifu-tips.js";
+  const live2dJsPath = "https://loveleaves.github.io/waifu/live2d.min.js";
+
+  const config = {
+    
+    path: {
+      modelPath: myCdnPath,
+      cssPath: cssPath,
+      tipsJsonPath: tipsJsonPath,
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://loveleaves.github.io/icons/backTop.svg);
+    }
+</style>
+
+<div id="particles-js"></div>
+
+<script src=https://loveleaves.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://loveleaves.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<script>
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+
+    </body>
+</html>

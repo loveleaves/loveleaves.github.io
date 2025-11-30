@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Pages on 安哲睿</title>
+        <link>https://loveleaves.github.io/page/</link>
+        <description>Recent content in Pages on 安哲睿</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Andrew Stark</copyright>
+        <lastBuildDate>Sat, 08 Nov 2025 21:20:34 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Archives</title>
+        <link>https://loveleaves.github.io/archives/</link>
+        <pubDate>Tue, 28 Mar 2023 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Links</title>
+        <link>https://loveleaves.github.io/links/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/links/</guid>
+        <description>&lt;p&gt;记录有用的工具平台&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Search</title>
+        <link>https://loveleaves.github.io/search/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/search/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>关于</title>
+        <link>https://loveleaves.github.io/%E5%85%B3%E4%BA%8E/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/%E5%85%B3%E4%BA%8E/</guid>
+        <description>&lt;h2 id=&#34;todo-list&#34;&gt;TODO List
+&lt;/h2&gt;&lt;h3 id=&#34;ai-infra&#34;&gt;AI Infra
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1GWjjzfE1b/?spm_id_from=333.788.videopod.sections&amp;amp;vd_source=239d861d96125b8edb41d49a38169fda&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1GWjjzfE1b/?spm_id_from=333.788.videopod.sections&amp;vd_source=239d861d96125b8edb41d49a38169fda&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;architecture&#34;&gt;Architecture
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; pattern design: &lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1Yr4y157Ci/?spm_id_from=333.788.videopod.episodes&amp;amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;amp;p=5&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1Yr4y157Ci/?spm_id_from=333.788.videopod.episodes&amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;p=5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; distributed system: &lt;a class=&#34;link&#34; href=&#34;https://github.com/sylar-yin/sylar/tree/2022-cpp11?tab=readme-ov-file&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;sylar&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://www.midlane.top/wiki/pages/viewpage.action?pageId=10060952&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;sylar from scrach&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;a class=&#34;link&#34; href=&#34;https://wizardforcel.gitbooks.io/zmq-guide/content/chapter5.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ZeroMQ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

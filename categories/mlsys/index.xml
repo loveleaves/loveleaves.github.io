@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>MLsys on 安哲睿</title>
+        <link>https://loveleaves.github.io/categories/mlsys/</link>
+        <description>Recent content in MLsys on 安哲睿</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Andrew Stark</copyright>
+        <lastBuildDate>Wed, 19 Feb 2025 00:00:10 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/mlsys/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【MLsys】机器学习系统介绍</title>
+        <link>https://loveleaves.github.io/p/mlsys/</link>
+        <pubDate>Tue, 10 Dec 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/mlsys/</guid>
+        <description>&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://openmlsys.github.io/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;openmlsys&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.zhihu.com/question/26754848&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.zhihu.com/question/26754848&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ml-architecture&#34;&gt;ML Architecture
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://openmlsys.github.io/_images/framework-architecture.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Interface&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;编程接口&#34;&gt;编程接口
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://pybind11.readthedocs.io/en/latest/basics.html#creating-bindings-for-a-simple-function&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;pybind&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;ctypes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;computational-graph-计算图&#34;&gt;Computational Graph (计算图)
+&lt;/h3&gt;&lt;p&gt;计算图由&lt;strong&gt;基本数据结构张量&lt;/strong&gt;（Tensor）和&lt;strong&gt;基本运算单元算子&lt;/strong&gt;（operator）构成。在计算图中通常使用节点来表示算子，节点间的有向边（Directed Edge）来表示张量状态，同时也描述了计算间的依赖关系，通常为有向无环图DAG。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://openmlsys.github.io/_images/graph.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;基于计算图的架构&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;计算图&lt;/strong&gt;是机器学习框架的核心理念之一，了解主流机器学习框架的设计思想，有助于深入掌握这一概念，建议阅读 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1603.04467&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TensorFlow 设计白皮书&lt;/a&gt;、 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1912.01703&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PyTorch计算框架设计论文&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;图外控制流直接使用前端语言控制流，熟悉编程语言即可掌握这一方法，而&lt;strong&gt;图内控制流&lt;/strong&gt;则相对较为复杂，建议阅读&lt;a class=&#34;link&#34; href=&#34;http://download.tensorflow.org/paper/white_paper_tf_control_flow_implementation_2017_11_1.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TensorFlow控制流&lt;/a&gt;论文。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;动态图和静态图&lt;/strong&gt;设计理念与实践，建议阅读&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/1903.01855.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TensorFlow Eager 论文&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://tensorflow.google.cn/guide/eager?hl=zh-cn&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TensorFlow Eager Execution&lt;/a&gt;示例、&lt;a class=&#34;link&#34; href=&#34;https://tensorflow.google.cn/guide/intro_to_graphs?hl=zh-cn&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TensorFlow Graph&lt;/a&gt;理念与实践、&lt;a class=&#34;link&#34; href=&#34;https://www.mindspore.cn/docs/programming_guide/zh-CN/r1.6/design/dynamic_graph_and_static_graph.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MindSpore动静态图&lt;/a&gt;概念。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Torch JIT&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/louis-she/torchscript-demos&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/louis-she/torchscript-demos&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/370455320&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://zhuanlan.zhihu.com/p/370455320&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;pytorch2.0新特性：https://www.bilibili.com/video/BV1p84y1675B&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://jackiexiao.github.io/eat_pytorch_in_20_days/2.%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/2-3%2C%E5%8A%A8%E6%80%81%E8%AE%A1%E7%AE%97%E5%9B%BE/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;pytorch计算图例子&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://pytorch.org/blog/computational-graphs-constructed-in-pytorch/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;How Computational Graphs are Constructed in PyTorch&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ai编译器和前端技术&#34;&gt;AI编译器和前端技术
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;编译器前端基础结构&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://openmlsys.github.io/_images/%E7%BC%96%E8%AF%91%E5%99%A8%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;编译器前端基础结构&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;传统编译器：&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1D84y1y73v&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;video&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;AI编译器: &lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/opus/752127856955359361?from=readlist&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;summary&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://space.bilibili.com/517221395/search/video?keyword=%E7%BC%96%E8%AF%91%E5%99%A8&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;video&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://chenzomi12.github.io/03Compiler03Frontend/01Introduction.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;AI System&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mlc.ai/zh/chapter_introduction/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;机器学习编译&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;主流编译器llvm&#34;&gt;主流编译器LLVM
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://getting-started-with-llvm-core-libraries-zh-cn.readthedocs.io/zh-cn/latest/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Getting Started with LLVM Core Libraries&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://llvm-tutorial-cn.readthedocs.io/en/latest/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;用LLVM开发新语言&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/universsky2015/article/details/120559017&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LLVM写个简易编译器1&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/407854583&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LLVM写个简易编译器2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;编译器后端和运行时&#34;&gt;编译器后端和运行时
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;编译器后端总体架构简图&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://openmlsys.github.io/_images/compiler-backend-architecture.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;编译器后端总体架构简图&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;硬件加速器&#34;&gt;硬件加速器
+&lt;/h2&gt;&lt;h3 id=&#34;算子编译器&#34;&gt;算子编译器
+&lt;/h3&gt;&lt;p&gt;当前业界的算子编译器/编译框架主要有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TVM/Ansor &lt;a class=&#34;link&#34; href=&#34;https://openmlsys.github.io/chapter_accelerator/summary.html#zheng2020ansor&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;[Zheng et al., 2020]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;MLIR &lt;a class=&#34;link&#34; href=&#34;https://openmlsys.github.io/chapter_accelerator/summary.html#lattner2020mlir&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;[Lattner et al., 2020]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;华为昇腾芯片上的TBE/AKG &lt;a class=&#34;link&#34; href=&#34;https://openmlsys.github.io/chapter_accelerator/summary.html#zhao2021akg&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;[Zhao et al., 2021]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://openmlsys.github.io/chapter_accelerator/accelerator_practise.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;加速器实践&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;数据处理框架&#34;&gt;数据处理框架
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;数据模块的核心组件&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://openmlsys.github.io/_images/pipeline.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据模块的核心组件&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;模块设计重点&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;易用性&lt;/li&gt;
+&lt;li&gt;高效性&lt;/li&gt;
+&lt;li&gt;保序性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ai-推理框架&#34;&gt;AI 推理框架
+&lt;/h2&gt;&lt;h3 id=&#34;移动端&#34;&gt;移动端
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Tencent/ncnn/tree/master/src/layer&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;腾讯ncnn&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;模型部署&#34;&gt;模型部署
+&lt;/h2&gt;&lt;h2 id=&#34;分布式训练&#34;&gt;分布式训练
+&lt;/h2&gt;&lt;h2 id=&#34;进阶&#34;&gt;进阶：
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://dlsys.cs.washington.edu/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;华盛顿大学 Deep Learning Systems&lt;/a&gt;，机器学习程序的编译过程,Apache TVM深度学习编译器&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/microsoft/AI-System&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;AI Systems 微软亚洲研究院&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

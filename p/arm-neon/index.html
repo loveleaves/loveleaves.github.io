@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="主要介绍ARM SIMD指令集NEON及其在性能优化方面的应用">
+<title>【SIMD】 ARM SIMD指令集NEON等介绍</title>
+
+<link rel='canonical' href='https://loveleaves.github.io/p/arm-neon/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f655c339a336b15a106fd248f9170c8064dfc6f1990313665402f49a0c0831e.css"><meta property='og:title' content="【SIMD】 ARM SIMD指令集NEON等介绍">
+<meta property='og:description' content="主要介绍ARM SIMD指令集NEON及其在性能优化方面的应用">
+<meta property='og:url' content='https://loveleaves.github.io/p/arm-neon/'>
+<meta property='og:site_name' content='安哲睿'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-06T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-19T00:00:10&#43;08:00'/>
+<meta name="twitter:title" content="【SIMD】 ARM SIMD指令集NEON等介绍">
+<meta name="twitter:description" content="主要介绍ARM SIMD指令集NEON及其在性能优化方面的应用">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b4d2f495c38e1067.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😁</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">安哲睿</a></h1>
+            <h2 class="site-description">世上无难事，只怕有心人</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/loveleaves'
+                        target="_blank"
+                        title="Github"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/loveleaves'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://loveleaves.github.io/en/" >English</option>
+                                
+                                    <option value="https://loveleaves.github.io/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#references">references</a></li>
+    <li><a href="#算子源码">算子源码</a></li>
+    <li><a href="#理论学习">理论学习</a>
+      <ol>
+        <li><a href="#指令流水线">指令流水线</a></li>
+        <li><a href="#simd加速原理">SIMD加速原理</a></li>
+        <li><a href="#了解硬件决定的速度极限software-optimization-guide">了解硬件决定的速度极限：Software Optimization Guide</a></li>
+        <li><a href="#反汇编分析生成代码质量">反汇编分析生成代码质量</a></li>
+      </ol>
+    </li>
+    <li><a href="#materials">materials</a></li>
+    <li><a href="#neon-介绍">NEON 介绍</a>
+      <ol>
+        <li><a href="#重要概念"><strong>重要概念</strong></a></li>
+        <li><a href="#neon-寄存器"><strong>NEON 寄存器</strong></a></li>
+        <li><a href="#向量和标量操作"><strong>向量和标量操作</strong></a></li>
+        <li><a href="#neon-数据类型"><strong>NEON 数据类型</strong></a></li>
+        <li><a href="#neon-指令集"><strong>NEON 指令集</strong></a></li>
+        <li><a href="#扩展数据类型"><strong>扩展数据类型</strong></a></li>
+        <li><a href="#数据载入和存储指令"><strong>数据载入和存储指令</strong></a></li>
+        <li><a href="#数据汇聚和归约操作"><strong>数据汇聚和归约操作</strong></a></li>
+        <li><a href="#条件执行"><strong>条件执行</strong></a></li>
+        <li><a href="#simd-聚合指令广播操作"><strong>SIMD 聚合指令（广播操作）</strong></a></li>
+        <li><a href="#neon-浮点数运算"><strong>NEON 浮点数运算</strong></a></li>
+        <li><a href="#数据类型转换"><strong>数据类型转换</strong></a></li>
+        <li><a href="#向量掩码"><strong>向量掩码</strong></a></li>
+      </ol>
+    </li>
+    <li><a href="#neon-intrinsic">NEON Intrinsic</a>
+      <ol>
+        <li><a href="#references-1">References</a></li>
+        <li><a href="#数据和计算指令类型的格式">数据和计算指令类型的格式</a></li>
+        <li><a href="#note">Note</a></li>
+        <li><a href="#计算机组成结构运行相关通用">计算机组成结构运行相关（通用）</a></li>
+      </ol>
+    </li>
+    <li><a href="#neon-汇编">NEON 汇编</a>
+      <ol>
+        <li><a href="#references-2">References</a></li>
+        <li><a href="#arm-内联汇编使用">arm 内联汇编使用</a></li>
+        <li><a href="#note-1">Note</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/simd/" >
+                SIMD
+            </a>
+        
+            <a href="/categories/hpc/" >
+                HPC
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/arm-neon/">【SIMD】 ARM SIMD指令集NEON等介绍</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            主要介绍ARM SIMD指令集NEON及其在性能优化方面的应用
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 06, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 11 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="arm-simd">ARM SIMD
+</h1><p>ARM平台基于ARM v7-A架构的ARM Cortex-A系列处理器(Cortex-A5, Cortex-A7,Cortex-A8, Cortex-A9, Cortex-A15)上的NEON加速：</p>
+<ul>
+<li>针对C/C++语言：循环展开等编译优化，-O2启用</li>
+<li>针对NEON intrinsics：NEOM SIMD C/C++语言接口，针对架构启用V向量扩展，选择浮点处理器和ABI（application Binary Interface）接口类型</li>
+<li>针对汇编语言：内联汇编，直接操作neon指令和寄存器
+路线：了解相应编译优化=》使用intrinsic接口，学习对应汇编代码=》内联汇编，<strong>在编译器汇编代码基础上</strong>（否则可能反优化）学习并优化</li>
+</ul>
+<h2 id="references">references
+</h2><ul>
+<li><a class="link" href="https://developer.arm.com/documentation/den0018/latest"  target="_blank" rel="noopener"
+    >NEON Programmer&rsquo;s Guide</a></li>
+<li><a class="link" href="https://developer.arm.com/documentation/den0013/latest"  target="_blank" rel="noopener"
+    >Cortex-A Series Programmer&rsquo;s Guide</a></li>
+</ul>
+<h2 id="算子源码">算子源码
+</h2><ul>
+<li>AI算子：<a class="link" href="https://github.com/Tencent/ncnn/tree/master/src/layer"  target="_blank" rel="noopener"
+    >腾讯ncnn</a></li>
+<li>数据处理算子：<a class="link" href="https://github.com/numpy/numpy/tree/main/numpy/_core/src/common/simd"  target="_blank" rel="noopener"
+    >numpy simd</a></li>
+<li>图像处理算子：<a class="link" href="https://github.com/opencv/opencv/tree/master/3rdparty/carotene"  target="_blank" rel="noopener"
+    >Nvidia carotene</a>，OpenCV third party</li>
+</ul>
+<h2 id="理论学习">理论学习
+</h2><h3 id="指令流水线">指令流水线
+</h3><p><strong>经典的五级流水线模型</strong>
+<img src="/imgs/pipeline.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="pipeline"
+	
+	
+></p>
+<p>1、<strong>取指（IF）</strong></p>
+<ul>
+<li>以程序计数器（PC）中的内容作为地址，从存储器中取出指令并放入指令寄存器（IR）；</li>
+<li>PC值加4（假设每条指令占4字节），指向顺序的下一条指令。</li>
+</ul>
+<p>2、<strong>指令译码/读寄存器周期（ID）</strong></p>
+<ul>
+<li>对指令进行译码，并用IR中的寄存器地址去访问通用寄存器组，读出所需的操作数；</li>
+<li>对IR中的立即数进行扩展</li>
+</ul>
+<p>3、<strong>执行/有效地址计算周期（EX）</strong></p>
+<p>ALU对上一个周期中准备好的操作数进行运算或处理。在这个阶段，不同类型的指令进行的操作不同。</p>
+<ul>
+<li>（1）load和store指令：ALB把指令中所指定的寄存器的内容与偏移量相加，形成访存有效地址；</li>
+<li>（2）寄存器-寄存器 ALU 指令：ALU按照操作码指定的操作对从通用寄存器组中读出的数据进行运算；</li>
+<li>（3）寄存器-立即数 ALU 指令：ALU按照操作码指定的操作对从通用寄存器组中读出的操作数和指令中给出的立即数进行运算；</li>
+<li>（4）分支指令：ALU把指令中给出的偏移量与PC值相加，形成转移目标的地址。同时，对在前一个周期读出的操作数进行判断，确定分支是否成功。</li>
+</ul>
+<p>4、<strong>存储器访问/分支完成周期（MEM）</strong></p>
+<ul>
+<li>（1）load和store指令：load指令根据上一个周期计算出的有效地址从存储器中读出的相应的数据；store把指定的数据写入这个有效地址对应的存储单元。</li>
+<li>（2）分支指令：如果分支“成功”，就把前一个周期中计算好的转移目标地址送入PC。分支指令执行完成；否则，就不进行任何操作。</li>
+</ul>
+<p>5、<strong>写回周期（WB）</strong></p>
+<ul>
+<li>把结果写入通用寄存器组。对于ALU运算来说，这个结果来自ALU，而对于load指令来说，这个结果来自存储器。</li>
+</ul>
+<h3 id="simd加速原理">SIMD加速原理
+</h3><ul>
+<li><a class="link" href="https://github.com/QSCTech/zju-icicles/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E6%95%99%E6%9D%90/%E7%AC%AC5%E7%89%88/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%EF%BC%9A%E9%87%8F%E5%8C%96%E7%A0%94%E7%A9%B6%E6%96%B9%E6%B3%95%EF%BC%88%E7%AC%AC%E4%BA%94%E7%89%88%EF%BC%89%EF%BC%88%E4%B8%AD%E6%96%87%E7%89%88%EF%BC%89.pdf"  target="_blank" rel="noopener"
+    >《计算机体系结构：量化研究方法》</a>。Neon是ARM平台的SIMD（Single Instruction Multiple Data，单指令多数据流）指令集实现，书中4.1~4.3讨论了SIMD，推荐阅读。
+<img src="/imgs/system_architecture_chapters.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="system architecture chapters"
+	
+	
+></li>
+</ul>
+<p>之所以能加速的<strong>原因总结</strong>：</p>
+<ul>
+<li>（1）通过加长的寄存器减少数据的读取/写入次数，从而减少将数据读入寄存器的时间开销。例如Neon可以一次性将16个int8（16*8=128bit）数据读入专用寄存器，这一次读取时间开销，明显少于16个int8数据一个一个地读入的时间之和。写入同理。（注意不要和cache的减少访存时间的原理混淆。从cache读取余下的第2~第16个int8数据到寄存器仍然是要花费时钟周期的）。</li>
+<li>（2）执行SISD（single instruction, Single data，单指令流单数据流，这里可理解为标量计算）指令时，需要完成（时间开销大的）冒险（hazard）检查。既然使用SIMD指令计算，就暗示这些数据之间无依赖性，也就从指令集层面回避了不必要的时间开销。</li>
+</ul>
+<h3 id="了解硬件决定的速度极限software-optimization-guide">了解硬件决定的速度极限：Software Optimization Guide
+</h3><p>我们可能还要关心，我们所编写的Neon Intrinsics，可以将手头上硬件的性能发挥到多少水平？是否还有提升空间？这些是好问题。</p>
+<p>在讨论一个问题前，先插入一个使笔者拍案叫绝的相关案例：在另一本计算经典<a class="link" href="https://github.com/Urinx/Books/blob/master/cs/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F.pdf"  target="_blank" rel="noopener"
+    >《深入理解计算机系统》</a>  （一般简称 CS:APP）的第5章 优化程序性能 中，该书作者考虑若干计算机硬件特性，将矩阵乘法连续优化了6个版本，直至优化到了该x86 CPU的吞吐量上限（注：对于某种指令，延迟latency 主要关注单条该指令的最小执行时间，吞吐量throughout主要关注单位时间内系统（一个CPU核）最多执行多少条该指令。因为AI计算的数据量比较大，我们更关注吞吐量）
+<img src="/imgs/csapp_ans1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="CS:APP 相关数据截图"
+	
+	
+></p>
+<p>回到问题，我们需要知道我们的吞吐量上界是多少。ARM官方为每个CPU架构（手机CPU一般大核是A7X架构，小核是A5X架构）提供对应的Software Optimization Guide，里面有进行各种运算的latency和throughout。以A76架构（采用该架构作为大核架构的CPU例如骁龙855，麒麟980）为例子，从ARM官网下载对应的pdf（https://developer.arm.com/documentation/swog307215/a/?lang=en）
+翻到ASIMD（Advance SIMD）那里，就能查阅各条Neon指令相应的latency和throughout。不同架构的吞吐量上界会有所不同，其他架构请自行在ARM官网文档中心下载。
+<img src="/imgs/A76_Software_Optimization_Guide.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="A76 Software Optimization Guide截图"
+	
+	
+></p>
+<p>理论数据有了，至于如何通过实验测试峰值，可参考BBuf的文章 如何判断算法是否有可优化空间？ （https://zhuanlan.zhihu.com/p/268925243）</p>
+<h3 id="反汇编分析生成代码质量">反汇编分析生成代码质量
+</h3><p>可通过反汇编的方式查看Intrinsics 生成的汇编是否满足预期，如果不满足预期则进行手写汇编优化。具体操作可参考梁德澎的文章 移动端arm cpu优化学习笔记第4弹&ndash;内联汇编入门（https://zhuanlan.zhihu.com/p/143328317）</p>
+<h2 id="materials">materials
+</h2><ul>
+<li>（1）研讨会视频 <a class="link" href="https://www.edge-ai-vision.com/2019/07/performance-analysis-for-optimizing-embedded-deep-learning-inference-software-a-presentation-from-arm/"  target="_blank" rel="noopener"
+    >&ldquo;Performance Analysis for Optimizing Embedded Deep Learning Inference Software,&rdquo; a Presentation from Arm - Edge AI and Vision Alliance</a>，<strong>建立优化分析思维</strong></li>
+<li>（2）研讨会视频 <a class="link" href="https://www.youtube.com/watch?v=ixuDntaSnHIwww.youtube.com"  target="_blank" rel="noopener"
+    >LCU14-504: Taming ARMv8 NEON: from theory to benchmark results</a></li>
+<li>（3）研讨会视频 <a class="link" href="https://www.youtube.com/watch?v=NYFzidaS3Z4www.youtube.com"  target="_blank" rel="noopener"
+    >HKG15-408: ARM v8-A NEON optimization</a></li>
+<li>（4）Ne10（ARM官方的计算库）：https://github.com/projectNe10/Ne10</li>
+<li>（5）Arm Optimized Routines（ARM官方的计算、网络、字符串库）：https://github.com/ARM-software/optimized-routines</li>
+<li>（6）Neon优化Chromium的案例：https://developer.arm.com/documentation/101964/developer.arm.com</li>
+</ul>
+<h2 id="neon-介绍">NEON 介绍
+</h2><p>ARM NEON 是 ARM 架构的一种 SIMD（Single Instruction, Multiple Data）扩展，旨在加速多媒体、数字信号处理（DSP）、图像处理、音视频编解码、加密算法等高并发计算任务。NEON 是 ARMv7 （ARMv7-A只支持单精度，32x64-bit寄存器；Armv8-A AArch64支持双精度，32x128-bit寄存器，针对浮点操作的Vector Floating Point，VFP）及之后版本的处理器的标准扩展，广泛用于智能手机、嵌入式设备、平板电脑以及其他移动设备中，尤其是处理需要并行化的计算密集型应用时，它能显著提高性能。</p>
+<h3 id="重要概念"><strong>重要概念</strong>
+</h3><ul>
+<li><strong>lane</strong>：如一个<code>float32x4_t</code>类型的变量<code>float32x4_t v = {1.0f, 2.0f, 3.0f, 4.0f}</code>，它占用 128 位，存储 4 个 32 位的浮点数，在这个向量寄存器 v 中，每个值依次存储在不同的lane序号为0、1、2、3中。</li>
+</ul>
+<h3 id="neon-寄存器"><strong>NEON 寄存器</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 使用专门的寄存器来存储向量数据，这些寄存器通常用于处理多个数据元素，ARMv7-A只支持单精度，32x64-bit寄存器；Armv8-A AArch64支持双精度，32x128-bit寄存器。</li>
+<li><strong>作用</strong>：NEON 寄存器组包含了 128 （Q字母）或 64（D字母） 位宽的寄存器，可以存储多个 8 位、16 位、32 位、64 位整数或浮点数据。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><strong>Q0-Q15</strong>：128 位宽的 NEON 寄存器，用于存储 8 位、16 位、32 位、64 位的数据（整数或浮点数）。</li>
+<li><strong>D0-D15</strong>：64 位宽的 NEON 寄存器，也用于存储 64 位数据。</li>
+</ul>
+</li>
+</ul>
+<h3 id="向量和标量操作"><strong>向量和标量操作</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 支持对向量（多个元素）和标量（单个元素）进行操作。</li>
+<li><strong>作用</strong>：标量操作是普通的逐元素操作，而向量操作则允许一次性处理多个数据元素。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vadd.f32</code>：向量浮点加法操作。</li>
+<li><code>vadd.i32</code>：向量整数加法操作。</li>
+</ul>
+</li>
+</ul>
+<h3 id="neon-数据类型"><strong>NEON 数据类型</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 支持多种数据类型，包括整数、浮点数、双精度浮点数和混合类型数据。</li>
+<li><strong>作用</strong>：不同的数据类型适应不同的应用需求，如 8 位整数、32 位浮点数等。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><strong>i8, i16, i32, i64</strong>：不同宽度的整数类型。</li>
+<li><strong>f32, f64</strong>：浮点数类型，支持单精度和双精度浮点数。</li>
+</ul>
+</li>
+</ul>
+<h3 id="neon-指令集"><strong>NEON 指令集</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 提供了一组专门的指令来处理数据并执行并行计算。NEON 指令包括加法、乘法、减法、移位、汇聚（归约）、比较、选择、数据类型转换等。</li>
+<li><strong>作用</strong>：这些指令能够加速处理向量数据，尤其是应用于图像处理、音频处理、视频编解码、加密算法等领域。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><strong>vadd</strong>：向量加法指令。</li>
+<li><strong>vmul</strong>：向量乘法指令。</li>
+<li><strong>vsub</strong>：向量减法指令。</li>
+<li><strong>vmax</strong>：向量最大值选择指令。</li>
+</ul>
+</li>
+</ul>
+<h3 id="扩展数据类型"><strong>扩展数据类型</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 提供了扩展数据类型的支持，如高/低16位扩展、饱和算术、向量数据类型转换等。</li>
+<li><strong>作用</strong>：这种扩展数据类型用于在计算过程中执行高效的数据操作和转换，避免数据溢出或精度丢失。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><strong>vshl</strong>：向左移位操作。</li>
+<li><strong>vqadd</strong>：饱和加法指令，防止数据溢出。</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据载入和存储指令"><strong>数据载入和存储指令</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 提供了一些专门的加载（load）和存储（store）指令，用于从内存中加载数据到寄存器，或将寄存器中的数据存储回内存。</li>
+<li><strong>作用</strong>：这些指令能够优化内存访问，支持从多个内存地址加载和存储数据。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vld1</code>：加载向量数据指令。</li>
+<li><code>vst1</code>：存储向量数据指令。</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据汇聚和归约操作"><strong>数据汇聚和归约操作</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 提供了对向量数据的汇聚（归约）操作，例如求和、最大值、最小值等。</li>
+<li><strong>作用</strong>：这些操作通常用于计算总和、平均值、最大值等统计量，广泛应用于信号处理和数据分析中。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><strong>vaddv</strong>：对向量元素进行加法归约，返回所有元素的和。</li>
+<li><strong>vmaxv</strong>：对向量元素进行最大值归约，返回最大值。</li>
+</ul>
+</li>
+</ul>
+<h3 id="条件执行"><strong>条件执行</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 支持条件执行，通过设置条件码（flags），可以对某些指令的执行进行条件限制。</li>
+<li><strong>作用</strong>：可以根据特定的条件执行指令，避免不必要的计算，提高性能。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vsel</code>：根据掩码（mask）选择性地执行指令。</li>
+</ul>
+</li>
+</ul>
+<h3 id="simd-聚合指令广播操作"><strong>SIMD 聚合指令（广播操作）</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 支持广播操作，允许单一标量值扩展到整个向量中。广播操作使得标量与向量的数据处理更加简便。</li>
+<li><strong>作用</strong>：通过广播操作，标量可以与向量中的每个元素进行计算，提高了指令的灵活性。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>vdup</code>：将一个标量值复制到整个向量中。</li>
+</ul>
+</li>
+</ul>
+<h3 id="neon-浮点数运算"><strong>NEON 浮点数运算</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 支持单精度浮点数和双精度浮点数的运算，符合 IEEE 754 标准。</li>
+<li><strong>作用</strong>：这些浮点数运算指令可用于科学计算、图像处理等应用。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><strong>vadd.f32</strong>：单精度浮点数向量加法。</li>
+<li><strong>vmul.f32</strong>：单精度浮点数向量乘法。</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据类型转换"><strong>数据类型转换</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 支持多种类型之间的转换操作，如浮点与整数类型之间的转换。</li>
+<li><strong>作用</strong>：这种转换对于不同数据类型之间的运算非常重要，可以确保类型匹配并避免数据丢失。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><strong>vcvt.f32.s32</strong>：将 32 位整数转换为 32 位单精度浮点数。</li>
+<li><strong>vcvt.s32.f32</strong>：将 32 位单精度浮点数转换为 32 位整数。</li>
+</ul>
+</li>
+</ul>
+<h3 id="向量掩码"><strong>向量掩码</strong>
+</h3><ul>
+<li><strong>定义</strong>：NEON 支持通过掩码控制哪些向量元素应该被操作。掩码机制允许在处理多个数据时根据特定条件选择性地操作某些元素。</li>
+<li><strong>作用</strong>：掩码可以控制并行操作的粒度，提高计算的灵活性。</li>
+<li><strong>例子</strong>：
+<ul>
+<li><strong>vmla</strong>：向量乘加指令，根据掩码控制哪些元素参与计算。</li>
+</ul>
+</li>
+</ul>
+<h2 id="neon-intrinsic">NEON Intrinsic
+</h2><p>兼容armv7和v8（部分指令可能不兼容），所以不同架构之间迁移方便，不需要改代码</p>
+<h3 id="references-1">References
+</h3><ul>
+<li><a class="link" href="https://developer.arm.com/documentation/den0018/a/NEON-Intrinsics/Introduction"  target="_blank" rel="noopener"
+    >NEON-Intrinsics</a></li>
+<li><a class="link" href="https://developer.arm.com/documentation/102159/0400"  target="_blank" rel="noopener"
+    >Neon Programmer Guide for Armv8-A Coding for Neon</a></li>
+<li><a class="link" href="https://developer.arm.com/architectures/instruction-sets/intrinsics/"  target="_blank" rel="noopener"
+    >intrinsics检索</a>，用来查看接口和支持架构</li>
+<li><a class="link" href="https://cloud.tencent.com/developer/article/1814183"  target="_blank" rel="noopener"
+    >ARM Neon Intrinsics 学习指北：从入门、进阶到学个通透</a></li>
+<li><a class="link" href="https://github.com/numpy/numpy/tree/main/numpy/_core/src/common/simd"  target="_blank" rel="noopener"
+    >numpy simd</a></li>
+</ul>
+<h3 id="数据和计算指令类型的格式">数据和计算指令类型的格式
+</h3><p>1、向量数据类型格式：<code>&lt;type&gt;&lt;size&gt;x&lt;number of lanes&gt;_t</code></p>
+<ul>
+<li>比如<code>float32x4_t</code>，<type>=float,<size>=32,<number of lanes>=4</li>
+</ul>
+<p>向量数据类型：
+<img src="/imgs/neon_dataType.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="neon dataType"
+	
+	
+></p>
+<p>2、向量数组类型：<code>&lt;type&gt;&lt;size&gt;x&lt;number of lanes&gt;x&lt;length of array&gt;_t</code></p>
+<ul>
+<li>比如</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">struct int16x4x2_t
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">int16x4_t val[2];
+</span></span><span class="line"><span class="cl">};
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>向量指令格式：<code>&lt;opname&gt;&lt;flags&gt;_&lt;type&gt;</code></p>
+<ul>
+<li>比如<code>vmulq_f32</code>，<opname>=vmul，<flags>=q,<type>=f32</li>
+</ul>
+<h3 id="note">Note
+</h3><ul>
+<li>普通计算逻辑考虑优化编译器优化、类型量化等</li>
+<li><strong>循环一</strong>般用do-while的形式</li>
+<li>对于<strong>非整数倍元素个数</strong>的解决方法： leftovers</li>
+<li>使用 NEON 的<strong>广播操作</strong>，避免显示复制数据</li>
+<li>使用 NEON 的<strong>饱和操作</strong>，避免数据溢出</li>
+<li>利用数据<strong>类型转换</strong>操作，并合理进行量化</li>
+<li>利用shift、insert、mask等</li>
+</ul>
+<h3 id="计算机组成结构运行相关通用">计算机组成结构运行相关（通用）
+</h3><p><strong>并行</strong></p>
+<ul>
+<li>充分利用计算机流水线：去除数据依赖</li>
+<li>逻辑操作代替分支选择（分支预测）</li>
+<li>数据预加载（预取/并行）</li>
+</ul>
+<p><strong>资源利用</strong></p>
+<ul>
+<li>充分利用寄存器资源，分块处理数据，但避免寄存器溢出(Register Spilling）（测试时开启O2优化使编译器允许寄存器存储临时变量）</li>
+<li>内存合理对齐分配，按对应寄存器长度读取</li>
+<li>多线程处理，如OpenMP（并行/数据共享）</li>
+<li>利用数据连续特性、利用cache</li>
+</ul>
+<h2 id="neon-汇编">NEON 汇编
+</h2><p>可用<code>__aarch64__</code>宏区分是armv8，否则armv7，针对性编写代码</p>
+<h3 id="references-2">References
+</h3><ul>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/143328317"  target="_blank" rel="noopener"
+    >移动端arm cpu优化学习笔记第4弹&ndash;内联汇编入门</a></li>
+</ul>
+<h3 id="arm-内联汇编使用">arm 内联汇编使用
+</h3><p>arm内联汇编的一般格式，<a class="link" href="https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html#Using-Assembly-Language-with-C"  target="_blank" rel="noopener"
+    >detail</a>、<a class="link" href="https://dillonzq.com/2019/08/c-%E8%AF%AD%E8%A8%80%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/"  target="_blank" rel="noopener"
+    >docs</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">__asm__</span> <span class="nf">qualifiers</span> <span class="p">(</span> 
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// 汇编代码部分
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    
+</span></span><span class="line"><span class="cl">    <span class="o">:</span> <span class="n">OutputOperands</span> <span class="c1">//在内联汇编代码中被修改的变量列表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">:</span> <span class="n">InputOperands</span>  <span class="c1">//在内联汇编代码中用到的变量列表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">:</span> <span class="n">Clobbers</span>       <span class="c1">//在内联汇编代码中用到的寄存器列表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="note-1">Note
+</h3><ul>
+<li>先写intrinsic代码反汇编，学习编译器优化后的汇编代码，再优化</li>
+<li>重点关注指令流水线排布，避免CPU的<strong>Hazard</strong></li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Feb 19, 2025 00:00 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/rvv/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【SIMD】 Risc-v SIMD指令集RVV介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mpi/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 MPI介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/openacc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 OpenACC介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/openmp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 OpenMP介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tool/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Tool】 记录各种用到的工具</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="loveleaves/loveleaves.github.io"
+    data-repo-id="R_kgDOHiRxVA"
+    data-category="General"
+    data-category-id="DIC_kwDOHiRxVM4Cmvtx"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading=""
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 Andrew Stark
+    </section>
+    
+    <section class="powerby">
+        
+            loveleaves <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<div id="aplayer"></div>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script>
+const staticDir = "https://loveleaves.github.io/";
+const musicDir = staticDir + '/music/';
+const songs = [
+    'Dream_It_Possible-Delacey',
+    'Love_Story-Taylor_Swift',
+    'Never_Gonna_Give_You_Up-Rick_Astley',
+    'Natural-Imagine_Dragons',
+    'Rolling_In_the_Deep-Adele',
+    'Apologize-OneRepublic',
+    'Salt-Ava_Max',
+    'Try-P!nk',
+    'That_Girl-Olly_Murs',
+    'Hymn_for_the_Weekend-Coldplay',
+    'Hall_of_Fame-The_Script',
+    'My_Stupid_Heart-Walk_Off_the_Earth&Luminati_Suns',
+    'My_Songs_Know_What_You_Did_In_the_Dark-Taylor_Swift&Fall_Out_Boy',
+    'See_You_Again-Wiz_Khalifa&Charlie_Puth',
+    'Uptown_Funk-Mark_Ronson&Bruno_Mars',
+    'Right_Now-Akon',
+    'Whistle-Flo_Rida',
+    'Numb-Linkin_Park',
+    'Immortals-Fall_Out_Boy',
+    'DJ_Got_Us_Falling_In_Love-Krusher',
+    'Faded-Alan_Walker',
+    'Something_Just_Like_This-The_Chainsmokers&Coldplay',
+    'The_Phoenix-Fall_Out_Boy',
+    'Umbrella-Rihanna&Jay_Z',
+    'Animals_(Big_Boi_Remix)-Maroon_5',
+    'Monsters-Katie_Sky',
+    'Turnin’-Young_Rising_Sons',
+    'What_Are_Words-Chris_Medina',
+    'Normal_No_More-Tysm',
+    'Go_Solo-Tom_Rosenthal',
+    'Peter_Pan_Was_Right-Anson_Seabra',
+    'Free_Loop-Daniel_Powter',
+    'Empty_Love-Lulleaux&Kid_Princess',
+    '青空-Candy_Wind',
+    'Take_Me_Hand-DAISHI_DANCE',
+    'Proud_Of_You-冯曦妤',
+    'Please_Don’t_Go-Joel_Adams',
+    'Forgettable-Project_46&Olivia',
+    'Creep-Gamper_And_Dadoni',
+    'Ferrari-Bebe_Rexha',
+    'Legends_Never_Die(Alan_Walker_Remix)-Alan_Walker&Against_The_Current',
+    'Love_the_Way_You_Lie-Eminem&Rihanna',
+    'Lone_Ranger-Rachel_Platten',
+    'What_Makes_You_Beautiful-One_Direction',
+    'Let_Me_Down_Slowly-Alec_Benjamin',
+    'My_Love-Westlife',
+    'Counting_Stars-OneRepublic',
+    'STAY-The_Kid_LAROI&Justin_Bieber',
+    'Shape_of_You-Ed_Sheeran',
+    'Booty_Music-Deep_Side',
+    'Because_Of_You-Kelly_Clarkson',
+    'Far_Away_from_Home-Groove_Coverage',
+    'Move_Your_Body(Single_Mix)-Sia',
+    'The_Nights(Original_Mix)-Avicii',
+    'We_Dont_Talk_Anymore-Charlie_Puth&Selena_Gomez',
+    'Moves_Like_Jagger(Radio_Edit)-Maroon_5',
+    'You_Raise_Me_Up-Westlife',
+    'Call_Me_Maybe(10_Kings_vs_Ollie_Green_Remix)-Carly_Rae_Jepsen',
+    'Senorita-Shawn_Mendes&Camila_Cabello',
+    'We_Will_Rock_You-Queen',
+    'My_Heart_Will_Go_On-Celine_Dion&Webster'
+];
+let audios = [];
+songs.forEach((item) => {
+    const songInfo = item.split('-');
+    audios.push({
+        name: songInfo[0],
+        artist: songInfo[1],
+        url: musicDir + item + '/song.mp3',
+        lrc: musicDir + item + '/song.lrc',
+        cover: musicDir + 'cover.jpg', 
+    })
+});
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    
+    fixed: true,
+    
+    lrcType: 3,
+    audio: audios
+});
+</script>
+
+
+
+
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d-widget-v3/';
+  const myCdnPath = "https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d/live2d-moc3/";
+  
+  const cssPath = "https://loveleaves.github.io/waifu/waifu.css";
+  const tipsJsonPath = "https://loveleaves.github.io/waifu/waifu-tips.json";
+  const tipsJsPath = "https://loveleaves.github.io/waifu/waifu-tips.js";
+  const live2dJsPath = "https://loveleaves.github.io/waifu/live2d.min.js";
+
+  const config = {
+    
+    path: {
+      modelPath: myCdnPath,
+      cssPath: cssPath,
+      tipsJsonPath: tipsJsonPath,
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://loveleaves.github.io/icons/backTop.svg);
+    }
+</style>
+
+<div id="particles-js"></div>
+
+<script src=https://loveleaves.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://loveleaves.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<script>
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+
+    </body>
+</html>

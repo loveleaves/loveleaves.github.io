@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="主要介绍利用ONNX、ONNXRuntime量化及推理">
+<title>【ONNX量化】 ONNX量化推理介绍</title>
+
+<link rel='canonical' href='https://loveleaves.github.io/p/onnx_quantization/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f655c339a336b15a106fd248f9170c8064dfc6f1990313665402f49a0c0831e.css"><meta property='og:title' content="【ONNX量化】 ONNX量化推理介绍">
+<meta property='og:description' content="主要介绍利用ONNX、ONNXRuntime量化及推理">
+<meta property='og:url' content='https://loveleaves.github.io/p/onnx_quantization/'>
+<meta property='og:site_name' content='安哲睿'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-20T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-07T19:52:49&#43;08:00'/>
+<meta name="twitter:title" content="【ONNX量化】 ONNX量化推理介绍">
+<meta name="twitter:description" content="主要介绍利用ONNX、ONNXRuntime量化及推理">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b4d2f495c38e1067.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😁</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">安哲睿</a></h1>
+            <h2 class="site-description">世上无难事，只怕有心人</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/loveleaves'
+                        target="_blank"
+                        title="Github"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/loveleaves'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://loveleaves.github.io/en/" >English</option>
+                                
+                                    <option value="https://loveleaves.github.io/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#references">References</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#onnx-quantization">ONNX Quantization</a></li>
+    <li><a href="#create-float16-and-mixed-precision-models">Create Float16 and Mixed Precision Models</a></li>
+    <li><a href="#ort-model-format">ORT model format</a></li>
+    <li><a href="#onnx">ONNX</a>
+      <ol>
+        <li><a href="#onnx文件介绍">ONNX文件介绍</a></li>
+        <li><a href="#onnx结构">ONNX结构</a></li>
+        <li><a href="#onnx文件操作">ONNX文件操作</a></li>
+        <li><a href="#onnx模型文件正确导出">ONNX模型文件正确导出</a>
+          <ol>
+            <li><a href="#torchonnxexport">torch.onnx.export</a></li>
+            <li><a href="#torchonnxexport-dynamotrue">torch.onnx.export(&hellip;, dynamo=True)</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#example">Example</a>
+      <ol>
+        <li><a href="#simple-example">Simple Example</a></li>
+        <li><a href="#yolov8">YOLOv8</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/quantization/" >
+                Quantization
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/onnx_quantization/">【ONNX量化】 ONNX量化推理介绍</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            主要介绍利用ONNX、ONNXRuntime量化及推理
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 20, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="references">References
+</h2><ul>
+<li><a class="link" href="https://github.com/loveleaves/onnx-quantization"  target="_blank" rel="noopener"
+    >onnx量化推理例子</a></li>
+<li><a class="link" href="https://onnxruntime.ai/docs/"  target="_blank" rel="noopener"
+    >onnxruntime docs</a></li>
+<li><a class="link" href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html"  target="_blank" rel="noopener"
+    >onnxruntime quantization</a></li>
+<li><a class="link" href="https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md"  target="_blank" rel="noopener"
+    >ONNX Runtime Quantization Example</a>, Pre-processing step</li>
+</ul>
+<h2 id="overview">Overview
+</h2><p>Quantization in ONNX Runtime refers to 8 bit linear quantization of an ONNX model.</p>
+<p>During quantization, the floating point values are mapped to an 8 bit quantization space of the form: <code>val_fp32 = scale * (val_quantized - zero_point)</code></p>
+<p><code>scale</code> is a positive real number used to map the floating point numbers to a quantization space. It is calculated as follows:</p>
+<p>For asymmetric quantization:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> scale = (data_range_max - data_range_min) / (quantization_range_max - quantization_range_min)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>For symmetric quantization:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> scale = max(abs(data_range_max), abs(data_range_min)) * 2 / (quantization_range_max - quantization_range_min)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>zero_point</code> represents zero in the quantization space. It is important that the floating point zero value be exactly representable in quantization space. This is because zero padding is used in many CNNs. If it is not possible to represent 0 uniquely after quantization, it will result in accuracy errors.</p>
+<p><img src="/imgs/quantization/1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="quantization"
+	
+	
+></p>
+<h2 id="onnx-quantization">ONNX Quantization
+</h2><ul>
+<li><a class="link" href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html"  target="_blank" rel="noopener"
+    >introduction</a></li>
+</ul>
+<p>ONNX Runtime provides python APIs for converting 32-bit floating point model to an 8-bit integer model, a.k.a. quantization. These APIs include pre-processing, dynamic/static quantization, and debugging.</p>
+<ul>
+<li>Pre-processing: Pre-processing is to transform a float32 model to prepare it for quantization. The goal of these steps is to improve quantization quality.</li>
+<li>Dynamic Quantization: Dynamic quantization calculates the quantization parameters (scale and zero point) for activations dynamically.</li>
+<li>Static Quantization: quantization parameters are calculated in advance (offline) using a calibration data set.</li>
+<li>Quantization Debugging: Quantization may negatively affect a model’s accuracy. A solution to this problem is to compare the weights and activations tensors of the original computation graph vs those of the quantized one, identify where they differ most, and avoid quantizing these tensors, or choose another quantization/calibration method.</li>
+</ul>
+<h2 id="create-float16-and-mixed-precision-models">Create Float16 and Mixed Precision Models
+</h2><ul>
+<li><a class="link" href="https://onnxruntime.ai/docs/performance/model-optimizations/float16.html"  target="_blank" rel="noopener"
+    >offical web</a></li>
+</ul>
+<p>Converting a model to use float16 instead of float32 can decrease the model size (up to half) and improve performance on some GPUs. There may be some accuracy loss, but in many models the new accuracy is acceptable. Tuning data is not needed for float16 conversion, which can make it preferable to quantization.</p>
+<h2 id="ort-model-format">ORT model format
+</h2><p>The <a class="link" href="https://onnxruntime.ai/docs/performance/model-optimizations/ort-format-models.html"  target="_blank" rel="noopener"
+    >ORT</a> format is the format supported by reduced size ONNX Runtime builds. Reduced size builds may be more appropriate for use in size-constrained environments such as mobile and web applications.</p>
+<p>Both ORT format models and ONNX models are supported by a full ONNX Runtime build.</p>
+<h2 id="onnx">ONNX
+</h2><ul>
+<li><a class="link" href="https://github.com/onnx/tutorials"  target="_blank" rel="noopener"
+    >onnx tutorial</a></li>
+</ul>
+<h3 id="onnx文件介绍">ONNX文件介绍
+</h3><ul>
+<li>1、.ONNX的本质，是一种<a class="link" href="https://github.com/protocolbuffers/protobuf"  target="_blank" rel="noopener"
+    >Protobuf</a>格式文件</li>
+<li>2、Protobuf则通过onnx-ml.proto编译得到onnx-ml.pb.h和onnx-ml.pb.cc或onnx_ml_pb2.py
+<img src="/imgs/2.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></li>
+<li>3、然后用onnx—ml.pb.cc和代码来操作onnx模型文件，实现增删改</li>
+<li>4、onnx—ml.proto则是描述onnx文件如何组成的，具有什么结构，他是操作onnx经常参照的东西</li>
+<li><a class="link" href="https://github.com/onnx/onnx/blob/main/docs/IR.md"  target="_blank" rel="noopener"
+    >details</a>、<a class="link" href="https://onnx.ai/onnx/intro/concepts.html"  target="_blank" rel="noopener"
+    >concepts</a></li>
+</ul>
+<h3 id="onnx结构">ONNX结构
+</h3><p><img src="/imgs/3.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<ul>
+<li>model：表示整个onnx的模型，包含图结构和解析器格式、opset版本、导出程序类型model.graph：表示图结构，通常是我们netron看到的主要结构</li>
+<li>model.graph.node:表示图中的所有节点，数组，例如conv、bn等节点就是在这里的，通过input、output 表示节点之间的连接关系</li>
+<li>model.graph.initializer:权重类的数据大都储存在这里</li>
+<li>model.graph.input：整个模型的输入储存在这里，表明哪个节点是输入节点，shape是多少model.graph.output：整个模型的输出储存在这里，表明哪个节点是输出节点，shape是多少</li>
+<li>对于anchorgrid类的常量数据，通常会储存在model.graph.node中，并指定类型为Constant,该类型节点在 netron中可视化时不会显示出来</li>
+<li><a class="link" href="https://blog.csdn.net/Rolandxxx/article/details/127713806"  target="_blank" rel="noopener"
+    >onnx文件及其结构、正确导出onnx、onnx读取、onnx创建、onnx修改、onnx解析器</a></li>
+</ul>
+<h3 id="onnx文件操作">ONNX文件操作
+</h3><ul>
+<li><a class="link" href="./onnx-editor/readme.md" >code</a></li>
+<li>1.ONNX的主要结构：graph、graph.node、graph.initializer、graph.input、graph.output</li>
+<li>2.ONNX的节点构建方式：onnx.helper,各种make函数</li>
+<li>3.ONNX的proto文件：<a class="link" href="https:/github.com/onnx/onnx/blob/main/onnx/onnx-ml.proto"  target="_blank" rel="noopener"
+    >onnx-proto2</a></li>
+<li>4.理解模型结构的储存、权重的储存、常量的储存、netron的解读对应到代码中的部分</li>
+</ul>
+<h3 id="onnx模型文件正确导出">ONNX模型文件正确导出
+</h3><p>自pytorch2.5以后，onnx的导出有两个版本exporter实现：<a class="link" href="https://pytorch.org/tutorials/beginner/onnx/export_simple_model_to_onnx_tutorial.html"  target="_blank" rel="noopener"
+    >export_simple_model_to_onnx_tutorial</a></p>
+<h4 id="torchonnxexport">torch.onnx.export
+</h4><ol>
+<li>对于任何用到shape、size返回值的参数时，例如：<code>tensor.view(tensor.size(0),-1)</code>这类操作，避免直接使用tensor.size的返回值，而是加上<strong>int转换</strong>，<code>tensor.view(int(tensor.size(0),-1)</code>,<strong>断开跟踪</strong></li>
+<li>对于nn.Upsample或nn.functional.interpolate函数，使用scale_factor指定倍率，而不是使用size参数指定大小</li>
+<li>对于reshape、view操作时，—1的指定请放到batch维度。其他维度可以计算出来即可。batch维度禁止指定为大于-1的明确数字</li>
+<li>torch.onnx.export指定dynamic_axes参数，并且只指定batch维度，禁止其他动态</li>
+<li>使用opset_version=11,不要低于11</li>
+<li>避免使用inplace操作，例如<code>y[·,0:2]=y[·,0:2]*2-0.5</code></li>
+<li>尽量少的出现5个维度，例如ShuffleNet Module，可以考虑合并wh避免出现5维</li>
+<li>尽量把让后处理部分在onnx模型中实现，降低后处理复杂度</li>
+<li>掌握了这些，就可以保证后面各种情况的顺利了</li>
+</ol>
+<p>这些做法的必要性体现在，简化过程的复杂度，去掉gather、shape类的节点，很多时候，部分不这么改看似也是可以但是需求复杂后，依旧存在各类问题。按照说的这么修改，基本总能成。做了这些，就不需要使用onnx—simplifer了</p>
+<p>以上导出方法在导出自定义算子后，如果要在onnxruntime导入使用，首先需要再<a class="link" href="https://onnxruntime.ai/docs/reference/operators/add-custom-op.html"  target="_blank" rel="noopener"
+    >定义onnxruntime算子</a></p>
+<h4 id="torchonnxexport-dynamotrue">torch.onnx.export(&hellip;, dynamo=True)
+</h4><ul>
+<li>using torch.export and Torch FX to capture the graph. It was released with PyTorch 2.5</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1"># Export the ONNX model</span>
+</span></span><span class="line"><span class="cl"><span class="n">onnx_program</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="k">export</span><span class="p">(</span><span class="n">torch_model</span><span class="p">,</span> <span class="n">example_inputs</span><span class="p">,</span> <span class="n">dynamo</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Optimize the ONNX model</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># The ONNX model can be optimized with constant folding, and elimination of redundant nodes.</span>
+</span></span><span class="line"><span class="cl"><span class="n">onnx_program</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Save the ONNX model</span>
+</span></span><span class="line"><span class="cl"><span class="n">onnx_program</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&#34;demo.onnx&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Check the ONNX model</span>
+</span></span><span class="line"><span class="cl"><span class="n">onnx_model</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;deom.onnx&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">onnx</span><span class="o">.</span><span class="n">checker</span><span class="o">.</span><span class="n">check_model</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="example">Example
+</h2><h3 id="simple-example">Simple Example
+</h3><p><a class="link" href="https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md"  target="_blank" rel="noopener"
+    >The example</a> has three parts:</p>
+<ol>
+<li>Pre-processing</li>
+<li>Quantization</li>
+<li>Debugging</li>
+</ol>
+<h3 id="yolov8">YOLOv8
+</h3><ul>
+<li><a class="link" href="https://github.com/loveleaves/onnx-quantization/tree/main/object_detection/YOLOv8"  target="_blank" rel="noopener"
+    >code</a></li>
+<li>Static Quantization</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Mar 07, 2025 19:52 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/quantization/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【量化】 神经网络量化介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/gpu/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【GPU】 GPU架构及使用介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="loveleaves/loveleaves.github.io"
+    data-repo-id="R_kgDOHiRxVA"
+    data-category="General"
+    data-category-id="DIC_kwDOHiRxVM4Cmvtx"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading=""
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 Andrew Stark
+    </section>
+    
+    <section class="powerby">
+        
+            loveleaves <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<div id="aplayer"></div>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script>
+const staticDir = "https://loveleaves.github.io/";
+const musicDir = staticDir + '/music/';
+const songs = [
+    'Dream_It_Possible-Delacey',
+    'Love_Story-Taylor_Swift',
+    'Never_Gonna_Give_You_Up-Rick_Astley',
+    'Natural-Imagine_Dragons',
+    'Rolling_In_the_Deep-Adele',
+    'Apologize-OneRepublic',
+    'Salt-Ava_Max',
+    'Try-P!nk',
+    'That_Girl-Olly_Murs',
+    'Hymn_for_the_Weekend-Coldplay',
+    'Hall_of_Fame-The_Script',
+    'My_Stupid_Heart-Walk_Off_the_Earth&Luminati_Suns',
+    'My_Songs_Know_What_You_Did_In_the_Dark-Taylor_Swift&Fall_Out_Boy',
+    'See_You_Again-Wiz_Khalifa&Charlie_Puth',
+    'Uptown_Funk-Mark_Ronson&Bruno_Mars',
+    'Right_Now-Akon',
+    'Whistle-Flo_Rida',
+    'Numb-Linkin_Park',
+    'Immortals-Fall_Out_Boy',
+    'DJ_Got_Us_Falling_In_Love-Krusher',
+    'Faded-Alan_Walker',
+    'Something_Just_Like_This-The_Chainsmokers&Coldplay',
+    'The_Phoenix-Fall_Out_Boy',
+    'Umbrella-Rihanna&Jay_Z',
+    'Animals_(Big_Boi_Remix)-Maroon_5',
+    'Monsters-Katie_Sky',
+    'Turnin’-Young_Rising_Sons',
+    'What_Are_Words-Chris_Medina',
+    'Normal_No_More-Tysm',
+    'Go_Solo-Tom_Rosenthal',
+    'Peter_Pan_Was_Right-Anson_Seabra',
+    'Free_Loop-Daniel_Powter',
+    'Empty_Love-Lulleaux&Kid_Princess',
+    '青空-Candy_Wind',
+    'Take_Me_Hand-DAISHI_DANCE',
+    'Proud_Of_You-冯曦妤',
+    'Please_Don’t_Go-Joel_Adams',
+    'Forgettable-Project_46&Olivia',
+    'Creep-Gamper_And_Dadoni',
+    'Ferrari-Bebe_Rexha',
+    'Legends_Never_Die(Alan_Walker_Remix)-Alan_Walker&Against_The_Current',
+    'Love_the_Way_You_Lie-Eminem&Rihanna',
+    'Lone_Ranger-Rachel_Platten',
+    'What_Makes_You_Beautiful-One_Direction',
+    'Let_Me_Down_Slowly-Alec_Benjamin',
+    'My_Love-Westlife',
+    'Counting_Stars-OneRepublic',
+    'STAY-The_Kid_LAROI&Justin_Bieber',
+    'Shape_of_You-Ed_Sheeran',
+    'Booty_Music-Deep_Side',
+    'Because_Of_You-Kelly_Clarkson',
+    'Far_Away_from_Home-Groove_Coverage',
+    'Move_Your_Body(Single_Mix)-Sia',
+    'The_Nights(Original_Mix)-Avicii',
+    'We_Dont_Talk_Anymore-Charlie_Puth&Selena_Gomez',
+    'Moves_Like_Jagger(Radio_Edit)-Maroon_5',
+    'You_Raise_Me_Up-Westlife',
+    'Call_Me_Maybe(10_Kings_vs_Ollie_Green_Remix)-Carly_Rae_Jepsen',
+    'Senorita-Shawn_Mendes&Camila_Cabello',
+    'We_Will_Rock_You-Queen',
+    'My_Heart_Will_Go_On-Celine_Dion&Webster'
+];
+let audios = [];
+songs.forEach((item) => {
+    const songInfo = item.split('-');
+    audios.push({
+        name: songInfo[0],
+        artist: songInfo[1],
+        url: musicDir + item + '/song.mp3',
+        lrc: musicDir + item + '/song.lrc',
+        cover: musicDir + 'cover.jpg', 
+    })
+});
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    
+    fixed: true,
+    
+    lrcType: 3,
+    audio: audios
+});
+</script>
+
+
+
+
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d-widget-v3/';
+  const myCdnPath = "https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d/live2d-moc3/";
+  
+  const cssPath = "https://loveleaves.github.io/waifu/waifu.css";
+  const tipsJsonPath = "https://loveleaves.github.io/waifu/waifu-tips.json";
+  const tipsJsPath = "https://loveleaves.github.io/waifu/waifu-tips.js";
+  const live2dJsPath = "https://loveleaves.github.io/waifu/live2d.min.js";
+
+  const config = {
+    
+    path: {
+      modelPath: myCdnPath,
+      cssPath: cssPath,
+      tipsJsonPath: tipsJsonPath,
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://loveleaves.github.io/icons/backTop.svg);
+    }
+</style>
+
+<div id="particles-js"></div>
+
+<script src=https://loveleaves.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://loveleaves.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<script>
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+
+    </body>
+</html>

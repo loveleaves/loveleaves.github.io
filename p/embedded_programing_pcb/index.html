@@ -1,0 +1,3055 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="记录PCB从设计到开发的全流程，包含电子设计常见知识点、PCB设计与开发、元器件选型等">
+<title>【Hardware】硬件设计与选型</title>
+
+<link rel='canonical' href='https://loveleaves.github.io/p/embedded_programing_pcb/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f655c339a336b15a106fd248f9170c8064dfc6f1990313665402f49a0c0831e.css"><meta property='og:title' content="【Hardware】硬件设计与选型">
+<meta property='og:description' content="记录PCB从设计到开发的全流程，包含电子设计常见知识点、PCB设计与开发、元器件选型等">
+<meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
+<meta property='og:site_name' content='安哲睿'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-26T22:40:09&#43;08:00'/>
+<meta name="twitter:title" content="【Hardware】硬件设计与选型">
+<meta name="twitter:description" content="记录PCB从设计到开发的全流程，包含电子设计常见知识点、PCB设计与开发、元器件选型等">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b4d2f495c38e1067.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😁</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">安哲睿</a></h1>
+            <h2 class="site-description">世上无难事，只怕有心人</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/loveleaves'
+                        target="_blank"
+                        title="Github"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/loveleaves'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://loveleaves.github.io/en/" >English</option>
+                                
+                                    <option value="https://loveleaves.github.io/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#基础知识">基础知识</a></li>
+    <li><a href="#pcb设计流程">PCB设计流程</a>
+      <ol>
+        <li><a href="#专业pcb设计流程">专业pcb设计流程</a>
+          <ol>
+            <li><a href="#资料准备">资料准备</a></li>
+            <li><a href="#网表导入结构导入">网表导入&amp;结构导入</a></li>
+            <li><a href="#模块抓取">模块抓取</a></li>
+            <li><a href="#器件布局和布局优化">器件布局和布局优化</a></li>
+            <li><a href="#叠层设置和规则设置">叠层设置和规则设置</a></li>
+            <li><a href="#pcb扇孔">PCB扇孔</a></li>
+            <li><a href="#pcb走线和pcb修线">PCB走线和PCB修线</a></li>
+            <li><a href="#pcb等长布线优化">PCB等长&amp;布线优化</a></li>
+            <li><a href="#drc检查丝印处理光绘输出">DRC检查&amp;丝印处理&amp;光绘输出</a></li>
+          </ol>
+        </li>
+        <li><a href="#元器件选型">元器件选型</a></li>
+        <li><a href="#pcb布局要求">PCB布局要求</a></li>
+        <li><a href="#pcb布线要求">PCB布线要求</a></li>
+        <li><a href="#原件符号绘制">原件符号绘制</a></li>
+      </ol>
+    </li>
+    <li><a href="#pcb设计常用知识点">PCB设计常用知识点</a>
+      <ol>
+        <li><a href="#数据手册datasheet">数据手册（Datasheet）</a>
+          <ol>
+            <li><a href="#组成部分">组成部分</a></li>
+            <li><a href="#查阅网站">查阅网站</a></li>
+          </ol>
+        </li>
+        <li><a href="#芯片封装类型">芯片封装类型</a></li>
+        <li><a href="#差分信号">差分信号</a>
+          <ol>
+            <li><a href="#差分信号的优点有哪些">差分信号的优点有哪些？</a></li>
+            <li><a href="#差分信号在pcb中的设计要求有哪些">差分信号在PCB中的设计要求有哪些？</a></li>
+          </ol>
+        </li>
+        <li><a href="#特性阻抗">特性阻抗</a>
+          <ol>
+            <li><a href="#1单端阻抗">1、单端阻抗</a></li>
+            <li><a href="#2差分阻抗">2、差分阻抗</a></li>
+            <li><a href="#3阻抗控制作用">3、阻抗控制作用</a></li>
+          </ol>
+        </li>
+        <li><a href="#阻抗匹配">阻抗匹配</a>
+          <ol>
+            <li><a href="#造成阻抗不匹配的原因">造成阻抗不匹配的原因</a></li>
+            <li><a href="#阻抗不匹配的后果">阻抗不匹配的后果</a></li>
+            <li><a href="#如何计算阻抗">如何计算阻抗</a></li>
+            <li><a href="#常见高速信号阻抗计算">常见高速信号阻抗计算</a></li>
+          </ol>
+        </li>
+        <li><a href="#pcb-层压结构">PCB 层压结构</a>
+          <ol>
+            <li><a href="#pcb叠层的基本组成">PCB叠层的基本组成</a></li>
+            <li><a href="#叠层设置的基本原则">叠层设置的基本原则</a></li>
+            <li><a href="#常见的叠层结构">常见的叠层结构</a></li>
+          </ol>
+        </li>
+        <li><a href="#3w--20h-规则">3W &amp; 20H 规则</a>
+          <ol>
+            <li><a href="#高速设计中-3w-规则指的是什么">高速设计中 3W 规则指的是什么？</a></li>
+            <li><a href="#为什么要做-3w-处理">为什么要做 3W 处理？</a></li>
+            <li><a href="#高速板中常说的20h指的是什么">高速板中常说的20H指的是什么？</a></li>
+          </ol>
+        </li>
+        <li><a href="#pcb-铺铜">PCB 铺铜</a>
+          <ol>
+            <li><a href="#铺铜的连接形式">铺铜的连接形式</a></li>
+            <li><a href="#铺铜的注意事项">铺铜的注意事项</a></li>
+          </ol>
+        </li>
+        <li><a href="#gnd过孔">GND过孔</a>
+          <ol>
+            <li><a href="#抑制电磁干扰emi">抑制电磁干扰（EMI）</a></li>
+            <li><a href="#提供接地回流路径">提供接地回流路径</a></li>
+            <li><a href="#屏蔽与抗干扰">屏蔽与抗干扰</a></li>
+            <li><a href="#增强-pcb-的机械强度">增强 PCB 的机械强度</a></li>
+            <li><a href="#增强-pcb-板的散热能力">增强 PCB 板的散热能力</a></li>
+          </ol>
+        </li>
+        <li><a href="#回流路径">回流路径</a>
+          <ol>
+            <li><a href="#回流类型">回流类型</a></li>
+            <li><a href="#设计原则">设计原则</a></li>
+            <li><a href="#跨平面分割">跨平面分割</a></li>
+          </ol>
+        </li>
+        <li><a href="#两层板设计规范">两层板设计规范</a>
+          <ol>
+            <li><a href="#布局设计">布局设计</a></li>
+            <li><a href="#布线设计">布线设计</a></li>
+            <li><a href="#电源设计">电源设计</a></li>
+            <li><a href="#地层设计">地层设计</a></li>
+          </ol>
+        </li>
+        <li><a href="#两层板如何控制阻抗">两层板如何控制阻抗</a>
+          <ol>
+            <li><a href="#1共面阻抗法包地法">1、共面阻抗法（包地法）</a></li>
+            <li><a href="#2阻抗控制和验证">2、阻抗控制和验证</a></li>
+          </ol>
+        </li>
+        <li><a href="#pcb设计中电流与线宽的关系">PCB设计中电流与线宽的关系</a>
+          <ol>
+            <li><a href="#pcb设计中电流与线宽的关系-1">PCB设计中电流与线宽的关系</a></li>
+            <li><a href="#过孔与电流的关系">过孔与电流的关系</a></li>
+          </ol>
+        </li>
+        <li><a href="#pcb设计中的安全间距">PCB设计中的安全间距</a></li>
+        <li><a href="#pcb常见丝印标识">PCB常见丝印标识</a>
+          <ol>
+            <li><a href="#1-元件位号标识">1 元件位号标识</a></li>
+            <li><a href="#2-常见认证标识">2 常见认证标识</a></li>
+            <li><a href="#3-常见符号标识">3 常见符号标识</a></li>
+          </ol>
+        </li>
+        <li><a href="#pcb开尔文走线">PCB开尔文走线</a></li>
+      </ol>
+    </li>
+    <li><a href="#pcb常见模块设计参考">PCB常见模块设计参考</a>
+      <ol>
+        <li><a href="#ldo模块">LDO模块</a>
+          <ol>
+            <li><a href="#布局参考">布局参考</a></li>
+            <li><a href="#走线参考">走线参考</a></li>
+          </ol>
+        </li>
+        <li><a href="#dc-dc模块">DC-DC模块</a>
+          <ol>
+            <li><a href="#布局参考-1">布局参考</a></li>
+            <li><a href="#走线参考-1">走线参考</a></li>
+          </ol>
+        </li>
+        <li><a href="#usb接口">USB接口</a></li>
+        <li><a href="#晶振">晶振</a>
+          <ol>
+            <li><a href="#布局参考-2">布局参考</a></li>
+            <li><a href="#布线参考">布线参考</a></li>
+          </ol>
+        </li>
+        <li><a href="#usb-接口">USB 接口</a>
+          <ol>
+            <li><a href="#布局参考-3">布局参考</a></li>
+            <li><a href="#布线参考-1">布线参考</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#电子设计常用知识点">电子设计常用知识点</a>
+      <ol>
+        <li><a href="#0ω电阻的功能">0Ω电阻的功能</a>
+          <ol>
+            <li><a href="#1-方便调试与兼容设计">1 方便调试与兼容设计</a></li>
+            <li><a href="#2-参数匹配">2 参数匹配</a></li>
+            <li><a href="#3-模数电路单点接地">3 模数电路单点接地</a></li>
+            <li><a href="#4-跨接跳线">4 跨接跳线</a></li>
+            <li><a href="#5-保护与熔断">5 保护与熔断</a></li>
+          </ol>
+        </li>
+        <li><a href="#上拉电阻和下拉电阻">上拉电阻和下拉电阻</a>
+          <ol>
+            <li><a href="#芯片io口为什么需要接上拉电阻">芯片IO口为什么需要接上拉电阻？</a></li>
+            <li><a href="#为什么type-c接口要加51k电阻下拉">为什么Type-c接口要加5.1K电阻下拉</a></li>
+          </ol>
+        </li>
+        <li><a href="#为什么ic电源引脚旁边的电容的作用选择和放置">为什么IC电源引脚旁边的电容的作用、选择和放置</a></li>
+        <li><a href="#adc分压电阻的选择--adc电量检测电路">ADC分压电阻的选择 &amp;&amp; ADC电量检测电路</a></li>
+        <li><a href="#蓝牙模块">蓝牙模块</a></li>
+      </ol>
+    </li>
+    <li><a href="#元器件选型知识点">元器件选型知识点</a>
+      <ol>
+        <li><a href="#电阻">电阻</a>
+          <ol>
+            <li><a href="#电阻类型">电阻类型</a></li>
+            <li><a href="#电阻器的选型考虑因素">电阻器的选型考虑因素</a></li>
+          </ol>
+        </li>
+        <li><a href="#电容">电容</a>
+          <ol>
+            <li><a href="#电容类型">电容类型</a></li>
+            <li><a href="#电容器的选型考虑因素">电容器的选型考虑因素</a></li>
+          </ol>
+        </li>
+        <li><a href="#电感">电感</a>
+          <ol>
+            <li><a href="#电感类型">电感类型</a></li>
+            <li><a href="#电感器的选型考虑因素">电感器的选型考虑因素</a></li>
+          </ol>
+        </li>
+        <li><a href="#晶振-1">晶振</a>
+          <ol>
+            <li><a href="#晶振中的有源和无源到底有什么不同">晶振中的有源和无源到底有什么不同?</a></li>
+            <li><a href="#贴片晶振四个脚与两个脚的区别">贴片晶振四个脚与两个脚的区别</a></li>
+          </ol>
+        </li>
+        <li><a href="#蓝牙ble">蓝牙BLE</a>
+          <ol>
+            <li><a href="#天线">天线</a></li>
+          </ol>
+        </li>
+        <li><a href="#led">LED</a></li>
+        <li><a href="#oled显示屏">OLED显示屏</a>
+          <ol>
+            <li><a href="#lcd背光">LCD背光</a></li>
+          </ol>
+        </li>
+        <li><a href="#排针">排针</a></li>
+        <li><a href="#mos管">MOS管</a></li>
+      </ol>
+    </li>
+    <li><a href="#电子设计常用电路">电子设计常用电路</a>
+      <ol>
+        <li><a href="#外围电路">外围电路</a>
+          <ol>
+            <li><a href="#mcu-与外围电路的关系">MCU 与外围电路的关系</a></li>
+            <li><a href="#必学外围电路模块按功能分类">必学外围电路模块（按功能分类）</a></li>
+            <li><a href="#入门实践建议">入门实践建议</a></li>
+          </ol>
+        </li>
+        <li><a href="#电源防反接电路">电源防反接电路</a>
+          <ol>
+            <li><a href="#二极管防反接">二极管防反接</a></li>
+          </ol>
+        </li>
+        <li><a href="#自动冷启动电路">自动冷启动电路</a></li>
+      </ol>
+    </li>
+    <li><a href="#开源项目">开源项目</a>
+      <ol>
+        <li><a href="#入门2层板">入门（2层板）</a></li>
+        <li><a href="#进阶4层板">进阶（4层板）</a></li>
+      </ol>
+    </li>
+    <li><a href="#工具">工具</a>
+      <ol>
+        <li><a href="#电路仿真">电路仿真</a></li>
+        <li><a href="#电路分析工具">电路分析工具</a></li>
+      </ol>
+    </li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/hardware/" >
+                Hardware
+            </a>
+        
+            <a href="/categories/diy/" >
+                DIY
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/embedded_programing_pcb/">【Hardware】硬件设计与选型</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            记录PCB从设计到开发的全流程，包含电子设计常见知识点、PCB设计与开发、元器件选型等
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 21, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 52 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="基础知识">基础知识
+</h2><ul>
+<li><a class="link" href="https://pan.quark.cn/s/05650fad6466"  target="_blank" rel="noopener"
+    >零基础入门PCB设计PPT</a></li>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/schematic-guidance.html"  target="_blank" rel="noopener"
+    >嘉立创EDA设计教程</a></li>
+<li><a class="link" href="https://www.bilibili.com/video/BV1AT421Y7DS/"  target="_blank" rel="noopener"
+    >原理图&amp;PCB设计教程</a></li>
+</ul>
+<h2 id="pcb设计流程">PCB设计流程
+</h2><ul>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/639187475"  target="_blank" rel="noopener"
+    >硬件设计从需求到PCBA</a></li>
+</ul>
+<p><img src="/imgs/pcb/pcb_design_steps.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="pipeline"
+	
+	
+></p>
+<h3 id="专业pcb设计流程">专业pcb设计流程
+</h3><p><img src="/imgs/pcb/pcb_design_steps2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="pipeline"
+	
+	
+></p>
+<h4 id="资料准备">资料准备
+</h4><ul>
+<li>原理图：硬件工程师提供的原理图设计文件结构图</li>
+<li>DXF文件：用于确认板框大小，是否存在限高、禁布的信息</li>
+<li>设计说明：PCB Layout设计要求、设计问题记录表等信息</li>
+<li>器件手册：进行封装绘制，以及推荐布局或走线参考</li>
+</ul>
+<h4 id="网表导入结构导入">网表导入&amp;结构导入
+</h4><ul>
+<li>网表导入：将原理图网表导入到pcb中，确保原理图中的网络连接性、器件完全导入成功。</li>
+<li>结构导入：将结构文件导入到pcb中，确保板框大小、结构器件信息、禁布区、限高区等信息，默认1：1导入，单位mm</li>
+</ul>
+<h4 id="模块抓取">模块抓取
+</h4><ul>
+<li>按功能或者模块将器件进行抓取，确认主控的位置和方向，将各个模块根据飞线情况放置在主控芯片的周围。</li>
+<li>立创EDA快捷键：ctrl+shift+x</li>
+</ul>
+<h4 id="器件布局和布局优化">器件布局和布局优化
+</h4><ul>
+<li>器件布局：优先进行结构器件布局—特殊器件—主要器件，布局采取先大后小的原则，主要IC器件按飞线流向放置合适位置，滤波器件靠近滤波管脚。</li>
+<li>布局优化：对预布局文件进行布局优化，器件中心对齐，大器件尽量对齐原则，相同模块必须一致，保证PCB布局合理、美观。</li>
+</ul>
+<h4 id="叠层设置和规则设置">叠层设置和规则设置
+</h4><ul>
+<li>叠层设置：确定每层对应的放置层标识</li>
+<li>规则设置：常用规则（线宽、线距、过孔）</li>
+</ul>
+<h4 id="pcb扇孔">PCB扇孔
+</h4><p>通常对于引脚多的芯片：先扇孔，再走线。</p>
+<h4 id="pcb走线和pcb修线">PCB走线和PCB修线
+</h4><ul>
+<li>PCB走线：走线优先对重要信号走线，优先参考GND层走线。对重要信号线进行包地打孔处理，如差分信号，时钟信号。电源信号最后处理。</li>
+<li>PCB修线：对走线进行优化调整、检查，不存在信号跨分
+割，满足载流要求，回流路径短，不存在环形、U形路径。走线需美观，尽量耦合。</li>
+</ul>
+<h4 id="pcb等长布线优化">PCB等长&amp;布线优化
+</h4><ul>
+<li>PCB等长：对高速信号，有时序要求的信号线进行等长，3W原则。差分信号等长尽量在不耦合处等长。</li>
+<li>布线优化：对整板走线进行优化，检查关键信号、电源信号载流，路径、过孔是否合理，让其走线更加美观、合理。</li>
+</ul>
+<h4 id="drc检查丝印处理光绘输出">DRC检查&amp;丝印处理&amp;光绘输出
+</h4><ul>
+<li>DRC检查：对整板进行DRC检查，检查信号是否全部连通，
+是否存在开短路。检查是否未避开禁布区、限高区。检查规则优先级是否正确</li>
+<li>丝印处理：进行丝印调整，丝印方向一致，丝印清楚，不
+能上阻焊。座子丝印添加是否正确。版本号、L0G0是否添加。</li>
+<li>光绘输出：
+<ul>
+<li>ASM:装配图文件夹</li>
+<li>CAM:Gerber文件夹，用于制版</li>
+<li>SMT:贴片文件夹，用于贴片</li>
+<li>PRJ:工程文件夹</li>
+<li>XXX.docx:制版工艺说明文件</li>
+</ul>
+</li>
+</ul>
+<h3 id="元器件选型">元器件选型
+</h3><ul>
+<li><a class="link" href="https://www.szlcsc.com/?c=Q2&amp;lcsc_vid=QlNbUldTQgMPVAFfE1gPV1NTEVJcVFUFEVVcVQUCEQQxVlNTTlVXVF1XRFhbXjsOAxUeFF5JWAIASQYPGQZABAsLWA%3D%3D"  target="_blank" rel="noopener"
+    >立创商城（也可大部分数据手册查看）</a></li>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/electronic-selection/digital-logic-chip.html"  target="_blank" rel="noopener"
+    >电子设计选型</a></li>
+</ul>
+<p>pcb版一般包含以下模块：</p>
+<ul>
+<li>单片机最小系统：是指用最少的元件组成的单片机可以工作的系统。对于51系列单片机来说，单片机+晶振电路+复位电路,便组成了一个最小系统。晶振电路是单片机的振荡电路，通过晶振来放大输出信号。复位电路则用于重置单片机的系统状态，使其重新初始化。</li>
+<li>电源电路：单片机最小系统中的电源是指能量的来源，其中VCC(40脚)将电源的正极和GND(20脚)视为电源的输入和输出。接地端(电源负极)则用于与地面形成电气连接。</li>
+<li>外围功能电路：包括按键检测，Led指示灯，排针引出等</li>
+</ul>
+<h3 id="pcb布局要求">PCB布局要求
+</h3><ul>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/layout-guidance.html"  target="_blank" rel="noopener"
+    >PCB设计布局指导</a></li>
+<li><a class="link" href="https://hilelectronic.com/zh-CN/blog-pcb-layout/"  target="_blank" rel="noopener"
+    >如何设计 PCB 布局</a></li>
+<li>1、必须根据元器件的电气特性和使用特点来布局（这点非常重要），举例如下：对于各种接口、按键和排针，需要放在板子边缘，方便插接，对于屏幕和主控芯片等，一般放在板子中央，对于电源电路，一般放在板子的电源输入旁边并且要注意电流路径和滤波电容位置（非常重要），对于晶振需要靠近单片机晶振引脚摆放等</li>
+<li>2、不要把元器件看成二维物体，而是应该看成三维物体，有时空间有干涉的情况需要考虑</li>
+<li>3、元件的布局应该采用模块化，也就是同一个模块电路的元件应该放同一个区域，按照就近原则来布局，不能东一个西一个</li>
+</ul>
+<h3 id="pcb布线要求">PCB布线要求
+</h3><ul>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/routing-guidance.html"  target="_blank" rel="noopener"
+    >PCB设计走线指导</a></li>
+<li><a class="link" href="https://blog.csdn.net/zhi_Alanwu/article/details/127588384"  target="_blank" rel="noopener"
+    >【硬件设计】布线篇&mdash;&ndash;超实用的PCB布局布线规则</a></li>
+<li><a class="link" href="https://www.bilibili.com/video/BV1AT421Y7DS?spm_id_from=333.788.videopod.episodes&amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;p=94"  target="_blank" rel="noopener"
+    >线宽、过孔大小如何计算</a></li>
+</ul>
+<p><strong>布线顺序：</strong> 关键元件优先、关键信号线优先、密度优先</p>
+<ul>
+<li>(1) 密度优先原则：从单板上连线最密集的区域开始布线。</li>
+<li>(2) 优先关键元器件：如DDR、射频等核心部分应优先布线，类似信号传输线应提供专层、电源、地回路。其他次要信号要顾全整体，不可以和关键信号相抵触。</li>
+<li>(3) 关键信号线优先：电源、模拟小信号、高速信号、时钟信号和同步信号等关键信号优先布线。</li>
+</ul>
+<p><strong>布线要求：</strong></p>
+<ul>
+<li>1.顶层优先原则：尽量在顶层布线</li>
+<li>2.电源线原则上要加粗：因为电源线是要给电路板各个模块供电的，电源线加粗有利于电流在主干道上流通；在日常PCB设计中，在25℃时，对于铜厚为10z(盎司)的导线，10mil线宽能够承载0.65A电流，40mil线宽能够承载2.3A电流。</li>
+<li>3.同一层内走线大于90°：同一层走线禁止90°或者走锐角，从原理上讲，锐角直角走线会造成走线阻抗不连续，对于信号的传输有影响，推荐走线135°</li>
+<li>4.注意电流路径和电容的摆放位置：电源要先经过电容滤波再给后级，去耦电容要贴近芯片引脚放置，并就近接地。</li>
+<li>5.高频信号线尽可能短，并做好与其他信号的屏蔽隔离。为了降低相邻走线之间的串扰，尽量避免相邻层平行走线，走线应遵循3W原则：相邻层信号线应采用正交方向。差分线布线尽量等距等长。</li>
+<li>6.PCB布线要尽量远离安装孔与电路板边缘：在PCB钻孔加工中，很容易会切掉一部分导线，为了电路板功能，应尽量远离这些位置。</li>
+<li>7.需要添加泪滴。</li>
+</ul>
+<h3 id="原件符号绘制">原件符号绘制
+</h3><p>对于元件库中没有的但需要使用的原件，进行元件符号绘制与封装。</p>
+<h2 id="pcb设计常用知识点">PCB设计常用知识点
+</h2><blockquote>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/knowledge-point/difference-pairs.html"  target="_blank" rel="noopener"
+    >PCB设计常用知识点</a></p>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/0ohm-function.html"  target="_blank" rel="noopener"
+    >电子设计常用知识点</a></p>
+</blockquote>
+<h3 id="数据手册datasheet">数据手册（Datasheet）
+</h3><h4 id="组成部分">组成部分
+</h4><p>元器件的数据手册一般包含以下部分：</p>
+<ul>
+<li>功能简述</li>
+<li>电气特性</li>
+<li>功能描述</li>
+<li>外观与封装</li>
+<li>应用示例电路</li>
+</ul>
+<h4 id="查阅网站">查阅网站
+</h4><ul>
+<li><a class="link" href="https://www.xcc.com/"  target="_blank" rel="noopener"
+    >芯查查</a></li>
+<li><a class="link" href="https://www.szlcsc.com/?c=Q2&amp;lcsc_vid=QlNbUldTQgMPVAFfE1gPV1NTEVJcVFUFEVVcVQUCEQQxVlNTTlVXVF1XRFhbXjsOAxUeFF5JWAIASQYPGQZABAsLWA%3D%3D"  target="_blank" rel="noopener"
+    >立创商城</a></li>
+</ul>
+<h3 id="芯片封装类型">芯片封装类型
+</h3><blockquote>
+<p><a class="link" href="https://zhuanlan.zhihu.com/p/1925070069324583974"  target="_blank" rel="noopener"
+    >芯片封装类型简介</a></p>
+</blockquote>
+<p>选择芯片的封装影响到PCB的布局及布线，所以在元件选型时就应该考虑。</p>
+<p>芯片封装是半导体产业中重要的一环，它不仅保护着脆弱的半导体芯片，还承担着散热、电气连接和信号传输等多重功能。从最早的通孔封装（如DIP）到表面贴装封装（如QFP），再到区域阵列封装（如BGA）和晶圆级封装（如WLCSP），芯片封装技术向着小型化、高性能的方向发展。</p>
+<h3 id="差分信号">差分信号
+</h3><p><strong>单端信号</strong>是相对于差分信号而言的，单端输入指信号有一个参考端和一个信号端构成，参考端一般为地端。当耦合噪声时，接收数据无法正常还原。</p>
+<p><strong>差分信号</strong>是一种信号传输技术，区别于传统的一根信号线一根地线的做法，差分传输在两根数据线上都传输信号，这两个信号的振幅相等，相位相差180°（即相位相反）。在这两根线上传输的信号就是差分信号，而承载差分信号的那一对走线就称为差分走线。</p>
+<h4 id="差分信号的优点有哪些">差分信号的优点有哪些？
+</h4><ul>
+<li>1、抗干扰能力强
+<ul>
+<li>共模干扰抑制：差分信号对外界噪声具有很强的抗扰能力，因为两条信号线上的噪声是相同的（共模），接收端通过计算差值有效消除了共模噪声。</li>
+<li>磁场耦合小：差分信号线之间的电流方向相反，产生的电磁场互相抵消，因此对外部设备的电磁干扰（EMI）小。</li>
+</ul>
+</li>
+<li>2、信号完整度高
+<ul>
+<li>抑制信号反射：两条线之间的特性阻抗匹配更容易实现，从而减少信号反射，保证信号完整性。</li>
+<li>减少地回路问题：差分信号不完全依赖地作为电流的回流路径，减少了地回路的干扰，对于差分信号而言，最大的影响是对地阻抗是否一致，也就是对地平衡度，它们之间相对的阻抗影响并不特别重要，之间分布电容大了只会衰落信号强度，不会引入噪声和干扰，也就是对信噪比不会产生很大影响。</li>
+</ul>
+</li>
+<li>3、支持信号高速传输
+<ul>
+<li>差分信号在高速传输中表现优异，能够更好地保持波形，减少信号失真和抖动，适合用于高速数据总线（如PCIe、USB、HDMI等）。</li>
+</ul>
+</li>
+<li>4、电磁辐射低
+<ul>
+<li>差分信号的电流方向相反，形成的磁场互相抵消，大大降低了电磁辐射，符合更高的EMC（电磁兼容性）要求。</li>
+</ul>
+</li>
+<li>5、传输距离远
+<ul>
+<li>在相同的条件下，差分信号比单端信号能传输更长的距离，同时保持良好的信号质量。</li>
+</ul>
+</li>
+</ul>
+<h4 id="差分信号在pcb中的设计要求有哪些">差分信号在PCB中的设计要求有哪些？
+</h4><ul>
+<li>认识差分信号，在PCB设计中，差分信号的命名通常有“+、-、P、N”等标识</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<p><img src="/imgs/pcb/differential-signal_2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<p><img src="/imgs/pcb/differential-signal_3.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<ul>
+<li>差分信号往往是速度较快、且在整个项目中比较重要的，在布局走线时要重点考虑，尽量保证差分信号顺畅以及距离短。</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_4.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<p><img src="/imgs/pcb/differential-signal_5.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<ul>
+<li>差分信号在走线时，非必要不换层，若一定要换层，在换层的附近添加回流地过孔</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_6.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<ul>
+<li>差分信号内不能有其余走线，若有匹配电阻或上拉电阻，也应该对称摆放。一般差分线间距较小，在电阻的选择上一般不大于0603，否则器件本身尺寸就会导致差分线耦合效果差，影响信号完整性。</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_7.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<p><img src="/imgs/pcb/differential-signal_8.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<ul>
+<li>差分信号在走线时，不可避免会有拐弯或打孔导致线长不一致，差分信号是接收两根信号的差值，需要保证相位的同步，同组差分信号一般不超过±5mil误差，在进行差分等长时，尽量满足小于3W间距（3倍线宽）以及小于2H（2倍间距）规则。</li>
+</ul>
+<p><img src="/imgs/pcb/differential-signal_9.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="differential-signal"
+	
+	
+></p>
+<h3 id="特性阻抗">特性阻抗
+</h3><p>特性阻抗是电磁波在传输线中传播时遇到的阻抗，反映了信号传输的质量和效率。在PCB设计中，控制特性阻抗对确保信号完整性和减少反射至关重要。</p>
+<p>特性阻抗（Z₀）是传输线上电压波与电流波的比值。</p>
+<p>计算公式为：</p>
+<p><img src="/imgs/pcb/Impedance_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Impedance"
+	
+	
+></p>
+<p>其中：</p>
+<ul>
+<li>R 为单位长度电阻；</li>
+<li>L 为单位长度电感；</li>
+<li>G 为单位长度电导；</li>
+<li>C 为单位长度电容；</li>
+<li>ω 为角频率（ω=2πf，f是频率）；</li>
+<li>j 为虚数单位（j²=-1）；</li>
+</ul>
+<h4 id="1单端阻抗">1、单端阻抗
+</h4><p>单端阻抗（Single-Ended Impedance）是指信号线与参考平面（通常是地平面或电源平面）之间的阻抗，适用于单端信号传输。</p>
+<ul>
+<li>常见的单端阻抗值有50Ω、75Ω等。</li>
+</ul>
+<p>在高频下，单端特性阻抗可简化为：</p>
+<p><img src="/imgs/pcb/Impedance_2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Impedance"
+	
+	
+></p>
+<p>其中：</p>
+<ul>
+<li>L 是单位长度的电感；</li>
+<li>C 是单位长度的电容；</li>
+</ul>
+<h4 id="2差分阻抗">2、差分阻抗
+</h4><p>差分阻抗（Differential Impedance）是指一对差分信号线之间的阻抗，适用于差分信号传输。差分阻抗可分为差模阻抗和共模阻抗，其中差模阻抗用于描述正负差分信号之间的阻抗，而共模阻抗则用于描述这两个信号与地之间的阻抗。常用于高速信号传输（如USB、HDMI、PCIe、以太网等）。</p>
+<ul>
+<li>常见的差分阻抗值有90Ω、100Ω等。</li>
+</ul>
+<p>在高频下，差分特性阻抗可简化为：</p>
+<p><img src="/imgs/pcb/Impedance_3.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Impedance"
+	
+	
+></p>
+<p>其中：</p>
+<ul>
+<li>Z₀是单端阻抗；</li>
+<li>k 是两条差分线之间的耦合系数（通常为0.1~0.3）；</li>
+</ul>
+<h4 id="3阻抗控制作用">3、阻抗控制作用
+</h4><p>在PCB设计中，如果不控制阻抗，可能会对信号完整性、系统性能和可靠性产生严重影响。</p>
+<ul>
+<li>当信号在传输线中遇到阻抗不连续点时（如阻抗不匹配），部分信号会被反射回源端。</li>
+<li>阻抗不匹配会增加信号之间的电磁耦合，导致相邻信号线之间的干扰。</li>
+<li>阻抗不匹配会导致信号能量损失，信号衰减，可能使得信号在到达接收端时，无法被正确识别。</li>
+<li>阻抗不匹配会影响信号的传播速度和时序，时序偏差错乱，导致数据错误，系统无法同步。</li>
+<li>阻抗不匹配会引起时钟信号的反射和失真，时钟信号不稳定或抖动，会导致系统时序紊乱，降低系统性能。</li>
+<li>阻抗不匹配会影响电源分布网络，导致信号能量通过电源或地线传导，增加电源噪声，影响系统稳定性。</li>
+</ul>
+<h3 id="阻抗匹配">阻抗匹配
+</h3><p>阻抗匹配是指在电路中，将负载的阻抗与信号源的输出阻抗调整为相等或接近相等，以实现信号能量的最大传输或减少信号反射的过程。</p>
+<h4 id="造成阻抗不匹配的原因">造成阻抗不匹配的原因
+</h4><ol>
+<li>电路设计不当，比如导线时宽时窄，或GND平面不完整。</li>
+<li>器件特性不一致，走线以及PCB板会带有寄生电容、电感、电阻等，导致实际阻抗偏离</li>
+<li>系统参数变化，比如从外接线缆到PCB板，器件本身材质不一致导致阻抗不一致。</li>
+</ol>
+<h4 id="阻抗不匹配的后果">阻抗不匹配的后果
+</h4><ol>
+<li>在高频电路中，当传输线与发送端阻抗不匹配时，会产生反射、振荡、过充等现象，并叠加至原本的信号被接收端收到，此时可能会导致接收端数据异常。</li>
+<li>在模拟信号中，若阻抗不匹配，同样容易造成电压抖动、过充等现象，导致ADC转换数据抖动或异常。</li>
+</ol>
+<h4 id="如何计算阻抗">如何计算阻抗
+</h4><p>影响阻抗的因素有很多，导线宽度、PCB板材、PCB层叠、GND平面等等，在进行阻抗匹配计算时，通常会使用专门的工具来进行计算。比如：<a class="link" href="https://tools.jlc.com/jlcTools/index.html#/impedanceCalculatenew"  target="_blank" rel="noopener"
+    >嘉立创阻抗计算神器</a></p>
+<p>根据输入参数的不同，计算的结果也不相同，在进行阻抗计算时，首先需要清楚所需的阻抗，其次是传输线的传输方式（差分、单端），根据参考平面与阻抗线所在平面的区别分为共面或隔层参考。（共面参考主要影响是阻抗线到参考平面的距离、隔层参考主要影响是参考层与阻抗层的层叠）。</p>
+<p>阻抗计算结果可能不符合实际生产设计需要，此时需要不断调整相关参数，选择一个价格、设计折中的方案。</p>
+<h4 id="常见高速信号阻抗计算">常见高速信号阻抗计算
+</h4><ul>
+<li>USB传输线阻抗要求：差分90欧姆，差分对内长度误差≤5mil；传输线长度尽量不超过1800mil；</li>
+<li>网口传输线阻抗要求：差分100欧姆，差分对内长度误差≤5mil；传输线长度尽量不超过1500mil；</li>
+<li>HDMI传输线阻抗要求：差分100欧姆，单端50欧姆，差分对内长度误差≤5mil；传输线长度尽量不超过500mil；</li>
+<li>射频天线阻抗要求：单端50欧姆，走线周围要有良好的接地平面，尽可能保证射频信号区域内净空无其他干扰。</li>
+</ul>
+<h3 id="pcb-层压结构">PCB 层压结构
+</h3><h4 id="pcb叠层的基本组成">PCB叠层的基本组成
+</h4><p>  PCB 叠层（PCB Stack-up）通常由导电铜箔（信号层和电源/地层）和绝缘材料（介质层）交替组成。合理的叠层设计对PCB的电气特性、物理性能、机械性能、可靠稳定性和制造成本等至关重要。</p>
+<h4 id="叠层设置的基本原则">叠层设置的基本原则
+</h4><ul>
+<li>主芯片相邻层为地平面，在布线时提供良好的参考地平面；</li>
+<li>信号层尽量避免直接相邻，以减少串扰；</li>
+<li>所有信号层最好与地平面相邻，以保证完整信号的回流；</li>
+<li>主电源尽可能与地平面相邻，降低电源平面阻抗；</li>
+</ul>
+<h4 id="常见的叠层结构">常见的叠层结构
+</h4><p>  以下是一些典型的PCB叠层结构，实际设计可根据实际应用情况进行调整。</p>
+<ul>
+<li>双层板：包含两层导电铜箔层，中间是绝缘介电层。</li>
+</ul>
+<p><img src="/imgs/pcb/PCB-Stack-up_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="PCB-Stack-up"
+	
+	
+></p>
+<ul>
+<li>四层板：包含四层导电铜箔层，每两层铜箔中间夹一层绝缘介电层。通常在靠近元器件多的内层里铺一层完整的GND。</li>
+</ul>
+<p><img src="/imgs/pcb/PCB-Stack-up_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="PCB-Stack-up"
+	
+	
+></p>
+<ul>
+<li>六层板及以上：增加了更多的导电铜箔层，每两层铜箔中间夹一层绝缘介电层，提供更好的电源分配和信号隔离。</li>
+</ul>
+<h3 id="3w--20h-规则">3W &amp; 20H 规则
+</h3><ul>
+<li><a class="link" href="https://mp.weixin.qq.com/s/ih6QF9pwmiBS1N1kUzO1mA"  target="_blank" rel="noopener"
+    >高速板中3W规则和20H规则说明</a></li>
+</ul>
+<h4 id="高速设计中-3w-规则指的是什么">高速设计中 3W 规则指的是什么？
+</h4><ul>
+<li>3W 规则是指：信号线的中心间距不少于 3 倍线宽时，则可保证 70%的电场不互相干扰，称为 3W 规则。使用原因是一般信号线间距足够大时，可以减少信号线之间的串扰。当满足 2W 间距时，可保证 50%的电场不互相干扰。如果要达到 98%的电场不互相干扰，则需使用 10W 间距。</li>
+<li>注意 3W 指的是俩根信号线的中心距。例：嘉立创 EDA 软件规则设计中，例如：导线是 5mil，对应 3W 间距，线与线之间的中心距是 15mil,这里安全间 距也就是线与线之间最近的边缘间距是 10mil。图片所示均为中心间距。</li>
+<li>在 PCB 设计中一般时钟线，差分线，视频信号线，音频信号线，复位信号等需满足 3W 规则；普通的信号线一般满足 2W 规则即可。</li>
+</ul>
+<p><img src="/imgs/pcb/3w-rule_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="3w-rule"
+	
+	
+></p>
+<h4 id="为什么要做-3w-处理">为什么要做 3W 处理？
+</h4><ol>
+<li>可以减少串扰：满足3W原则能使信号间的串扰减少70%。串扰是信号线之间的电场和磁场相互作用而产生的干扰，它会影响信号的完整性。通过增大线间距，可以降低这种干扰从而提高信号质量。</li>
+<li>提高信号完整性：减少串扰有助于保持信号的完整性，降低噪声对信号的影响。这对于高速信号传输尤为重要，因为高速信号对噪声和干扰更为敏感。</li>
+<li>优化PCB布局：遵循3W规则有助于优化PCB布局，使得信号线之间的距离更加合理，从而提高PCB的可靠性和稳定性。</li>
+</ol>
+<h4 id="高速板中常说的20h指的是什么">高速板中常说的20H指的是什么？
+</h4><ul>
+<li>20H规则：将电源层相对于地层内缩，使电场只在接地层的范围内传导。其中，一个H（电源和地之间的介质厚度）为单位，内缩20H可将70%的电场限制在接地层边沿内。若内缩100H则可将98%的电场限制在内。</li>
+<li>内缩原因是电源层和地层之间的电场是变化的，在板子的边缘会向外辐射电磁干扰，将电源层内缩，可以让电场只在接地层的范围内传导，有效提高了EMC。</li>
+<li>一般，在PCB设计时把电源层比地层内缩1mm，或者必须≥20mil，优先40mil，基本就可以满足20H的原则。</li>
+</ul>
+<p><img src="/imgs/pcb/3w-rule_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="3w-rule"
+	
+	
+></p>
+<h3 id="pcb-铺铜">PCB 铺铜
+</h3><p>PCB铺铜是指在电路板上未布线的空白区域铺设一层铜箔（通常称为“铜皮”）的操作，目的是：</p>
+<ul>
+<li>为了减小地线阻抗，提高抗干扰能力；</li>
+<li>降低压降，提高电源效率；</li>
+<li>与地线相连，还可以减小环路面积；</li>
+<li>提高散热性能及抗干扰能力；</li>
+<li>增强板材的机械强度和稳定性等。</li>
+</ul>
+<p>  数字电路中存在大量尖峰脉冲电流，因此降低地线阻抗显得更有必要，普遍认为：</p>
+<ol>
+<li>对于全由<strong>数字器件</strong>组成的电路，应该大面积铺地；</li>
+<li>但对于一些<strong>模拟电路</strong>，铺铜所形成的地线环路，反而会引起电磁耦合干扰得不偿失。因此，不是所有电路都需要铺铜操作的。</li>
+</ol>
+<h4 id="铺铜的连接形式">铺铜的连接形式
+</h4><ul>
+<li>全填充铺铜：正常的实体铺铜填充样式，可以承载较大的电流，适用于需要大电流的电路‌。例如，在电源模块、地线连接等需要稳定电流和电磁屏蔽的场合，实体铺铜能够提供更好的性能表现‌。实体铺铜在过波峰焊时，由于热胀冷缩的拉力，可能会导致铜箔起泡或板子翘起‌。</li>
+<li>网格铺铜：主要起到屏蔽作用，网格铺铜可以减少铜箔的使用量，从而降低制造成本‌，有助于提升散热性能，特别适用于需要良好散热的场合‌。由于铜箔呈网格状分布，其导电性能相对全填充会有所降低，适用于对导电性能要求不高的场合‌。</li>
+</ul>
+<p><img src="/imgs/pcb/copper_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="copper"
+	
+	
+></p>
+<h4 id="铺铜的注意事项">铺铜的注意事项
+</h4><ul>
+<li>避免出现孤岛/游离/悬空铜，如果铺铜区域未连接到电源、信号或地，出现孤岛铜，会形成天线效应，引入干扰信号。</li>
+<li>GND铺铜的尺寸应该足够覆盖整个电路板，并且尽可能均匀分布电流负载，使得PCB的散热分布均匀。</li>
+<li>高多层板，为确保信号完整性，需要有完整的GND参考平面铜，多层铺铜可以提供更好的信号完整性。</li>
+<li>在天线等高频信号区域，铺铜容易导致信号弱，容易受到干扰，铺铜的阻抗会影响到放大电路的性能，一般不会铺铜或者及放置禁止铺铜区域净空处理。</li>
+</ul>
+<h3 id="gnd过孔">GND过孔
+</h3><blockquote>
+<p><a class="link" href="https://mp.weixin.qq.com/s/Tmr48c0XjTYKxFiMPsRmWg?cur_album_id=3752849276242690049&amp;scene=189&amp;from=industrynews&amp;nwr_flag=1#wechat_redirect"  target="_blank" rel="noopener"
+    >PCB设计时板边为什么要打地过孔？</a></p>
+</blockquote>
+<p>在PCB设计中，板边打地过孔是一种常见做法，目的是为了抑制电磁干扰（EMI）、提供接地路径、屏蔽与抗干扰、增强PCB的机械强度、增强PCB板的散热能力。这种设计方法对电路的整体性能和元件的稳定性有显著影响，具体原因如下：</p>
+<h4 id="抑制电磁干扰emi">抑制电磁干扰（EMI）
+</h4><p>  板边的地过孔形成屏蔽，抑制电磁辐射的散射，有效减少电磁干扰（EMI），保证PCB的电磁兼容性。</p>
+<p><img src="/imgs/pcb/gnd-via_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="gnd-via"
+	
+	
+></p>
+<h4 id="提供接地回流路径">提供接地回流路径
+</h4><p>  地过孔为电路中的接地信号提供了一个直接的路径，有助于降低接地阻抗，确保电路中的接地信号能够稳定、高效地传递到地层，这有助于改善电路的整体性能，特别是在高频和高速电路中，降低接地阻抗能够减少信号干扰和噪声，提高信号的完整性和稳定性。</p>
+<p><img src="/imgs/pcb/gnd-via_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="gnd-via"
+	
+	
+></p>
+<h4 id="屏蔽与抗干扰">屏蔽与抗干扰
+</h4><p>  地过孔在板边形成连续的接地网络，能够阻挡或减弱外部电磁场对电路内部信号的干扰。同时，它们还能将电路内部的干扰信号引导至地层，防止其干扰其他电路部分。</p>
+<p><img src="/imgs/pcb/gnd-via_3.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="gnd-via"
+	
+	
+></p>
+<h4 id="增强-pcb-的机械强度">增强 PCB 的机械强度
+</h4><p>  在 PCB 板边打地过孔还可以增强电路板各层之间的电气连接，使电路更加稳定可靠，避免在插拔、震动等情况下对电路造成机械损坏。</p>
+<p><img src="/imgs/pcb/gnd-via_4.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="gnd-via"
+	
+	
+></p>
+<h4 id="增强-pcb-板的散热能力">增强 PCB 板的散热能力
+</h4><p>  板边打地过孔的设计不仅能提升 PCB 的电磁兼容性和机械强度，还能提供额外的散热路径，有效缓解高功率和高频电路的过热问题，提升电路的热稳定性和使用寿命。</p>
+<p><img src="/imgs/pcb/gnd-via_5.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="gnd-via"
+	
+	
+></p>
+<h3 id="回流路径">回流路径
+</h3><blockquote>
+<p><a class="link" href="https://www.bilibili.com/video/BV1N24y1K7iv/"  target="_blank" rel="noopener"
+    >回流路径</a>
+回流路径（return current path）设计是PCB设计中的核心问题之一，涉及信号完整性、电源完整性和EMI性能。</p>
+</blockquote>
+<p>回流路径是电流从负载返回电源的路径。当信号从驱动器传输到接收器时，电流会通过信号线流向负载，然后通过地平面、电源平面或其他导体返回电源，形成完整的回路。回流路径并不是“地”的专属概念，它可以是地平面、电源平面，甚至是相邻的信号线（例如差分信号的回流路径）。</p>
+<h4 id="回流类型">回流类型
+</h4><ul>
+<li>地回流路径：电流通过地平面返回电源，适用于单端信号传输，地平面通常具有较低的阻抗，能够提供稳定的回流路径，需注意地平面完整，避免分割导致回流路径不连续。</li>
+<li>电源回流路径：电流通过电源平面返回电源，适用于差分信号或某些高速信号，电源平面和地平面之间可以通过去耦电容形成高频回流路径，需要注意电源平面的噪声问题。</li>
+</ul>
+<h4 id="设计原则">设计原则
+</h4><ul>
+<li>最小回流路径：回流路径应尽可能短，以减小环路面积，降低辐射和感应噪声。</li>
+<li>连续平面：尽量使用连续的地平面或电源平面，避免分割平面导致回流路径不连续。</li>
+<li>避免跨分割：信号线不应跨越平面分割区，否则回流路径会绕行，增加环路面积和EMI。</li>
+<li>差分信号：差分信号的回流路径相互抵消，能有效减少EMI。</li>
+</ul>
+<h4 id="跨平面分割">跨平面分割
+</h4><p>  在PCB设计中，参考平面可能会被分割（例如模拟地和数字地的分割），此时，信号线跨越参考平面的分割区域，会导致回流路径不连续，回流路径被迫绕行，路径变长，环路面积增大，可能产生辐射噪声。</p>
+<p>解决方案：</p>
+<ul>
+<li>尽量避免参考平面的分割。</li>
+<li>如果必须分割，确保信号线不跨越分割区域。</li>
+<li>高速信号在分割区域附近放置桥接电容，一般采用100nF，不可使用0Ω电阻。在高频下，电容的阻抗非常低，能够有效传递高频信号。为高频回流电流提供低阻抗路径。</li>
+</ul>
+<h3 id="两层板设计规范">两层板设计规范
+</h3><blockquote>
+<p><a class="link" href="https://mp.weixin.qq.com/s/uyzbFrvh6ywOcO4kJBnsIg"  target="_blank" rel="noopener"
+    >两层板设计规范</a></p>
+</blockquote>
+<p>对于两层板的设计，两层板的设计难点在于没有完整的GND参考平面和没完整的电源平面，对于电源和地的处理，在两层板当中尤为重要，其中高密度两层板的布线难度也相对较大，需要在有限的布线空间内完成所有信号的连接，同时还得保证信号的质量和完整性；那么如何去设计两层板，可以根据两层板设计规范去设计。</p>
+<h4 id="布局设计">布局设计
+</h4><p>布局建议是进行单面布局，这样子可以在设计合理的情况下更好的节省成本而且没有层间信号干扰的问题，这有助于提高信号的稳定性和可靠性。如果不能保证，最起码主要的元器件要和主控芯片放在同一面，合理布局可以方便走线不拥挤，而且信号走线间距保持等距减少线间串扰。</p>
+<h4 id="布线设计">布线设计
+</h4><ul>
+<li>优先考虑关键信号的布线，确保它们有最短、最直接的路径。</li>
+<li>顶层尽量去处理大部分的信号线，能直接连接的条件下，就进行网络顶层直连。</li>
+<li>合理利用顶层和底层的空间进行布线，必要时可以通过打孔来实现层间的连接。</li>
+<li>对于关键信号可进行包地线处理，以提高关键信号的抗干扰能力。</li>
+</ul>
+<h4 id="电源设计">电源设计
+</h4><ul>
+<li>两层板的电源布线，建议是在顶层去进行布线，能在顶层处理完成最好，如不能满足，也可以通过打孔走线在地层，要注意避免大面积分割问题，尽量保持底层平面完整。</li>
+<li>电源线应尽可能宽以满足电源载流，减少电源波动对电路的影响。</li>
+<li>避免电源线与信号线交叉，电源线和敏感信号线要保持一定的安全间距，必要时候可以适当包地隔离处理，以减少干扰。</li>
+</ul>
+<h4 id="地层设计">地层设计
+</h4><ul>
+<li>底层一般是用于处理地网络，底层进行地铜全铺，提供一个完整的地参考平面有助于确保信号能够顺畅地回流，减少电磁干扰。</li>
+<li>注意地平面跨分割免问题，因为分割会破坏回流路径的连续性，导致信号回流时产生不必要的绕行，增加电磁辐射，如不能保证平面跨分割问题，可以在跨分割的区域，使用地孔来连接分割的地层，确保回流路径的连续性。</li>
+<li>顶层空白区域也可以进行一个铺地铜进行处理，同时打孔将顶层和底层的地网络连接起来，为信号提供一个更直接的回流路径。</li>
+</ul>
+<h3 id="两层板如何控制阻抗">两层板如何控制阻抗
+</h3><blockquote>
+<p><a class="link" href="https://mp.weixin.qq.com/s/SUPKD7fOGtarrF_K4oQ27Q"  target="_blank" rel="noopener"
+    >两层板如何控制阻抗</a></p>
+</blockquote>
+<p>  在 PCB 设计当中，两层板控阻抗是一个具有难度的问题，因为和多层板去相比，两层板没有一个专门的参考平面层构成地返回路径，那么两层板应该如何去控制阻抗？以下是关键的控制方法和控制阻抗验证：</p>
+<h4 id="1共面阻抗法包地法">1、共面阻抗法（包地法）
+</h4><ul>
+<li>设计方式：由于两层板没有专门的参考平面，因此需要人为地构造一个电流返回路径，即共面阻抗。这通常通过“包地”的方式实现，即在信号线的周围加上地线，以形成共面结构。</li>
+</ul>
+<p><img src="/imgs/pcb/two-layer-board-impedance_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="two-layer-board-impedance"
+	
+	
+></p>
+<ul>
+<li>走线宽度：走线宽度对阻抗有直接影响。在两层板上，为了获得所需的阻抗值，可能需要调整走线的宽度。一般来说，走线越宽，阻抗越小；走线越窄，阻抗越大。但需要注意的是，走线宽度过窄可能会导致加工难度增加和可靠性降低。</li>
+</ul>
+<p><img src="/imgs/pcb/two-layer-board-impedance_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="two-layer-board-impedance"
+	
+	
+></p>
+<ul>
+<li>包地间距：包地间距是指信号线与地线之间的距离。这个距离对阻抗也有重要影响。包地间距越小，分布电容越小，阻抗越大。因此，在设计时需要仔细调整包地间距以获得所需的阻抗值。</li>
+<li>保持连贯性：为了保证阻抗的均匀性，包地应该保持连贯，不应出现断裂或不规则的情况。这有助于减少信号的反射和失真。</li>
+</ul>
+<h4 id="2阻抗控制和验证">2、阻抗控制和验证
+</h4><ul>
+<li>获取材料参数：与 PCB 厂家合作，获取实际使用的电路板材料的详细参数。这些参数对于阻抗计算至关重要，因为它们直接影响阻抗值的计算结果。</li>
+</ul>
+<p><img src="/imgs/pcb/two-layer-board-impedance_3.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="two-layer-board-impedance"
+	
+	
+></p>
+<ul>
+<li>生产工艺咨询：了解厂家的生产工艺和限制，以便在设计时考虑到这些因素。例如，某些生产工艺可能会对阻抗值产生影响，需要在设计时进行补偿或调整。</li>
+<li>阻抗测量与验证：在生产前，可以要求厂家进行阻抗测量，以确保设计的阻抗值与实际生产的电路板相符。这有助于及时发现并解决问题，提高电路板的可靠性和性能。</li>
+</ul>
+<h3 id="pcb设计中电流与线宽的关系">PCB设计中电流与线宽的关系
+</h3><h4 id="pcb设计中电流与线宽的关系-1">PCB设计中电流与线宽的关系
+</h4><p>在 PCB 设计里，电流和线宽的关联十分紧密。通常情况下，线宽越宽，其能够承载的电流也就越大。不过，这个关系并非简单的线性关系，还会受到铜箔厚度、环境温度以及允许温升等诸多因素的综合作用。</p>
+<ol>
+<li>线宽增加</li>
+</ol>
+<p>  增加线宽，电流承载能力会有一定程度的提升。但这种提升并非呈线性，而是遵循类似指数的规律。比如，线宽从 1mm 增加到 2mm，电流承载能力大概会提高 40%，而不是翻倍。</p>
+<ol start="2">
+<li>铜箔厚度</li>
+</ol>
+<p>   铜箔厚度一般用盎司（oz）来表示，常见的有1盎司（厚度约35um）、1.5盎司（厚度约50um）、2盎司（厚度约70um），在相同线宽条件下，铜箔越厚，载流能力越强，但加厚铜箔会导致成本上升较大，当电流较大且线宽加宽不了的情况时，一般常见的处理是在PCB顶底层共同处理电源或在表面开窗镀锡操作。对于多层板电源处理，需要注意默认内层铜厚仅为0.5盎司（约为17.5um），若需要在内层进行电源处理，需要保证较大面积的接触或增加铜厚。</p>
+<ol start="3">
+<li>温升限制</li>
+</ol>
+<p>  导体温升（高出环境温度的温度增量）是影响PCB导体载流能力的决定性因素，PCB温升与导线电流、走线宽度、走线厚度、PCB板材、相邻走线、层间距离、有无涂层、环境条件等诸多因素的关系。相同条件下，电流越大，温升越高，载流能力下降（温度升高导致导线内阻增加）；加宽导线/铜箔变厚/改变板材可以带来更好的散热与载流能力。</p>
+<p>可前往嘉立创EDA微信公众号/实用工具/电子硬件助手/PCB走线宽度计算器进行相关计算，通常实际值会将其增加1.3被进行应用。</p>
+<h4 id="过孔与电流的关系">过孔与电流的关系
+</h4><p>  在PCB设计中，连接顶底层的方式通常是使用过孔来进行，过孔内壁镀铜支持电流传输；过孔内径越大，单个过孔传输电流越大，常用过孔20/10mil（0.8A电流）、24/12mil（1A）、32/16mil（1.3A）；注意，过孔越大，占用空间越大，对平面分割越严重。</p>
+<p>  同时，过孔传输电流,与导线一致，不是倍数递增，且电流传输并不是均匀分配到每一个过孔，比如2个24/12mil过孔理论上传输2A没问题，实际可能一个过孔走了1.4A，1个过孔只走了0.6A，这导致部分过孔存在载流风险，所以通常会增加过孔数量且均匀分布。</p>
+<h3 id="pcb设计中的安全间距">PCB设计中的安全间距
+</h3><p>‌  在PCB设计中，考虑到可制造性、电气安全性、可使用性等方面，会有各类间距要求需要遵守；包括导线到导线、导线到焊盘、过孔到导线、过孔到焊盘、电源爬电距离、铜皮到板框距离等等；</p>
+<p>‌  下方是嘉立创EDA设计规则中默认的安全间距要求；在日常器件不密、板框较大的场合，通常都不需要修改规则；但当板框较小、器件较多且密集的适合，默认的间距规则就会成为设计阻碍，导致拉不出来线、产生drc报错。此时，可以尝试减少设计规则中安全间距、导线默认线宽等规则。注意，此时的修改一定是要在板厂的生产要求内，且留有一定余量，否则最终设计出来不能生产或次品率过高。</p>
+<ul>
+<li>常规PCB通常是2层、4层且铜厚1oz居多，此时最小线宽线距为4mil或3.5mil；注意，这里是“最小”，在实际项目设计过程中，不应挑战工艺极限，通常≤6mil；已经足够满足绝大多少项目设计需求了；</li>
+<li>常规PCB设计中，常用过孔孔径有，8/16mil，10/20mil，12/24mil，11.8/19.7mil，13.8/27.6mil，23.6/39.4mil；在实际项目实际过程中，不建议随意改变过孔尺寸，因为工厂钻头都是有固定大小的，当设计尺寸不符合实际钻头尺寸时，切割就会有误差，可能影响不良率；同时免费打样过孔应大于11.8/17.7mil。</li>
+<li>20H规则：将电源层相对于地层内缩，使电场只只在接地层的范围内传导。其中，一个 H（电源和地之间的介质厚度）为单位，内缩 20H 可将 70%的电场 限制在接地层边沿内。若内缩 100H 则可将 98%的电场限制在内。一般，在 PCB 设计时把电源层比地层内缩 1mm，或者必须≥20mil，优先 40mil，基本就可以满足 20H 的原则。当然，这是建立在内缩后GND平面仍然完整的前提下，若内缩后导致GND平面不完成或有割裂，则需减少内缩距离。</li>
+</ul>
+<h3 id="pcb常见丝印标识">PCB常见丝印标识
+</h3><blockquote>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/knowledge-point/pcb-silkscreen.html"  target="_blank" rel="noopener"
+    >PCB常见丝印标识</a></p>
+</blockquote>
+<h4 id="1-元件位号标识">1 元件位号标识
+</h4><ul>
+<li>ANT：天线（Antenna）；</li>
+<li>B ：电池（Battery）；</li>
+<li>BT：蓝牙模块（Bluetooth）；</li>
+<li>BZ：蜂鸣器（Buzzer）；</li>
+<li>C : 电容（Capacitor）；</li>
+<li>D : 二极管（Diode）；</li>
+<li>DS：显示器件（Display）;</li>
+<li>F : 保险丝（Fuse）；</li>
+<li>FB：磁珠滤波器（Ferrite Bead）；</li>
+<li>FS：快速熔断保险丝（Fast Blow Fuse）;</li>
+<li>H : 排针排母（Header）；</li>
+<li>IR：红外二极管（Infared Diode）；</li>
+<li>JP：跳线（Jumper）；</li>
+<li>K : 继电器（Relay）；</li>
+<li>KEY：按键（Key）；</li>
+<li>L ：电感（Inductance）；</li>
+<li>M ：电机（Motor）；</li>
+<li>MIC：麦克风（Microphone）；</li>
+<li>NTC: 负温度系数热敏电阻（Negative Temperature Coefficient Thermistor）;</li>
+<li>LDR：光敏电阻（Light Dependent Resistor）；</li>
+<li>LED：发光二极管（Light Emitting Diode）；</li>
+<li>Q ：晶体管/三极管/场效应管（Transistor）；</li>
+<li>R : 电阻（Resistor）；</li>
+<li>RP：电位器/可调电阻；</li>
+<li>RN：排阻（Resistor Network）；</li>
+<li>RT：热敏电阻（Thermistor）；</li>
+<li>S ：开关（Switch）；</li>
+<li>T ：变压器（Transformer）；</li>
+<li>TP：测试点（Test Point）；</li>
+<li>U ：集成电路（IC）；</li>
+<li>USB：USB接口；</li>
+<li>X : 晶振（Crystal Oscillator）；</li>
+<li>ZD：稳压二极管/齐纳二极管（Zener Diode）</li>
+</ul>
+<h4 id="2-常见认证标识">2 常见认证标识
+</h4><h4 id="3-常见符号标识">3 常见符号标识
+</h4><h3 id="pcb开尔文走线">PCB开尔文走线
+</h3><p> ‌开尔文走线（Kelvin Connection）是一种用于高精度测量低电阻的布线技术，通过分离电流传输路径和电压检测路径，消除引线电阻和接触电阻的影响，实现毫欧级甚至微欧级电阻的精确测量。</p>
+<p>‌  首先，先了解采样电阻（也称为电流检测电阻），是一种专门用于将电流信号转换为可测量电压信号的低阻值精密电阻。它是电流测量电路中的核心元件，串联在待测电流路径中，通过测量电阻两端的压降（根据欧姆定律 U=I×R），间接计算出流经电路的电流值，采样电阻的阻值一般不会超过1Ω，典型范围在0.1mΩ ~ 100mΩ（毫欧级），精度比较高，一般在1%以内。</p>
+<p>‌  在测量电流时，电流检测技术分为高侧（边）检测和低侧（边）检测。将测量采样电阻放置在电源与负载之间的检测方法称为高侧检测，将测量采样电阻放置在负载与接地端之间的检测方法称为低侧检测。这两种用于检测负载中电流的方法，如图1所示。</p>
+<p><img src="/imgs/pcb/pcb-kelvin-connection_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="pcb-kelvin-connection"
+	
+	
+></p>
+<center>图1 高/低边电流检测采样</center>
+<p>‌  在普通的两线测量法中，测量电流和测量电压共用同一对引线，引线本身的电阻会叠加在被测器件的电阻上，导致测量值偏大。通过开尔文走线（四线检测法）是提高测量精度的关键，主干道用粗线或宽铜箔，大部分电流都是从主干道流过，电流测试支路用细线，测量通过采样电阻两端的压降，计算出流过的电流，显著提高采样电阻的采样精度。</p>
+<p>在电路板设计中，开尔文走线需遵循以下规则：</p>
+<p>采样电阻焊盘分离电流焊盘区和电压检测焊盘区，电流路径使用宽铜箔，电压测量线用细线连接；</p>
+<p>两条电压线应尽可能长度相等、线宽相同、保持对称布线，并远离噪声源，最好使用差分对布线规则，这有助于抑制共模噪声；</p>
+<p>采样电阻到电流检测芯片的布线长度应尽可能近，以减少测量误差；</p>
+<p>电压线从电阻焊盘中心直接引出，避开电流路径分支点，远离功率元件、大电流走线等热源，温度变化会影响测量精度；</p>
+<p><img src="/imgs/pcb/pcb-kelvin-connection_2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="pcb-kelvin-connection"
+	
+	
+></p>
+<center>图2 开尔文走线接法</center>
+<p><img src="/imgs/pcb/pcb-kelvin-connection_3.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="pcb-kelvin-connection"
+	
+	
+></p>
+<center>图3 开尔文走线接法（双通道）</center>
+<h2 id="pcb常见模块设计参考">PCB常见模块设计参考
+</h2><blockquote>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/moduler-design/ldo-moduler.html"  target="_blank" rel="noopener"
+    >PCB常见模块设计参考</a></p>
+</blockquote>
+<h3 id="ldo模块">LDO模块
+</h3><p>LDO（low dropout regulator，低压差线性稳压器）。</p>
+<ul>
+<li>注意点：AMS1117一般输出电容使用钽电容而非陶瓷电容。</li>
+<li>常用款型：1117（如AMS1117）、<a class="link" href="https://www.bilibili.com/video/BV1tU4y1k7cS"  target="_blank" rel="noopener"
+    >除了1117，还有哪些更好用的线性稳压器？</a></li>
+<li>优点：
+<ul>
+<li>LDO外围器件少，电路简单，成本低，通常只需要加一两个旁路电容</li>
+<li>LDO负载响应快，输出纹波小，噪声小</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>效率低，输入输出压差不能太大</li>
+<li>体积大、不支持mlcc、只能降压</li>
+<li>静态电流过高、发热温度高</li>
+</ul>
+</li>
+</ul>
+<h4 id="布局参考">布局参考
+</h4><p>LDO虽然电路结构简单，但其效率不高，工作时输入输出的电压差都被转换成热能消耗了。所以在进行LDO布局时需考虑散热问题，部分芯片还可添加散热片辅助散热。输入/输出电容尽量靠近输入/输出引脚摆放，滤波电容从大到小依次摆放，LDO两边的电容数量需要保持一致，这样才能保证电源的输入/输出端流入地的电流平衡，布局要点如下：</p>
+<ul>
+<li>按照电源信号的输入/输出路径，布局时按一字型或者L型摆放；</li>
+<li>电容按先大后小顺序摆放，就近输入/输出管脚；</li>
+<li>输入/输出电容GND引脚尽量朝一个方向，保持GND方向一致，减少回流路径。</li>
+</ul>
+<p><img src="/imgs/pcb/ldo_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="ldo"
+	
+	
+></p>
+<h4 id="走线参考">走线参考
+</h4><p>LDO走线时由于电路连接比较简单，走线时沿着信号方向引出即可，一般只需要考虑线宽是否能够承载整个系统的电流即可。在单面板设计时保持GND信号的完整性，输入输出部分可直接用铜皮填充；当使用双面板以及多层板设计时，需在GND焊盘附近整齐放置一些GND过孔。注意事项如下：</p>
+<ul>
+<li>电源输入输出信号可直接全填充或粗导线连接，确保铜皮宽度能够过系统最大电流；</li>
+<li>走线尽可能直，避免不必要拐弯，必须拐弯时走钝角或圆弧；</li>
+<li>走线时根据信号流向，输入信号先经过电容再到芯片，输出走线也需先过电容再输出；</li>
+<li>双多层板设计时在加一些整齐统一的过孔保证各层间GND的连接；</li>
+<li>走线后在板子上可根据电路需要添加必要丝印信息提示，避免焊错或接线错误。</li>
+</ul>
+<p><img src="/imgs/pcb/ldo_2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="ldo"
+	
+	
+></p>
+<h3 id="dc-dc模块">DC-DC模块
+</h3><p>DC/DC转换器一种是开关电源稳压器，指利用电容、电感的储能的特性，通过可控开关（MOSFET等）进行高频开关的动作，将输入的电能储存在电容（感）里，当开关断开时，电能再释放给负载，提供能量。</p>
+<p>DC-DC转换器（非隔离式DC-DC）根据其<strong>功能</strong>可分为三种基本拓扑结构：</p>
+<ul>
+<li>降压转换器(Buck Converter)：当输入电压高于所需输出电压时使用</li>
+<li>升压转换器(Boost Converter)：当输入电压低于所需输出电压时使用</li>
+<li>升降压转换器(Buck-Boost Converter)：当输入电压可能高于或低于输出电压时使用</li>
+</ul>
+<p><strong>优缺点：</strong></p>
+<ul>
+<li>缺点：
+<ul>
+<li>外围器件多，电路复杂，成本高</li>
+<li>负载响应比LDO慢，输出纹波大，噪声大</li>
+</ul>
+</li>
+<li>优点：
+<ul>
+<li>效率高，输入电压范围宽泛</li>
+<li>支持降压和升压</li>
+<li>输出电流高，功率大</li>
+</ul>
+</li>
+</ul>
+<h4 id="布局参考-1">布局参考
+</h4><p><img src="/imgs/pcb/dc-dc_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="dc-dc"
+	
+	
+>
+PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品的稳定性和转换的效果。总结规则如下：</p>
+<ul>
+<li>旁路去耦电容靠近输入/输出端摆放（如图4-15）</li>
+<li>从数据手册中看出PH引脚是电源IC的开关节点，那么电感和环流二极管应尽量靠近PH引脚摆放，尽可能的缩小PCB的导体面积，防止电容过度耦合和减小电流环路面积（如图4-16所示）</li>
+<li>在电源整体布局时，尽量横平竖直的摆放，不要将器件摆放的过于杂乱，避免增加电源路径（如图4-17所示）</li>
+<li>DC-DC电源芯片在工作时会产生一些热量，所以布局时，应提前注意是否有对热源敏感的器件，避免影响到其他器件的工作（如图4-19所示）</li>
+</ul>
+<p><img src="/imgs/pcb/dc-dc_2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="dc-dc"
+	
+	
+></p>
+<p><img src="/imgs/pcb/dc-dc_3.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="dc-dc"
+	
+	
+></p>
+<p><img src="/imgs/pcb/dc-dc_4.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="dc-dc"
+	
+	
+></p>
+<h4 id="走线参考-1">走线参考
+</h4><p>   DC-DC模块常用于大电流使用，且走线对其效果影响较大，注意事项如下：</p>
+<ul>
+<li>输入和输出的电源走线一定要计算好走线宽度，大电流/电压可以使用铺铜方式或者全填充 方式进行连接；</li>
+<li>所有的走线尽可能的短和直，减少电源路径</li>
+<li>GND焊盘使用铺铜或全连接连接，输入输出GND尽可能位于一块铜皮上，同时在底层铺铜（注意避开电感区域），在GND焊盘处打上过孔进行连通，缩短电源的回流路径；</li>
+<li>DC-DC反馈走线不能直接走在电感、二极管、大电容、IC芯片散热焊盘下面，也不能被大电流环包围，反馈线不是电源走线，不需要加粗，正常信号线宽度（10mil/15mil）即可）；</li>
+<li>如果芯片下方有热焊盘，则需要使用多个过孔连接到底层，增强散热性</li>
+<li>电感器件底部尽量不走线，避免电感产生的电磁信号影响到信号线的传输；</li>
+</ul>
+<p><img src="/imgs/pcb/dc-dc_5.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="dc-dc"
+	
+	
+></p>
+<p><img src="/imgs/pcb/dc-dc_6.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="dc-dc"
+	
+	
+></p>
+<p><img src="/imgs/pcb/dc-dc_7.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="dc-dc"
+	
+	
+></p>
+<p><img src="/imgs/pcb/dc-dc_8.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="dc-dc"
+	
+	
+></p>
+<h3 id="usb接口">USB接口
+</h3><blockquote>
+<p><a class="link" href="https://www.eet-china.com/mp/a401258.html"  target="_blank" rel="noopener"
+    >USB接口PCB设计全攻略</a></p>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/typec-5.1k.html"  target="_blank" rel="noopener"
+    >为什么Type-c接口要加5.1K电阻下拉</a></p>
+</blockquote>
+<p>CC引脚不使用时，一般连接1个5.1K下拉电阻接地。</p>
+<h3 id="晶振">晶振
+</h3><h4 id="布局参考-2">布局参考
+</h4><ul>
+<li>晶振电路布局需要优先考虑，整体紧凑摆放，晶振尽量靠近 IC，负载电容放置于晶振与 IC 之间，以减少时钟信号传输的延迟和干扰；</li>
+<li>晶振摆放尽量远离板边和接口器件，减少其受外部物理因素干扰的风险，如物理撞击等；</li>
+<li>晶振需远离干扰源，如电感、大功率驱动器、RF天线等；</li>
+<li>晶振区域的底层不可放置其余器件，需保证晶振区域的净空；</li>
+</ul>
+<h4 id="布线参考">布线参考
+</h4><ul>
+<li>晶振电路的时钟信号走线越短越好，可以按照类差分走线，晶振的时钟走线不可打过孔走线连接；</li>
+<li>在晶振走线周围通过GND过孔进行包地，每隔50-100mil间距整齐放置屏蔽地过孔，用以隔离吸收晶振辐射的噪声；</li>
+<li>晶振区域同层需要净空处理，可以使用禁止铺铜区域进行隔离，晶振本体相邻层最好不要走线，保证地的完整性；</li>
+</ul>
+<p><img src="/imgs/pcb/crystal_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="crystal"
+	
+	
+></p>
+<h3 id="usb-接口">USB 接口
+</h3><ul>
+<li>实际项目参考：<a class="link" href="https://oshwhub.com/goodyuhuang/ji-yu-VL813de-USB3.0-HUBshe-ji"  target="_blank" rel="noopener"
+    >基于VL813的USB3.0-HUB设计</a></li>
+</ul>
+<h4 id="布局参考-3">布局参考
+</h4><ul>
+<li>USB接口应该靠近板边或按照结构定位摆放，方便插拔；</li>
+<li>USB输入接口和输出接口分开放置，便于分区和使用；</li>
+<li>端接匹配电阻、ESD、共模电感、阻容器件靠近USB接口摆放；</li>
+<li>USB接口远离RF天线、摄像头等高电磁辐射EMI源摆放；</li>
+<li>在布局时，尽量使差分线路最短，以缩短差分线距离；</li>
+</ul>
+<p><img src="/imgs/pcb/usb-interface_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="usb-interface"
+	
+	
+></p>
+<h4 id="布线参考-1">布线参考
+</h4><ul>
+<li>USB走线优先权高于其它器件和信号，优先考虑对高速USB差分（D+/D-、RX/TX）的布线；</li>
+<li>USB要走差分，阻抗控制为90Ω，并包地处理，包地线与差分线距离应大于20mil，每隔一段距离，打上一个回流地过孔，总长度最好不要超过1800mil，尽量缩短走线长度；</li>
+<li>USB的差分对需要做等长处理，长度一旦相差太多，将会影响时序偏差，引起共模干扰，降低信号质量，USB组内等长误差建议控制在±5mil以内；</li>
+<li>差分对尽量少换层打过孔，过孔会造成阻抗改变和信号反射问题，若无法避免使用过孔，需要在打孔换层处加一对回流地过孔，用于信号回流换层，过孔建议不超过2个；</li>
+<li>如果使用了外部终端电阻匹配阻抗时，请确保端接匹配电阻与主控制器信号输出引脚之间的距离小于200mil，以便更好地控制阻抗，避免信号反射；</li>
+<li>USB差分信号布线时，应远离板边或铺地边缘，至少保证90mil以上距离；远离电源网络、大电流信号、DDR、HDMI等高速信号，保证至少50mil的距离，以减小串扰；</li>
+</ul>
+<p><img src="/imgs/pcb/usb-interface_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="usb-interface"
+	
+	
+></p>
+<h2 id="电子设计常用知识点">电子设计常用知识点
+</h2><h3 id="0ω电阻的功能">0Ω电阻的功能
+</h3><p>0Ω电阻又称跨接电阻，是一种标称阻值为0的特殊电阻，实际阻值通常在10-50mΩ（毫欧）之间，下面介绍0Ω电阻的用法和功能。</p>
+<h4 id="1-方便调试与兼容设计">1 方便调试与兼容设计
+</h4><p>  当电路引脚功能不确定时，可以通过0Ω电阻临时连接不同模块，待调试后确定出最终方案。</p>
+<h4 id="2-参数匹配">2 参数匹配
+</h4><p>  在不确定电路参数时，用0Ω电阻作为过渡元件，待调试后更换为实际电阻值。 ‌</p>
+<h4 id="3-模数电路单点接地">3 模数电路单点接地
+</h4><p>  在模拟电路和数字电路等混合电路中，往往要求地分开，避免信号干扰，不同地线可以通过0Ω电阻单点连接在一起。</p>
+<h4 id="4-跨接跳线">4 跨接跳线
+</h4><p>‌  在PCB布线时，可能会出现布线走不通的情况，如铝基板单层布线，不允许打过孔，可以使用0Ω电阻充当跳线进行连接。</p>
+<p><img src="/imgs/pcb/0ohm-function_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="0ohm-function"
+	
+	
+></p>
+<h4 id="5-保护与熔断">5 保护与熔断
+</h4><p>‌  作为低成本熔丝使用，当电路过流时，优先熔断0Ω电阻，以保护其他元件。 ‌</p>
+<p><img src="/imgs/pcb/0ohm-function_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="0ohm-function"
+	
+	
+></p>
+<h3 id="上拉电阻和下拉电阻">上拉电阻和下拉电阻
+</h3><ul>
+<li><strong>上拉电阻</strong>：将一个不确定的信号，通过一个电阻与电源VCC相连，固定在高电平。作用：上拉是对器件注入电流；灌电流；当一个接有上拉电阻的IO端口设置为输入状态时，它的常态为高电平。</li>
+<li><strong>下拉电阻</strong>：将一个不确定的信号，通过一个电阻与地GND相连，固定在低电平。作用：下拉是从器件输出电流；拉电流。当一个接有下拉电阻的IO端口设置为输入状态时，它的常态为低电平。</li>
+</ul>
+<p>上拉电阻和下拉电阻2者共同的作用是：避免电压的“悬浮”，造成电路的不稳定。</p>
+<p>上拉（Pull Up ）或下拉（Pull Down）电阻（两者统称为“拉电阻”）**最基本的作用是：将状态不确定的信号线通过一个电阻将其箝位至高电平（上拉）或低电平（下拉）。**无论它的具体用法如何，这个基本的作用都是相同的，只是在不同应用场合中会对电阻的阻值要求有所不同，从而也引出了诸多新的概念。</p>
+<h4 id="芯片io口为什么需要接上拉电阻">芯片IO口为什么需要接上拉电阻？
+</h4><blockquote>
+<p><a class="link" href="https://www.bilibili.com/video/BV1AT421Y7DS?spm_id_from=333.788.videopod.episodes&amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;p=72"  target="_blank" rel="noopener"
+    >P0为什么需要上拉</a></p>
+</blockquote>
+<p>MCU的IO引脚在处于输出模式时，在硬件层面通常可以分为两种输出方式：</p>
+<ul>
+<li>推挽输出/推拉输出（push pull）：</li>
+</ul>
+<p><img src="/imgs/pcb/push_pull_r_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="push_pull_r"
+	
+	
+></p>
+<ul>
+<li>开漏输出：</li>
+</ul>
+<p><img src="/imgs/pcb/push_pull_r_2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="push_pull_r"
+	
+	
+></p>
+<p>可以看到，但使用开漏输出时，无法输出高电平状态，可以在引脚上接一个上拉电阻，这样开漏输出的引脚就可以输出高电平了。</p>
+<h4 id="为什么type-c接口要加51k电阻下拉">为什么Type-c接口要加5.1K电阻下拉
+</h4><blockquote>
+<p><a class="link" href="https://www.usb.org/documents?search=USB&#43;Type-C&#43;Specification&#43;Release&amp;items_per_page=50"  target="_blank" rel="noopener"
+    >usb official docs</a></p>
+</blockquote>
+<p> USB是主从模式的结构，设备与设备之间、主机与主机之间是不能互联的，所有的数据传输都是由主机发起，而设备只能被动的负责应答，在USB-Typec接口中，是没有ID引脚来标识当前是主机或设备的，此时CC引脚就可以充当一个检测作用了。</p>
+<p>  在主机和设备连接上后，主机的cc引脚检测到设备CC引脚的下拉电阻，表示接入到设备，此时主机可以打开Vbus的FET开关，输出Vbus电源给设备。</p>
+<p><img src="/imgs/pcb/typec-5.1k_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<p><img src="/imgs/pcb/typec-5.1k_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<p> 事实上，CC引脚的作用远不止于此，在usb协议规范中指出，cc引脚用于连接检测、接口配置与Vconn功能；</p>
+<p><img src="/imgs/pcb/typec-5.1k_3.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<p>  CC引脚的简要概述中指出，cc引脚主要用于一下目的：</p>
+<ul>
+<li>检测USB端口的连接，例如源端到接收端的连接；</li>
+<li>解决电缆方向和扭转连接问题，以建立USB数据总线路由</li>
+<li>在两个连接端口之间建立数据角色</li>
+<li>发现并配置Vbus：USB Type-C电流模式或USB Power Deliver</li>
+<li>配置Vconn</li>
+<li>发现并配置可选的备用和辅助模式；</li>
+</ul>
+<p>  由于USB-Typec接口指出正反插，对于USB2.0标准，主机和设备接口的两组USB_DP/DM信需要各种短接以实现这一功能；在USB3.2超高速或USB4双通道传输方案中，主机和设备需要配置对应的传输通道，需要自行解决通道顺序问题，此时将单个CC引脚和1组TX/RX进行匹配，通过检测cc引脚的方向来实现正反插功能，从而判断使用哪组tx/rx信号进行传输，如果是双通道，也同样可以根据cc引脚判断通道序号，为0/1通道。</p>
+<p><img src="/imgs/pcb/typec-5.1k_4.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<p><img src="/imgs/pcb/typec-5.1k_5.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="typec-5.1k"
+	
+	
+></p>
+<h3 id="为什么ic电源引脚旁边的电容的作用选择和放置">为什么IC电源引脚旁边的电容的作用、选择和放置
+</h3><blockquote>
+<p><a class="link" href="https://www.bilibili.com/opus/876829663819726903"  target="_blank" rel="noopener"
+    >芯片IC每个电源引脚旁边的电容的作用、选择和放置？</a></p>
+</blockquote>
+<p>在电源输入和IC引脚处，一般会加两个比如10uF和0.1uF的电容，进行滤波，大电容靠近电源，小电容靠近元件。一般不会直接放置一个电容，因为对于实际电容来说，它有等效串联电阻（ESR）和等效串联电感（ESL），从频率响应曲线来看，呈现V子形。一般电容越小，能过滤的频率越大，反之越小。</p>
+<p><img src="/imgs/pcb/ic_capacitor_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="ic_capacitor"
+	
+	
+></p>
+<p>电容尽量放到靠近IC引脚处，并且要经过电容再到IC 引脚，而且电源分支尽量在进电容前进行，因为如果摆放很远的话，电容滤除噪声后的电源会在这个段路径上又串扰进新的噪声，那么这个电容的作用就没有太大的意义。</p>
+<h3 id="adc分压电阻的选择--adc电量检测电路">ADC分压电阻的选择 &amp;&amp; ADC电量检测电路
+</h3><blockquote>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/course-projects/smart-internet/eda-robot/eda-robot-hardware.html#_3-adc%E7%94%B5%E9%87%8F%E6%A3%80%E6%B5%8B%E7%94%B5%E8%B7%AF"  target="_blank" rel="noopener"
+    >ADC电量检测电路</a></p>
+</blockquote>
+<p>ADC是模拟到数字转换器（Analog-to-Digital Converter）缩写，主要用于将连续传输的模拟信号转换为数字信号，便于数字系统（如中央处理器CPU、微控制器MCU等）对传输信息进行快速处理和分析。</p>
+<p>在实际使用过程中，adc分压检测常用于检测外部输入电压的变化，用于将一个外部电压分压到0~3.3V被adc采集到，一般用于低功耗设备或对电压敏感设备中，此时会有精度以及耗散电流的要求。虽然电阻分压简单易懂，但事实上，外部的输入电阻的选择会直接影响采样的精度和耗散电流的大小，它是搭配内部的adc电路一起工作的，这就要求我们需要对其adc检测原理进行一定的了解。</p>
+<p><img src="/imgs/pcb/adc-divider-res_1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="adc-divider-res"
+	
+	
+></p>
+<p>  ADC 转换包括采样、保持、量化、编码四个步骤。采样阶段需要在规定的采样时间内将外部信号的电压完整无误的采样到 ADC 的采样电容上，即在采样开关 SW 关闭的过程中，外部输入信号通过外部的输入电阻 RAIN 和以及 ADC 采样电阻 Radc 对采样电容 Cadc 充电；每次采样过程可以简化为外部信号通过输入阻抗以及采样电阻对采样电容的充电。</p>
+<p><img src="/imgs/pcb/adc-divider-res_2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="adc-divider-res"
+	
+	
+></p>
+<p>从上方的原理分析中可知，adc采集电路本质上是一个rc延迟电路，我们需要在使信号在规定的时间内被达到一个平稳的值。其中内部adc电阻以及内部adc电容是固定不变的，在数据手册中都能找到，那我们能改变的就只有外部的电阻值，也就是输入阻抗了。</p>
+<h3 id="蓝牙模块">蓝牙模块
+</h3><blockquote>
+<p><a class="link" href="https://www.bilibili.com/video/BV1aDndzEEk1"  target="_blank" rel="noopener"
+    >蓝牙模块&amp;蓝牙串口小程序 使用教程</a></p>
+</blockquote>
+<h2 id="元器件选型知识点">元器件选型知识点
+</h2><blockquote>
+<p><a class="link" href="https://www.nodpcba.com/news/3192-cn.html"  target="_blank" rel="noopener"
+    >PCBA电子工程师必须要知道的元器件选型完全指南</a>
+<a class="link" href="https://www.bilibili.com/video/BV1ho9vYFE7b"  target="_blank" rel="noopener"
+    >电子元器件+模拟电路硬件零基础入门</a></p>
+</blockquote>
+<p>刚入门时应优先考虑：</p>
+<ul>
+<li>封装：封装与pcb板相关，封装不对会导致无法焊接使用</li>
+<li>电气属性：比如电容等支持最大电压，如果设计的电路超过选型的电容，会导致击穿风险。</li>
+<li>性价比和可重用：满足目前pcb的所需功能，并考虑后续可能的扩展复用。</li>
+</ul>
+<h3 id="电阻">电阻
+</h3><h4 id="电阻类型">电阻类型
+</h4><ul>
+<li>固定电阻器：通过内部材料的特性来设定阻值，适用于稳定电流的场合。</li>
+<li>可变电阻器（如电位器）：可调节电阻值，用于调节电路中的电流和电压。</li>
+<li>热敏电阻（NTC、PTC）：其阻值随温度变化，广泛用于温度补偿与电流保护。</li>
+<li>光敏电阻：其阻值受光照强度影响，主要用于光传感器电路。</li>
+</ul>
+<h4 id="电阻器的选型考虑因素">电阻器的选型考虑因素
+</h4><ul>
+<li>阻值：根据电路的工作要求选择合适的阻值。</li>
+<li>功率：电阻器需要根据电路中流过的电流和电压承受相应的功率。过高的功率负载可能会导致电阻器过热，甚至损坏。功率单位是瓦特（W）。</li>
+<li>精度：对于一些高精度电路（如测量电路），需要选择精度高的电阻器。电阻的精度通常以“±”表示，例如±1%、±5%等。</li>
+<li>温度系数：电阻的阻值可能随温度的变化而变化，温度系数越小，电阻的稳定性越好，适合对温度变化敏感的电路。</li>
+<li>耐用性与环境适应性：不同类型的电阻器适用于不同的环境，例如高温、高湿或腐蚀性环境。</li>
+</ul>
+<h3 id="电容">电容
+</h3><h4 id="电容类型">电容类型
+</h4><p>电容器是用来储存电能并在需要时释放的电子元件。电容器的基本功能包括滤波、平滑电流、信号耦合等。根据其构造和材料的不同，电容器的类型也有所差异。</p>
+<p>常见的电容器种类有：</p>
+<ul>
+<li>陶瓷电容器：广泛用于高频电路，具有稳定的性能。</li>
+<li>电解电容器：通常用于电源滤波电路，具有较大电容值，但需要注意极性。</li>
+<li>薄膜电容器：适用于精密电路，具有较高的稳定性和低损耗。</li>
+<li>铝电解电容器：主要应用于直流电源的滤波、去耦等方面，具有较大电容值。</li>
+<li>钽电容器：与铝电解电容器类似，但具有更小的体积和更高的可靠性。</li>
+</ul>
+<h4 id="电容器的选型考虑因素">电容器的选型考虑因素
+</h4><ul>
+<li>电容值：电容器的容量通常以法拉（F）为单位，常见的单位有微法（µF）、皮法（pF）等。电容值决定了电容器储存电能的能力，需要根据电路的需求来选择合适的电容值。</li>
+<li>耐压值：电容器的耐压值需要高于电路中所施加的电压，避免电容器损坏。一般来说，选择一个比电路最大工作电压高20%-30%的耐压值是比较安全的。</li>
+<li>ESR（等效串联电阻）：ESR是电容器的一个重要参数，影响电容器的效率和性能。低ESR值适用于高频电路。</li>
+<li>温度范围与稳定性：对于高温或特殊环境下使用的电容器，需要选择具有较高温度稳定性的产品。</li>
+<li>极性：部分电容器（如电解电容器）具有极性，在电路设计时需要特别注意极性连接。</li>
+</ul>
+<h3 id="电感">电感
+</h3><h4 id="电感类型">电感类型
+</h4><p>电感器主要用于存储电能和限制电流的变化。电感器的基本功能包括滤波、耦合、储能和信号传输等。其工作原理是基于电流变化产生的磁场。</p>
+<p>常见的电感器类型有：</p>
+<ul>
+<li>固定电感器：用于稳定电流和滤波的电路中。</li>
+<li>可调电感器：能够调节电感值，适用于频率调节电路。</li>
+<li>铁氧体磁芯电感器：用于高频滤波和电源管理。</li>
+<li>线圈电感器：多用于信号处理和电磁兼容性控制。</li>
+</ul>
+<h4 id="电感器的选型考虑因素">电感器的选型考虑因素
+</h4><ul>
+<li>电感值：电感值的单位是亨利（H），常见的单位有毫亨（mH）和微亨（µH）。选择时需要考虑电路的工作频率以及电流大小。</li>
+<li>工作频率：不同类型的电感器适用于不同频率范围的电路。高频电路通常需要选择小型化、低损耗的电感器。</li>
+<li>电流承载能力：电感器的电流承载能力需要高于电路中流过的电流，否则可能会导致过热甚至损坏。</li>
+<li>饱和电流：饱和电流是指电感器在工作时，电流超过一定值后其电感性能急剧下降的现象。选择时需要考虑电感器的饱和电流值，以确保其在工作过程中稳定性。</li>
+<li>DC电阻（DCR）：电感器的DC电阻决定了其直流电流损耗，选择时需要确保DCR尽可能低，以提高电路的效率。</li>
+</ul>
+<h3 id="晶振-1">晶振
+</h3><blockquote>
+<p><a class="link" href="https://www.troq.com/zxbk/info_itemid_807.html"  target="_blank" rel="noopener"
+    >有源晶振和无源晶振该怎么选择</a></p>
+</blockquote>
+<h4 id="晶振中的有源和无源到底有什么不同">晶振中的有源和无源到底有什么不同?
+</h4><p>  晶振是一种电子元件，它在电子设备中提供精确和稳定的时钟信号。晶振根据其工作原理的不同，可以分为有源晶振和无源晶振。</p>
+<p>**有源晶振( Oscillator)**是一种带有放大器的晶振，它可以提供更高的输出功率和更好的信号质量。有源晶振通常由振荡器、放大器和输出级组成。振荡器提供基本的振荡信号，放大器放大振荡信号的幅度，输出级将放大后的信号输出。有源晶振通常用在需要高信号质量和长距离传输的应用中，例如无线电通信、广播电视等。</p>
+<p>**无源晶振(Crystal)**是一种没有放大器的晶振，它的输出功率较低，但也具有精确和稳定的时钟信号。无源晶振通常由振荡器和输出级组成，没有放大器。无源晶振通常用在需要低功率和小体积的应用中，例如计算机、手机等。</p>
+<p>有源晶振和无源晶振在使用时需要注意以下几点：</p>
+<ol>
+<li>有源晶振通常需要使用外部电源，而无源晶振则可以直接使用被控设备的电源。</li>
+<li>有源晶振的输出功率较高，可以传输更远的距离，但也需要更多的功耗。无源晶振的输出功率较低，但功耗也更小。</li>
+<li>有源晶振的信号质量更好，但也更复杂，需要更多的电路来实现。无源晶振的信号质量较好，但也更简单，可以更容易地集成到电路中。</li>
+</ol>
+<p>  总之，有源晶振和无源晶振都是提供精确和稳定的时钟信号的重要元件。它们的区别在于工作原理的不同，有源晶振带有放大器可以提供更高的输出功率和更好的信号质量，而无源晶振没有放大器，功率较低，但更适合需要低功耗和小体积的应用。</p>
+<p>以下是一些选择有源晶振和无源晶振的建议：</p>
+<ol>
+<li>稳定性要求：</li>
+</ol>
+<p>  如果需要高精度、高稳定性的时钟信号，或者用于频率合成等要求较高的应用，建议选择无源晶振。因为无源晶振的稳定性更高，可以提供更加精确和稳定的输出信号。</p>
+<ol start="2">
+<li>输出功率要求：</li>
+</ol>
+<p>  如果需要较高的输出功率和较低的输出阻抗，建议选择有源晶振。因为有源晶振具有较高的输出功率和较低的输出阻抗，可以满足一些需要高输出功率的应用场景。</p>
+<ol start="3">
+<li>工作电压和电流要求：</li>
+</ol>
+<p>  有源晶振需要外部电源或电池等能量源来驱动，因此需要考虑其工作电压和电流要求是否符合实际应用需求。而无源晶振则无需外部电源驱动，因此不需要考虑其工作电压和电流要求。</p>
+<h4 id="贴片晶振四个脚与两个脚的区别">贴片晶振四个脚与两个脚的区别
+</h4><p><strong>类型的区别</strong></p>
+<ul>
+<li>
+<p>无源晶振</p>
+<ul>
+<li>两个脚的无源晶振：这种类型的晶振没有内置振荡电路，需要依赖外部电路来产生振荡信号。这种类型的晶振主要用于提供稳定的时钟信号，以确保电路的正常运行。</li>
+<li>四个脚的无源晶振：尽管有四个脚，但真正称之为功能脚位的只有两个，即脚1和脚3。另外两个脚则起固定作用。这类无源晶振同样需要外部电路来产生振荡信号。</li>
+</ul>
+</li>
+<li>
+<p>有源晶振</p>
+<ul>
+<li>四个脚的有源晶振：有源晶振是一种内部集成了振荡电路的晶振，不需要额外的外部元件就能产生振荡信号。它通常用于要求更高稳定性的场合，如GPS、蓝牙、WIFI等应用。</li>
+</ul>
+</li>
+</ul>
+<p><strong>功能的区别</strong></p>
+<p>  无源晶振需要外部的时钟电路来产生振荡信号，而有源晶振内部集成了振荡电路，可以自行产生振荡信号。此外，有源晶振通常具有更高的稳定性和精度，但也需要额外的电源输入。</p>
+<p><strong>使用方式的区别</strong></p>
+<p>  无源晶振在四脚的情况下，只有两个脚是功能脚，另外两脚是悬空的，用于接GND。而对于有源晶振，一般情况下有源晶振印字上面会标注脚位方向，即在左下角一个点，有点的代表引脚1。按逆时针(管脚向下)通常的用法是：一脚悬空，二脚接地，三脚接输出，四脚接电压。在安装有源晶振时，应当确保正确的脚位方向。如果安装错误，可能会导致晶振无法正常工作，甚至可能被电流击穿</p>
+<h3 id="蓝牙ble">蓝牙BLE
+</h3><blockquote>
+<p><a class="link" href="https://www.bilibili.com/video/BV1Cq4y1n7H1/?spm_id_from=333.337.search-card.all.click&amp;vd_source=d9b7ec77b1ff343b8bdf167e228e5b3e"  target="_blank" rel="noopener"
+    >蓝牙BLE开发实战教程-硬件电路设计</a></p>
+</blockquote>
+<h4 id="天线">天线
+</h4><ul>
+<li>陶瓷贴片天线</li>
+<li>PCB天线</li>
+<li>FPC天线</li>
+<li>SMA IPEX天线连接器</li>
+</ul>
+<h3 id="led">LED
+</h3><ul>
+<li>结构： 发光二极管的核心部分是由P型半导体和N型半导体组成的晶片，在 P 型半导体和 N 型半导体之间有一个过渡层，称为PN结。在有些半导体材料的PN结中，注入的少数载流子与多数载流子复合时会把多余的能量以光的形式释放出来，从而把电能直接转换为光能。</li>
+<li>发光原理： 当在LED即两端加上正向电压，电流从LED阳极流向阴极时，半导体晶体就发出从紫外到红外不同颜色的光线。光的强弱与电流有关，电流越大，发的光越强。</li>
+<li>一般压降为2V（颜色不同不一样），安全电流20mA，所以一般需要串联一个限流电阻。<a class="link" href="https://ledcalculator.net/zh?mode=schematic"  target="_blank" rel="noopener"
+    >Led计算器
+</a></li>
+</ul>
+<h3 id="oled显示屏">OLED显示屏
+</h3><h4 id="lcd背光">LCD背光
+</h4><blockquote>
+<p><a class="link" href="https://blog.csdn.net/weixin_50082444/article/details/145790808"  target="_blank" rel="noopener"
+    >LCD背光电路连接图分析</a></p>
+</blockquote>
+<h5 id="为什么不能用-gpio-直接驱动-lcd-背光">为什么不能用 GPIO 直接驱动 LCD 背光？
+</h5><p><strong>① 背光 LED 电流很大（几十 mA~几百 mA）</strong></p>
+<ul>
+<li>STM32（或任意 MCU）一个 GPIO 典型最大只允许 5mA~20mA。</li>
+<li>而一块 LCD/IPS/TFT 屏的背光 LED 通常要：</li>
+<li>20–40mA（小屏）</li>
+<li>100–200mA（中等屏）</li>
+<li>300mA+（亮度高的 IPS 屏）</li>
+</ul>
+<p>如果用 GPIO 直推背光，会直接烧毁 MCU 引脚。</p>
+<p><strong>② 背光需要恒流驱动或 PWM 调光</strong></p>
+<p>许多 LCD 背光需要 PWM 调光（亮度控制），而 PWM 肯定要让电流快速变化。</p>
+<p><strong>GPIO 不适合作为大电流 PWM 驱动器，原因包括</strong>：</p>
+<ul>
+<li>输出电流太小</li>
+<li>输出阻抗高</li>
+<li>开关速度不适合驱动大负载</li>
+<li>在快速 PWM 下会发热甚至损坏</li>
+</ul>
+<p>而 MOSFET/三极管非常适合做低损耗、大电流开关管。</p>
+<p><strong>③ 背光供电电压可能不是 MCU 的电压</strong></p>
+<p>MCU 多为 3.3V，LCD 背光常见：</p>
+<ul>
+<li>5V</li>
+<li>6V</li>
+<li>12V</li>
+<li>甚至高达 20–30V（串联 LED 时）</li>
+</ul>
+<p>GPIO 根本不能承受 MCU 电压之外的电压。</p>
+<p>加 MOSFET/三极管后可轻松实现：</p>
+<ul>
+<li>3.3V 控制 5V/12V 背光</li>
+<li>电平隔离</li>
+<li>安全驱动不烧 MCU</li>
+</ul>
+<p><strong>④ GPIO 无法提供背光启动瞬间冲击电流</strong></p>
+<p>LED 背光在启动的一瞬间会有 <strong>浪涌电流</strong>，比稳定电流大很多。</p>
+<p>如果直接接 GPIO：</p>
+<ul>
+<li>可能瞬间电压跌落</li>
+<li>MCU 复位</li>
+<li>GPIO 过流损坏</li>
+</ul>
+<p>加开关管后，这些电流由 MOS 管承受，MCU 无压力。</p>
+<p><strong>⑤ 设计需要保护与隔离</strong></p>
+<p>使用 MOSFET/BJT 可以加入：</p>
+<ul>
+<li>限流电阻</li>
+<li>TVS/ESD 保护</li>
+<li>电流检测</li>
+<li>软启动</li>
+<li>PWM 调光</li>
+</ul>
+<p>这些功能都不能由 GPIO 单独实现。</p>
+<p><strong>典型背光驱动电路</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 使用 N 沟道 MOS 管（最常用）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// R1（1K）：限流作用，防止通向NMOS管栅极的电流过大，保护栅极。
+</span></span></span><span class="line"><span class="cl"><span class="c1">// R2（10K）：作为下拉电阻，确保在BL引脚未被驱动时，NMOS管的栅极电压接近地电平，保持NMOS管处于截止状态。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">MCU</span> <span class="n">GPIO</span> <span class="o">--</span><span class="n">R1</span><span class="o">---</span><span class="n">Rgate</span><span class="o">--|&gt;</span> <span class="n">MOSFET</span> <span class="o">|-----</span> <span class="n">LED</span><span class="o">+</span> <span class="p">(</span><span class="err">背光</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">              <span class="o">|</span>
+</span></span><span class="line"><span class="cl">              <span class="n">R2</span>
+</span></span><span class="line"><span class="cl">              <span class="o">|</span>
+</span></span><span class="line"><span class="cl">            <span class="n">GND</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特点：</strong></p>
+<ul>
+<li>GPIO 只负责控制 栅极，几乎无电流压力</li>
+<li>大电流由 MOS 承受</li>
+<li>可高频 PWM 调光</li>
+<li>可靠性强</li>
+</ul>
+<h3 id="排针">排针
+</h3><p>通常注意与pcb的以下参数对应：</p>
+<ul>
+<li>排针间距：一般为2.54mm</li>
+<li>排针类型：圆针/方针</li>
+<li>结构：一般为1 x N P，也可以掰开使用</li>
+</ul>
+<h3 id="mos管">MOS管
+</h3><p>mos管的普遍实现为Nmos管，G输出高电平，D、S导通，G输出低电平，D、S关闭。Pmos管反之。</p>
+<p><img src="/imgs/pcb/nmos_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="nmos"
+	
+	
+></p>
+<p>关注参数：</p>
+<ul>
+<li>封装</li>
+<li>Vgsth：打开nmos的GS电压，Vgsth应该小于高电平的电压值</li>
+<li>Rdson：mos管被完全打开时的DS电阻值，越小越好，但价格越高、体积越大</li>
+<li>Cgs：G、S之间的寄生电容，影响nmos的打开速度，容值大小一般与Rdson成反比</li>
+</ul>
+<h2 id="电子设计常用电路">电子设计常用电路
+</h2><blockquote>
+<p><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/anti-reverse-circuit.html"  target="_blank" rel="noopener"
+    >电子设计常用电路</a></p>
+</blockquote>
+<h3 id="外围电路">外围电路
+</h3><p>MCU（微控制单元，Microcontroller Unit）是嵌入式系统的&quot;大脑&quot;，但需通过外围电路实现供电、信号输入/ 输出、通信、存储等功能，才能构成完整的工作系统。外围电路的设计直接决定 MCU 的稳定性、功能扩展性和适用场景，入门需先掌握核心电路模块的作用与设计逻辑。</p>
+<h4 id="mcu-与外围电路的关系">MCU 与外围电路的关系
+</h4><p>MCU 芯片内部集成了 CPU、RAM、ROM（或 Flash）、定时器、ADC 等核心模块，但存在两个关键局限：</p>
+<ol>
+<li>内部资源有限：如 IO 口驱动能力弱（通常仅能驱动 LED、小型传感器，无法直接驱动电机）、无外部供电接口、无远距离通信物理层等；</li>
+<li>需外部交互：需接收传感器信号（如温度、按键）、控制外部执行器（如电机、继电器）、与其他设备（如电脑、模块）通信。</li>
+</ol>
+<p><strong>外围电路的核心作用</strong>：弥补 MCU 内部资源缺陷，搭建&quot;大脑&quot;与外部世界的连接桥梁，保障系统稳定运行。</p>
+<h4 id="必学外围电路模块按功能分类">必学外围电路模块（按功能分类）
+</h4><h5 id="供电电路mcu-的能量来源">供电电路：MCU 的&quot;能量来源&quot;
+</h5><p>MCU 无法直接使用 220V 市电或锂电池（3.7V）等非标准电压，需供电电路将外部电压转换为 MCU 的核心工作电压（常见 3.3V 或 5V，需严格匹配芯片手册），同时滤除电压波动，避免 MCU 死机或损坏。</p>
+<p><strong>核心组件与设计逻辑</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>组件类型</th>
+          <th>作用</th>
+          <th>典型场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>线性稳压器（LDO）</td>
+          <td>输入电压＞输出电压，输出稳定、纹波小</td>
+          <td>对电压稳定性要求高的场景（如传感器采集），如 AMS1117-3.3V（输入 4.75-12V，输出 3.3V）</td>
+      </tr>
+      <tr>
+          <td>DC-DC 转换器</td>
+          <td>输入电压可高于/ 低于输出电压，效率高</td>
+          <td>对功耗敏感的场景（如电池供电设备），如 MP1584（输入 4-28V，输出可调至 3.3V）</td>
+      </tr>
+      <tr>
+          <td>滤波电容</td>
+          <td>滤除电源线上的高频噪声，稳定电压</td>
+          <td>每个稳压器输出端并联 1 个 100nF 陶瓷电容（滤高频）+ 1 个 10μF 电解电容（滤低频）</td>
+      </tr>
+      <tr>
+          <td>电源指示灯<br></td>
+          <td>直观判断供电是否正常</td>
+          <td>串联 1 个 1kΩ限流电阻+LED（电流＜20mA，避免烧毁）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>必须参考 MCU 手册的&quot;供电参数&quot;：如最大输入电压、工作电流，避免过压烧毁；</li>
+<li>若系统有大功率模块（如电机），需单独为其设计供电电路，避免电流波动干扰 MCU。</li>
+</ul>
+<h5 id="复位电路让-mcu重启归零">复位电路：让 MCU&quot;重启归零&quot;
+</h5><p>复位电路用于在系统上电、死机或异常时，强制 MCU 回到初始状态（类似电脑重启），保障程序正常运行。常见复位方式有上电复位 和手动复位。</p>
+<p><strong>两种复位电路设计</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>复位类型</th>
+          <th>核心组件</th>
+          <th>工作原理</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>上电复位</td>
+          <td>电容（10μF）+ 电阻（10kΩ）</td>
+          <td>上电时电容充电，复位引脚（如 RST）短暂保持高电平，电容充满后变为低电平，MCU 开始运行</td>
+          <td>系统上电时自动复位，无需手动操作</td>
+      </tr>
+      <tr>
+          <td>手动复位</td>
+          <td>复位按键 + 电阻（10kΩ）</td>
+          <td>按下按键时，复位引脚接高电平，松开后恢复低电平，触发 MCU 复位</td>
+          <td>需要手动重启的场景（如程序调试）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>复位引脚电平需匹配 MCU 要求（多数 51 单片机为高电平复位，STM32 部分型号为低电平复位）；</li>
+<li>复位时间需足够（通常＞1ms），避免电容/ 电阻参数过小导致复位不彻底。</li>
+</ul>
+<h5 id="时钟电路mcu-的心跳">时钟电路：MCU 的&quot;心跳&quot;
+</h5><p>MCU 的 CPU、定时器、UART 等模块需依赖 <strong>时钟信号</strong> 同步工作（类似人的心跳节奏），时钟频率决定 MCU 的运行速度（如 11.0592MHz 时钟下，51 单片机指令执行速度约 1MHz）。常见时钟源有__外部晶振__ （精准）和__内部 RC 振荡器__（便捷）。</p>
+<blockquote>
+<p><strong>时钟信号</strong> 是 MCU 的 &ldquo;电子节拍器&rdquo; &mdash;&mdash; 它定义了 &ldquo;时间单位&rdquo;，让所有模块的动作在 &ldquo;统一时间基准&rdquo; 下有序执行，避免因 &ldquo;动作不同步&rdquo; 导致的功能混乱或错误</p>
+</blockquote>
+<p><strong>两种时钟电路对比</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>时钟类型</th>
+          <th>核心组件</th>
+          <th>优点</th>
+          <th>缺点</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>外部晶振</td>
+          <td>晶振（如 11.0592MHz）+ 两个电容（22pF）</td>
+          <td>频率精准、稳定，适合串口通信（需精准波特率）</td>
+          <td>需额外焊接元件，占 PCB 空间</td>
+          <td>对时序要求高的场景（如 UART、SPI 通信）</td>
+      </tr>
+      <tr>
+          <td>内部 RC 振荡器</td>
+          <td>MCU 内部集成（无需外部元件）</td>
+          <td>无需外部元件，设计简单，成本低</td>
+          <td>频率误差较大（±5%），稳定性差</td>
+          <td>对精度要求低的场景（如 LED 闪烁）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>晶振频率需在 MCU 支持范围内（如 STM32F103 支持 4-16MHz 晶振）；</li>
+<li>晶振与电容需靠近 MCU 时钟引脚（X1、X2），避免引线过长导致信号干扰。</li>
+</ul>
+<h5 id="io-口扩展与驱动电路连接外部设备">IO 口扩展与驱动电路：连接外部设备
+</h5><p>MCU 的 IO 口（输入/ 输出引脚）是与外部设备交互的&quot;接口&quot;，但存在两个核心限制：</p>
+<ul>
+<li>输出驱动能力弱：多数 IO 口最大输出电流仅 20-50mA，无法直接驱动电机、继电器等大功率设备；</li>
+<li>输入信号敏感：需处理传感器的弱信号（如光敏电阻）或避免高压信号烧毁 IO 口。</li>
+</ul>
+<p>因此需通过__驱动电路__扩展 IO 口能力，常见场景如下：</p>
+<p><strong>典型 IO 口驱动场景</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>外部设备</th>
+          <th>驱动电路设计</th>
+          <th>原理说明</th>
+          <th>注意事项</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>LED 指示灯</td>
+          <td>IO 口 → 限流电阻（1kΩ）→ LED → GND</td>
+          <td>IO 口输出高电平时，电流通过 LED 发光（电流＜20mA）</td>
+          <td>电阻不可省略，否则 LED 过流烧毁；LED 正负极不可接反</td>
+      </tr>
+      <tr>
+          <td>按键（输入）</td>
+          <td>IO 口 → 上拉电阻（10kΩ）→ VCC；按键另一端接 GND</td>
+          <td>未按按键时，IO 口通过上拉电阻接高电平；按下时接地，IO 口变为低电平，MCU 检测到按键动作</td>
+          <td>可使用 MCU 内部上拉电阻（如 STM32 的 PU 模式），减少外部元件</td>
+      </tr>
+      <tr>
+          <td>继电器/ 电机</td>
+          <td>IO 口 → 三极管（如 S8050）→ 继电器/ 电机；续流二极管（保护三极管）</td>
+          <td>IO 口输出高电平驱动三极管导通，继电器/ 电机得电工作；续流二极管吸收电机断电时的反向电动势</td>
+          <td>三极管需匹配负载电流（如 S8050 最大集电极电流 1.5A）；大功率电机需加 MOS 管</td>
+      </tr>
+  </tbody>
+</table></div>
+<h5 id="通信接口电路让-mcu联网对话">通信接口电路：让 MCU&quot;联网对话&quot;
+</h5><p>MCU 需通过通信接口与其他设备（如电脑、传感器模块、显示屏）交换数据，常见通信协议有__UART（串口）__ 、<strong>I2C</strong> 、<strong>SPI</strong>，不同协议对应不同外围电路。</p>
+<p><strong>三种常用通信接口对比</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>通信协议</th>
+          <th>引脚数量</th>
+          <th>核心电路设计</th>
+          <th>特点</th>
+          <th>典型应用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>UART（串口）</td>
+          <td>2（TX 发送、RX 接收）</td>
+          <td>电脑端需 USB 转串口模块（如 CH340），MCU 端直接接 TX/RX</td>
+          <td>异步通信，波特率需一致（如 9600bps），距离短（＜10m）</td>
+          <td>电脑与 MCU 通信（如程序下载、数据打印）</td>
+      </tr>
+      <tr>
+          <td>I2C</td>
+          <td>2（SDA 数据线、SCL 时钟线）</td>
+          <td>两根线均需接 4.7kΩ上拉电阻到 VCC</td>
+          <td>同步通信，多主多从（可挂多个设备），距离短（＜1m）</td>
+          <td>连接传感器（如温湿度传感器 SHT30）、OLED 显示屏</td>
+      </tr>
+      <tr>
+          <td>SPI</td>
+          <td>4（SCK 时钟、MOSI 主发从收、MISO 主收从发、CS 片选）</td>
+          <td>无需上拉电阻，通过 CS 引脚选择通信设备</td>
+          <td>同步通信，速度快（＞10Mbps），距离短（＜1m）</td>
+          <td>连接 Flash 存储芯片（如 W25Q64）、LCD 显示屏</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>通信引脚需&quot;交叉连接&quot;：MCU 的 TX 接 USB 转串口模块的 RX，MCU 的 RX 接模块的 TX；</li>
+<li>I2C 的上拉电阻不可省略，否则信号传输不稳定；</li>
+<li>SPI 的 CS 引脚需单独控制（同一时刻仅一个设备被选中）。</li>
+</ul>
+<h5 id="存储电路保存数据不掉电">存储电路：保存数据&quot;不掉电&quot;
+</h5><p>MCU 内部 Flash/RAM 容量有限（如 51 单片机仅 4KB Flash、128B RAM），需外部存储电路扩展容量，用于保存程序、日志或参数（如设备配置信息）。常见存储芯片有__SPI Flash__ （存程序/ 大文件）和__EEPROM__（存小参数）。</p>
+<p><strong>两种存储电路设计</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>存储类型</th>
+          <th>核心芯片</th>
+          <th>通信协议</th>
+          <th>特点</th>
+          <th>典型应用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>SPI Flash</td>
+          <td>W25Q64（64MBit=8MB）</td>
+          <td>SPI</td>
+          <td>容量大、擦写次数多（＞10 万次）、掉电不丢失</td>
+          <td>存储固件、图片、日志文件</td>
+      </tr>
+      <tr>
+          <td>EEPROM</td>
+          <td>AT24C02（2KB）</td>
+          <td>I2C</td>
+          <td>容量小、可字节级擦写、掉电不丢失</td>
+          <td>存储设备参数（如校准值、用户设置）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>入门注意：</strong></p>
+<ul>
+<li>存储芯片需通过对应通信协议（SPI/I2C）与 MCU 连接，程序中需调用相应驱动函数；</li>
+<li>EEPROM 擦写次数有限（通常 100 万次），避免频繁写入同一地址。</li>
+</ul>
+<h4 id="入门实践建议">入门实践建议
+</h4><ol>
+<li>从最小系统开始：先搭建 MCU 的&quot;最小系统&quot;（供电+ 复位+ 时钟），确保 MCU 能正常上电运行（如点亮一个 LED），再逐步扩展其他模块；</li>
+<li>参考经典电路：新手可直接复用成熟设计（如 51 单片机最小系统、STM32 核心板电路），避免从零设计导致错误；</li>
+<li>重视 datasheet：所有外围电路参数（如稳压器输入电压、晶振频率）需严格参考 MCU 和元件的 datasheet（芯片手册），这是设计的核心依据；</li>
+<li>先仿真后焊接：使用 Proteus、Multisim 等软件仿真电路，验证功能正常后再实际焊接，减少硬件损坏风险。</li>
+</ol>
+<h3 id="电源防反接电路">电源防反接电路
+</h3><p>在日常电子设计过程中，经常会使用排针、电池等容易插反的接口进行供电，此时一旦电源接反，会导致短路，通常芯片内部也无法承受反向电流，可能会导致芯片损坏。</p>
+<h4 id="二极管防反接">二极管防反接
+</h4><p>使用一个二极管串联在电路中，当电源正常接入时，二极管导通,当电源反接时，二极管反向截止，整个系统不会有电流经过，但是此时二极管需要承担整个电路的电流，且自身会有压降，输出电压与实际输入电压会有一个二极管压差，建议综合电路负载电流情况选择不同型号的肖特基二极管。</p>
+<h3 id="自动冷启动电路">自动冷启动电路
+</h3><blockquote>
+<p><a class="link" href="https://www.bilibili.com/video/BV1AT421Y7DS?spm_id_from=333.788.player.switch&amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;p=74"  target="_blank" rel="noopener"
+    >自动冷启动电路</a></p>
+</blockquote>
+<p>有些MCU只会在冷启动（彻底掉电再启动）的某个阶段才会去检测RXD是否有合法的下载信号，然后下载烧录用户程序（如STC89C52RC）。如果要频繁下载程序，就需要频繁去手动冷启动，所以利用自动冷启动电路实现。</p>
+<h2 id="开源项目">开源项目
+</h2><h3 id="入门2层板">入门（2层板）
+</h3><ul>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/course-projects/electronic-fabrication/aluminum-alloy-docking-station.html"  target="_blank" rel="noopener"
+    >嘉立创-USB2.0拓展坞</a></li>
+<li><a class="link" href="https://oshwhub.com/goodyuhuang/ji-yu-VL813de-USB3.0-HUBshe-ji"  target="_blank" rel="noopener"
+    >基于VL813的USB3.0-HUB设计</a></li>
+<li><a class="link" href="https://oshwhub.com/expert/gai-jin-xin-exlink-duo-gong-neng-diao-shi-qi-fen-li-die-ban"  target="_blank" rel="noopener"
+    >Exlink最好用的嵌入式多功能调试器</a></li>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/course-projects/smart-internet/eda-robot/eda-robot-enclosure.html"  target="_blank" rel="noopener"
+    >EDA-Robot机器狗</a></li>
+<li><a class="link" href="https://www.bilibili.com/video/BV1CoGuzEEeN/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&amp;vd_source=239d861d96125b8edb41d49a38169fda"  target="_blank" rel="noopener"
+    >STM32手表教程</a></li>
+</ul>
+<h3 id="进阶4层板">进阶（4层板）
+</h3><ul>
+<li><a class="link" href="https://www.bilibili.com/video/BV1nj411v7Lu?spm_id_from=333.788.videopod.sections&amp;vd_source=239d861d96125b8edb41d49a38169fda"  target="_blank" rel="noopener"
+    >四层板PCB设计保姆级教程 3.0集线器</a></li>
+<li><a class="link" href="https://oshwhub.com/li-chuang-kai-fa-ban/liang-shan"  target="_blank" rel="noopener"
+    >立创·梁山派开发板</a>、<a class="link" href="https://www.bilibili.com/video/BV1sbTTzwEmj/"  target="_blank" rel="noopener"
+    >立创梁山派4层PCB实战教程</a></li>
+</ul>
+<h2 id="工具">工具
+</h2><ul>
+<li><a class="link" href="https://www.eetree.cn/tools"  target="_blank" rel="noopener"
+    >https://www.eetree.cn/tools</a></li>
+</ul>
+<h3 id="电路仿真">电路仿真
+</h3><ul>
+<li>CircuitJS</li>
+</ul>
+<h3 id="电路分析工具">电路分析工具
+</h3><ul>
+<li><a class="link" href="https://bbs.eda365.com/article-12-1.html"  target="_blank" rel="noopener"
+    >PCB走线载流计算器</a></li>
+<li><a class="link" href="https://bbs.eda365.com/article-11-1.html"  target="_blank" rel="noopener"
+    >PCB过孔载流计算器</a></li>
+<li><a class="link" href="https://tools.jlc.com/jlcTools/index.html#/impedanceCalculatenew?spm=PCB.Homepage.functionbar.1003"  target="_blank" rel="noopener"
+    >嘉立创阻抗计算神器</a>、Si9000</li>
+</ul>
+<h2 id="references">References
+</h2><ul>
+<li><a class="link" href="https://www.bilibili.com/video/BV1At421h7Ui/?spm_id_from=333.788.player.switch&amp;vd_source=239d861d96125b8edb41d49a38169fda&amp;p=25"  target="_blank" rel="noopener"
+    >【教程】零基础入门PCB设计</a></li>
+<li><a class="link" href="https://www.bilibili.com/video/BV1fFAfeZEBE/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&amp;vd_source=239d861d96125b8edb41d49a38169fda"  target="_blank" rel="noopener"
+    >【教程】大师篇-零基础入门PCB设计</a></li>
+<li><a class="link" href="https://oshwhub.com/expert/works"  target="_blank" rel="noopener"
+    >Expert电子实验室</a></li>
+<li><a class="link" href="https://wiki.lceda.cn/zh-hans/design-production/practical-circuit/gain-knowledge.html"  target="_blank" rel="noopener"
+    >eda教程</a></li>
+<li><a class="link" href="https://www.pcbbar.com/?mod=forumdisplay&amp;fid=114"  target="_blank" rel="noopener"
+    >pcb联盟网</a></li>
+<li><a class="link" href="https://geekdaxue.co/read/aiyanjiudexiaohutongxue@pt7221/aCT0H44Glqj8ii_n"  target="_blank" rel="noopener"
+    >嵌入式硬件知识</a></li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Nov 26, 2025 22:40 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/diy_intro/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【DIY】电子DIY设计与实现</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/embedded_programing_intro/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【嵌入式编程】 嵌入式编程介绍</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/3d_modeling/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【建模】 3D建模、打印</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="loveleaves/loveleaves.github.io"
+    data-repo-id="R_kgDOHiRxVA"
+    data-category="General"
+    data-category-id="DIC_kwDOHiRxVM4Cmvtx"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading=""
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 Andrew Stark
+    </section>
+    
+    <section class="powerby">
+        
+            loveleaves <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<div id="aplayer"></div>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script>
+const staticDir = "https://loveleaves.github.io/";
+const musicDir = staticDir + '/music/';
+const songs = [
+    'Dream_It_Possible-Delacey',
+    'Love_Story-Taylor_Swift',
+    'Never_Gonna_Give_You_Up-Rick_Astley',
+    'Natural-Imagine_Dragons',
+    'Rolling_In_the_Deep-Adele',
+    'Apologize-OneRepublic',
+    'Salt-Ava_Max',
+    'Try-P!nk',
+    'That_Girl-Olly_Murs',
+    'Hymn_for_the_Weekend-Coldplay',
+    'Hall_of_Fame-The_Script',
+    'My_Stupid_Heart-Walk_Off_the_Earth&Luminati_Suns',
+    'My_Songs_Know_What_You_Did_In_the_Dark-Taylor_Swift&Fall_Out_Boy',
+    'See_You_Again-Wiz_Khalifa&Charlie_Puth',
+    'Uptown_Funk-Mark_Ronson&Bruno_Mars',
+    'Right_Now-Akon',
+    'Whistle-Flo_Rida',
+    'Numb-Linkin_Park',
+    'Immortals-Fall_Out_Boy',
+    'DJ_Got_Us_Falling_In_Love-Krusher',
+    'Faded-Alan_Walker',
+    'Something_Just_Like_This-The_Chainsmokers&Coldplay',
+    'The_Phoenix-Fall_Out_Boy',
+    'Umbrella-Rihanna&Jay_Z',
+    'Animals_(Big_Boi_Remix)-Maroon_5',
+    'Monsters-Katie_Sky',
+    'Turnin’-Young_Rising_Sons',
+    'What_Are_Words-Chris_Medina',
+    'Normal_No_More-Tysm',
+    'Go_Solo-Tom_Rosenthal',
+    'Peter_Pan_Was_Right-Anson_Seabra',
+    'Free_Loop-Daniel_Powter',
+    'Empty_Love-Lulleaux&Kid_Princess',
+    '青空-Candy_Wind',
+    'Take_Me_Hand-DAISHI_DANCE',
+    'Proud_Of_You-冯曦妤',
+    'Please_Don’t_Go-Joel_Adams',
+    'Forgettable-Project_46&Olivia',
+    'Creep-Gamper_And_Dadoni',
+    'Ferrari-Bebe_Rexha',
+    'Legends_Never_Die(Alan_Walker_Remix)-Alan_Walker&Against_The_Current',
+    'Love_the_Way_You_Lie-Eminem&Rihanna',
+    'Lone_Ranger-Rachel_Platten',
+    'What_Makes_You_Beautiful-One_Direction',
+    'Let_Me_Down_Slowly-Alec_Benjamin',
+    'My_Love-Westlife',
+    'Counting_Stars-OneRepublic',
+    'STAY-The_Kid_LAROI&Justin_Bieber',
+    'Shape_of_You-Ed_Sheeran',
+    'Booty_Music-Deep_Side',
+    'Because_Of_You-Kelly_Clarkson',
+    'Far_Away_from_Home-Groove_Coverage',
+    'Move_Your_Body(Single_Mix)-Sia',
+    'The_Nights(Original_Mix)-Avicii',
+    'We_Dont_Talk_Anymore-Charlie_Puth&Selena_Gomez',
+    'Moves_Like_Jagger(Radio_Edit)-Maroon_5',
+    'You_Raise_Me_Up-Westlife',
+    'Call_Me_Maybe(10_Kings_vs_Ollie_Green_Remix)-Carly_Rae_Jepsen',
+    'Senorita-Shawn_Mendes&Camila_Cabello',
+    'We_Will_Rock_You-Queen',
+    'My_Heart_Will_Go_On-Celine_Dion&Webster'
+];
+let audios = [];
+songs.forEach((item) => {
+    const songInfo = item.split('-');
+    audios.push({
+        name: songInfo[0],
+        artist: songInfo[1],
+        url: musicDir + item + '/song.mp3',
+        lrc: musicDir + item + '/song.lrc',
+        cover: musicDir + 'cover.jpg', 
+    })
+});
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    
+    fixed: true,
+    
+    lrcType: 3,
+    audio: audios
+});
+</script>
+
+
+
+
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d-widget-v3/';
+  const myCdnPath = "https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d/live2d-moc3/";
+  
+  const cssPath = "https://loveleaves.github.io/waifu/waifu.css";
+  const tipsJsonPath = "https://loveleaves.github.io/waifu/waifu-tips.json";
+  const tipsJsPath = "https://loveleaves.github.io/waifu/waifu-tips.js";
+  const live2dJsPath = "https://loveleaves.github.io/waifu/live2d.min.js";
+
+  const config = {
+    
+    path: {
+      modelPath: myCdnPath,
+      cssPath: cssPath,
+      tipsJsonPath: tipsJsonPath,
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://loveleaves.github.io/icons/backTop.svg);
+    }
+</style>
+
+<div id="particles-js"></div>
+
+<script src=https://loveleaves.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://loveleaves.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<script>
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+
+    </body>
+</html>

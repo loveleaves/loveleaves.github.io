@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>3D_modeling on 安哲睿</title>
+        <link>https://loveleaves.github.io/categories/3d_modeling/</link>
+        <description>Recent content in 3D_modeling on 安哲睿</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Andrew Stark</copyright>
+        <lastBuildDate>Sun, 19 Oct 2025 23:00:55 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/3d_modeling/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【建模】 3D建模、打印</title>
+        <link>https://loveleaves.github.io/p/3d_modeling/</link>
+        <pubDate>Mon, 13 Oct 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/3d_modeling/</guid>
+        <description>&lt;h2 id=&#34;3d建模&#34;&gt;3D建模
+&lt;/h2&gt;&lt;h2 id=&#34;常用软件&#34;&gt;常用软件
+&lt;/h2&gt;&lt;h3 id=&#34;fusion360&#34;&gt;Fusion360
+&lt;/h3&gt;&lt;h4 id=&#34;教程&#34;&gt;教程
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1xX4y1E7nG&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2023年最新 Fusion 360 教程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.geeksman.com/print3D/Fusion360/02.fusion360-draft.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;fusion360教程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;solidworks&#34;&gt;SolidWorks
+&lt;/h3&gt;&lt;h2 id=&#34;3d打印&#34;&gt;3D打印
+&lt;/h2&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

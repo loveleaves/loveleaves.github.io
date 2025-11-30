@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="主要介绍利用TensorRT部署模型及推理">
+<title>【TensorRT】 TensorRT模型部署介绍</title>
+
+<link rel='canonical' href='https://loveleaves.github.io/p/tensorrt_deploy/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f655c339a336b15a106fd248f9170c8064dfc6f1990313665402f49a0c0831e.css"><meta property='og:title' content="【TensorRT】 TensorRT模型部署介绍">
+<meta property='og:description' content="主要介绍利用TensorRT部署模型及推理">
+<meta property='og:url' content='https://loveleaves.github.io/p/tensorrt_deploy/'>
+<meta property='og:site_name' content='安哲睿'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-02T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-05T20:45:08&#43;08:00'/>
+<meta name="twitter:title" content="【TensorRT】 TensorRT模型部署介绍">
+<meta name="twitter:description" content="主要介绍利用TensorRT部署模型及推理">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b4d2f495c38e1067.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😁</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">安哲睿</a></h1>
+            <h2 class="site-description">世上无难事，只怕有心人</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/loveleaves'
+                        target="_blank"
+                        title="Github"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/loveleaves'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://loveleaves.github.io/en/" >English</option>
+                                
+                                    <option value="https://loveleaves.github.io/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#references">References</a></li>
+    <li><a href="#tensorrt推理部署方案">TensorRT推理部署方案</a>
+      <ol>
+        <li><a href="#c硬代码方案">C++硬代码方案</a></li>
+        <li><a href="#onnx方案">ONNX方案</a></li>
+        <li><a href="#tensorrt库文件">TensorRT库文件</a></li>
+      </ol>
+    </li>
+    <li><a href="#tensorrt部署推理模型流程">TensorRT部署推理模型流程</a>
+      <ol>
+        <li><a href="#模型构建">模型构建</a></li>
+        <li><a href="#模型推理">模型推理</a>
+          <ol>
+            <li><a href="#动态shape">动态shape</a></li>
+          </ol>
+        </li>
+        <li><a href="#onnx模型操作">ONNX模型操作</a></li>
+        <li><a href="#onnx-parser">ONNX Parser</a>
+          <ol>
+            <li><a href="#导出trt模型">导出TRT模型</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#plugin">Plugin</a></li>
+    <li><a href="#量化">量化</a>
+      <ol>
+        <li><a href="#int8量化">int8量化</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tensorrt/" >
+                TensorRT
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/tensorrt_deploy/">【TensorRT】 TensorRT模型部署介绍</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            主要介绍利用TensorRT部署模型及推理
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 02, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 11 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="references">References
+</h2><ul>
+<li><a class="link" href="https://docs.nvidia.com/deeplearning/tensorrt/latest/getting-started/quick-start-guide.html"  target="_blank" rel="noopener"
+    >tensorrt docs</a></li>
+<li><a class="link" href="https://docs.nvidia.com/deeplearning/tensorrt/archives/"  target="_blank" rel="noopener"
+    >tensorrt api</a></li>
+<li><a class="link" href="https://docs.nvidia.com/deeplearning/tensorrt/latest/installing-tensorrt/installing.html"  target="_blank" rel="noopener"
+    >install tensorrt</a></li>
+<li><a class="link" href="https://github.com/NVIDIA/TensorRT/tree/main/samples"  target="_blank" rel="noopener"
+    >TensorRT samples</a></li>
+<li><a class="link" href="https://github.com/wang-xinyu/tensorrtx"  target="_blank" rel="noopener"
+    >Implementation of popular deep learning networks with TensorRT</a></li>
+</ul>
+<h2 id="tensorrt推理部署方案">TensorRT推理部署方案
+</h2><ul>
+<li><a class="link" href="https://github.com/jinmin527/learning-cuda-trt"  target="_blank" rel="noopener"
+    >learning-cuda-trt code</a></li>
+<li><a class="link" href="https://github.com/loveleaves/TensorRT-Quantization"  target="_blank" rel="noopener"
+    >tensorRT quantization</a></li>
+</ul>
+<h3 id="c硬代码方案">C++硬代码方案
+</h3><ul>
+<li>代表：<a class="link" href="https://github.com/wang-xinyu/tensorrtx"  target="_blank" rel="noopener"
+    >tensorrtx</a></li>
+<li>流程：C++硬代码=》TRT API =》 TRT Builder =》 TRT Engine</li>
+</ul>
+<h3 id="onnx方案">ONNX方案
+</h3><ul>
+<li>流程：ONNX(libnvonnxparser.so) =》TRT API =》 TRT Builder =》 TRT Engine</li>
+<li>一般思路：
+<ol>
+<li>导出模型onnx，查看输入和输出。</li>
+<li>查看代码，找到onnx的预处理，分析预处理逻辑</li>
+<li>利用上述信息实现onnx py推理实现</li>
+<li>验证正常可实现转TRT模型用C++实现推理</li>
+</ol>
+</li>
+</ul>
+<h3 id="tensorrt库文件">TensorRT库文件
+</h3><ul>
+<li>libnvinfer.so：TensorRT核心库</li>
+<li>libnvinfer_plugin.so：nvidia官方提供的插件，<a class="link" href="https://github.com/NVIDIA/TensorRT/tree/main/plugin"  target="_blank" rel="noopener"
+    >github</a></li>
+<li>libprotobuf.so：protobuf库</li>
+<li>libnvonnxparser.so：ONNX解析</li>
+</ul>
+<h2 id="tensorrt部署推理模型流程">TensorRT部署推理模型流程
+</h2><h3 id="模型构建">模型构建
+</h3><ul>
+<li>tensorrt的工作流程如下图：
+<ul>
+<li>首先定义网络</li>
+<li>优化builder参数</li>
+<li>通过builder生成engine,用于模型保存、推理等</li>
+<li>engine可以通过序列化和逆序列化转化模型数据类型（转化为二进制byte文件，加快传输速率），再进一步推动模型由输入张量到输出张量的推理。<img src="/imgs/tensorRT/1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="avatar"
+	
+	
+></li>
+</ul>
+</li>
+<li>code structure
+<ol>
+<li>定义 builder, config 和network，其中builder表示所创建的构建器，config表示创建的构建配置（指定TensorRT应该如何优化模型），network为创建的网络定义。</li>
+<li>输入，模型结构和输出的基本信息（如下图所示）
+<img src="/imgs/tensorRT/2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="avatar"
+	
+	
+></li>
+<li>生成engine模型文件</li>
+<li>序列化模型文件并存储</li>
+</ol>
+</li>
+</ul>
+<h3 id="模型推理">模型推理
+</h3><p>执行推理的步骤：</p>
+<ol>
+<li>
+<p>准备模型并加载</p>
+</li>
+<li>
+<p>创建runtime：<code>createInferRuntime(logger)</code></p>
+</li>
+<li>
+<p>使用运行时时，以下步骤：</p>
+<ol>
+<li>
+<p>反序列化创建engine, 得为engine提供数据：<code>runtime-&gt;deserializeCudaEngine(modelData, modelSize)</code>,其中<code>modelData</code>包含的是input和output的名字，形状，大小和数据类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ModelData</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">INPUT_NAME</span> <span class="o">=</span> <span class="s">&#34;data&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">INPUT_SHAPE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span> <span class="c1">// [B, C, H, W]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">OUTPUT_NAME</span> <span class="o">=</span> <span class="s">&#34;prob&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">OUTPUT_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl"><span class="n">DTYPE</span> <span class="o">=</span> <span class="n">trt</span><span class="p">.</span><span class="n">float32</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>从engine创建执行上下文:<code>engine-&gt;createExecutionContext()</code></p>
+</li>
+</ol>
+</li>
+<li>
+<p>创建CUDA流<code>cudaStreamCreate(&amp;stream)</code>：</p>
+<ol>
+<li>CUDA编程流是组织异步工作的一种方式，创建流来确定batch推理的独立</li>
+<li>为每个独立batch使用IExecutionContext(3.2中已经创建了)，并为每个独立批次使用cudaStreamCreate创建CUDA流。</li>
+</ol>
+</li>
+<li>
+<p>数据准备：</p>
+<ol>
+<li>在host上声明<code>input</code>数据和<code>output</code>数组大小，搬运到gpu上</li>
+<li>要执行inference，必须用一个指针数组指定<code>input</code>和<code>output</code>在gpu中的指针。</li>
+<li>推理并将<code>output</code>搬运回CPU</li>
+</ol>
+</li>
+<li>
+<p>启动所有工作后，与所有流同步以等待结果:<code>cudaStreamSynchronize</code></p>
+</li>
+<li>
+<p>按照与创建相反的顺序释放内存</p>
+</li>
+</ol>
+<p><strong>重要接口使用说明</strong>：</p>
+<ul>
+<li>TR10中的节点索引变更为字符串，之前是数值</li>
+<li>必须使用createNetworkV2,并指定为1（表示显性batch）。createNetwork已经废弃，非显性batch官方不推荐。这个方式直接影响推理时enqueue还是enqueueV2（TR10为V3）</li>
+<li>builder、config等指针，记得释放，否则会有内存泄漏，使用ptr-&gt;destroy()（TR10使用delete）释放</li>
+<li>markOutput表示是该模型的输出节点，mark几次，就有几个输出，addlnput几次就有几个输入。这与推理时相呼应</li>
+<li>workspaceSize是工作空间大小，某些layer需要使用额外存储时，不会自己分配空间，而是为了内存复用，直接找tensorRT要workspace空间。</li>
+<li>bindings是tensorRT对输入输出张量的描述，<code>bindings = input-tensor + output-tensor</code>。比如input有a, output有b,c, d,那么<code>bindings = [a, b, c, d],bindings[0] = a, bindings[2] = c</code>。此时看到<code>engine- &gt;getBindingDimensions(0)</code>你得知道获取的是什么（TRT10改成了IOTensors）</li>
+<li><code>enqueueV2</code>是异步推理，加入到stream队列等待执行。输入的bindings则是tensors的指针（注意是device pointer）。其shape对应于编译时指定的输入输出的shape(这里只演示全部shape静态)（TRT10使用<code>enqueueV3</code>）</li>
+</ul>
+<h4 id="动态shape">动态shape
+</h4><ol>
+<li>
+<p>构建网络时：</p>
+<ul>
+<li>1.1. 必须在模型定义时，输入维度给定为-1，否则该维度不会动态。注意一下两点：
+<ul>
+<li>1.1.1. 若onnx文件，则onnx文件打开后应该看到为动态或者-1</li>
+<li>1.1.2. 如果你的模型中存在reshape类操作，那么reshape的参数必须随动态进行计算。而大部分时候这都是问题。除非你是全卷积模型，否则大部分时候只需要为batch_size维度设置为动态，其他维度尽量避免设置动态</li>
+</ul>
+</li>
+<li>1.2. 配置profile:
+<ul>
+<li>1.2.1. create: <code>builder-&gt;createOptimizationProfile()</code></li>
+<li>1.2.2. set: <code>setDimensions()</code>设置<code>kMIN</code>, <code>kOPT</code>, <code>kMAX</code>的一系列输入尺寸范围</li>
+<li>1.2.3. add:<code>config-&gt;addOptimizationProfile(profile);</code>添加profile到网络配置中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>推理阶段时：</p>
+<ul>
+<li>2.1. 您需要在选择profile的索引后设置<code>input</code>维度：<code>execution_context-&gt;setBindingDimensions(0, nvinfer1::Dims4(1, 1, 3, 3));</code> （TR10为<code>setInputShape</code>）
+<ul>
+<li>2.1.1. 关于profile索引:
+<img src="/imgs/tensorRT/3.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="multiple-optimization-profiles"
+	
+	
+></li>
+<li>2.1.2. 在运行时，向engine请求绑定维度会返回用于构建网络的相同维度。这意味着，得到的还是动态的维度[-1, in_channel, -1, -1]：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">engine</span><span class="p">.</span><span class="n">getBindingDimensions</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">// return [-1, 1, -1, -1]
+</span></span></span><span class="line"><span class="cl"><span class="c1">// execution_context-&gt;getTensorShape // TR10接口
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>获取当前的实际维度，需要查询执行上下文：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">context</span><span class="p">.</span><span class="n">getBindingDimensions</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">// return [3, 1, 3, 3]
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>检查正确性</p>
+<ul>
+<li>我们通常可以利用pytorch来校验是否发生了错误</li>
+</ul>
+</li>
+</ol>
+<h3 id="onnx模型操作">ONNX模型操作
+</h3><p><a class="link" href="https://github.com/loveleaves/onnx-quantization/tree/main/onnx-editor"  target="_blank" rel="noopener"
+    >代码实战</a>：</p>
+<ol>
+<li><code>pytorch-gen-onnx.py</code>：是之前讲过的从pytorch转换onnx格式的代码。</li>
+<li>通过<code>onnx-ml.proto</code>和<code>make-onnx-pb.sh</code>了解onnx的结构
+<ul>
+<li>2.1. onnx是基于protobuf来做数据存储和传输,*.proto后缀文件, 其定义是protobuf语法，类似json。</li>
+<li>2.2. 对于变量结构、类型等，我们可以参照<code>onnx-ml.proto</code>里面的定义。这个文件有800多行，放心我们只要搞清楚里面的核心部分就行：
+<ul>
+<li><code>ModelProto</code>:当加载了一个onnx后，会获得一个<code>ModelProto</code>。它包含一个<code>GraphProto</code>和一些版本，生产者的信息。</li>
+<li><code>GraphProto</code>: 包含了四个repeated数组(可以用来存放N个相同类型的内容，key值为数字序列类型.)。这四个数组分别是node(<code>NodeProto</code>类型)，input(<code>ValueInfoProto</code>类型)，output(<code>ValueInfoProto</code>类型)和initializer(<code>TensorProto</code>类型)；</li>
+<li><code>NodeProto</code>: 存node，放了模型中所有的计算节点,语法结构如下：
+<img src="/imgs/tensorRT/4.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="nodeproto"
+	
+	
+>
+<img src="/imgs/tensorRT/2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="avatar"
+	
+	
+></li>
+<li><code>ValueInfoProto</code>: 存input，放了模型的输入节点。存output，放了模型中所有的输出节点；</li>
+<li><code>TensorProto</code>: 存initializer，放了模型的所有权重参数</li>
+<li><code>AttributeProto</code>:每个计算节点中还包含了一个<code>AttributeProto</code>数组，用来描述该节点的属性，比如Conv节点或者说卷积层的属性包含group，pad，strides等等；</li>
+</ul>
+</li>
+<li>2.3. 通过protoc编译<code>onnx-ml.proto</code>，产生<code>onnx-ml.pb.cc</code>文件
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash make-onnx-pb.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>create-onnx.py
+<ul>
+<li>3.1. create-onnx.py直接从构建onnx，不经过任何框架的转换。通过import onnx和onnx.helper提供的make_node，make_graph，make_tensor等等接口我们可以轻易的完成一个ONNX模型的构建。</li>
+<li>3.2. 需要完成对node，initializer，input，output，graph，model的填充</li>
+<li>3.3. 读懂creat-onnx.py以make_node为例：
+<img src="/imgs/tensorRT/5.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="make-node"
+	
+	
+></li>
+</ul>
+</li>
+<li>edit-onnx.py
+<ul>
+<li>4.1. 由于protobuf任何支持的语言，我们可以使用[c/c++/python/java/c#等等]实现对onnx文件的读写操作</li>
+<li>4.2. 掌握onnx和helper实现对onnx文件的各种编辑和修改
+<ul>
+<li>增：一般伴随增加node和tensor
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xxx_tensor</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xxx_node</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>删：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xxx_node</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>改：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">input_node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>read-onnx.py
+<ul>
+<li>5.1 通过<code>graph</code>可以访问参数，数据是以protobuf的格式存储的，因此当中的数值会以bytes的类型保存。需要用<code>np.frombuffer</code>方法还原成类型为<code>float32</code>的<code>ndarray</code>。注意还原出来的<code>ndarray</code>是只读的。</li>
+</ul>
+</li>
+</ol>
+<h3 id="onnx-parser">ONNX Parser
+</h3><p>onnx解析器有两个选项，</p>
+<ol>
+<li><code>libnvonnxparser.so</code>或者</li>
+<li><a class="link" href="https://github.com/onnx/onnx-tensorrt"  target="_blank" rel="noopener"
+    >onnx-tensorrt parser</a>(源代码)。</li>
+<li>使用源代码的目的，是为了更好的进行自定义封装，简化插件开发或者模型编译的过程，更加具有定制化，遇到问题可以调试</li>
+</ol>
+<p><code>onnx-tensorrt parser</code>代码使用：</p>
+<ol>
+<li>什么是onnx:
+<ol>
+<li>先看名字：Open Neural Network Exchange(ONNX) 是一个开放的生态系统，使代码不被局限在框架和平台中。</li>
+<li>具体一点：onnx可以把你的神经网络模型(PyTroch, TF, Caffe)统统转为标准的ONNX格式(一种protobuf格式)，然后就可在各种平台(云平台, windows, linux)和设备(cpu, gpu, npu)上运行
+<img src="/imgs/tensorRT/6.onnx.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="onnx"
+	
+	
+></li>
+</ol>
+</li>
+<li>先看文件<code>gen-onnx.py</code>以pytorch构建的模型为例讲：pytorch模型转onnx格式
+<ol>
+<li>构建一个pytorch网络，并声明一个model对象</li>
+<li>如果进行推理，将模型设为推理状态：这一点很重要，因为像dropout, batchnorm这样的算子在推理和训练模式下的行为是不同的。</li>
+<li>导出为onnx模型：<code>torch.onnx.export()</code></li>
+<li>运行python脚本，生成onnx，在<code>main.cpp</code>中会对其进行解析
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="n">gen</span><span class="o">-</span><span class="n">onnx</span><span class="o">.</span><span class="n">py</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>运行后的图示：
+<img src="/imgs/tensorRT/7.onnx-proto.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="onnx-proto"
+	
+	
+>
+<ul>
+<li>Protobuf则通过onnx-ml.proto编译得到onnx-ml.pb.h和onnx-ml.pb.cc或onnx_ml_pb2.py</li>
+<li>然后用onnx-ml.pb.cc和代码来操作onnx模型文件，实现增删改</li>
+<li>onnx-ml.proto则是描述onnx文件如何组成的，具有什么结构，他是操作onnx经常参照的东西</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>再看文件<code>main.cpp</code>讲解如何解析onnx格式
+<ol>
+<li>使用onnx解析器：<code>createParser</code>的api在文件NvOnnxParser.h中</li>
+<li>在这里使用onnx的结果填充到network中，而手动构建网络则是将输入和算子填入network中，区别如图所示：
+<img src="/imgs/tensorRT/8.onnx-major-difference.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="onnx-major-difference"
+	
+	
+></li>
+<li>导出后，可以使用netron软件进行打开查看:https://github.com/lutzroeder/Netron</li>
+</ol>
+</li>
+<li>除了构建过程的区别，makefile中，库文件也需要加上nvonnxparser：
+<img src="/imgs/tensorRT/9.makefile-difference.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="makefile-difference"
+	
+	
+></li>
+</ol>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>severity_string 和 log仅是工具函数，无需过分关注</li>
+</ul>
+<h4 id="导出trt模型">导出TRT模型
+</h4><p>为了使用onnx导出网络有三种方式：</p>
+<ol>
+<li>我们使用自带的解析器，<code>libnvonnxparser.so</code></li>
+<li>从源代码编译：<a class="link" href="https://github.com/onnx/onnx-tensorrt"  target="_blank" rel="noopener"
+    >onnx-tensorrt</a>，主要protobuf文件：
+<ul>
+<li><a class="link" href="https://github.com/onnx/onnx/blob/main/onnx/onnx-ml.proto"  target="_blank" rel="noopener"
+    >onnx-ml.proto 来源</a></li>
+<li><a class="link" href="https://github.com/onnx/onnx/blob/main/onnx/onnx-operators-ml.proto"  target="_blank" rel="noopener"
+    >onnx-operators-ml.proto 来源</a></li>
+</ul>
+</li>
+<li>利用官方工具<a class="link" href="https://github.com/NVIDIA/TensorRT/tree/main/samples/trtexec"  target="_blank" rel="noopener"
+    ><code>trtexec</code></a>，<a class="link" href="https://github.com/loveleaves/TensorRT-Quantization/tree/main/object_detection/YOLOv8/normal"  target="_blank" rel="noopener"
+    >YOLOv8部署推理案例</a>
+Usage:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/usr/src/tensorrt/bin/trtexec <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--onnx<span class="o">=</span>yolov8s.onnx <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--saveEngine<span class="o">=</span>yolov8s.engine <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--fp16
+</span></span><span class="line"><span class="cl"><span class="c1"># or --int8</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="plugin">Plugin
+</h2><p>1.如何在pytorch里面导出一个插件
+2.插件解析时如何对应，在onnx parser中如何处理
+3.插件的creator实现
+4.插件的具体实现，继承自IPluginV2DynamicExt
+5.插件的序列化与反序列化</p>
+<h2 id="量化">量化
+</h2><h3 id="int8量化">int8量化
+</h3><ol>
+<li>对于int8，需要配置setFlag nvinfer1::BuilderFlag::kINT8，并且配置setInt8Calibrator</li>
+<li>对于Int8EntropyCalibrator，则需要继承自IInt8EntropyCalibrator2</li>
+<li>Int8EntropyCalibrator的作用，是读取并预处理图像数据作为输入
+<ul>
+<li>标定的原理，是通过输入标定图像I，使用参数WInt8推理得到输出结果PInt8，然后不断调整WInt8，使得输出PInt8与PFloat32越接近越好</li>
+<li>因此标定时通常需要使用一些图像，正常发布时，一般使用100张图左右即可</li>
+</ul>
+</li>
+<li>常用的Calibrator
+<ul>
+<li>Int8EntropyCalibrator2
+熵校准选择张量的比例因子来优化量化张量的信息论内容，通常会抑制分布中的异常值。这是当前推荐的熵校准器。默认情况下，校准发生在图层融合之前。推荐用于基于 CNN 的网络。
+<img src="/imgs/tensorRT/10.int8EntropyCalibrator2.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="int8EntropyCalibrator2"
+	
+	
+></li>
+<li>Iint8MinMaxCalibrator
+该校准器使用激活分布的整个范围来确定比例因子。它似乎更适合NLP任务。默认情况下，校准发生在图层融合之前。推荐用于NVIDIA BERT等网络。
+<img src="/imgs/tensorRT/11.int8MinMaxCalibrator.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="int8MinMaxCalibrator"
+	
+	
+></li>
+</ul>
+</li>
+<li>计算机中的float计算量是非常大的，而改成int8后，计算量相比可以提升数倍
+<ul>
+<li>对于实际操作时，input[float32], w[int8], bias[float32], output[float32]</li>
+<li>步骤如下：
+<ul>
+<li>input[int8] = to_int8(input[float32])</li>
+<li>y[int16] = input[int8] * w[int8]   # 此处乘法会由计算机转换为int16，保证精度</li>
+<li>output[float32] = to_float32(y[int16]) + bias[float32]</li>
+</ul>
+</li>
+<li>所以整个过程的只是为了减少float32的乘法数量以实现提速</li>
+<li>对于to_int8的过程，并不是直接的线性缩放，而是经过KL散度计算最合适的截断点（最大、最小值），进而进行缩放，使得权重的分布尽可能小的被改变
+<ul>
+<li>可以参照这个地址：https://on-demand.gputechconf.com/gtc/2017/presentation/s7310-8-bit-inference-with-tensorrt.pdf</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Mar 05, 2025 20:45 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="loveleaves/loveleaves.github.io"
+    data-repo-id="R_kgDOHiRxVA"
+    data-category="General"
+    data-category-id="DIC_kwDOHiRxVM4Cmvtx"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading=""
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 Andrew Stark
+    </section>
+    
+    <section class="powerby">
+        
+            loveleaves <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<div id="aplayer"></div>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script>
+const staticDir = "https://loveleaves.github.io/";
+const musicDir = staticDir + '/music/';
+const songs = [
+    'Dream_It_Possible-Delacey',
+    'Love_Story-Taylor_Swift',
+    'Never_Gonna_Give_You_Up-Rick_Astley',
+    'Natural-Imagine_Dragons',
+    'Rolling_In_the_Deep-Adele',
+    'Apologize-OneRepublic',
+    'Salt-Ava_Max',
+    'Try-P!nk',
+    'That_Girl-Olly_Murs',
+    'Hymn_for_the_Weekend-Coldplay',
+    'Hall_of_Fame-The_Script',
+    'My_Stupid_Heart-Walk_Off_the_Earth&Luminati_Suns',
+    'My_Songs_Know_What_You_Did_In_the_Dark-Taylor_Swift&Fall_Out_Boy',
+    'See_You_Again-Wiz_Khalifa&Charlie_Puth',
+    'Uptown_Funk-Mark_Ronson&Bruno_Mars',
+    'Right_Now-Akon',
+    'Whistle-Flo_Rida',
+    'Numb-Linkin_Park',
+    'Immortals-Fall_Out_Boy',
+    'DJ_Got_Us_Falling_In_Love-Krusher',
+    'Faded-Alan_Walker',
+    'Something_Just_Like_This-The_Chainsmokers&Coldplay',
+    'The_Phoenix-Fall_Out_Boy',
+    'Umbrella-Rihanna&Jay_Z',
+    'Animals_(Big_Boi_Remix)-Maroon_5',
+    'Monsters-Katie_Sky',
+    'Turnin’-Young_Rising_Sons',
+    'What_Are_Words-Chris_Medina',
+    'Normal_No_More-Tysm',
+    'Go_Solo-Tom_Rosenthal',
+    'Peter_Pan_Was_Right-Anson_Seabra',
+    'Free_Loop-Daniel_Powter',
+    'Empty_Love-Lulleaux&Kid_Princess',
+    '青空-Candy_Wind',
+    'Take_Me_Hand-DAISHI_DANCE',
+    'Proud_Of_You-冯曦妤',
+    'Please_Don’t_Go-Joel_Adams',
+    'Forgettable-Project_46&Olivia',
+    'Creep-Gamper_And_Dadoni',
+    'Ferrari-Bebe_Rexha',
+    'Legends_Never_Die(Alan_Walker_Remix)-Alan_Walker&Against_The_Current',
+    'Love_the_Way_You_Lie-Eminem&Rihanna',
+    'Lone_Ranger-Rachel_Platten',
+    'What_Makes_You_Beautiful-One_Direction',
+    'Let_Me_Down_Slowly-Alec_Benjamin',
+    'My_Love-Westlife',
+    'Counting_Stars-OneRepublic',
+    'STAY-The_Kid_LAROI&Justin_Bieber',
+    'Shape_of_You-Ed_Sheeran',
+    'Booty_Music-Deep_Side',
+    'Because_Of_You-Kelly_Clarkson',
+    'Far_Away_from_Home-Groove_Coverage',
+    'Move_Your_Body(Single_Mix)-Sia',
+    'The_Nights(Original_Mix)-Avicii',
+    'We_Dont_Talk_Anymore-Charlie_Puth&Selena_Gomez',
+    'Moves_Like_Jagger(Radio_Edit)-Maroon_5',
+    'You_Raise_Me_Up-Westlife',
+    'Call_Me_Maybe(10_Kings_vs_Ollie_Green_Remix)-Carly_Rae_Jepsen',
+    'Senorita-Shawn_Mendes&Camila_Cabello',
+    'We_Will_Rock_You-Queen',
+    'My_Heart_Will_Go_On-Celine_Dion&Webster'
+];
+let audios = [];
+songs.forEach((item) => {
+    const songInfo = item.split('-');
+    audios.push({
+        name: songInfo[0],
+        artist: songInfo[1],
+        url: musicDir + item + '/song.mp3',
+        lrc: musicDir + item + '/song.lrc',
+        cover: musicDir + 'cover.jpg', 
+    })
+});
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    
+    fixed: true,
+    
+    lrcType: 3,
+    audio: audios
+});
+</script>
+
+
+
+
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d-widget-v3/';
+  const myCdnPath = "https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d/live2d-moc3/";
+  
+  const cssPath = "https://loveleaves.github.io/waifu/waifu.css";
+  const tipsJsonPath = "https://loveleaves.github.io/waifu/waifu-tips.json";
+  const tipsJsPath = "https://loveleaves.github.io/waifu/waifu-tips.js";
+  const live2dJsPath = "https://loveleaves.github.io/waifu/live2d.min.js";
+
+  const config = {
+    
+    path: {
+      modelPath: myCdnPath,
+      cssPath: cssPath,
+      tipsJsonPath: tipsJsonPath,
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://loveleaves.github.io/icons/backTop.svg);
+    }
+</style>
+
+<div id="particles-js"></div>
+
+<script src=https://loveleaves.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://loveleaves.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<script>
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+
+    </body>
+</html>

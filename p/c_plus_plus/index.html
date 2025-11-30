@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="主要记录C++相关重要的知识点及优秀实践">
+<title>【编程语言】 C&#43;&#43;高级特性及实战</title>
+
+<link rel='canonical' href='https://loveleaves.github.io/p/c_plus_plus/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f655c339a336b15a106fd248f9170c8064dfc6f1990313665402f49a0c0831e.css"><meta property='og:title' content="【编程语言】 C++高级特性及实战">
+<meta property='og:description' content="主要记录C++相关重要的知识点及优秀实践">
+<meta property='og:url' content='https://loveleaves.github.io/p/c_plus_plus/'>
+<meta property='og:site_name' content='安哲睿'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-02-23T11:00:35&#43;08:00'/>
+<meta name="twitter:title" content="【编程语言】 C++高级特性及实战">
+<meta name="twitter:description" content="主要记录C++相关重要的知识点及优秀实践">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b4d2f495c38e1067.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😁</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">安哲睿</a></h1>
+            <h2 class="site-description">世上无难事，只怕有心人</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/loveleaves'
+                        target="_blank"
+                        title="Github"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/loveleaves'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://loveleaves.github.io/en/" >English</option>
+                                
+                                    <option value="https://loveleaves.github.io/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#references">References</a></li>
+    <li><a href="#优秀开源">优秀开源</a>
+      <ol>
+        <li><a href="#abseil">Abseil</a></li>
+        <li><a href="#dlib">Dlib</a></li>
+        <li><a href="#xgboost">XGBoost</a></li>
+        <li><a href="#googles-glog-google-logging-library">Google&rsquo;s glog (Google Logging Library)</a></li>
+        <li><a href="#spdlog">spdlog</a></li>
+        <li><a href="#folly-facebook-open-source-library">folly (Facebook Open-source Library)</a></li>
+        <li><a href="#boost">Boost</a></li>
+        <li><a href="#fmt">fmt</a></li>
+        <li><a href="#gflags">gflags</a></li>
+        <li><a href="#tbb-threading-building-blocks">tbb (Threading Building Blocks)</a></li>
+        <li><a href="#cppcoro">cppcoro</a></li>
+        <li><a href="#eigen">Eigen</a></li>
+      </ol>
+    </li>
+    <li><a href="#c语言参考">C++语言参考</a>
+      <ol>
+        <li><a href="#类和结构class-and-struct">类和结构（class and struct）</a>
+          <ol>
+            <li><a href="#类成员">类成员</a></li>
+            <li><a href="#三五零之法则rule-of-three">三/五/零之法则(rule of three)</a></li>
+            <li><a href="#资源获取即初始化resource-acquisition-is-initialization-raai">资源获取即初始化(Resource Acquisition Is Initialization, RAAI)</a></li>
+            <li><a href="#运行时类型识别run-time-type-identificationrtti">运行时类型识别(Run Time Type Identification，RTTI)</a></li>
+            <li><a href="#用于编译时封装的-pimpl">用于编译时封装的 Pimpl</a></li>
+          </ol>
+        </li>
+        <li><a href="#匿名函数-lambda表达式">匿名函数 lambda表达式</a></li>
+        <li><a href="#引用-reference">引用 reference</a></li>
+        <li><a href="#指针">指针</a></li>
+        <li><a href="#异常">异常</a></li>
+        <li><a href="#模板-template">模板 template</a></li>
+      </ol>
+    </li>
+    <li><a href="#stlstandard-template-library标准模板库">STL（Standard Template Library，标准模板库）</a>
+      <ol>
+        <li><a href="#容器containers">容器（Containers）</a></li>
+        <li><a href="#算法algorithms">算法（Algorithms）</a></li>
+        <li><a href="#迭代器iterators">迭代器（Iterators）</a></li>
+        <li><a href="#函数对象function-objects">函数对象（Function Objects）</a></li>
+      </ol>
+    </li>
+    <li><a href="#c-14新特性">C++ 14新特性</a></li>
+    <li><a href="#c-17新特性">C++ 17新特性</a>
+      <ol>
+        <li><a href="#并行算法库">并行算法库</a></li>
+      </ol>
+    </li>
+    <li><a href="#c-20新特性">C++ 20新特性</a></li>
+    <li><a href="#其他">其他</a>
+      <ol>
+        <li><a href="#宏定义">宏定义</a>
+          <ol>
+            <li><a href="#va_-应用">#、#@、##、<strong>VA_ARGS</strong> 应用</a></li>
+          </ol>
+        </li>
+        <li><a href="#运行时类型反射run-time-type-reflection-rttr">运行时类型反射(Run Time Type Reflection, RTTR)</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/c&#43;&#43;/" >
+                C&#43;&#43;
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/c_plus_plus/">【编程语言】 C&#43;&#43;高级特性及实战</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            主要记录C&#43;&#43;相关重要的知识点及优秀实践
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 09, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="references">References
+</h2><ul>
+<li><a class="link" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#main"  target="_blank" rel="noopener"
+    >C++ Core Guidelines</a></li>
+<li><a class="link" href="https://zh.cppreference.com/w/cpp/language"  target="_blank" rel="noopener"
+    >核心 C++ 语言构造的参考手册</a></li>
+<li><a class="link" href="https://github.com/parallel101/cppguidebook"  target="_blank" rel="noopener"
+    >现代 C++ 大典</a></li>
+<li><a class="link" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1252/schedule.html"  target="_blank" rel="noopener"
+    >cs106b</a></li>
+<li><a class="link" href="https://blog.csdn.net/chenlong_cxy/article/details/127166206"  target="_blank" rel="noopener"
+    >C++知识总结</a></li>
+<li><a class="link" href="https://learn.microsoft.com/zh-cn/cpp/cpp/cpp-language-reference?view=msvc-170"  target="_blank" rel="noopener"
+    >C++ 语言参考</a></li>
+</ul>
+<h2 id="优秀开源">优秀开源
+</h2><ul>
+<li><a class="link" href="https://github.com/trending/cpp"  target="_blank" rel="noopener"
+    >github cpp trending</a></li>
+</ul>
+<h3 id="abseil">Abseil
+</h3><ul>
+<li>Abseil 是一个由 Google 开源的 C++/python 库，提供了一组常用的工具和基础设施，用于补充 C++ 标准库中缺失的功能或提高效率。</li>
+<li>C++17的string_view前身就是来自absl::string_view</li>
+<li><a class="link" href="https://github.com/abseil/abseil-cpp"  target="_blank" rel="noopener"
+    >abseil-cpp</a></li>
+</ul>
+<h3 id="dlib">Dlib
+</h3><ul>
+<li>Dlib 是一个流行的 C++ 库，主要用于机器学习、计算机视觉和图像处理。它提供了丰富的机器学习功能，支持多种算法和优化方法。</li>
+<li><a class="link" href="https://github.com/davisking/dlib"  target="_blank" rel="noopener"
+    >dlib</a></li>
+</ul>
+<h3 id="xgboost">XGBoost
+</h3><ul>
+<li>XGBoost 是一个高效的机器学习库，特别适用于梯度提升决策树（GBDT）算法，广泛用于回归、分类和排序任务。</li>
+<li><a class="link" href="https://github.com/dmlc/xgboost"  target="_blank" rel="noopener"
+    >xgboost</a></li>
+</ul>
+<h3 id="googles-glog-google-logging-library">Google&rsquo;s glog (Google Logging Library)
+</h3><ul>
+<li>功能：glog 是一个 C++ 日志库，提供了强大的日志记录功能，包括日志级别（DEBUG、INFO、WARNING、ERROR 和 FATAL）、日志输出到文件、以及日志格式化。</li>
+<li>特点：简单易用，支持日志级别设置、日志输出的细粒度控制，还可以在生产环境中非常高效地记录日志。</li>
+<li>链接：<a class="link" href="https://github.com/google/glog"  target="_blank" rel="noopener"
+    >glog GitHub</a></li>
+</ul>
+<h3 id="spdlog">spdlog
+</h3><ul>
+<li>功能：spdlog 是一个非常快速的 C++ 日志库，旨在提供低延迟、高性能的日志记录功能。</li>
+<li>特点：spdlog 提供线程安全的日志记录支持，能够输出到控制台或文件，支持日志级别、日志格式等功能。</li>
+<li>链接：spdlog GitHub</li>
+</ul>
+<h3 id="folly-facebook-open-source-library">folly (Facebook Open-source Library)
+</h3><ul>
+<li>功能：folly 是 Facebook 开发的一个 C++ 库，包含了许多高性能的组件和工具，适用于大规模系统的开发。它包括内存管理、并发、容器、算法、IO等多个方面的扩展。</li>
+<li>特点：folly 提供了大量与系统底层交互的工具，具有很高的性能，适用于对性能要求极高的应用。</li>
+<li>链接：<a class="link" href="https://github.com/facebook/folly"  target="_blank" rel="noopener"
+    >folly GitHub</a></li>
+</ul>
+<h3 id="boost">Boost
+</h3><ul>
+<li>功能：Boost 是一个广泛使用的 C++ 库集合，提供了许多扩展标准库的功能，包括智能指针、正则表达式、线程、文件系统、算法等。</li>
+<li>特点：Boost 提供了丰富的功能，经过多年的开发和优化，成为了 C++ 生态中非常重要的工具库之一。很多 C++ 标准库中的特性都源自 Boost（如 std::shared_ptr 和 std::filesystem）。</li>
+<li>c++17中的std::filesystem、std::any、std::varient等直接来自于boost中。boost::program_options用于处理控制台的输入参数也是很方便</li>
+<li>链接：<a class="link" href="https://www.boost.org/"  target="_blank" rel="noopener"
+    >Boost官网</a></li>
+</ul>
+<h3 id="fmt">fmt
+</h3><ul>
+<li>功能：fmt 是一个现代化的、快速的格式化库，提供了类似 Python 中的 f-string 或 C# 中的 string interpolation 的功能。</li>
+<li>特点：它允许开发者使用更加简洁和类型安全的方式进行字符串格式化。fmt 库的速度非常快，而且 API 设计符合现代 C++ 风格。</li>
+<li>链接：<a class="link" href="https://github.com/fmtlib/fmt"  target="_blank" rel="noopener"
+    >fmt GitHub</a></li>
+</ul>
+<h3 id="gflags">gflags
+</h3><ul>
+<li>功能：gflags 是一个 Google 提供的命令行参数解析库，广泛用于解析应用程序启动时的命令行选项。</li>
+<li>特点：gflags 提供了易于使用的命令行选项定义和管理功能，支持复杂的命令行解析需求，例如布尔值选项、枚举类型选项等。</li>
+<li>链接：<a class="link" href="https://github.com/gflags/gflags"  target="_blank" rel="noopener"
+    >gflags GitHub</a></li>
+</ul>
+<h3 id="tbb-threading-building-blocks">tbb (Threading Building Blocks)
+</h3><ul>
+<li>功能：tbb 是 Intel 提供的一个 C++ 并行编程库，旨在帮助开发者利用多核处理器，简化并行编程。</li>
+<li>特点：提供了线程池、并行算法和数据结构，能够方便地进行并行化计算，且通过自动负载平衡使多核资源得到高效利用。</li>
+<li>链接：<a class="link" href="https://github.com/oneapi-src/oneTBB"  target="_blank" rel="noopener"
+    >TBB GitHub</a></li>
+</ul>
+<h3 id="cppcoro">cppcoro
+</h3><ul>
+<li>功能：cppcoro 是一个支持 C++20 协程的 C++ 库，提供了多种并发控制结构，如 task 和 awaiter，用于协程的高效实现。</li>
+<li>特点：使 C++ 开发者能够高效地编写异步代码，同时保持代码简洁和易于理解。适合需要异步操作的场景。</li>
+<li>链接：<a class="link" href="https://github.com/lewissbaker/cppcoro"  target="_blank" rel="noopener"
+    >cppcoro GitHub</a></li>
+</ul>
+<h3 id="eigen">Eigen
+</h3><ul>
+<li>功能：Eigen 是一个高效的 C++ 数学库，专门用于矩阵运算、线性代数和数值计算。</li>
+<li>特点：Eigen 提供了一个高性能的模板库，支持多维数组、矩阵操作以及高级的线性代数功能，广泛用于科学计算、机器学习等领域。</li>
+<li>链接：<a class="link" href="https://gitlab.com/libeigen/eigen"  target="_blank" rel="noopener"
+    >Eigen GitHub</a></li>
+</ul>
+<h2 id="c语言参考">C++语言参考
+</h2><h3 id="类和结构class-and-struct">类和结构（class and struct）
+</h3><h4 id="类成员">类成员
+</h4><ul>
+<li>override：重写父类虚函数</li>
+<li>final：表示一个虚函数不能被进一步重写，或者表示一个类不能被继承</li>
+<li>delete：禁用某个函数，如默认构造</li>
+<li>default：明确地请求编译器为类生成默认实现</li>
+<li>explicit：防止隐式转换调用其他函数</li>
+<li>纯虚函数：virtual void doStep() = 0; // 要求派生类必须实现，否则派生类也将变成抽象类，无法实例化。</li>
+<li>常成员函数const：只能调用其他常成员函数，不能修改成员变量（除mutable）</li>
+<li>static静态成员函数：不用实例化，可被直接调用</li>
+<li>inline：内联请求，将代码插入调用函数处，较少调用栈开销</li>
+<li>noexcept：表示该函数不会抛出异常</li>
+<li>mutable：修饰变量可在常成员函数中修改</li>
+<li>constexpr：表示该函数在编译时计算结果</li>
+<li>friend：友元函数/类，允许外部函数或类在需要时访问类的私有实现</li>
+<li>operator ：用于定义或重载类的运算符</li>
+<li>自定义迭代器类：通常需重载==、!=、++、*解引用，实现begin、end</li>
+</ul>
+<h4 id="三五零之法则rule-of-three">三/五/零之法则(rule of three)
+</h4><ul>
+<li>因为C++类的特殊成员特性在实际应用可能产生用户非预期的效果，所以总结为法则用以规避可能出现的潜在风险</li>
+<li><a class="link" href="https://zh.cppreference.com/w/cpp/language/rule_of_three"  target="_blank" rel="noopener"
+    >cpp references</a></li>
+</ul>
+<h4 id="资源获取即初始化resource-acquisition-is-initialization-raai">资源获取即初始化(Resource Acquisition Is Initialization, RAAI)
+</h4><ul>
+<li>与托管语言不同，C++ 没有自动回收垃圾机制，易导致内存泄露</li>
+<li>C++ 将资源的生命周期与对象的生命周期所绑定（构造获取资源/析构释放资源，利用了栈上的变量在离开作用域的时候会析构的特性）</li>
+<li>c++11后的四大smart_point(shared_ptr、unique_ptr、weak_ptr、auto_ptr(在17中废除))采用了这种思想</li>
+<li>善于利用析构特性进行自动内存回收管理，如std::lock_guard、Std::make_unique、Std::make_share等</li>
+</ul>
+<h4 id="运行时类型识别run-time-type-identificationrtti">运行时类型识别(Run Time Type Identification，RTTI)
+</h4><ul>
+<li>c++中RTTI的一些体现typeid、dynamic_cast、type traits
+具体可以看runtime的库的函数__RTtypeid，rtti把所需的type_info(不同编译器会有所不同)信息放在vtable前，大概也是dynamic_cast要求父类必须有虚函数的原因吧</li>
+<li>注意，取虚函数表地址时 <em><em>（此处请注意环境在32位和64位下的区别，在32/64位下取对象a(带有虚函数的基类的实例)的首地址(虚函数表地址)有区分，即</em>(int <em>)&amp;a 和 <em>(long <em>)&amp;a的不同，为避免也可直接，（int</em>）</em>(int</em>)(&amp;classname)替换成（intptr_t</em>）<em>(intptr_t</em>)(&amp;classname)）**</li>
+</ul>
+<h4 id="用于编译时封装的-pimpl">用于编译时封装的 Pimpl
+</h4><p>Pimpl（Pointer to Implementation）是一种设计模式，常用于C++编程中以隐藏类的实现细节。Pimpl模式通过将实现细节移到一个私有的实现类中，从而提高代码的可维护性、降低编译时间以及实现二进制兼容性。</p>
+<ul>
+<li>编译依赖项的最小化。</li>
+<li>接口和实现的分离。</li>
+<li>可移植性。
+一般实现：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">// 头文件定义private类指针，源文件进行实现类impl
+</span></span><span class="line"><span class="cl">// my_class.h
+</span></span><span class="line"><span class="cl">class my_class {
+</span></span><span class="line"><span class="cl">   //  ... all public and protected stuff goes here ...
+</span></span><span class="line"><span class="cl">private:
+</span></span><span class="line"><span class="cl">   class impl; unique_ptr&lt;impl&gt; pimpl; // opaque type here
+</span></span><span class="line"><span class="cl">};
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="匿名函数-lambda表达式">匿名函数 lambda表达式
+</h3><h3 id="引用-reference">引用 reference
+</h3><h3 id="指针">指针
+</h3><h3 id="异常">异常
+</h3><h3 id="模板-template">模板 template
+</h3><ul>
+<li>变长参数模板：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">template &lt;typename... Modules&gt;
+</span></span><span class="line"><span class="cl">  explicit Sequential(Modules &amp;&amp;...modules) {
+</span></span><span class="line"><span class="cl">    modules_.reserve(sizeof...(Modules));
+</span></span><span class="line"><span class="cl">    pushBack(std::forward&lt;Modules&gt;(modules)...);
+</span></span><span class="line"><span class="cl">  } // 递归展开，调用基础pushBack方法
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>完美转发：std::forward，保留原来值类型（左值/右值）</li>
+<li>std::optional<T>：处理可能为null等值情况</li>
+<li>std::enable_shared_from_this<T>：在对象的成员函数中获取指向自身的智能指针，增加对象的引用计数，确保对象在异步操作或回调过程中不会被销毁</li>
+</ul>
+<h2 id="stlstandard-template-library标准模板库">STL（Standard Template Library，标准模板库）
+</h2><h3 id="容器containers">容器（Containers）
+</h3><ul>
+<li>vector.reserve 和 resize</li>
+<li>Vecotr.emplace_back和push_back</li>
+<li>std::reference_wrapper<T>存储引用</li>
+<li>std::initializer_list<T> 轻量级初始化列表，不可修改;</li>
+</ul>
+<h3 id="算法algorithms">算法（Algorithms）
+</h3><h3 id="迭代器iterators">迭代器（Iterators）
+</h3><h3 id="函数对象function-objects">函数对象（Function Objects）
+</h3><h2 id="c-14新特性">C++ 14新特性
+</h2><ul>
+<li><a class="link" href="https://en.cppreference.com/w/cpp/14"  target="_blank" rel="noopener"
+    >cppreference</a></li>
+</ul>
+<h2 id="c-17新特性">C++ 17新特性
+</h2><ul>
+<li><a class="link" href="https://en.cppreference.com/w/cpp/17"  target="_blank" rel="noopener"
+    >cppreference</a></li>
+<li><a class="link" href="https://github.com/MeouSker77/Cpp17"  target="_blank" rel="noopener"
+    >C++17完全指南</a></li>
+</ul>
+<h3 id="并行算法库">并行算法库
+</h3><ul>
+<li>不同编译器对并行算法库的支持: <a class="link" href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features"  target="_blank" rel="noopener"
+    >https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features</a></li>
+<li><a class="link" href="https://en.cppreference.com/w/cpp/experimental/parallelism"  target="_blank" rel="noopener"
+    >支持的算法</a></li>
+<li>依赖<a class="link" href="https://github.com/oneapi-src/oneTBB"  target="_blank" rel="noopener"
+    >tbb</a></li>
+<li>使用示例</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;execution&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">// std::sort(begin, end, comp); // origin
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">exe_policy</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">comp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 执行策略(execution policy)可选：
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 1、std::execution::seq（顺序执行）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 2、std::execution::par（并行执行）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 3、std::execution::par_unseq（并行和向量化执行）
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="c-20新特性">C++ 20新特性
+</h2><ul>
+<li><a class="link" href="https://en.cppreference.com/w/cpp/20"  target="_blank" rel="noopener"
+    >cppreference</a></li>
+</ul>
+<h2 id="其他">其他
+</h2><h3 id="宏定义">宏定义
+</h3><h4 id="va_-应用">#、#@、##、<strong>VA_ARGS</strong> 应用
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#define Conn(x,y)  x##y </span><span class="c1">// 表示x连接y
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define ToChar(x)  #@x  </span><span class="c1">// 给x加上单引号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define ToString(x) #x  </span><span class="c1">// 给x加上双引号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">ToString</span><span class="p">(</span><span class="mi">123132</span><span class="p">);</span>     <span class="c1">// str=&#34;123132&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">Conn</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span><span class="mi">456</span><span class="p">);</span>            <span class="c1">//n=123456;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">Conn</span><span class="p">(</span><span class="s">&#34;asdf&#34;</span><span class="p">,</span> <span class="s">&#34;add&#34;</span><span class="p">)</span>   <span class="c1">//str = &#34;asdfadf&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span> <span class="n">a</span> <span class="o">=</span> <span class="n">ToChar</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>               <span class="c1">// a=&#39;1&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="c1">// char a = ToChar(123);          // 编译器报错
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define debug(...) printf(__VA_ARGS__) </span><span class="c1">// 用于宏定义中代表可变参数
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="运行时类型反射run-time-type-reflection-rttr">运行时类型反射(Run Time Type Reflection, RTTR)
+</h3><ul>
+<li>反射是一个进程检查、反省和修改其自身结构和行为的能力</li>
+<li>众所周知，java、c#、Go等语言在语言层面支持了反射特性。而c++不支持反射，因为C++没有在语言层面提供返回类的metadata的能力，所以很多属性要靠手动注册，于是乎有人自造轮子搞了个反射机制（UE中的U++通过UHT和UBT来支持反射）</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Feb 23, 2025 11:00 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/multi_threads/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【HPC】 C/C&#43;&#43;多线程并行/并发</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="loveleaves/loveleaves.github.io"
+    data-repo-id="R_kgDOHiRxVA"
+    data-category="General"
+    data-category-id="DIC_kwDOHiRxVM4Cmvtx"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading=""
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 Andrew Stark
+    </section>
+    
+    <section class="powerby">
+        
+            loveleaves <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<div id="aplayer"></div>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script>
+const staticDir = "https://loveleaves.github.io/";
+const musicDir = staticDir + '/music/';
+const songs = [
+    'Dream_It_Possible-Delacey',
+    'Love_Story-Taylor_Swift',
+    'Never_Gonna_Give_You_Up-Rick_Astley',
+    'Natural-Imagine_Dragons',
+    'Rolling_In_the_Deep-Adele',
+    'Apologize-OneRepublic',
+    'Salt-Ava_Max',
+    'Try-P!nk',
+    'That_Girl-Olly_Murs',
+    'Hymn_for_the_Weekend-Coldplay',
+    'Hall_of_Fame-The_Script',
+    'My_Stupid_Heart-Walk_Off_the_Earth&Luminati_Suns',
+    'My_Songs_Know_What_You_Did_In_the_Dark-Taylor_Swift&Fall_Out_Boy',
+    'See_You_Again-Wiz_Khalifa&Charlie_Puth',
+    'Uptown_Funk-Mark_Ronson&Bruno_Mars',
+    'Right_Now-Akon',
+    'Whistle-Flo_Rida',
+    'Numb-Linkin_Park',
+    'Immortals-Fall_Out_Boy',
+    'DJ_Got_Us_Falling_In_Love-Krusher',
+    'Faded-Alan_Walker',
+    'Something_Just_Like_This-The_Chainsmokers&Coldplay',
+    'The_Phoenix-Fall_Out_Boy',
+    'Umbrella-Rihanna&Jay_Z',
+    'Animals_(Big_Boi_Remix)-Maroon_5',
+    'Monsters-Katie_Sky',
+    'Turnin’-Young_Rising_Sons',
+    'What_Are_Words-Chris_Medina',
+    'Normal_No_More-Tysm',
+    'Go_Solo-Tom_Rosenthal',
+    'Peter_Pan_Was_Right-Anson_Seabra',
+    'Free_Loop-Daniel_Powter',
+    'Empty_Love-Lulleaux&Kid_Princess',
+    '青空-Candy_Wind',
+    'Take_Me_Hand-DAISHI_DANCE',
+    'Proud_Of_You-冯曦妤',
+    'Please_Don’t_Go-Joel_Adams',
+    'Forgettable-Project_46&Olivia',
+    'Creep-Gamper_And_Dadoni',
+    'Ferrari-Bebe_Rexha',
+    'Legends_Never_Die(Alan_Walker_Remix)-Alan_Walker&Against_The_Current',
+    'Love_the_Way_You_Lie-Eminem&Rihanna',
+    'Lone_Ranger-Rachel_Platten',
+    'What_Makes_You_Beautiful-One_Direction',
+    'Let_Me_Down_Slowly-Alec_Benjamin',
+    'My_Love-Westlife',
+    'Counting_Stars-OneRepublic',
+    'STAY-The_Kid_LAROI&Justin_Bieber',
+    'Shape_of_You-Ed_Sheeran',
+    'Booty_Music-Deep_Side',
+    'Because_Of_You-Kelly_Clarkson',
+    'Far_Away_from_Home-Groove_Coverage',
+    'Move_Your_Body(Single_Mix)-Sia',
+    'The_Nights(Original_Mix)-Avicii',
+    'We_Dont_Talk_Anymore-Charlie_Puth&Selena_Gomez',
+    'Moves_Like_Jagger(Radio_Edit)-Maroon_5',
+    'You_Raise_Me_Up-Westlife',
+    'Call_Me_Maybe(10_Kings_vs_Ollie_Green_Remix)-Carly_Rae_Jepsen',
+    'Senorita-Shawn_Mendes&Camila_Cabello',
+    'We_Will_Rock_You-Queen',
+    'My_Heart_Will_Go_On-Celine_Dion&Webster'
+];
+let audios = [];
+songs.forEach((item) => {
+    const songInfo = item.split('-');
+    audios.push({
+        name: songInfo[0],
+        artist: songInfo[1],
+        url: musicDir + item + '/song.mp3',
+        lrc: musicDir + item + '/song.lrc',
+        cover: musicDir + 'cover.jpg', 
+    })
+});
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    
+    fixed: true,
+    
+    lrcType: 3,
+    audio: audios
+});
+</script>
+
+
+
+
+
+<script>
+  const cdnPath = 'https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d-widget-v3/';
+  const myCdnPath = "https://cdn.jsdelivr.net/gh/loveleaves/hugo-static-resource@main/live2d/live2d-moc3/";
+  
+  const cssPath = "https://loveleaves.github.io/waifu/waifu.css";
+  const tipsJsonPath = "https://loveleaves.github.io/waifu/waifu-tips.json";
+  const tipsJsPath = "https://loveleaves.github.io/waifu/waifu-tips.js";
+  const live2dJsPath = "https://loveleaves.github.io/waifu/live2d.min.js";
+
+  const config = {
+    
+    path: {
+      modelPath: myCdnPath,
+      cssPath: cssPath,
+      tipsJsonPath: tipsJsonPath,
+      tipsJsPath: cdnPath + "/waifu-tips.js",
+      live2dCorePath: cdnPath + "/Core/live2dcubismcore.js",
+      live2dSdkPath: cdnPath + "/live2d-sdk.js"
+    },
+    
+    tools: ["hitokoto", "asteroids", "express", "switch-model", "switch-texture", "quit"],
+    
+    drag: {
+      enable: true,
+      direction: ["x", "y"]
+    },
+    
+    switchType: "order"
+  }
+
+  
+  if (screen.width >= 768) {
+    Promise.all([
+      loadExternalResource(config.path.cssPath, "css"),
+      loadExternalResource(config.path.live2dCorePath, "js"),
+      loadExternalResource(config.path.live2dSdkPath, "js"),
+      loadExternalResource(config.path.tipsJsPath, "js")
+    ]).then(() => {
+      initWidget({
+        waifuPath: config.path.tipsJsonPath,
+        cdnPath: config.path.modelPath,
+        tools: config.tools,
+        dragEnable: config.drag.enable,
+        dragDirection: config.drag.direction,
+        switchType: config.switchType
+      });
+    });
+  }
+
+  
+  function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+      let tag;
+      if (type === "css") {
+        tag = document.createElement("link");
+        tag.rel = "stylesheet";
+        tag.href = url;
+      }
+      else if (type === "js") {
+        tag = document.createElement("script");
+        tag.src = url;
+      }
+      if (tag) {
+        tag.onload = () => resolve(url);
+        tag.onerror = () => reject(url);
+        document.head.appendChild(tag);
+      }
+    });
+  }
+</script>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://loveleaves.github.io/icons/backTop.svg);
+    }
+</style>
+
+<div id="particles-js"></div>
+
+<script src=https://loveleaves.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://loveleaves.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<script>
+    
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+</script>
+
+    </body>
+</html>
