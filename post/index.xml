@@ -7,12 +7,12 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 30 Nov 2025 09:12:28 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>【DIY】电子DIY设计与实现</title>
-        <link>https://loveleaves.github.io/p/diy_intro/</link>
-        <pubDate>Sat, 08 Nov 2025 00:00:00 +0000</pubDate>
+        <lastBuildDate>Sun, 30 Nov 2025 11:41:56 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【系统工程基础】 系统工程基础</title>
+        <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
+        <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://loveleaves.github.io/p/diy_intro/</guid>
+        <guid>https://loveleaves.github.io/p/systems_fundamentals_intro/</guid>
         <description>&lt;div id=&#34;verification&#34; style=&#34; display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,211 +32,343 @@
                    onmouseout=&#34;this.style.backgroundColor=&#39;&#39;;&#34;&gt;
         &lt;/form&gt;
     &lt;/div&gt;
-    &lt;div id=&#34;secret&#34; style=&#34;display: none&#34; password=&#34;password&#34;&gt;
+    &lt;div id=&#34;secret&#34; style=&#34;display: none&#34; password=&#34;nopainsnogains&#34;&gt;
 
-## 电子DIY一般流程
+## 系统工程基础
+### 系统工程概述
+&gt; [系统工程全景综述：发展简史、核心方法与实践](https://www.cnblogs.com/haohai9309/p/18931861)
 
-### 需求分析 &amp; 方案设计
+在复杂世界中，单一学科或单一技术往往无法独立解决现实问题。系统工程（Systems Engineering, SE）应运而生，成为跨越工程、管理、信息科学、经济学等多学科交融的重要方法体系。它关注如何定义、设计、实现和管理复杂系统，在航空航天、军事、制造、信息技术、交通、电力、金融等众多领域广泛应用。
 
-**目标**：明确产品要做什么、为什么做、怎么做。
+系统工程的核心特点包括：
+- **整体性（Holism）**：强调整体最优而非局部最优；
+- **生命周期管理**：覆盖系统全生命周期各阶段；
+- **跨学科整合**：整合多学科知识协同工作；
+- **复杂性管理**：面对多目标、多约束、动态变化的复杂系统问题；
+- **可验证性与可追溯性**：关注需求、设计与验证之间的逻辑一致性。
 
-**任务**：
+这里以系统工程的发展简史为起点，系统梳理其核心方法论，重点介绍Hall经典七步法，并结合多个典型应用案例，展现系统工程在实际复杂工程中的逻辑思维、操作流程与应用价值。
 
-* 明确功能需求（例如：温湿度监测器 + 显示 + WiFi 上传）
-* 市场／项目定位（原型、爱好、小批量）
-* 系统级方案选型（MCU类型、通信方式、显示、传感器）
-* 画系统框图（block diagram：电源 → 主控 → 传感器/驱动 → 界面/通信）
+### Hall的硬系统工程方法论
+&gt; [系统工程全景综述：发展简史、核心方法与实践](https://www.cnblogs.com/haohai9309/p/18931861)
 
-**常用工具／技术**：
-* 手绘草图或白板画框图
-* UML 或流程图工具（比如 draw.io、Visio）
-* 功能分解表格（Excel／Google Sheets）
-* 技术调研（查 MCU／传感器规格、模块成本、已有参考模块）
+在系统工程学科的发展历程中，A.D. Hall（阿瑟·霍尔）无疑是最具奠基意义的学者之一。其在1962年出版的名著 A Methodology for Systems Engineering，第一次系统性提出了完整严谨的系统工程操作流程，被称为硬系统工程方法论（Hard Systems Engineering Methodology, HSEM），也常被称作Hall七步法。
 
+Hall方法论成为此后几十年系统工程、国防工程、复杂项目管理、软件系统开发、智能制造规划等领域的标准范式，其核心贡献有三：
+- **流程规范化**：提出了逻辑清晰、环节严密的七步工作流程；
+- **问题求解导向**：强调系统工程作为复杂问题求解的科学方法；
+- **跨学科集成**：将工程、管理、经济、社会、决策多学科系统性整合。
 
----
+### IPD 系统工程概念体系
+- 特点：面向产品全生命周期，以满足客户需求为目的，全量设计。
+- 演进路线：
+  1. 信息化
+  2. 结构化
+  3. 模型化
+  4. 数字化
+  5. 智能化
+- 范围：
+  - 对象：系统工程的工程对象，目标系统
+  - 资产：工程过程/活动中产生的有价值的数据对象，如系统特性、功能、需求、系统元素、系统用力等
+  - 过程/活动：需求分析、特性定义、系统功能定义、架构设计、系统设计、软件开发、硬件开发、集成与验证等
+  - 方法：建模、仿真、功能分配矩阵、DFX专业设计等
+- 需求（requirement）与需要（need）
 
-### 电路原理图设计
+#### 系统分析与设计流程
+1、领域分析与方案设计：
+- 领域分析：市场/竞争分析
+- 方案实现评估：
+- 方案设计（RR 原始需求/Raw Requirement，IR 利益干系人需求/Interest Requirement）：利益相关方需求分析=》系统需求分析、测试策略分析
 
-**目标**：将方案中的功能模块具体化为原理图电路。
+2、系统需求分析：
+- 系统需求分析
+- 构建全量功能
+- 刷新全量功能
 
-**任务**：
+3、架构与系统设计：
+- 架构设计：
+- 系统设计（SR 系统需求/System Requirement）：
+- 功能设计（AR 分配需求/Assigned Requirement）：
 
-* 制定各模块（电源、MCU、通信、传感器、人机界面）电路。
-* 引脚连接、去耦电容、保护电路、接口预留。
-* 画出电路图、进行电气规则检查（ERC）。
+4、架构与设计实现支撑：
+- 架构与设计实现
+- 需求与设计实现评估
 
-**常用工具**：
-* KiCad：开源、跨平台。
-* EasyEDA：在线工具，方便快速原理图设计。 
-* Altium Designer／立创EDA：商业级工具。 
-* 仿真工具（如 SPICE 模块）用于验证关键电路。
+### MBSE 基于模型的系统工程
+&gt; [什么是MBSE？](https://docs.pingcode.com/requirements-management-guide/systems-engineering/what-is-mbse-model-based-systems-engineering-explained)
+&gt; [MBSE系列: 方法论之RFLP](https://zhuanlan.zhihu.com/p/600073245)
 
-**注意事项**：
-* MCU 通信接口（UART、I2C、SPI）建议预留调试口。
-* 电源模块建议选择带过流、反接保护。
-* 模块化思维：如果使用模块（如 ESP32 模组／WiFi 模组）可减少设计量。
+在传统的系统工程应用过程中，不管是需求，还是架构都是以文档为中心，每个阶段工作输出结果的载体都是文档，不同团队和阶段的交流也都是基于文档。
 
----
+但随着系统复杂性的上升，以文档为中心的系统工程（Text Based Systems Engineering，TBSE）方法存在很多问题，例如:
+- 系统复杂化，文档数量增多，不便于书写，管理
+- 文字描述存在歧义，对团队沟通协作不友好，不同部门及开发人员难以形成统一理解
+- 需求变更，追溯困难
+- 文档无法仿真验证
 
-### 器件选型 &amp; BOM（物料清单）
+为了解决TBSE所存在的问题，国际系统工程学会(INCOSE)提出了基于模型的系统工程(Model Based Systems Engineering，MBSE)方法。
 
-**目标**：确定每一个元件型号、封装、供应商、价格。
+MBSE强调以图形化模型为核心，将SE方法论过程中设计内容通过工具模型化，电子化，构建不同阶段开发模型，例如需求模型，架构模型，详细设计模型等，并彼此相互关联，以此增加输出内容的可复用性、形成系统一体化设计，可以有效解决随着系统复杂度提高对传统基于文档的系统工程带来的挑战，这个也是目前大部分规范，例如ISO 26262，ASPICE等，对工作输出产物的基本要求。
 
-**任务**：
+模型既然是MBSE的核心，那么如何建立模型是MBSE的关键任务，所以为建立系统化模型，MBSE在SE原有方法论的基础上，新增了: 
+- 建模语言
+- 工具
 
-* 根据性能（如功耗、尺寸、封装、通信速率）选型。
-* 考虑供应链／可得性（避免难找的器件造成后期延迟）。
-* 制作 BOM 表格：元件名、型号、封装、数量、供应商、单价、备注。
+这两项内容，这也就构成了MBSE落地三大基本要素PMT，即:流程(Process), 方法(Method)和工具Tools，所以简单地说:
 
-**常用工具／技术**：
-* Excel／Google Sheets：用于BOM整理。
-* 器件选型网站：如 LCSC、Digi-Key、Mouser。
-* 交叉比对：备选型号、价格、工厂库存。
+&lt;center&gt;
+MBSE = SE方法论 + 建模语言 + 工具
+&lt;/center&gt;
 
-**注意事项**：
-* 封装越小焊接越困难（如 0201 电阻）。
-* 若是量产还要考虑成本优化、替代元件。
-* BOM 建议标注 “必需／可选／备用”分类。
+建模语言定义了建模过程中可以使用的可视化元素及其代表的意义。为消除歧义，MBSE要求使用统一化的建模语言SysML。它以图像化的方式定义了不同类型的视图表达方式，例如需求视图，结构视图，流程视图，状态视图等等，这些视图相互补充，可以用于表达MBSE设计过程中关注对象的不同侧面(View)，进而形成完整的系统架构模型。
 
----
+但应该如何通过这些视图将SE方法论中的工作内容尽可能有层次地，可追溯地，完整地统一在一个系统化模型中，实现一体化的模型设计呢？
 
-### PCB 设计
+答案就是**RFLP方法**。
 
-**目标**：将原理图转化为实物电路板布局（PCB 板）。
+所谓的RFLP 方法就是：
+- R: 需求(Requirement)
+- F: 功能(Function)
+- L: 逻辑(Logical)
+- P: 物理(Physical)
 
-**任务**：
+RFLP认为我们应该从以上四个角度(Viewpoint)去对待系统，通过建立相应的架构模型，将复杂技术产品的实现过程进行完整映射。关于RFLP进一步内容我会在架构专题中进一步探讨。
 
-* 导入原理图，生成网络表。
-* 放置元件（合理分区：电源区、模拟区、数字区、接口区）。
-* 布线（Routing）：电源线粗、信号线短、模拟与数字分区。
-* 添加测试点、接地平面、螺丝孔、边框。
-* 检查 DRC（Design Rule Check）、输出 Gerber 文件／钻孔文件。
+工具是指在实施MBSE过程中建立，建立及管理模型所使用的软件工具，它们可能是多个工具，包括了需求定义及管理工具，架构建模工具，测试验证管理工具等，它们之间通过接口可以进行交互，建立可追溯性，也可以是自主开发的综合性设计工具，将MBSE过程建模统一在一起。
 
-**常用工具**：
-* KiCad（含原理图→PCB流程）。
-* Autodesk Fusion 360 PCB 模块：机械一体化设计。
-* 立创EDA。
+个人认为，MBSE方法论大家都比较熟悉，MBSE落地实施的关键除了思维转换，摈弃原有基于零部件的开发，以及开发流程匹配外，模型的建立是关键，而有效的工具支持是建立及管理模型的必要条件，它能帮助将工程师从繁杂的文档工作中解放出来，专注于可视化模型的建立，整个产品研发以模型作为驱动，提高产品开发效率。
 
-**注意事项**：
-* 对高速信号/差分信号要考虑长度匹配、阻抗控制。
-* 避免信号环路、模拟与数字地分离。
-* 制板文件（Gerber）务必按厂商要求检查。
+聊了这么多关于SE或MBSE基本内容，我们现在回过头来再看下标题中的问题:
 
----
+&lt;details&gt;
+  &lt;summary&gt;&lt;strong&gt;Q: 为什么MBSE是系统复杂性的应对之道？&lt;/strong&gt;&lt;/summary&gt;
+这个问题有点大，我尝试回答如下:
 
-### 制板 &amp; 焊接
+所谓复杂性，主要是源于研究对象结构复杂，组成元素相互作用，存在错综复杂的关系，使得我们不能由局部来认识整体。所以解决复杂性的根本在于从整体上认识系统，将其进行系统化拆分，弄清其组成元素的相互作用关系，并通过有效的手段对其进行抽象化，直观化，使得我们能够从整体上认识和理解系统。
 
-**目标**：将 PCB 提交制造、然后焊接元件，形成实物电路板。
+而SE或MBSE方法论的核心正是从系统角度认识整体，一方面通过系统的方法论，重视需求和架构的作用，及时对系统进行验证和确认。另一方面，开发过程以模型为驱动，通过系统模型以图像化方式直观地揭示系统的组成及它们之间的联系，让工程师能够以一种更加容易的方式掌控系统复杂性。
+&lt;/details&gt;
 
-**任务**：
+## 技术规划与创新
 
-* 提交 Gerber 文件到制造厂（如 JLCPCB、嘉立创等）进行打样。
-* 到板后进行手工或回流焊接。
-* 首次上电前用万用表测量电源是否短路。
-* 分模块焊接与测试（电源模块先，上电检查，再主控再外围模块）。
+## 需求分析
 
-**常用工具／技术**：
-* PCB 打样服务网站（如 JLCPCB、Elecrow…）
-* 手工焊工具：烙铁、吸锡带、助焊剂。
-* 回流焊／热风枪（对于 SMD 封装）。
-* 万用表、示波器用于基本测试。
+## 系统设计
 
-**注意事项**：
-* 焊接前确认元件极性、方向。
-* 首次上电先用限流电源或串入电阻以防短路烧板。
-* 焊完后再做功能测试，分模块调试（电源→主控→传感器→通信）。
-* 密度高场景，可考虑开钢网+回流焊。
+## 全流程DFX设计
 
----
-
-### 固件／软件编写
-
-**目标**：让产品“活起来”——编写运行在 MCU 或通信模块上的代码。
-
-**任务**：
-
-* 初始化各外设（GPIO, I2C, SPI, UART, ADC／PWM 等）
-* 驱动传感器、显示、通信接口（如 WiFi、BLE、MQTT）
-* 实现人机界面（按键、显示、LED）
-* 功耗优化（如睡眠模式、外部中断）
-
-**常用工具／技术**：
-* Arduino IDE／PlatformIO（适用于 ESP32/Arduino 生态）
-* STM32 CubeIDE／Keil（适用于 STM32 系列）
-* VSCode＋SDK／Python（例如 Raspberry Pi Pico）
-* lvgl：方便设计人机交互界面
-
-**注意事项**：
-* 代码模块化、注释清晰，便于后期升级。
-* 串口输出日志 （Serial 打印）是调试的好朋友。
-* 版本控制（如 Git）建议用于管理固件。
-
----
-
-### 调试 &amp; 测试
-
-**目标**：验证硬件与软件共同工作情况、发现并修复问题。
-
-**任务**：
-
-* 电源测试（电压、纹波、散热）
-* 主控启动验证（复位、LED指示、串口输出）
-* 模块验证（传感器数据是否正确、显示是否正常、通信是否成功）
-* 系统测试（整体功能、异常情况处理）
-* 可靠性／EMC／功耗测试（如果条件允许）
-  **常用工具／技术**：
-* 万用表、示波器、逻辑分析仪
-* 串口调试助手（PC 软件）
-* 电源分析仪／功耗计（用于低功耗项目）
-
-**注意事项**：
-* 分模块先测试，再整体测试。
-* 建议做详细测试用例：正常、异常、边界。
-* 记录测试结果、bug 清单与修复记录。
-
----
-
-### 外壳设计 &amp; 文档化
-
-**目标**：设计产品外壳（3D打印／激光切割／注塑），完善项目文档。
-
-**任务**：
-
-* 外壳设计：测量 PCB 尺寸＋元件高度，设计合适的封装结构。
-* 确定制造方式：3D 打印、激光切割亚克力、金属壳、注塑。
-* 外壳设计细节：壁厚、螺丝柱、导轨/滑槽、散热孔、出线口、接口开孔。
-* 文档化：工程图、装配说明、使用说明、BOM、固件烧录流程。
-
-**常用工具／技术**：
-* FreeCAD／OpenSCAD：开源CAD设计外壳。
-* Fusion 360：机械与电子一体化设计。
-* Protocase Designer：电子外壳专用模板工具。  [Protocase Designer Free Downloadable 3D ...](https://www.protocase.com/design/protocase-designer.php?utm_source=chatgpt.com)
-* 电子外壳设计教程：[Your Guide To Making Electronics Project Boxes](https://www.ponoko.com/blog/how-to-make/making-enclosures-for-electronics-with-ponoko/?utm_source=chatgpt.com)
-
-**注意事项**：
-* 外壳壁厚建议 2 ～ 2.5 mm 或更大（取决于材料）以保证强度。
-* 考虑散热、接口、装配方便性、硬件固定点。
-* 文档整理好：模块目录结构、使用说明、接线图、固件烧录流程。
-
-## 开源DIY项目
-### 嘉立创
-- [开源广场](https://oshwhub.com/explore)
-- [立创开发板](https://wiki.lckfb.com/zh-hans/)
-
-### Maker Pro
-- [Maker Pro](https://maker.pro/)
-
-## 参考链接
-- [33 DIY Electronics Online Tools and Guides for Makers](https://www.circuito.io/blog/diy-electronics-best-online-tools/?utm_source=chatgpt.com)
-- [硬件设计与选型](https://loveleaves.github.io/p/embedded_programing_pcb/)
-- [3D建模、打印](https://loveleaves.github.io/p/3d_modeling/)
-  
+## AI基础与工程化
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 
+</description>
+        </item>
+        <item>
+        <title>【DIY】电子DIY设计与实现</title>
+        <link>https://loveleaves.github.io/p/diy_intro/</link>
+        <pubDate>Sat, 08 Nov 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/diy_intro/</guid>
+        <description>&lt;h2 id=&#34;电子diy一般流程&#34;&gt;电子DIY一般流程
+&lt;/h2&gt;&lt;h3 id=&#34;需求分析--方案设计&#34;&gt;需求分析 &amp;amp; 方案设计
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：明确产品要做什么、为什么做、怎么做。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;明确功能需求（例如：温湿度监测器 + 显示 + WiFi 上传）&lt;/li&gt;
+&lt;li&gt;市场／项目定位（原型、爱好、小批量）&lt;/li&gt;
+&lt;li&gt;系统级方案选型（MCU类型、通信方式、显示、传感器）&lt;/li&gt;
+&lt;li&gt;画系统框图（block diagram：电源 → 主控 → 传感器/驱动 → 界面/通信）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常用工具／技术&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手绘草图或白板画框图&lt;/li&gt;
+&lt;li&gt;UML 或流程图工具（比如 draw.io、Visio）&lt;/li&gt;
+&lt;li&gt;功能分解表格（Excel／Google Sheets）&lt;/li&gt;
+&lt;li&gt;技术调研（查 MCU／传感器规格、模块成本、已有参考模块）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;电路原理图设计&#34;&gt;电路原理图设计
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：将方案中的功能模块具体化为原理图电路。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;制定各模块（电源、MCU、通信、传感器、人机界面）电路。&lt;/li&gt;
+&lt;li&gt;引脚连接、去耦电容、保护电路、接口预留。&lt;/li&gt;
+&lt;li&gt;画出电路图、进行电气规则检查（ERC）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常用工具&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;KiCad：开源、跨平台。&lt;/li&gt;
+&lt;li&gt;EasyEDA：在线工具，方便快速原理图设计。&lt;/li&gt;
+&lt;li&gt;Altium Designer／立创EDA：商业级工具。&lt;/li&gt;
+&lt;li&gt;仿真工具（如 SPICE 模块）用于验证关键电路。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MCU 通信接口（UART、I2C、SPI）建议预留调试口。&lt;/li&gt;
+&lt;li&gt;电源模块建议选择带过流、反接保护。&lt;/li&gt;
+&lt;li&gt;模块化思维：如果使用模块（如 ESP32 模组／WiFi 模组）可减少设计量。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;器件选型--bom物料清单&#34;&gt;器件选型 &amp;amp; BOM（物料清单）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：确定每一个元件型号、封装、供应商、价格。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;根据性能（如功耗、尺寸、封装、通信速率）选型。&lt;/li&gt;
+&lt;li&gt;考虑供应链／可得性（避免难找的器件造成后期延迟）。&lt;/li&gt;
+&lt;li&gt;制作 BOM 表格：元件名、型号、封装、数量、供应商、单价、备注。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常用工具／技术&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Excel／Google Sheets：用于BOM整理。&lt;/li&gt;
+&lt;li&gt;器件选型网站：如 LCSC、Digi-Key、Mouser。&lt;/li&gt;
+&lt;li&gt;交叉比对：备选型号、价格、工厂库存。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;封装越小焊接越困难（如 0201 电阻）。&lt;/li&gt;
+&lt;li&gt;若是量产还要考虑成本优化、替代元件。&lt;/li&gt;
+&lt;li&gt;BOM 建议标注 “必需／可选／备用”分类。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;pcb-设计&#34;&gt;PCB 设计
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：将原理图转化为实物电路板布局（PCB 板）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;导入原理图，生成网络表。&lt;/li&gt;
+&lt;li&gt;放置元件（合理分区：电源区、模拟区、数字区、接口区）。&lt;/li&gt;
+&lt;li&gt;布线（Routing）：电源线粗、信号线短、模拟与数字分区。&lt;/li&gt;
+&lt;li&gt;添加测试点、接地平面、螺丝孔、边框。&lt;/li&gt;
+&lt;li&gt;检查 DRC（Design Rule Check）、输出 Gerber 文件／钻孔文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常用工具&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;KiCad（含原理图→PCB流程）。&lt;/li&gt;
+&lt;li&gt;Autodesk Fusion 360 PCB 模块：机械一体化设计。&lt;/li&gt;
+&lt;li&gt;立创EDA。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对高速信号/差分信号要考虑长度匹配、阻抗控制。&lt;/li&gt;
+&lt;li&gt;避免信号环路、模拟与数字地分离。&lt;/li&gt;
+&lt;li&gt;制板文件（Gerber）务必按厂商要求检查。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;制板--焊接&#34;&gt;制板 &amp;amp; 焊接
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：将 PCB 提交制造、然后焊接元件，形成实物电路板。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;提交 Gerber 文件到制造厂（如 JLCPCB、嘉立创等）进行打样。&lt;/li&gt;
+&lt;li&gt;到板后进行手工或回流焊接。&lt;/li&gt;
+&lt;li&gt;首次上电前用万用表测量电源是否短路。&lt;/li&gt;
+&lt;li&gt;分模块焊接与测试（电源模块先，上电检查，再主控再外围模块）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常用工具／技术&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PCB 打样服务网站（如 JLCPCB、Elecrow…）&lt;/li&gt;
+&lt;li&gt;手工焊工具：烙铁、吸锡带、助焊剂。&lt;/li&gt;
+&lt;li&gt;回流焊／热风枪（对于 SMD 封装）。&lt;/li&gt;
+&lt;li&gt;万用表、示波器用于基本测试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;焊接前确认元件极性、方向。&lt;/li&gt;
+&lt;li&gt;首次上电先用限流电源或串入电阻以防短路烧板。&lt;/li&gt;
+&lt;li&gt;焊完后再做功能测试，分模块调试（电源→主控→传感器→通信）。&lt;/li&gt;
+&lt;li&gt;密度高场景，可考虑开钢网+回流焊。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;固件软件编写&#34;&gt;固件／软件编写
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：让产品“活起来”——编写运行在 MCU 或通信模块上的代码。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;初始化各外设（GPIO, I2C, SPI, UART, ADC／PWM 等）&lt;/li&gt;
+&lt;li&gt;驱动传感器、显示、通信接口（如 WiFi、BLE、MQTT）&lt;/li&gt;
+&lt;li&gt;实现人机界面（按键、显示、LED）&lt;/li&gt;
+&lt;li&gt;功耗优化（如睡眠模式、外部中断）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常用工具／技术&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Arduino IDE／PlatformIO（适用于 ESP32/Arduino 生态）&lt;/li&gt;
+&lt;li&gt;STM32 CubeIDE／Keil（适用于 STM32 系列）&lt;/li&gt;
+&lt;li&gt;VSCode＋SDK／Python（例如 Raspberry Pi Pico）&lt;/li&gt;
+&lt;li&gt;lvgl：方便设计人机交互界面&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;代码模块化、注释清晰，便于后期升级。&lt;/li&gt;
+&lt;li&gt;串口输出日志 （Serial 打印）是调试的好朋友。&lt;/li&gt;
+&lt;li&gt;版本控制（如 Git）建议用于管理固件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;调试--测试&#34;&gt;调试 &amp;amp; 测试
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：验证硬件与软件共同工作情况、发现并修复问题。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;电源测试（电压、纹波、散热）&lt;/li&gt;
+&lt;li&gt;主控启动验证（复位、LED指示、串口输出）&lt;/li&gt;
+&lt;li&gt;模块验证（传感器数据是否正确、显示是否正常、通信是否成功）&lt;/li&gt;
+&lt;li&gt;系统测试（整体功能、异常情况处理）&lt;/li&gt;
+&lt;li&gt;可靠性／EMC／功耗测试（如果条件允许）
+&lt;strong&gt;常用工具／技术&lt;/strong&gt;：&lt;/li&gt;
+&lt;li&gt;万用表、示波器、逻辑分析仪&lt;/li&gt;
+&lt;li&gt;串口调试助手（PC 软件）&lt;/li&gt;
+&lt;li&gt;电源分析仪／功耗计（用于低功耗项目）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;分模块先测试，再整体测试。&lt;/li&gt;
+&lt;li&gt;建议做详细测试用例：正常、异常、边界。&lt;/li&gt;
+&lt;li&gt;记录测试结果、bug 清单与修复记录。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;外壳设计--文档化&#34;&gt;外壳设计 &amp;amp; 文档化
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：设计产品外壳（3D打印／激光切割／注塑），完善项目文档。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;外壳设计：测量 PCB 尺寸＋元件高度，设计合适的封装结构。&lt;/li&gt;
+&lt;li&gt;确定制造方式：3D 打印、激光切割亚克力、金属壳、注塑。&lt;/li&gt;
+&lt;li&gt;外壳设计细节：壁厚、螺丝柱、导轨/滑槽、散热孔、出线口、接口开孔。&lt;/li&gt;
+&lt;li&gt;文档化：工程图、装配说明、使用说明、BOM、固件烧录流程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常用工具／技术&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;FreeCAD／OpenSCAD：开源CAD设计外壳。&lt;/li&gt;
+&lt;li&gt;Fusion 360：机械与电子一体化设计。&lt;/li&gt;
+&lt;li&gt;Protocase Designer：电子外壳专用模板工具。  &lt;a class=&#34;link&#34; href=&#34;https://www.protocase.com/design/protocase-designer.php?utm_source=chatgpt.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Protocase Designer Free Downloadable 3D &amp;hellip;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;电子外壳设计教程：&lt;a class=&#34;link&#34; href=&#34;https://www.ponoko.com/blog/how-to-make/making-enclosures-for-electronics-with-ponoko/?utm_source=chatgpt.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Your Guide To Making Electronics Project Boxes&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;外壳壁厚建议 2 ～ 2.5 mm 或更大（取决于材料）以保证强度。&lt;/li&gt;
+&lt;li&gt;考虑散热、接口、装配方便性、硬件固定点。&lt;/li&gt;
+&lt;li&gt;文档整理好：模块目录结构、使用说明、接线图、固件烧录流程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;开源diy项目&#34;&gt;开源DIY项目
+&lt;/h2&gt;&lt;h3 id=&#34;嘉立创&#34;&gt;嘉立创
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://oshwhub.com/explore&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;开源广场&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lckfb.com/zh-hans/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;立创开发板&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;maker-pro&#34;&gt;Maker Pro
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maker.pro/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Maker Pro&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考链接&#34;&gt;参考链接
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.circuito.io/blog/diy-electronics-best-online-tools/?utm_source=chatgpt.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;33 DIY Electronics Online Tools and Guides for Makers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/embedded_programing_pcb/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;硬件设计与选型&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://loveleaves.github.io/p/3d_modeling/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;3D建模、打印&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         <item>

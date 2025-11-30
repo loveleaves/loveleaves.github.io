@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Systems_Engineering on 安哲睿</title>
+        <link>https://loveleaves.github.io/categories/systems_engineering/</link>
+        <description>Recent content in Systems_Engineering on 安哲睿</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Andrew Stark</copyright>
+        <lastBuildDate>Sun, 30 Nov 2025 11:41:56 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/systems_engineering/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【系统工程基础】 系统工程基础</title>
+        <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
+        <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/systems_fundamentals_intro/</guid>
+        <description>&lt;div id=&#34;verification&#34; style=&#34; display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20vh;&#34;&gt;
+    &lt;div id=&#34;entry-box&#34;&gt;
+        
+        &lt;div id=&#34;secret-word&#34; style=&#34;  font-size: 1.5rem;
+    margin-bottom: 1rem;&#34;&gt;Unlock to view this content.&lt;/div&gt;
+        &lt;form id=&#34;password-form&#34; onsubmit=&#34;checkPassword(); return false;&#34; style=&#34; display: flex;
+    flex-direction: column;
+    width: auto;&#34;&gt;
+            &lt;input type=&#34;password&#34; name=&#34;password&#34; id=&#34;password&#34; placeholder=&#34;Please enter password&#34; required style=&#34;margin-bottom: 1.5rem;
+      padding: 10px 20px;&#34;&gt;
+            &lt;input type=&#34;hidden&#34; name=&#34;encryptedPassword&#34; id=&#34;encrypted-password&#34;&gt;
+            &lt;input type=&#34;submit&#34; value=&#34;Submit&#34; name=&#34;submit&#34; id=&#34;secret-submit&#34; style=&#34; padding: 10px 20px;
+      cursor: pointer;&#34; onmouseover=&#34;this.style.backgroundColor=&#39;#FAB005&#39;;&#34;
+                   onmouseout=&#34;this.style.backgroundColor=&#39;&#39;;&#34;&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+    &lt;div id=&#34;secret&#34; style=&#34;display: none&#34; password=&#34;nopainsnogains&#34;&gt;
+
+## 系统工程基础
+### 系统工程概述
+&gt; [系统工程全景综述：发展简史、核心方法与实践](https://www.cnblogs.com/haohai9309/p/18931861)
+
+在复杂世界中，单一学科或单一技术往往无法独立解决现实问题。系统工程（Systems Engineering, SE）应运而生，成为跨越工程、管理、信息科学、经济学等多学科交融的重要方法体系。它关注如何定义、设计、实现和管理复杂系统，在航空航天、军事、制造、信息技术、交通、电力、金融等众多领域广泛应用。
+
+系统工程的核心特点包括：
+- **整体性（Holism）**：强调整体最优而非局部最优；
+- **生命周期管理**：覆盖系统全生命周期各阶段；
+- **跨学科整合**：整合多学科知识协同工作；
+- **复杂性管理**：面对多目标、多约束、动态变化的复杂系统问题；
+- **可验证性与可追溯性**：关注需求、设计与验证之间的逻辑一致性。
+
+这里以系统工程的发展简史为起点，系统梳理其核心方法论，重点介绍Hall经典七步法，并结合多个典型应用案例，展现系统工程在实际复杂工程中的逻辑思维、操作流程与应用价值。
+
+### Hall的硬系统工程方法论
+&gt; [系统工程全景综述：发展简史、核心方法与实践](https://www.cnblogs.com/haohai9309/p/18931861)
+
+在系统工程学科的发展历程中，A.D. Hall（阿瑟·霍尔）无疑是最具奠基意义的学者之一。其在1962年出版的名著 A Methodology for Systems Engineering，第一次系统性提出了完整严谨的系统工程操作流程，被称为硬系统工程方法论（Hard Systems Engineering Methodology, HSEM），也常被称作Hall七步法。
+
+Hall方法论成为此后几十年系统工程、国防工程、复杂项目管理、软件系统开发、智能制造规划等领域的标准范式，其核心贡献有三：
+- **流程规范化**：提出了逻辑清晰、环节严密的七步工作流程；
+- **问题求解导向**：强调系统工程作为复杂问题求解的科学方法；
+- **跨学科集成**：将工程、管理、经济、社会、决策多学科系统性整合。
+
+### IPD 系统工程概念体系
+- 特点：面向产品全生命周期，以满足客户需求为目的，全量设计。
+- 演进路线：
+  1. 信息化
+  2. 结构化
+  3. 模型化
+  4. 数字化
+  5. 智能化
+- 范围：
+  - 对象：系统工程的工程对象，目标系统
+  - 资产：工程过程/活动中产生的有价值的数据对象，如系统特性、功能、需求、系统元素、系统用力等
+  - 过程/活动：需求分析、特性定义、系统功能定义、架构设计、系统设计、软件开发、硬件开发、集成与验证等
+  - 方法：建模、仿真、功能分配矩阵、DFX专业设计等
+- 需求（requirement）与需要（need）
+
+#### 系统分析与设计流程
+1、领域分析与方案设计：
+- 领域分析：市场/竞争分析
+- 方案实现评估：
+- 方案设计（RR 原始需求/Raw Requirement，IR 利益干系人需求/Interest Requirement）：利益相关方需求分析=》系统需求分析、测试策略分析
+
+2、系统需求分析：
+- 系统需求分析
+- 构建全量功能
+- 刷新全量功能
+
+3、架构与系统设计：
+- 架构设计：
+- 系统设计（SR 系统需求/System Requirement）：
+- 功能设计（AR 分配需求/Assigned Requirement）：
+
+4、架构与设计实现支撑：
+- 架构与设计实现
+- 需求与设计实现评估
+
+### MBSE 基于模型的系统工程
+&gt; [什么是MBSE？](https://docs.pingcode.com/requirements-management-guide/systems-engineering/what-is-mbse-model-based-systems-engineering-explained)
+&gt; [MBSE系列: 方法论之RFLP](https://zhuanlan.zhihu.com/p/600073245)
+
+在传统的系统工程应用过程中，不管是需求，还是架构都是以文档为中心，每个阶段工作输出结果的载体都是文档，不同团队和阶段的交流也都是基于文档。
+
+但随着系统复杂性的上升，以文档为中心的系统工程（Text Based Systems Engineering，TBSE）方法存在很多问题，例如:
+- 系统复杂化，文档数量增多，不便于书写，管理
+- 文字描述存在歧义，对团队沟通协作不友好，不同部门及开发人员难以形成统一理解
+- 需求变更，追溯困难
+- 文档无法仿真验证
+
+为了解决TBSE所存在的问题，国际系统工程学会(INCOSE)提出了基于模型的系统工程(Model Based Systems Engineering，MBSE)方法。
+
+MBSE强调以图形化模型为核心，将SE方法论过程中设计内容通过工具模型化，电子化，构建不同阶段开发模型，例如需求模型，架构模型，详细设计模型等，并彼此相互关联，以此增加输出内容的可复用性、形成系统一体化设计，可以有效解决随着系统复杂度提高对传统基于文档的系统工程带来的挑战，这个也是目前大部分规范，例如ISO 26262，ASPICE等，对工作输出产物的基本要求。
+
+模型既然是MBSE的核心，那么如何建立模型是MBSE的关键任务，所以为建立系统化模型，MBSE在SE原有方法论的基础上，新增了: 
+- 建模语言
+- 工具
+
+这两项内容，这也就构成了MBSE落地三大基本要素PMT，即:流程(Process), 方法(Method)和工具Tools，所以简单地说:
+
+&lt;center&gt;
+MBSE = SE方法论 + 建模语言 + 工具
+&lt;/center&gt;
+
+建模语言定义了建模过程中可以使用的可视化元素及其代表的意义。为消除歧义，MBSE要求使用统一化的建模语言SysML。它以图像化的方式定义了不同类型的视图表达方式，例如需求视图，结构视图，流程视图，状态视图等等，这些视图相互补充，可以用于表达MBSE设计过程中关注对象的不同侧面(View)，进而形成完整的系统架构模型。
+
+但应该如何通过这些视图将SE方法论中的工作内容尽可能有层次地，可追溯地，完整地统一在一个系统化模型中，实现一体化的模型设计呢？
+
+答案就是**RFLP方法**。
+
+所谓的RFLP 方法就是：
+- R: 需求(Requirement)
+- F: 功能(Function)
+- L: 逻辑(Logical)
+- P: 物理(Physical)
+
+RFLP认为我们应该从以上四个角度(Viewpoint)去对待系统，通过建立相应的架构模型，将复杂技术产品的实现过程进行完整映射。关于RFLP进一步内容我会在架构专题中进一步探讨。
+
+工具是指在实施MBSE过程中建立，建立及管理模型所使用的软件工具，它们可能是多个工具，包括了需求定义及管理工具，架构建模工具，测试验证管理工具等，它们之间通过接口可以进行交互，建立可追溯性，也可以是自主开发的综合性设计工具，将MBSE过程建模统一在一起。
+
+个人认为，MBSE方法论大家都比较熟悉，MBSE落地实施的关键除了思维转换，摈弃原有基于零部件的开发，以及开发流程匹配外，模型的建立是关键，而有效的工具支持是建立及管理模型的必要条件，它能帮助将工程师从繁杂的文档工作中解放出来，专注于可视化模型的建立，整个产品研发以模型作为驱动，提高产品开发效率。
+
+聊了这么多关于SE或MBSE基本内容，我们现在回过头来再看下标题中的问题:
+
+&lt;details&gt;
+  &lt;summary&gt;&lt;strong&gt;Q: 为什么MBSE是系统复杂性的应对之道？&lt;/strong&gt;&lt;/summary&gt;
+这个问题有点大，我尝试回答如下:
+
+所谓复杂性，主要是源于研究对象结构复杂，组成元素相互作用，存在错综复杂的关系，使得我们不能由局部来认识整体。所以解决复杂性的根本在于从整体上认识系统，将其进行系统化拆分，弄清其组成元素的相互作用关系，并通过有效的手段对其进行抽象化，直观化，使得我们能够从整体上认识和理解系统。
+
+而SE或MBSE方法论的核心正是从系统角度认识整体，一方面通过系统的方法论，重视需求和架构的作用，及时对系统进行验证和确认。另一方面，开发过程以模型为驱动，通过系统模型以图像化方式直观地揭示系统的组成及它们之间的联系，让工程师能够以一种更加容易的方式掌控系统复杂性。
+&lt;/details&gt;
+
+## 技术规划与创新
+
+## 需求分析
+
+## 系统设计
+
+## 全流程DFX设计
+
+## AI基础与工程化
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+</description>
+        </item>
+        
+    </channel>
+</rss>
