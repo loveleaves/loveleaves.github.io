@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录电子DIY从设计到实现的经验">
 <meta property='og:url' content='https://loveleaves.github.io/p/diy_intro/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-11-08T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-09T16:35:38&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-11-08T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-30T09:12:28&#43;08:00'/>
 <meta name="twitter:title" content="【DIY】电子DIY设计与实现">
 <meta name="twitter:description" content="记录电子DIY从设计到实现的经验">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -268,56 +268,7 @@
     </ol>
 </aside>
 
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#电子diy一般流程">电子DIY一般流程</a>
-      <ol>
-        <li><a href="#需求分析--方案设计">需求分析 &amp; 方案设计</a></li>
-        <li><a href="#电路原理图设计">电路原理图设计</a></li>
-        <li><a href="#器件选型--bom物料清单">器件选型 &amp; BOM（物料清单）</a></li>
-        <li><a href="#pcb-设计">PCB 设计</a></li>
-        <li><a href="#制板--焊接">制板 &amp; 焊接</a></li>
-        <li><a href="#固件软件编写">固件／软件编写</a></li>
-        <li><a href="#调试--测试">调试 &amp; 测试</a></li>
-        <li><a href="#外壳设计--文档化">外壳设计 &amp; 文档化</a></li>
-      </ol>
-    </li>
-    <li><a href="#开源diy项目">开源DIY项目</a>
-      <ol>
-        <li><a href="#嘉立创">嘉立创</a></li>
-        <li><a href="#maker-pro">Maker Pro</a></li>
-      </ol>
-    </li>
-    <li><a href="#参考链接">参考链接</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
+    
 
             <main class="main full-width">
     <article class="main-article">
@@ -381,7 +332,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 5 分钟
+                    阅读时长: 6 分钟
                 </time>
             </div>
         
@@ -396,204 +347,230 @@
     <section class="article-content">
     
     
-    <h2 id="电子diy一般流程">电子DIY一般流程
-</h2><h3 id="需求分析--方案设计">需求分析 &amp; 方案设计
-</h3><p><strong>目标</strong>：明确产品要做什么、为什么做、怎么做。</p>
-<p><strong>任务</strong>：</p>
-<ul>
-<li>明确功能需求（例如：温湿度监测器 + 显示 + WiFi 上传）</li>
-<li>市场／项目定位（原型、爱好、小批量）</li>
-<li>系统级方案选型（MCU类型、通信方式、显示、传感器）</li>
-<li>画系统框图（block diagram：电源 → 主控 → 传感器/驱动 → 界面/通信）</li>
-</ul>
-<p><strong>常用工具／技术</strong>：</p>
-<ul>
-<li>手绘草图或白板画框图</li>
-<li>UML 或流程图工具（比如 draw.io、Visio）</li>
-<li>功能分解表格（Excel／Google Sheets）</li>
-<li>技术调研（查 MCU／传感器规格、模块成本、已有参考模块）</li>
-</ul>
-<hr>
-<h3 id="电路原理图设计">电路原理图设计
-</h3><p><strong>目标</strong>：将方案中的功能模块具体化为原理图电路。</p>
-<p><strong>任务</strong>：</p>
-<ul>
-<li>制定各模块（电源、MCU、通信、传感器、人机界面）电路。</li>
-<li>引脚连接、去耦电容、保护电路、接口预留。</li>
-<li>画出电路图、进行电气规则检查（ERC）。</li>
-</ul>
-<p><strong>常用工具</strong>：</p>
-<ul>
-<li>KiCad：开源、跨平台。</li>
-<li>EasyEDA：在线工具，方便快速原理图设计。</li>
-<li>Altium Designer／立创EDA：商业级工具。</li>
-<li>仿真工具（如 SPICE 模块）用于验证关键电路。</li>
-</ul>
-<p><strong>注意事项</strong>：</p>
-<ul>
-<li>MCU 通信接口（UART、I2C、SPI）建议预留调试口。</li>
-<li>电源模块建议选择带过流、反接保护。</li>
-<li>模块化思维：如果使用模块（如 ESP32 模组／WiFi 模组）可减少设计量。</li>
-</ul>
-<hr>
-<h3 id="器件选型--bom物料清单">器件选型 &amp; BOM（物料清单）
-</h3><p><strong>目标</strong>：确定每一个元件型号、封装、供应商、价格。</p>
-<p><strong>任务</strong>：</p>
-<ul>
-<li>根据性能（如功耗、尺寸、封装、通信速率）选型。</li>
-<li>考虑供应链／可得性（避免难找的器件造成后期延迟）。</li>
-<li>制作 BOM 表格：元件名、型号、封装、数量、供应商、单价、备注。</li>
-</ul>
-<p><strong>常用工具／技术</strong>：</p>
-<ul>
-<li>Excel／Google Sheets：用于BOM整理。</li>
-<li>器件选型网站：如 LCSC、Digi-Key、Mouser。</li>
-<li>交叉比对：备选型号、价格、工厂库存。</li>
-</ul>
-<p><strong>注意事项</strong>：</p>
-<ul>
-<li>封装越小焊接越困难（如 0201 电阻）。</li>
-<li>若是量产还要考虑成本优化、替代元件。</li>
-<li>BOM 建议标注 “必需／可选／备用”分类。</li>
-</ul>
-<hr>
-<h3 id="pcb-设计">PCB 设计
-</h3><p><strong>目标</strong>：将原理图转化为实物电路板布局（PCB 板）。</p>
-<p><strong>任务</strong>：</p>
-<ul>
-<li>导入原理图，生成网络表。</li>
-<li>放置元件（合理分区：电源区、模拟区、数字区、接口区）。</li>
-<li>布线（Routing）：电源线粗、信号线短、模拟与数字分区。</li>
-<li>添加测试点、接地平面、螺丝孔、边框。</li>
-<li>检查 DRC（Design Rule Check）、输出 Gerber 文件／钻孔文件。</li>
-</ul>
-<p><strong>常用工具</strong>：</p>
-<ul>
-<li>KiCad（含原理图→PCB流程）。</li>
-<li>Autodesk Fusion 360 PCB 模块：机械一体化设计。</li>
-<li>立创EDA。</li>
-</ul>
-<p><strong>注意事项</strong>：</p>
-<ul>
-<li>对高速信号/差分信号要考虑长度匹配、阻抗控制。</li>
-<li>避免信号环路、模拟与数字地分离。</li>
-<li>制板文件（Gerber）务必按厂商要求检查。</li>
-</ul>
-<hr>
-<h3 id="制板--焊接">制板 &amp; 焊接
-</h3><p><strong>目标</strong>：将 PCB 提交制造、然后焊接元件，形成实物电路板。</p>
-<p><strong>任务</strong>：</p>
-<ul>
-<li>提交 Gerber 文件到制造厂（如 JLCPCB、嘉立创等）进行打样。</li>
-<li>到板后进行手工或回流焊接。</li>
-<li>首次上电前用万用表测量电源是否短路。</li>
-<li>分模块焊接与测试（电源模块先，上电检查，再主控再外围模块）。</li>
-</ul>
-<p><strong>常用工具／技术</strong>：</p>
-<ul>
-<li>PCB 打样服务网站（如 JLCPCB、Elecrow…）</li>
-<li>手工焊工具：烙铁、吸锡带、助焊剂。</li>
-<li>回流焊／热风枪（对于 SMD 封装）。</li>
-<li>万用表、示波器用于基本测试。</li>
-</ul>
-<p><strong>注意事项</strong>：</p>
-<ul>
-<li>焊接前确认元件极性、方向。</li>
-<li>首次上电先用限流电源或串入电阻以防短路烧板。</li>
-<li>焊完后再做功能测试，分模块调试（电源→主控→传感器→通信）。</li>
-<li>密度高场景，可考虑开钢网+回流焊。</li>
-</ul>
-<hr>
-<h3 id="固件软件编写">固件／软件编写
-</h3><p><strong>目标</strong>：让产品“活起来”——编写运行在 MCU 或通信模块上的代码。</p>
-<p><strong>任务</strong>：</p>
-<ul>
-<li>初始化各外设（GPIO, I2C, SPI, UART, ADC／PWM 等）</li>
-<li>驱动传感器、显示、通信接口（如 WiFi、BLE、MQTT）</li>
-<li>实现人机界面（按键、显示、LED）</li>
-<li>功耗优化（如睡眠模式、外部中断）</li>
-</ul>
-<p><strong>常用工具／技术</strong>：</p>
-<ul>
-<li>Arduino IDE／PlatformIO（适用于 ESP32/Arduino 生态）</li>
-<li>STM32 CubeIDE／Keil（适用于 STM32 系列）</li>
-<li>VSCode＋SDK／Python（例如 Raspberry Pi Pico）</li>
-<li>lvgl：方便设计人机交互界面</li>
-</ul>
-<p><strong>注意事项</strong>：</p>
-<ul>
-<li>代码模块化、注释清晰，便于后期升级。</li>
-<li>串口输出日志 （Serial 打印）是调试的好朋友。</li>
-<li>版本控制（如 Git）建议用于管理固件。</li>
-</ul>
-<hr>
-<h3 id="调试--测试">调试 &amp; 测试
-</h3><p><strong>目标</strong>：验证硬件与软件共同工作情况、发现并修复问题。</p>
-<p><strong>任务</strong>：</p>
-<ul>
-<li>电源测试（电压、纹波、散热）</li>
-<li>主控启动验证（复位、LED指示、串口输出）</li>
-<li>模块验证（传感器数据是否正确、显示是否正常、通信是否成功）</li>
-<li>系统测试（整体功能、异常情况处理）</li>
-<li>可靠性／EMC／功耗测试（如果条件允许）
-<strong>常用工具／技术</strong>：</li>
-<li>万用表、示波器、逻辑分析仪</li>
-<li>串口调试助手（PC 软件）</li>
-<li>电源分析仪／功耗计（用于低功耗项目）</li>
-</ul>
-<p><strong>注意事项</strong>：</p>
-<ul>
-<li>分模块先测试，再整体测试。</li>
-<li>建议做详细测试用例：正常、异常、边界。</li>
-<li>记录测试结果、bug 清单与修复记录。</li>
-</ul>
-<hr>
-<h3 id="外壳设计--文档化">外壳设计 &amp; 文档化
-</h3><p><strong>目标</strong>：设计产品外壳（3D打印／激光切割／注塑），完善项目文档。</p>
-<p><strong>任务</strong>：</p>
-<ul>
-<li>外壳设计：测量 PCB 尺寸＋元件高度，设计合适的封装结构。</li>
-<li>确定制造方式：3D 打印、激光切割亚克力、金属壳、注塑。</li>
-<li>外壳设计细节：壁厚、螺丝柱、导轨/滑槽、散热孔、出线口、接口开孔。</li>
-<li>文档化：工程图、装配说明、使用说明、BOM、固件烧录流程。</li>
-</ul>
-<p><strong>常用工具／技术</strong>：</p>
-<ul>
-<li>FreeCAD／OpenSCAD：开源CAD设计外壳。</li>
-<li>Fusion 360：机械与电子一体化设计。</li>
-<li>Protocase Designer：电子外壳专用模板工具。  <a class="link" href="https://www.protocase.com/design/protocase-designer.php?utm_source=chatgpt.com"  target="_blank" rel="noopener"
-    >Protocase Designer Free Downloadable 3D &hellip;</a></li>
-<li>电子外壳设计教程：<a class="link" href="https://www.ponoko.com/blog/how-to-make/making-enclosures-for-electronics-with-ponoko/?utm_source=chatgpt.com"  target="_blank" rel="noopener"
-    >Your Guide To Making Electronics Project Boxes</a></li>
-</ul>
-<p><strong>注意事项</strong>：</p>
-<ul>
-<li>外壳壁厚建议 2 ～ 2.5 mm 或更大（取决于材料）以保证强度。</li>
-<li>考虑散热、接口、装配方便性、硬件固定点。</li>
-<li>文档整理好：模块目录结构、使用说明、接线图、固件烧录流程。</li>
-</ul>
-<h2 id="开源diy项目">开源DIY项目
-</h2><h3 id="嘉立创">嘉立创
-</h3><ul>
-<li><a class="link" href="https://oshwhub.com/explore"  target="_blank" rel="noopener"
-    >开源广场</a></li>
-<li><a class="link" href="https://wiki.lckfb.com/zh-hans/"  target="_blank" rel="noopener"
-    >立创开发板</a></li>
-</ul>
-<h3 id="maker-pro">Maker Pro
-</h3><ul>
-<li><a class="link" href="https://maker.pro/"  target="_blank" rel="noopener"
-    >Maker Pro</a></li>
-</ul>
-<h2 id="参考链接">参考链接
-</h2><ul>
-<li><a class="link" href="https://www.circuito.io/blog/diy-electronics-best-online-tools/?utm_source=chatgpt.com"  target="_blank" rel="noopener"
-    >33 DIY Electronics Online Tools and Guides for Makers</a></li>
-<li><a class="link" href="https://loveleaves.github.io/p/embedded_programing_pcb/"  target="_blank" rel="noopener"
-    >硬件设计与选型</a></li>
-<li><a class="link" href="https://loveleaves.github.io/p/3d_modeling/"  target="_blank" rel="noopener"
-    >3D建模、打印</a></li>
-</ul>
+    <div id="verification" style=" display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20vh;">
+    <div id="entry-box">
+        
+        <div id="secret-word" style="  font-size: 1.5rem;
+    margin-bottom: 1rem;">Unlock to view this content.</div>
+        <form id="password-form" onsubmit="checkPassword(); return false;" style=" display: flex;
+    flex-direction: column;
+    width: auto;">
+            <input type="password" name="password" id="password" placeholder="Please enter password" required style="margin-bottom: 1.5rem;
+      padding: 10px 20px;">
+            <input type="hidden" name="encryptedPassword" id="encrypted-password">
+            <input type="submit" value="Submit" name="submit" id="secret-submit" style=" padding: 10px 20px;
+      cursor: pointer;" onmouseover="this.style.backgroundColor='#FAB005';"
+                   onmouseout="this.style.backgroundColor='';">
+        </form>
+    </div>
+    <div id="secret" style="display: none" password="password">
+
+## 电子DIY一般流程
+
+### 需求分析 & 方案设计
+
+**目标**：明确产品要做什么、为什么做、怎么做。
+
+**任务**：
+
+* 明确功能需求（例如：温湿度监测器 + 显示 + WiFi 上传）
+* 市场／项目定位（原型、爱好、小批量）
+* 系统级方案选型（MCU类型、通信方式、显示、传感器）
+* 画系统框图（block diagram：电源 → 主控 → 传感器/驱动 → 界面/通信）
+
+**常用工具／技术**：
+* 手绘草图或白板画框图
+* UML 或流程图工具（比如 draw.io、Visio）
+* 功能分解表格（Excel／Google Sheets）
+* 技术调研（查 MCU／传感器规格、模块成本、已有参考模块）
+
+
+---
+
+### 电路原理图设计
+
+**目标**：将方案中的功能模块具体化为原理图电路。
+
+**任务**：
+
+* 制定各模块（电源、MCU、通信、传感器、人机界面）电路。
+* 引脚连接、去耦电容、保护电路、接口预留。
+* 画出电路图、进行电气规则检查（ERC）。
+
+**常用工具**：
+* KiCad：开源、跨平台。
+* EasyEDA：在线工具，方便快速原理图设计。 
+* Altium Designer／立创EDA：商业级工具。 
+* 仿真工具（如 SPICE 模块）用于验证关键电路。
+
+**注意事项**：
+* MCU 通信接口（UART、I2C、SPI）建议预留调试口。
+* 电源模块建议选择带过流、反接保护。
+* 模块化思维：如果使用模块（如 ESP32 模组／WiFi 模组）可减少设计量。
+
+---
+
+### 器件选型 & BOM（物料清单）
+
+**目标**：确定每一个元件型号、封装、供应商、价格。
+
+**任务**：
+
+* 根据性能（如功耗、尺寸、封装、通信速率）选型。
+* 考虑供应链／可得性（避免难找的器件造成后期延迟）。
+* 制作 BOM 表格：元件名、型号、封装、数量、供应商、单价、备注。
+
+**常用工具／技术**：
+* Excel／Google Sheets：用于BOM整理。
+* 器件选型网站：如 LCSC、Digi-Key、Mouser。
+* 交叉比对：备选型号、价格、工厂库存。
+
+**注意事项**：
+* 封装越小焊接越困难（如 0201 电阻）。
+* 若是量产还要考虑成本优化、替代元件。
+* BOM 建议标注 “必需／可选／备用”分类。
+
+---
+
+### PCB 设计
+
+**目标**：将原理图转化为实物电路板布局（PCB 板）。
+
+**任务**：
+
+* 导入原理图，生成网络表。
+* 放置元件（合理分区：电源区、模拟区、数字区、接口区）。
+* 布线（Routing）：电源线粗、信号线短、模拟与数字分区。
+* 添加测试点、接地平面、螺丝孔、边框。
+* 检查 DRC（Design Rule Check）、输出 Gerber 文件／钻孔文件。
+
+**常用工具**：
+* KiCad（含原理图→PCB流程）。
+* Autodesk Fusion 360 PCB 模块：机械一体化设计。
+* 立创EDA。
+
+**注意事项**：
+* 对高速信号/差分信号要考虑长度匹配、阻抗控制。
+* 避免信号环路、模拟与数字地分离。
+* 制板文件（Gerber）务必按厂商要求检查。
+
+---
+
+### 制板 & 焊接
+
+**目标**：将 PCB 提交制造、然后焊接元件，形成实物电路板。
+
+**任务**：
+
+* 提交 Gerber 文件到制造厂（如 JLCPCB、嘉立创等）进行打样。
+* 到板后进行手工或回流焊接。
+* 首次上电前用万用表测量电源是否短路。
+* 分模块焊接与测试（电源模块先，上电检查，再主控再外围模块）。
+
+**常用工具／技术**：
+* PCB 打样服务网站（如 JLCPCB、Elecrow…）
+* 手工焊工具：烙铁、吸锡带、助焊剂。
+* 回流焊／热风枪（对于 SMD 封装）。
+* 万用表、示波器用于基本测试。
+
+**注意事项**：
+* 焊接前确认元件极性、方向。
+* 首次上电先用限流电源或串入电阻以防短路烧板。
+* 焊完后再做功能测试，分模块调试（电源→主控→传感器→通信）。
+* 密度高场景，可考虑开钢网+回流焊。
+
+---
+
+### 固件／软件编写
+
+**目标**：让产品“活起来”——编写运行在 MCU 或通信模块上的代码。
+
+**任务**：
+
+* 初始化各外设（GPIO, I2C, SPI, UART, ADC／PWM 等）
+* 驱动传感器、显示、通信接口（如 WiFi、BLE、MQTT）
+* 实现人机界面（按键、显示、LED）
+* 功耗优化（如睡眠模式、外部中断）
+
+**常用工具／技术**：
+* Arduino IDE／PlatformIO（适用于 ESP32/Arduino 生态）
+* STM32 CubeIDE／Keil（适用于 STM32 系列）
+* VSCode＋SDK／Python（例如 Raspberry Pi Pico）
+* lvgl：方便设计人机交互界面
+
+**注意事项**：
+* 代码模块化、注释清晰，便于后期升级。
+* 串口输出日志 （Serial 打印）是调试的好朋友。
+* 版本控制（如 Git）建议用于管理固件。
+
+---
+
+### 调试 & 测试
+
+**目标**：验证硬件与软件共同工作情况、发现并修复问题。
+
+**任务**：
+
+* 电源测试（电压、纹波、散热）
+* 主控启动验证（复位、LED指示、串口输出）
+* 模块验证（传感器数据是否正确、显示是否正常、通信是否成功）
+* 系统测试（整体功能、异常情况处理）
+* 可靠性／EMC／功耗测试（如果条件允许）
+  **常用工具／技术**：
+* 万用表、示波器、逻辑分析仪
+* 串口调试助手（PC 软件）
+* 电源分析仪／功耗计（用于低功耗项目）
+
+**注意事项**：
+* 分模块先测试，再整体测试。
+* 建议做详细测试用例：正常、异常、边界。
+* 记录测试结果、bug 清单与修复记录。
+
+---
+
+### 外壳设计 & 文档化
+
+**目标**：设计产品外壳（3D打印／激光切割／注塑），完善项目文档。
+
+**任务**：
+
+* 外壳设计：测量 PCB 尺寸＋元件高度，设计合适的封装结构。
+* 确定制造方式：3D 打印、激光切割亚克力、金属壳、注塑。
+* 外壳设计细节：壁厚、螺丝柱、导轨/滑槽、散热孔、出线口、接口开孔。
+* 文档化：工程图、装配说明、使用说明、BOM、固件烧录流程。
+
+**常用工具／技术**：
+* FreeCAD／OpenSCAD：开源CAD设计外壳。
+* Fusion 360：机械与电子一体化设计。
+* Protocase Designer：电子外壳专用模板工具。  [Protocase Designer Free Downloadable 3D ...](https://www.protocase.com/design/protocase-designer.php?utm_source=chatgpt.com)
+* 电子外壳设计教程：[Your Guide To Making Electronics Project Boxes](https://www.ponoko.com/blog/how-to-make/making-enclosures-for-electronics-with-ponoko/?utm_source=chatgpt.com)
+
+**注意事项**：
+* 外壳壁厚建议 2 ～ 2.5 mm 或更大（取决于材料）以保证强度。
+* 考虑散热、接口、装配方便性、硬件固定点。
+* 文档整理好：模块目录结构、使用说明、接线图、固件烧录流程。
+
+## 开源DIY项目
+### 嘉立创
+- [开源广场](https://oshwhub.com/explore)
+- [立创开发板](https://wiki.lckfb.com/zh-hans/)
+
+### Maker Pro
+- [Maker Pro](https://maker.pro/)
+
+## 参考链接
+- [33 DIY Electronics Online Tools and Guides for Makers](https://www.circuito.io/blog/diy-electronics-best-online-tools/?utm_source=chatgpt.com)
+- [硬件设计与选型](https://loveleaves.github.io/p/embedded_programing_pcb/)
+- [3D建模、打印](https://loveleaves.github.io/p/3d_modeling/)
+  
+
+</div>
+</div>
+
+
 
 </section>
 
@@ -623,7 +600,7 @@
 
 
         <span>
-            最后更新于 Nov 09, 2025 16:35 &#43;0800
+            最后更新于 Nov 30, 2025 09:12 &#43;0800
         </span>
     </section></footer>
 
