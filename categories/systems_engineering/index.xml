@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Tue, 02 Dec 2025 00:08:43 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/systems_engineering/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 02 Dec 2025 00:42:46 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/systems_engineering/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【系统工程基础】 系统工程基础</title>
         <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
         <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
@@ -140,19 +140,51 @@ RFLP认为我们应该从以上四个角度(Viewpoint)去对待系统，通过�
 
 聊了这么多关于SE或MBSE基本内容，我们现在回过头来再看下标题中的问题:
 
-
 &lt;details&gt;
-  &lt;summary&gt;点击查看详情&lt;/summary&gt;
-  &lt;p&gt;这是 &lt;strong&gt;details&lt;/strong&gt; 标签内的内容，可以使用 &lt;em&gt;Markdown&lt;/em&gt; 语法。&lt;/p&gt;
-&lt;/details&gt;
+  &lt;summary&gt;&lt;strong&gt;Q: 为什么MBSE是系统复杂性的应对之道？&lt;/strong&gt;&lt;/summary&gt;
+这个问题有点大，我尝试回答如下:
 
+所谓复杂性，主要是源于研究对象结构复杂，组成元素相互作用，存在错综复杂的关系，使得我们不能由局部来认识整体。所以解决复杂性的根本在于从整体上认识系统，将其进行系统化拆分，弄清其组成元素的相互作用关系，并通过有效的手段对其进行抽象化，直观化，使得我们能够从整体上认识和理解系统。
+
+而SE或MBSE方法论的核心正是从系统角度认识整体，一方面通过系统的方法论，重视需求和架构的作用，及时对系统进行验证和确认。另一方面，开发过程以模型为驱动，通过系统模型以图像化方式直观地揭示系统的组成及它们之间的联系，让工程师能够以一种更加容易的方式掌控系统复杂性。
+&lt;/details&gt;
 
 ## 技术规划与创新
 ### 技术洞察
 #### 什么是技术洞察？
+&gt; [技术洞察概述](https://zhuanlan.zhihu.com/p/711406819)
+&gt; [技术洞察的关键步骤和方法](https://zhuanlan.zhihu.com/p/720741325)
+&gt; [架构师面试必问：技术选型方法论全解析——如何为团队引入新技术](https://cloud.tencent.com.cn/developer/article/2595553)
 
+
+技术洞察（TI， Technology Insight），是指对技术发展趋势、创新机会以及潜在影响的深入理解和预见。这种能力不仅要求对现有技术有透彻的了解，还需要对市场动态、社会需求以及科技发展的方向有敏锐的洞察力。
+
+**技术洞察的关键能力要素：**
+1. 信息收集能力
+2. 观察能力
+3. 批判性思维能力
+4. 抽象/归纳能力
+5. 专业能力
+
+**技术洞察的误区：**
+1. 深度：就事论事，没有深入理解事情的本质原因
+2. 思考：仅仅是信息罗列，缺乏自己的思考和判断
+3. 价值：没从商业视角、系统性思维去看，只看到具体的点，没看到潜在价值点
+4. 全面：只看到局部，没有考察全局，推导得出的结论有偏差
+
+**洞察工作流程**
+1. 确定洞察方向/目标
+2. 技术分解，分析可能的技术方案
+3. 输出技术机会
+4. 结果应用
 
 #### 技术洞察的工作方法
+五看：
+- 看趋势：技术趋势分析（演进、变更、融合）
+- 看市场：产业、合作伙伴、市场空间变化
+- 看客户：客户痛点、客户需求分析
+- 看竞争：竞争对手分析
+- 看自己：差距分析、SDOT
 
 ## 需求分析
 
