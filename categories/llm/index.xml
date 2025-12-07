@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sat, 06 Dec 2025 00:18:19 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 07 Dec 2025 11:17:31 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -44,8 +44,259 @@
 
 ## 文本表示（Representation）
 ### 概述
+文本表示是将自然语言转化为计算机能够理解的数值形式，是绝大多数自然语言处理（NLP）任务的基础步骤。
+
+早期的文本表示方法（如词袋模型）通常将整段文本编码为一个向量。这类方法实现简单、计算高效，但存在明显的局限性——表达语序和上下文语义的能力较弱。因此，现代 NLP 技术逐渐引入更加精细和表达力更强的文本表示方法，以更有效地建模语言的结构和含义。文本表示的第一步通常是分词和词表构建。
+
+1. 分词（Tokenization）是将原始文本切分为若干具有独立语义的最小单元（即token）的过程，是所有 NLP 任务的起点。
+2. 词表（Vocabulary）是由语料库构建出的、包含模型可识别 token 的集合。词表中每个token都分配有唯一的 ID，并支持 token 与 ID 之间的双向映射。
+
+在后续训练或预测过程中，模型会首先对输入文本进行分词，再通过词表将每个 token 映射为其对应的 ID。接着，这些 ID 会被输入嵌入层（Embedding Layer），转换为低维稠密的向量表示（即词向量）
 
 ### 分词（Tokenization）
+**分词粒度**
+- 词级（Word-Level）分词
+- 字符级（Character-Level）分词
+- 子词级（Subword‑Level）分词：目前主流方法
+
+以下是 tokenization 过程的高度概括：
+
+![tokenization](/imgs/nlp/tokenization.png)
+
+在分词（根据其模型）之前，tokenizer 需要进行两个步骤： **标准化（normalization）** 和 **预分词（pre-tokenization）** 。
+
+**标准化**步骤涉及一些常规清理，例如删除不必要的空格、小写和“/”或删除重音符号。
+
+tokenizer 一般不会在原始文本上进行训练。因此，我们首先需要将文本拆分为更小的实体，例如单词。这就是**预分词**步骤的作用。基于单词的 tokenizer 可以简单地根据空格和标点符号将原始文本拆分为单词。这些词将是 tokenizer 在训练期间可以学习的子词的边界。
+
+三种主要的子词 tokenization 算法：BPE（由 GPT-2 等使用）、WordPiece（由 BERT 使用）和 Unigram（由 T5 等使用）。
+
+模型 | BPE | WordPiece | Unigram
+:----:|:---:|:---------:|:------:
+训练 | 从小型词汇表开始，学习合并 token 的规则 | 从小型词汇表开始，学习合并 token 的规则 | 从大型词汇表开始，学习删除 token 的规则
+训练步骤 | 合并对应最常见的 token 对 | 合并对应得分最高的 token 对，优先考虑每个独立 token 出现频率较低的对 | 删除会在整个语料库上最小化损失的词汇表中的所有 token
+学习 | 合并规则和词汇表 | 仅词汇表 | 含有每个 token 分数的词汇表
+编码 | 将一个单词分割成字符并使用在训练过程中学到的合并 | 从开始处找到词汇表中的最长子词，然后对其余部分做同样的事 | 使用在训练中学到找到最可能的 token 分割方式
+
+#### BPE（Byte Pair Encoding）/BBPE（Byte Level Byte Pair Encoding）
+字节对编码（BPE）最初被开发为一种压缩文本的算法，然后在预训练 GPT 模型时被 OpenAI 用于 tokenization。许多 Transformer 模型都使用它，包括 GPT、GPT-2、RoBERTa、BART 和 DeBERTa。
+
+BPE 训练首先计算语料库中使用的唯一单词集合（在完成标准化和预分词步骤之后），然后取出用来编写这些词的所有符号来构建词汇表。举一个非常简单的例子，假设我们的语料库使用了这五个词：
+``` python
+&#34;hug&#34;, &#34;pug&#34;, &#34;pun&#34;, &#34;bun&#34;, &#34;hugs&#34;
+```
+基础单词集合将是 [&#34;b&#34;, &#34;g&#34;, &#34;h&#34;, &#34;n&#34;, &#34;p&#34;, &#34;s&#34;, &#34;u&#34;] 。在实际应用中，基本词汇表将至少包含所有 ASCII 字符，可能还包含一些 Unicode 字符。如果你正在 tokenization 不在训练语料库中的字符，则该字符将转换为未知 tokens，这就是为什么许多 NLP 模型在分析带有表情符号的内容的结果非常糟糕的原因之一。
+
+&gt; GPT-2 和 RoBERTa （这两者非常相似）的 tokenizer 有一个巧妙的方法来处理这个问题：他们不把单词看成是用 Unicode 字符编写的，而是用字节编写的。这样，基本词汇表的大小很小（256），但是能包含几乎所有你能想象的字符，而不会最终转换为未知 tokens 这个技巧被称为 字节级（byte-level） BPE 。
+
+获得这个基础单词集合后，我们通过学习 **合并（merges）** 来添加新的 tokens 直到达到期望的词汇表大小。合并是将现有词汇表中的两个元素合并为一个新元素的规则。所以，一开始会创建出含有两个字符的 tokens 然后，随着训练的进展，会产生更长的子词。
+
+在分词器训练期间的任何一步，BPE 算法都会搜索最常见的现有 tokens 对 （在这里，“对”是指一个词中的两个连续 tokens ）。最常见的这一对会被合并，然后我们重复这个过程。
+
+**步骤**
+1. 标准化
+2. 预分词
+3. 将单词拆分为单个字符
+4. 根据学习的合并规则，按顺序合并拆分的字符
+
+**代码实现**
+``` python
+# 字母表
+alphabet = []
+for word in word_freqs.keys():
+    for letter in word:
+        if letter not in alphabet:
+            alphabet.append(letter)
+alphabet.sort()
+vocab = [&#34;&lt;|endoftext|&gt;&#34;] + alphabet.copy() # GPT-2 模型的特殊 tokens
+
+# 合并规则，计算出现频率，之后可以按相邻频率最高的pair对合并
+def compute_pair_freqs(splits):
+    pair_freqs = defaultdict(int)
+    for word, freq in word_freqs.items():
+        split = splits[word]
+        if len(split) == 1:
+            continue
+        for i in range(len(split) - 1):
+            pair = (split[i], split[i + 1])
+            pair_freqs[pair] += freq
+    return pair_freqs
+
+# 设定词表上限，得到训练词表 vocab 及合并规则 merges
+vocab_size = 50
+while len(vocab) &lt; vocab_size:
+    pair_freqs = compute_pair_freqs(splits)
+    best_pair = &#34;&#34;
+    max_freq = None
+    for pair, freq in pair_freqs.items():
+        if max_freq is None or max_freq &lt; freq:
+            best_pair = pair
+            max_freq = freq
+    if not best_pair: # reach max size
+        break
+    splits = merge_pair(*best_pair, splits)
+    merges[best_pair] = best_pair[0] + best_pair[1]
+    vocab.append(best_pair[0] + best_pair[1])
+
+# 通过vocab、merges
+def tokenize(word):
+    splits = [[l for l in word]]
+    for pair, merge in merges.items():
+        for idx, split in enumerate(splits):
+            i = 0
+            while i &lt; len(split) - 1:
+                if split[i] == pair[0] and split[i + 1] == pair[1]:
+                    split = split[:i] + [merge] + split[i + 2 :]
+                else:
+                    i += 1
+            splits[idx] = split
+
+    return sum(splits, [])
+```
+
+**总结**
+- 使用频率进行合并
+
+#### WordPiece
+&gt; [WordPiece tokenization 算法](https://hf-mirror.com/learn/llm-course/zh-CN/chapter6/6)
+WordPiece 是 Google 开发的用于 BERT 预训练的分词算法。自此之后，很多基于 BERT 的 Transformer 模型都复用了这种方法，比如 DistilBERT，MobileBERT，Funnel Transformers 和 MPNET。它在训练方面与 BPE 非常类似，但实际的分词方法有所不同。
+
+与BPE 一样，WordPiece 也是从包含模型使用的特殊 tokens 和初始字母表的小词汇表开始的。由于它是通过添加前缀（如 BERT 中的 ## ）来识别子词的，每个词最初都会通过在词内部所有字符前添加该前缀进行分割。因此，例如 &#34;word&#34; 将被这样分割：
+``` python
+w ##o ##r ##d
+```
+因此，初始字母表包含所有出现在单词第一个位置的字符，以及出现在单词内部并带有 WordPiece 前缀的字符。
+
+然后，同样像 BPE 一样，WordPiece 会学习合并规则。主要的不同之处在于合并对的选择方式。WordPiece 不是选择频率最高的对，而是对每对计算一个得分，使用以下公式：
+&lt;center&gt;
+score=(freq_of_pair)/(freq_of_first_element×freq_of_second_element)
+&lt;/center&gt;
+
+**代码实现**
+``` python
+# 字母表
+alphabet = []
+for word in word_freqs.keys():
+    if word[0] not in alphabet:
+        alphabet.append(word[0])
+    for letter in word[1:]:
+        if f&#34;##{letter}&#34; not in alphabet:
+            alphabet.append(f&#34;##{letter}&#34;)
+vocab = [&#34;[PAD]&#34;, &#34;[UNK]&#34;, &#34;[CLS]&#34;, &#34;[SEP]&#34;, &#34;[MASK]&#34;] + alphabet.copy()
+
+# 合并规则，计算pair分数
+def compute_pair_scores(splits):
+    letter_freqs = defaultdict(int)
+    pair_freqs = defaultdict(int)
+    for word, freq in word_freqs.items():
+        split = splits[word]
+        if len(split) == 1:
+            letter_freqs[split[0]] += freq
+            continue
+        for i in range(len(split) - 1):
+            pair = (split[i], split[i + 1])
+            letter_freqs[split[i]] += freq
+            pair_freqs[pair] += freq
+        letter_freqs[split[-1]] += freq
+
+    scores = {
+        pair: freq / (letter_freqs[pair[0]] * letter_freqs[pair[1]])
+        for pair, freq in pair_freqs.items()
+    }
+    return scores
+
+# 最大子词查找
+def encode_word(word):
+    tokens = []
+    while len(word) &gt; 0:
+        i = len(word)
+        while i &gt; 0 and word[:i] not in vocab:
+            i -= 1
+        if i == 0:
+            return [&#34;[UNK]&#34;]
+        tokens.append(word[:i])
+        word = word[i:]
+        if len(word) &gt; 0:
+            word = f&#34;##{word}&#34;
+    return tokens
+```
+
+**总结**
+- 通过`##`识别子词
+- WordPiece 和 BPE 的分词方式有所不同，WordPiece 只保存最终词汇表，而不保存学习到的合并规则。WordPiece 从待分词的词开始，找到词汇表中最长的子词，然后在其处分割。
+- 当分词过程中无法在词汇库中找到该子词时，**整个词**会被标记为 unknown（未知），BPE 只会将不在词汇库中的**单个字符**标记为 unknown。
+
+#### Unigram
+&gt; [Unigram tokenization 算法](https://hf-mirror.com/learn/llm-course/zh-CN/chapter6/7)
+
+Unigram 算法常用于 SentencePiece 中，该切分算法被 AlBERT，T5，mBART，Big Bird 和 XLNet 等模型广泛采用。
+
+**训练**
+
+与BPE 和 WordPiece 相比，Unigram 的工作方式正好相反：它从一个**大词汇库**开始，然后逐步删除词汇，直到达到目标词汇库大小。构建基础词汇库有多种方法：例如，我们可以选取预切分词汇中最常见的子串，或者在具有大词汇量的初始语料库上进行 BPE 得到一个初始词库。
+
+在训练的每一步，Unigram 算法都会在给定当前词汇的情况下计算语料库的损失。然后，对于词汇表中的每个符号，算法计算如果删除该符号，整体损失会增加多少，并寻找删除后损失增加最少的符号。这些符号对语料库的整体损失影响较小，因此从某种意义上说，它们“相对不必要”并且是移除的最佳候选者。
+
+这个过程非常消耗计算资源，因此我们不只是删除与最低损失增长相关的单个符号，而是删除与最低损失增长相关的百分之/p （p 是一个可以控制的超参数，通常是 10 或 20）的符号。然后重复此过程，直到词汇库达到所需大小。
+
+注意，我们永远不会删除基础的单个字符，以确保任何词都能被切分。
+
+然而，这仍然有些模糊：算法的主要部分是在词汇库中计算语料库的损失并观察当我们从词汇库中移除一些符号时损失如何变化，但我们尚未解释如何做到这一点。这一步依赖于 Unigram 模型的切分算法。
+
+#### 常用工具
+按照实现方式大致可以分为如下两类：
+- 一类是基于词典或模型的传统方法，主要以“词”为单位进行切分；
+- 另一类是基于子词建模算法（如BPE）的方式，从数据中自动学习高频字组合，构建子词词表。
+
+前者的代表工具包括 jieba、HanLP等，这些工具广泛应用于传统 NLP 任务中。 
+
+后者的代表工具包括 Hugging Face Tokenizer、SentencePiece、tiktoken等，常用于大规模预训练语言模型中。
+
+##### SentencePiece
+&gt; [官网](https://github.com/google/sentencepiece)
+
+**主要特性**
+- 多分词粒度：支持BPE、ULM子词算法，也支持char, word分词；
+- 多语言：以unicode方式编码字符，将所有的输入（英文、中文等不同语言）都转化为unicode字符，解决了多语言编码方式不同的问题；
+- 编解码的可逆性：之前几种分词算法对空格的处理略显粗暴，有时是无法还原的。Sentencepiece显式地将空白作为基本标记来处理，用一个元符号 “▁”（ U+2581 ）转义空白，这样就可以实现简单且可逆的编解码；
+- 无须Pre-tokenization：Sentencepiece可以直接从raw text/setences进行训练，无须Pre-tokenization
+- Fast and lightweight；
+
+##### tokenizers库
+&gt; [官网](https://hugging-face.cn/docs/tokenizers/index)
+
+tokenizers是transformers的兄弟库，实现了当前最常用的分词器。
+
+主要特点：
+- 使用当今最常用的分词器来训练新词汇表和进行分词。
+- 得益于 Rust 实现，速度极快（包括训练和分词）。在服务器 CPU 上，对 1GB 的文本进行分词耗时不到 20 秒。
+- 易于使用，同时也极其通用。
+- 专为研究和生产而设计。
+- 完整的对齐跟踪。即使进行了破坏性的规范化，也始终可以获取到与任意词元对应的原始句子部分。
+- 完成所有预处理：截断、填充、添加模型所需的特殊词元。
+
+分词流程
+- 归一化
+- 预分词
+- 模型
+- 后处理
+
+#### LLM中的分词器
+##### BERT的分词器
+&gt; [代码](https://github.com/huggingface/transformers/blob/main/src/transformers/models/bert/tokenization_bert.py)
+&gt; [文档](https://huggingface.co/docs/transformers/v4.28.1/en/model_doc/bert#transformers.BertTokenizer)
+
+BERT的分词器由两个部分组成：
+- BasicTokenizer：
+  - 转成 unicode：Python3，输入为str时，可以省略这一步
+  - _clean_text：去除各种奇怪字符
+  - _tokenize_chinese_chars：中文按字拆开
+  - whitespace_tokenize：空格分词
+  - _run_strip_accents：去掉变音符号
+  - _run_split_on_punc：标点分词
+  - 再次空格分词：whitespace_tokenize(&#34; &#34;.join(split_tokens))，先用空格join再按空白分词，可以去掉连续空格
+- WordpieceTokenizer：
+  - 贪心最大匹配：用双指针实现；
 
 ### 词表示（word representation）
 
