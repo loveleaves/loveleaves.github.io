@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 07 Dec 2025 11:17:31 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 07 Dec 2025 12:00:34 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【系统工程基础】 系统工程基础</title>
         <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
         <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
@@ -9137,6 +9137,32 @@ BERT的分词器由两个部分组成：
   - 贪心最大匹配：用双指针实现；
 
 ### 词表示（word representation）
+&gt; 详见：`尚硅谷大模型技术之NLP1.0.3`的3.3
+
+
+词表示的发展经历了从稀疏的one-hot编码，到稠密的语义化词向量，再到近年来的上下文相关的词表示。不同的词表示方法在表达能力、语义建模、上下文适应性等方面存在显著差异。
+
+#### One-hot编码
+缺点：
+- 随着词表规模的扩大，向量维度会迅速膨胀，导致计算效率低下
+- 无法体现词与词之间的语义关系（如相关词向量正交为0）
+
+#### 语义化词向量 Word2Vec
+它通过对大规模语料的学习，为每个词生成一个具有语义意义的稠密向量表示。这些向量能够在连续空间中表达词与词之间的关系，使得“意思相近”的词在空间中距离更近。
+
+![CBOW](/imgs/nlp/cbow.png)
+&lt;center&gt;CBOW&lt;/center&gt;
+
+![Skip-Gram](/imgs/nlp/skip_gram.png)
+&lt;center&gt;Skip-Gram&lt;/center&gt;
+
+#### 上下文相关词表示（Contextual Word Representations）
+虽然像Word2Vec这样的模型已经能够为词语提供具有语义的向量表示，但是它只为每个词分配一个固定的向量表示，不论它在句中出现的语境如何。这种表示被称为静态词向量（static embeddings）。
+
+然而，语言的表达极其灵活，一个词在不同上下文中可能有完全不同的含义。如吃的苹果和苹果手机。
+
+上下文相关词表示（Contextual Word Representations），是指词语的向量表示会根据它所在的句子上下文动态变化，从而更好地捕捉其语义。一个具有代表性的模型是——ELMo。该模型全称为 Embeddings from Language Models，发表于2018年2月。其基于LSTM 语言模型，使用上下文动态生成每个词的表示，每个词的向量由其前文和后文共同决定，是第一个被广泛应用于下游任务的上下文词向量模型。
+
 
 # References
 
