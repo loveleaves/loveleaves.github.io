@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 07 Dec 2025 22:59:42 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 08 Dec 2025 00:23:48 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -396,7 +396,99 @@ output, h_n = rnn(input, h_0)
 在训练RNN时，采用的是时间反向传播（Backpropagation Through Time, BPTT）方法，在反向传播过程中，梯度需要在每个时间步上不断链式传递。
 
 ### 长短期记忆网络（Long Short-Term Memory, LSTM）
+为了缓解RNN梯度消失或者梯度爆炸的问题，Hochreiter 和 Schmidhuber 于 1997 年提出了长短期记忆网络（Long Short-Term Memory, LSTM）。
 
+#### 网络结构
+LSTM 通过引入特殊的记忆单元（Memory Cell，图中的），有效提升了模型对长序列依赖关系的建模能力。
+
+其中隐藏层的计算公式为：
+$$
+i_t​=σ(W_{ii​}x_{t}​+b_{ii}​+W_{hi}​h_{t−1}​+b_{hi}​)\\\\
+f_t​=σ(W_{if}​x_t​+b_{if}​+W_{hf}​h_{t−1}​+b_{hf}​)\\\\
+g_t​=tanh(W_{ig}​x_t​+b_{ig}​+W_{hg}​h_{t−1}​+b_{hg}​)\\\\
+o_t​=σ(W_{io}​x_t​+b_{io}​+W_{ho}​h_{t−1}​+b_{ho}​)\\\\
+c_t​=f_t​⊙c_{t−1}​+i_t​⊙g_t\\\\
+​h_t​=o_t​⊙tanh(c_t​)​
+$$
+注：
+- σ：sigmoid function，(0,1)
+- ⊙：Hadamard product，各元素乘积
+
+其沿时间步展开后的内部结构如下图所示，核心结构是三个“门”，分别是：
+- 遗忘门（f）：决定当前时间步要忘记多少过去的记忆。
+- 输入门（i）：控制要从当前时间步的输入向记忆单元存入多少新的信息。
+- 输出门（o）：控制从记忆单元中读取多少信息作为当前时间步的隐藏状态进行输出。
+
+![LSTM 结构](/imgs/nlp/lstm_structure1.png)
+&lt;center&gt;LSTM 结构&lt;/center&gt;
+
+![LSTM 展开结构](/imgs/nlp/lstm_structure.png)
+&lt;center&gt;LSTM 展开结构&lt;/center&gt;
+
+![LSTM](/imgs/nlp/lstm.png)
+&lt;center&gt;多层+双向 LSTM&lt;/center&gt;
+
+Pytorch API： [torch.nn.LSTM 模块](https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html)
+
+``` python
+torch.nn.LSTM(
+    input_size, # 每个时间步输入特征的维度（词向量维度）
+    hidden_size, # 隐藏状态的维度
+    num_layers=1, # LSTM 层数，默认为 1
+    nonlinearity=&#34;tanh&#34;, # 激活函数，&#39;tanh&#39;（默认）或 &#39;relu&#39;
+    bias=True, # 是否使用偏置项，默认 True
+    batch_first=False, # 输入张量是否是 (batch, seq, feature)，默认 False 表示 (seq, batch, feature)
+    dropout=0.0, # 除最后一层外，其余层之间的 dropout 概率
+    bidirectional=False, # 是否为双向 LSTM，默认 False
+    proj_size=0, # 隐藏状态的投影输出维度；若为 0，则不使用 projection。（详见官方文档，用于调整）
+    device=None,
+    dtype=None,
+)
+
+lstm = torch.nn.LSTM()
+output, (h_n, c_n) = lstm(input, (h_0, c_0))
+```
+
+**输入输出形状：**
+
+&lt;font color=&#39;red&#39;&gt;
+说明：
+如果proj_size设置为0，那么输入、输出除了`c_0`与`c_n`，其他与RNN完全一致。
+&lt;/font&gt;
+
+- 输入（假定proj_size设置为0）
+  - input：输入序列，形状为(seq_len, batch_size, input_size)，如果 batch_first=True，则为 (batch_size, seq_len, input_size)
+  - h_0：可选，初始隐藏状态，形状为 (num_layers × num_directions, batch_size, hidden_size)
+  - c_0：可选，初始细胞状态，形状为 (num_layers × num_directions, batch_size, hidden_size)
+- 输出：
+  - output：LSTM层的输出，包含最后一层每个时间步的隐藏状态，形状为 (seq_len, batch_size, num_directions × hidden_size )，如果如果 batch_first=True，则为(batch_size, seq_len, num_directions × hidden_size )
+  - h_n：最后一个时间步的隐藏状态，包含每一层的每个方向，形状为 (num_layers × num_directions, batch_size, hidden_size)
+  - c_n：最后一个时间步的细胞状态，包含每一层的每个方向，形状为 (num_layers × num_directions, batch_size, hidden_size)
+
+![LSTM](/imgs/nlp/LSTM_shape.png)
+&lt;center&gt;多层+双向 LSTM 输入输出形状&lt;/center&gt;
+
+#### LSTM为何能缓解梯度消失和梯度爆炸？
+LSTM通过引入记忆单元（Memory Cell），在时间步之间提供了一条稳定的梯度传播路径。
+
+记忆单元的更新公式为
+$$c_t​=f_t​⊙c_{t−1}​+i_t​⊙g_t$$
+
+所以$\frac{\partial C_t}{\partial C_{t-1}}$（简单起见，按照标量推导）
+
+在反向传播时，沿记忆单元路径，梯度传播实际上是多个$f_t$连乘的结果。虽然每个$f_t$的取值小于1，但通常较接近于1。这是因为$f_t$由遗忘门生成，在一般任务中，遗忘门倾向于“记得多、忘得少”，因此$f_t$的值通常较大。
+
+由于乘积中的每一项$f_t$较接近1，整体衰减速度远小于传统RNN中隐藏状态链式传播时的指数衰减。这使得早期时间步的输入，能够通过记忆单元路径稳定地影响到最终的总梯度，从而有效参与参数的更新，保证了模型对长序列依赖的学习能力。
+
+#### 存在问题
+尽管 LSTM 相较传统 RNN 解决了长期依赖问题，性能大幅提升，但在实际应用中，仍存在一些明显的局限性和问题，主要包括：
+- 难以并行计算
+  - LSTM 的时间步之间具有强依赖性（后一个时间步的输入依赖前一个时间步的输出），导致无法进行大规模并行加速，训练和推理速度受限。
+- 参数量大，计算开销高：
+  - 每个 LSTM 单元内部包含多个门控机制（输入门、遗忘门、输出门），每个门都需要独立计算，导致参数数量和计算量远大于普通 RNN。
+  - 在资源受限的场景下（如移动端、嵌入式设备），部署 LSTM 会面临挑战。
+- 长期依赖建模仍然有限
+  - 虽然 LSTM 延缓了梯度消失问题，但并不能完全消除。当序列极长时，模型依然难以有效捕捉非常远距离的依赖关系。
 
 # References
 - [尚硅谷大模型技术之NLP1.0.3.pdf](/pdf/nlp/尚硅谷大模型技术之NLP1.0.3.pdf)
