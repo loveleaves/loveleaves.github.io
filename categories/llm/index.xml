@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 07 Dec 2025 16:58:33 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 07 Dec 2025 21:15:57 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -344,6 +344,11 @@ RNN 会逐个读取句子中的词语，并在每一步结合当前词和前面�
 #### 网络结构
 其中隐藏层的计算公式为：
 $h_t = tanh(x_t*W_x+h_{t-1}*W_h+b)$
+
+![RNN计算图](/imgs/nlp/RNN计算图.svg)
+&lt;center&gt;
+RNN计算图
+&lt;/center&gt;
 
 ![RNN](/imgs/nlp/RNN.png)
 &lt;center&gt;
