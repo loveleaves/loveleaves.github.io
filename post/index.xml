@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Tue, 09 Dec 2025 00:09:41 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Dec 2025 01:02:14 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【系统工程基础】 系统工程基础</title>
         <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
         <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
@@ -9181,7 +9181,7 @@ RNN 会逐个读取句子中的词语，并在每一步结合当前词和前面�
 
 #### 网络结构
 其中隐藏层的计算公式为：
-$h_t = tanh(x_t*W_x+h_{t-1}*W_h+b)$
+$h_t = \tanh(x_t*W_x+h_{t-1}*W_h+b)$
 
 ![RNN计算图](/imgs/nlp/RNN计算图.svg)
 &lt;center&gt;
@@ -9211,6 +9211,9 @@ torch.nn.RNN(
 
 rnn = torch.nn.RNN(...)
 output, h_n = rnn(input, h_0)
+
+# 注意
+序列padding时，输入RNN前需进行pack处理，详见LSTM部分
 ```
 
 **输入输出形状：**
@@ -9241,12 +9244,12 @@ LSTM 通过引入特殊的记忆单元（Memory Cell，图中的），有效提�
 
 其中隐藏层的计算公式为：
 $$
-i_t​=σ(W_{ii​}x_{t}​+b_{ii}​+W_{hi}​h_{t−1}​+b_{hi}​)\\\\
-f_t​=σ(W_{if}​x_t​+b_{if}​+W_{hf}​h_{t−1}​+b_{hf}​)\\\\
-g_t​=tanh(W_{ig}​x_t​+b_{ig}​+W_{hg}​h_{t−1}​+b_{hg}​)\\\\
-o_t​=σ(W_{io}​x_t​+b_{io}​+W_{ho}​h_{t−1}​+b_{ho}​)\\\\
-c_t​=f_t​⊙c_{t−1}​+i_t​⊙g_t\\\\
-​h_t​=o_t​⊙tanh(c_t​)​
+i_t​=\sigma(W_{ii​}x_{t}​+b_{ii}​+W_{hi}​h_{t−1}​+b_{hi}​)\\\\
+f_t​=\sigma(W_{if}​x_t​+b_{if}​+W_{hf}​h_{t−1}​+b_{hf}​)\\\\
+g_t​=\tanh(W_{ig}​x_t​+b_{ig}​+W_{hg}​h_{t−1}​+b_{hg}​)\\\\
+o_t​=\sigma(W_{io}​x_t​+b_{io}​+W_{ho}​h_{t−1}​+b_{ho}​)\\\\
+c_t​=f_t​ \odot c_{t−1}​+i_t​ \odot g_t\\\\
+​h_t​=o_t \odot \tanh(c_t​)​
 $$
 注：
 - σ：sigmoid function，(0,1)
@@ -9391,6 +9394,59 @@ $$c_t​=f_t​⊙c_{t−1}​+i_t​⊙g_t$$
   - 在资源受限的场景下（如移动端、嵌入式设备），部署 LSTM 会面临挑战。
 - 长期依赖建模仍然有限
   - 虽然 LSTM 延缓了梯度消失问题，但并不能完全消除。当序列极长时，模型依然难以有效捕捉非常远距离的依赖关系。
+
+### 门控循环单元（Gated Recurrent Unit，GRU）
+Gated Recurrent Unit（GRU）是为了进一步简化 LSTM 结构、降低计算成本而提出的一种变体。GRU 保留了门控机制的核心思想，但相比 LSTM，结构更为简洁，参数更少，训练效率更高。
+
+在许多实际任务中，GRU 能在保持类似性能的同时，显著减少训练时间。
+
+#### 网络结构
+与LSTM相比，GRU做出了以下改进：
+- 取消了LSTM中独立的记忆单元，只保留隐藏状态。
+- 通过两个门控结构控制信息流动：
+  - 重置门（Reset Gate）：用于控制遗忘多少旧信息
+  - 更新门（Update Gate）：用于控制保留多少旧信息，以及引入多少新信息
+
+其中计算公式为：
+$$
+r_t = \sigma(W_{ir} x_t + b_{ir} + W_{hr} h_{(t-1)} + b_{hr})\\\\
+z_t = \sigma(W_{iz} x_t + b_{iz} + W_{hz} h_{(t-1)} + b_{hz}) \\\\
+n_t = \tanh(W_{in} x_t + b_{in} + r_t \odot (W_{hn} h_{(t-1)}+ b_{hn}))\\\\
+h_t = (1 - z_t) \odot n_t + z_t \odot h_{(t-1)}
+$$
+
+![GRU结构图](/imgs/nlp/gru.png)
+&lt;center&gt;
+GRU结构图
+&lt;/center&gt;
+
+![GRU展开结构图](/imgs/nlp/gru_structure.png)
+&lt;center&gt;
+GRU展开结构图
+&lt;/center&gt;
+
+Pytorch API： [torch.nn.GRU 模块](https://pytorch.org/docs/stable/generated/torch.nn.GRU.html)
+
+``` python
+torch.nn.GRU(
+    input_size, # 每个时间步输入特征的维度（词向量维度）
+    hidden_size, # 隐藏状态的维度
+    num_layers=1, # GRU 层数，默认为 1
+    nonlinearity=&#34;tanh&#34;, # 激活函数，&#39;tanh&#39;（默认）或 &#39;relu&#39;
+    bias=True, # 是否使用偏置项，默认 True
+    batch_first=False, # 输入张量是否是 (batch, seq, feature)，默认 False 表示 (seq, batch, feature)
+    dropout=0.0, # 除最后一层外，其余层之间的 dropout 概率
+    bidirectional=False, # 是否为双向 GRU，默认 False
+    device=None,
+    dtype=None,
+)
+
+gru= torch.nn.GRU()
+output, h_n = gru(input, h_0)
+```
+
+**输入输出形状：**
+- 同RNN
 
 ## 常用工具
 ### 深度学习框架
