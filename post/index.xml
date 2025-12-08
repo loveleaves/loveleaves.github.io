@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Mon, 08 Dec 2025 00:23:48 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Dec 2025 00:09:41 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【系统工程基础】 系统工程基础</title>
         <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
         <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
@@ -9287,6 +9287,70 @@ lstm = torch.nn.LSTM()
 output, (h_n, c_n) = lstm(input, (h_0, c_0))
 ```
 
+**注意：**
+``` python
+# 对于序列模型中有padding操作时，注意把padding去掉再丢入LSTM计算
+# 双向多层LSTM模型示例
+class ReviewAnalyzeModel(nn.Module):
+    def __init__(self, vocab_size, padding_idx=0):
+        super(ReviewAnalyzeModel, self).__init__()
+        self.padding_idx = padding_idx
+
+        self.embedding = nn.Embedding(
+            num_embeddings=vocab_size,
+            embedding_dim=config.EMBEDDING_DIM,
+            padding_idx=padding_idx
+        )
+
+        self.lstm = nn.LSTM(
+            input_size=config.EMBEDDING_DIM,
+            hidden_size=config.HIDDEN_SIZE,
+            num_layers=config.NUM_LAYERS,
+            batch_first=True,
+            bidirectional=True
+        )
+
+        self.linear = nn.Linear(2 * config.HIDDEN_SIZE, 1)
+
+    def forward(self, x):
+        # x.shape [batch_size, seq_len]，尾部padding
+
+        # ① 自动计算每条样本实际长度（忽略 padding）
+        lengths = (x != self.padding_idx).sum(dim=1)
+
+        # ② embedding
+        embedding = self.embedding(x)
+
+        # ③ pack（让 LSTM 忽略 padding）
+        packed = nn.utils.rnn.pack_padded_sequence(
+            embedding,
+            lengths.cpu(),
+            batch_first=True,
+            enforce_sorted=False
+        )
+
+        # ④ LSTM
+        _, (h_n, _) = self.lstm(packed)
+
+        # h_n: [num_layers * num_directions, batch, hidden_dim]
+        # 由于是双向，最后一层包括 forward 与 backward
+        # forward:  index = (num_layers - 1) * 2
+        # backward: index = forward + 1
+        forward_idx = (config.NUM_LAYERS - 1) * 2
+        backward_idx = forward_idx + 1
+
+        last_hidden_forward = h_n[forward_idx]  # [batch, hidden]
+        last_hidden_backward = h_n[backward_idx]  # [batch, hidden]
+
+        # ⑤ 拼接双向 hidden
+        last_hidden = torch.cat((last_hidden_forward, last_hidden_backward), dim=-1)
+
+        # ⑥ 线性分类
+        out = self.linear(last_hidden)
+
+        return out.squeeze(1)
+```
+
 **输入输出形状：**
 
 &lt;font color=&#39;red&#39;&gt;
@@ -9327,6 +9391,30 @@ $$c_t​=f_t​⊙c_{t−1}​+i_t​⊙g_t$$
   - 在资源受限的场景下（如移动端、嵌入式设备），部署 LSTM 会面临挑战。
 - 长期依赖建模仍然有限
   - 虽然 LSTM 延缓了梯度消失问题，但并不能完全消除。当序列极长时，模型依然难以有效捕捉非常远距离的依赖关系。
+
+## 常用工具
+### 深度学习框架
+#### Pytorch
+常用的深度学习框架
+
+#### TensorFlow
+
+### 机器学习库
+#### sklearn
+它提供了丰富的工具和算法，帮助用户轻松构建、训练和评估机器学习模型。
+
+数据处理：
+- 数据集切分：train_test_split
+
+### 数据处理
+- numpy
+- pandas
+- scipy
+
+### 图形化交互
+- TensorBoard：可以监听log数据，图形化展示训练曲线
+- tqdm：进度条
+- netron：模型结构可视化
 
 # References
 - [尚硅谷大模型技术之NLP1.0.3.pdf](/pdf/nlp/尚硅谷大模型技术之NLP1.0.3.pdf)
