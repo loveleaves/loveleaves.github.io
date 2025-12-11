@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Wed, 10 Dec 2025 22:52:44 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 11 Dec 2025 23:12:40 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【系统工程基础】 系统工程基础</title>
         <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
         <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
@@ -9631,12 +9631,257 @@ Transformer 的提出对自然语言处理产生了深远影响。在机器翻�
 之所以被称为“自”注意力，是因为模型在计算每个位置的表示时，所参考的信息全部来自同一个输入序列本身，而不是来自另一个序列。
 
 ##### 自注意力计算过程
+自注意力的完整计算过程如下：
+
+$$
+Attention(Q,K,V)=Softmax(\frac{Q \cdot K^{T}}{\sqrt{d_k}})V
+$$
+
+![transformer_attention_1](/imgs/nlp/transformer_attention_1.png)
+
+![transformer_attention_2](/imgs/nlp/transformer_attention_2.png)
+
+**（1）生成Query、Key、Value向量**
+
+自注意力机制的第一步，是将输入序列中的每个位置表示映射为三个不同的向量，分别是 查询（Query）、键（Key） 和 值（Value）。其中$W_q、W_k、W_v$均为可学习的参数矩阵。
+- Query：表示当前词的用于发起注意力匹配的向量； $Q=X W_x$
+- Key：表示序列中每个位置的内容标识，用于与 Query 进行匹配； $Q=X W_k$
+- Value：表示该位置携带的信息，用于加权汇总得到新的表示。 $Q=X W_v$
+
+**（2）计算位置间相关性**
+
+完成 Query、Key、Value 向量的生成后，模型会使用每个位置的 Query 向量与所有位置的 Key 向量进行相关性评分。
+
+评分函数采用向量点积形式。由于在高维空间中，点积的数值可能过大，会影响 softmax 的稳定性，因此在实际计算中对结果进行了缩放。最终的评分函数为：
+$$
+Score(i,j) = \frac{q_i \cdot k_j}{\sqrt{d_k}} 
+$$
+其中$d_k$是key向量的维度，用于缩放点积的幅度（假设q、k方差为1，则$q_i \cdot k_j$的方差为$d_k$）。
+
+**（3）计算注意力权重**
+
+在得到每个位置与所有位置之间的相关性评分后，模型会使用 softmax 函数进行归一化，确保每个位置对所有位置的关注程度之和为 1，从而形成一个有效的加权分布。
+
+**（4）加权汇总生成输出**
+
+最后，模型会根据注意力权重对所有位置的 Value 向量进行加权求和，得到每个位置融合全局信息后的新表示。
 
 ##### 多头自注意力计算过程
+自注意力机制通过 Query、Key 和 Value 向量计算每个位置与其他位置之间的依赖关系，使模型能够有效捕捉序列中的全局信息。
+
+然而，自然语言本身具有高度的语义复杂性，一个句子往往同时包含多种类型的语义关系。要准确理解这类句子，模型需要同时识别并建模多种层次和类型的依赖关系。但这些信息很难通过单一视角或一套注意力机制完整捕捉。
+
+为此，Transformer 引入了多头注意力机制（Multi-Head Attention）。其核心思想是通过多组独立的 Query、Key、Value 投影，让不同注意力头分别专注于不同的语义关系，最后将各头的输出拼接融合。
+
+多头注意力的计算过程如下：
+
+**（1）分别计算各头注意力**
+
+每个 Self-Attention Head 独立计算一套注意力输出。
+
+![Multi_Head_Attention_1](/imgs/nlp/Multi_Head_Attention_1.png)
+
+**（2）合并多头注意力**
+
+多个输出矩阵按维度拼接，再乘以得到最终多头注意力的输出。
+
+![Multi_Head_Attention_2](/imgs/nlp/Multi_Head_Attention_2.png)
+
+#### 前馈神经网络层（Feed-Forward Network，FFN）
+前馈神经网络（Feed-Forward Network，简称 FFN）是 Transformer 编码器中每个子层的重要组成部分，紧接在多头注意力子层之后。它通过对每个位置的表示进行**逐位置、非线性**的特征变换，进一步提升模型对复杂语义的建模能力。
+
+一个标准的 FFN 子层包含两个线性变换和一个非线性激活函数，中间通常使用 ReLU激活。其计算公式如下：
+
+$$
+FFN(x)=Linear_2(ReLU(Linear_1(x)))=W_2\cdot ReLU(W_1\cdot x+b_1)+b_2
+$$
+
+![transformer_ffn](/imgs/nlp/transformer_ffn.png)
+
+#### 残差连接与层归一化（Residual Connection &amp; LayerNorm）
+在 Transformer 的每个编码器层中，每个子层，包括自注意力子层和前馈神经网络子层，其输出都要经过残差连接（Residual Connection）和层归一化（Layer Normalization）处理。这两者是深层神经网络中常用的结构，用于缓解模型训练中的梯度消失、收敛困难等问题，对于Transformer能够堆叠多层至关重要。
+
+![transformer_res_ln](/imgs/nlp/transformer_res_ln.png)
+
+##### 残差连接
+
+残差连接（Residual Connection，也称“跳跃连接”或“捷径连接”）最初在计算机视觉领域被提出，用于缓解深层神经网络中的梯度消失问题。其核心思想是：
+
+将子层的输入直接与其输出相加，形成一条跨越子层的“捷径”，其数学形式为：
+$$
+y=x+SubLayer(x)
+$$
+残差连接确保反向传播时，梯度至少有一条稳定通路可回传，是深层网络可稳定训练的关键结构。
+
+##### 层归一化
+
+每个子层在残差连接之后都会进行层归一化（Layer Normalization，简称 LayerNorm）。它的主要作用是规范输入序列中每个token的特征分布（某个token的表示可能在不同维度上有较大数值差异），
+提升模型训练的稳定性。
+
+该操作会将每个token的向量调整为均值为 0、方差为 1 的规范分布，具体的计算公式如下：
+
+假如某个token的特征向量为$x=[x^1, x^2,...,x^d]$，
+
+1. 均值计算：
+
+计算该向量在所有特征维度上的平均值
+$$
+\mu = \frac{1}{d} \sum_{i=1}^{d} x^i
+$$
+其中$d$为特征维度（向量长度）。
+
+2. 标准差计算
+计算向量各维度的标准差
+$$
+\sigma = \sqrt{\frac{1}{d} \sum_{i=1}^{d} (x^i-\mu)^2}
+$$
+
+3. 标准化变换
+将每个特征值转换为均值为 0、方差为 1 的标准正态分布；
+$$
+\hat{x^i}=\frac{x^i-\mu}{\sigma+\epsilon}
+$$
+$\epsilon$为一个小的常数，防止出现除以0的情况。
+
+4. 缩放和平移
+让模型可以学习在归一化后的基础上进行适当的调整，保证归一化不会限制模型的表示能力。
+$$
+LayerNorm(x^i)=\gamma^i\cdot\hat{x^i}+\beta^{i}
+$$
+$\gamma^i$和$\beta^i$为可学习参数。
+
+##### Pre_Norm
+在更深层次网络使用效果可能更好，在pytorch的nn.Transformer中通过norm_first参数设置。
+
+Transformer的被称之为`Post_Norm`：
+$$
+LayerNorm(x+SubLayer(x))
+$$
+
+Pre_Norm方法：
+$$
+x+SubLayer(LayerNorm(x))
+$$
+
+#### 位置编码（Positional Encoding）
+Transformer 模型完全摒弃了 RNN 结构，可以并行处理所有位置的信息，但也无法天然地捕捉词语之间的顺序关系。
+
+为了解决这一问题，Transformer 引入了一个关键机制——位置编码（Positional Encoding）。该机制为每个词引入一个表示其位置信息的向量，并将其与对应的词向量相加，作为模型输入的一部分。
+
+**编码策略**
+
+1. 最直接的方式：使用绝对位置编号来表示每个词的位置。
+   - 问题：越靠后的 token 位置编码就越大，若直接与词向量相加，会造成数值倾斜，让模型更关注位置，而忽视词义。
+2. 位置编号归一化为[0, 1]区间，例如用$\frac{Pos}{T}$表示位置，其中 T是句子长度。
+   - 问题：相同位置的词在不同长度句子中的位置编码不再一致。
+3. Transformer：使用了一种基于正弦（sin）和余弦（cos）函数的位置编码方式，具体定义如下：
+$$
+PE_{（pos,2i）}=\sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}})\\\\
+PE_{（pos,2i+1）}=\cos(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
+$$
+其中：
+- pos是当前词在序列中的位置；
+- i用于表示位置编码向量的维度索引，2i表示偶数维，2i+1表示奇数维；
+- $d_{model}$是词向量的维度大小。
+
+Transformer提出的这种编码方式不依赖任何可学习参数，数值稳定，并具备以下优势：
+- 所有值都在[−1,1]范围内，数值稳定
+- 编码方式固定、可预计算，无需训练；
+- 相同位置的编码在不同句子中保持一致；
+- 编码之间具有数学规律，便于模型在注意力机制中感知词语之间的相对位置关系。
 
 ### 解码器（Decoder）
+编码器也由多个结构相同的解码器层堆叠组成。每个Decoder Layer都包含三个子层，分别是Masked自注意力子层、编码器-解码器注意力子层（Encoder-Decoder Attention）和前馈神经网络子层（Feed-Forward Network）。
+- Masked自注意力子层（Masked Self Attention）：
+  - 用于建模当前位置与前文词之间的依赖关系。
+  - 为了在训练时模拟逐词生成的过程，引入遮盖机制（Mask），限制每个位置只能关注它前面的词。
+- 编码器-解码器注意力子层（Encoder-Decoder Attention）：
+  - 用于建模当前解码位置与源序列各位置之间的依赖关系。
+  - 通过注意力机制，模型能够根据当前状态从编码器的输出中提取相关上下文信息（相当于 Seq2Seq 模型中的 Attention 机制）。
+- 前馈神经网络子层（Feed-Forward Network）：与编码器中结构完全一致，对每个位置的表示进行非线性变换，增强模型的表达能力。
+
+每个子层后也都配有残差连接与层归一化（Layer Normalization），结构设计与编码器保持一致，确保训练的稳定性和效率。
+
+此外，解码器在输入端同样需要加入位置编码（Positional Encoding），用于提供序列中的位置信息，其计算方式与编码器中相同。
+在输出端，解码器的隐藏向量会送入一个线性变换层（Linear），映射为词表大小的向量，并通过 Softmax 生成一个概率分布，用于预测当前应输出的词。
+
+#### Masked自注意力子层（Masked Self Attention）
+- 并行计算：一次性输入完整目标序列，同时预测每个位置的词。
+- 遮盖机制（Mask）：限制每个位置只能关注它前面的词。
+
+![encoder_mask](/imgs/nlp/encoder_mask.png)
+
+&gt; 注意：在推理阶段，我们只使用解码器最后一个位置的输出作为当前步的预测结果。
+
+Mask 机制的实现非常简单：只需将注意力得分矩阵中当前位置对其后续位置的评分设置为`−∞`，如下图所示：
+
+![mask_1](/imgs/nlp/mask_1.png)
+
+这样，在经过 softmax 运算后，这些位置的权重会趋近于 0。最终在加权求和时，来自未来位置的信息几乎不会参与计算，从而实现了“**当前词只能看到它前面的词**”的约束。如下图所示：
+
+![mask_2](/imgs/nlp/mask_2.png)
+
+#### 编码器-解码器注意力子层（Encoder-Decoder Attention）
+该子层的主要作用是：建模当前解码位置与源语言序列中各位置之间的依赖关系，帮助模型在生成目标词时有效地参考输入内容，相当于Seq2Seq模型中的注意力机制。
+
+编码器-解码器注意力的核心机制与前面讲过的自注意力机制完全一致，区别仅在于：
+- Query 来自解码器当前的输入表示，即当前生成状态；
+- Key和Value 来自编码器的输出表示，即整个源序列的上下文。
 
 ### 训练与推理机制
+Transformer 的训练与推理都基于自回归生成机制（Autoregressive Generation）：模型逐步生成目标序列中的每一个词。然而，在实现方式上，训练与推理存在明显区别。
+
+#### 模型训练
+并行计算+mask机制
+
+#### 模型推理
+推理阶段，模型每一步都要重新输入当前已生成的全部词，通过自注意力机制建模上下文关系，预测下一个词。
+
+模型会基于**完整前文重新计算注意力分布**，生成当前步的输出。由于每一步的输入依赖前一步结果，整个过程必须**顺序执行，无法并行**。
+
+每步输出的是一个词的概率分布，最终生成结果也可使用不同的**解码策略**
+- 贪心搜索（Greedy）
+- 束搜索（Beam Search）
+
+### Pytorch API使用
+``` python
+from torch import nn
+
+# 经典 Transformer 结构
+transformer = nn.Transformer(
+    d_model=512, 
+    nhead=8, 
+    num_encoder_layers=6, 
+    num_decoder_layers=6, 
+    batch_first=True
+)
+```
+
+PyTorch 中的 Transformer 模块由以下几个核心类构成：
+
+#### nn.Transformer
+&gt; [nn.Transformer](https://docs.pytorch.org/docs/stable/generated/torch.nn.Transformer.html)
+
+封装了完整的 Transformer架构，由编码器和解码器组成。作为顶层接口，适用于需要同时使用编码器和解码器的任务，如机器翻译。支持用户通过参数自定义层数、注意力头数、隐藏维度等模型结构。
+
+#### nn.TransformerEncoder
+&gt; [nn.TransformerEncoder](https://docs.pytorch.org/docs/stable/generated/torch.nn.TransformerEncoder.html)
+
+实现了Transformer编码器结构，由多个编码器层的堆叠而成，用于将输入序列编码为上下文相关的表示。
+
+#### nn.TransformerDecoder
+&gt; [nn.TransformerDecoder](https://docs.pytorch.org/docs/stable/generated/torch.nn.TransformerDecoder.html)
+
+实现了Transformer解码器结构，由多个解码器层堆叠而成，用于基于编码结果逐步生成目标序列。
+
+#### nn.TransformerEncoderLayer
+&gt; [nn.TransformerEncoderLayer](https://docs.pytorch.org/docs/stable/generated/torch.nn.TransformerEncoderLayer.html)
+
+实现了单个编码器层结构，包含一个多头自注意力子层和一个前馈神经网络子层，两者均带有残差连接和 LayerNorm。
+
+#### nn.TransformerDecoderLayer
+&gt; [nn.TransformerDecoderLayer](https://docs.pytorch.org/docs/stable/generated/torch.nn.TransformerDecoderLayer.html)
+实现了单个解码器层结构，包含自注意力、编码器-解码器注意力、前馈子层，同样配有残差连接和 LayerNorm。
 
 ## 常用工具
 ### 深度学习框架
