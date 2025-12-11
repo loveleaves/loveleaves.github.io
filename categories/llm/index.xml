@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Thu, 11 Dec 2025 23:12:40 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 12 Dec 2025 00:23:10 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -676,14 +676,18 @@ Seq2Seq 模型由一个编码器（Encoder）和一个解码器（Decoder）构�
 ### 存在问题
 在上述 Seq2Seq 架构中，编码器会将整个源句压缩为一个固定长度的上下文向量，并将其作为解码器生成目标序列的唯一参考。这种“压缩再解压”的方式虽然结构简洁，但在实际任务中暴露出两个核心问题：
 1. 信息压缩困难，语义表达受限
+
 对于编码器而言，用一个定长向量去表达任意复杂的句子，是一项非常困难的任务。尤其在面对长句时，信息很容易在压缩过程中丢失，导致语义表达不完整。
+
 这种“信息瓶颈”限制了模型在处理长文本或复杂语义结构时的表现。
 
 2. 缺乏动态感知，解码难以精准生成
+
 解码器始终只能基于同一个上下文向量进行生成。
 但在实际生成过程中，不同位置的目标词，往往依赖源句中不同的关键信息：
-生成主语时，可能更依赖源句的开头；
-生成谓语或宾语时，可能需要参考句中或句末内容。
+- 生成主语时，可能更依赖源句的开头；
+- 生成谓语或宾语时，可能需要参考句中或句末内容。
+
 然而在固定表示下，解码器无法“有选择地关注”输入序列的不同部分，只能一视同仁地处理所有信息，从而降低了生成的准确性与灵活性。
 
 ## Attention机制
@@ -707,6 +711,7 @@ Seq2Seq 模型由一个编码器（Encoder）和一个解码器（Decoder）构�
 
 #### 相关性计算
 在目标序列生成的每一步，解码器都会计算当前时间步的隐藏状态与编码器各个时间步输出之间的相关性。这些相关性衡量了源句中每个位置对当前生成内容的重要程度，从而决定模型应将多少注意力分配给不同的源位置。
+
 相关性的计算依赖于特定的函数，通常被称为注意力评分函数（attention scoring function）。常见的评分函数实现方式将在下一节中详细介绍。
 
 ![attention](/imgs/nlp/attention_step1.png)
@@ -933,9 +938,13 @@ Transformer 模型完全摒弃了 RNN 结构，可以并行处理所有位置的
 **编码策略**
 
 1. 最直接的方式：使用绝对位置编号来表示每个词的位置。
-   - 问题：越靠后的 token 位置编码就越大，若直接与词向量相加，会造成数值倾斜，让模型更关注位置，而忽视词义。
+
+问题：越靠后的 token 位置编码就越大，若直接与词向量相加，会造成数值倾斜，让模型更关注位置，而忽视词义。
+
 2. 位置编号归一化为[0, 1]区间，例如用$\frac{Pos}{T}$表示位置，其中 T是句子长度。
-   - 问题：相同位置的词在不同长度句子中的位置编码不再一致。
+
+问题：相同位置的词在不同长度句子中的位置编码不再一致。
+
 3. Transformer：使用了一种基于正弦（sin）和余弦（cos）函数的位置编码方式，具体定义如下：
 $$
 PE_{（pos,2i）}=\sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}})\\\\
@@ -1044,6 +1053,13 @@ PyTorch 中的 Transformer 模块由以下几个核心类构成：
 #### nn.TransformerDecoderLayer
 &gt; [nn.TransformerDecoderLayer](https://docs.pytorch.org/docs/stable/generated/torch.nn.TransformerDecoderLayer.html)
 实现了单个解码器层结构，包含自注意力、编码器-解码器注意力、前馈子层，同样配有残差连接和 LayerNorm。
+
+### The Annotated Transformer 解读
+&gt; [The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)
+&gt; 
+&gt; [Transformer从入门到精通](https://www.cnblogs.com/Icys/p/18119309/annotated-transformer-chinese)
+
+《The Annotated Transformer》是对Transformer模型的详细注释和实现，基于论文《Attention Is All You Need》。该文档逐行解释了Transformer的架构、编码器-解码器堆栈、自注意力机制、位置编码等关键组件，并提供了PyTorch实现。
 
 ## 常用工具
 ### 深度学习框架
