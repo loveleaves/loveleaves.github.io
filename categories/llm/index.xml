@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Fri, 12 Dec 2025 00:23:10 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 13 Dec 2025 10:26:04 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -881,12 +881,12 @@ $$
 残差连接确保反向传播时，梯度至少有一条稳定通路可回传，是深层网络可稳定训练的关键结构。
 
 ##### 层归一化
+每个子层在残差连接之后都会进行层归一化（Layer Normalization，简称 LayerNorm）。它的主要作用是规范输入序列中每个token的特征分布（某个token的表示可能在不同维度上有较大数值差异），提升模型训练的稳定性。
 
-每个子层在残差连接之后都会进行层归一化（Layer Normalization，简称 LayerNorm）。它的主要作用是规范输入序列中每个token的特征分布（某个token的表示可能在不同维度上有较大数值差异），
-提升模型训练的稳定性。
-
-该操作会将每个token的向量调整为均值为 0、方差为 1 的规范分布，具体的计算公式如下：
-
+该操作会将每个token的向量调整为均值为 0、方差为 1 的规范分布（LayerNorm 并不会把任意分布变成真正的标准正态分布，它做的是：仿射标准化（affine normalization），即均值 → 0、方差 → 1，而不保证高阶矩（偏度、峰度）符合正态分布），具体的计算公式如下：
+$$
+总体公式：LayerNorm(x)=\gamma \odot \frac{x-\mu}{\sigma+\epsilon}+\beta
+$$
 假如某个token的特征向量为$x=[x^1, x^2,...,x^d]$，
 
 1. 均值计算：
@@ -898,24 +898,39 @@ $$
 其中$d$为特征维度（向量长度）。
 
 2. 标准差计算
+
 计算向量各维度的标准差
 $$
 \sigma = \sqrt{\frac{1}{d} \sum_{i=1}^{d} (x^i-\mu)^2}
 $$
 
 3. 标准化变换
+
 将每个特征值转换为均值为 0、方差为 1 的标准正态分布；
 $$
 \hat{x^i}=\frac{x^i-\mu}{\sigma+\epsilon}
 $$
 $\epsilon$为一个小的常数，防止出现除以0的情况。
 
-4. 缩放和平移
+4. 缩放和平移（可学习的仿射变换）
+
 让模型可以学习在归一化后的基础上进行适当的调整，保证归一化不会限制模型的表示能力。
 $$
 LayerNorm(x^i)=\gamma^i\cdot\hat{x^i}+\beta^{i}
 $$
 $\gamma^i$和$\beta^i$为可学习参数。
+
+思考：
+1. **为什么 Transformer 用 LayerNorm 而不是 BatchNorm？**
+
+| 对比项                   | BatchNorm | LayerNorm |
+| --------------------- | --------- | --------- |
+| 归一化维度                 | batch 维   | feature 维 |
+| 是否依赖 batch size       | 是         | 否         |
+| NLP / Transformer 适配性 | 差         | 极好        |
+| 推理阶段一致性               | 有偏差       | 完全一致      |
+| 变长序列                  | 不适合       | 天然支持      |
+
 
 ##### Pre_Norm
 在更深层次网络使用效果可能更好，在pytorch的nn.Transformer中通过norm_first参数设置。
@@ -943,7 +958,10 @@ Transformer 模型完全摒弃了 RNN 结构，可以并行处理所有位置的
 
 2. 位置编号归一化为[0, 1]区间，例如用$\frac{Pos}{T}$表示位置，其中 T是句子长度。
 
-问题：相同位置的词在不同长度句子中的位置编码不再一致。
+问题：使用$\frac{Pos}{T}$作为位置编码在形式上是合法的，但：
+- 它将相对位置信息与序列长度强耦合，导致相同相对距离在不同长度下映射到不同编码值，使 Attention 无法学习稳定的相对位置关系；
+- 同时该编码在内积空间中退化为低秩结构，表达能力不足，且在长序列外推时表现不稳定。
+- 相比之下，正弦位置编码具备可线性解析的位移结构，能够在 Attention 中自然建模相对位置并支持长度外推。
 
 3. Transformer：使用了一种基于正弦（sin）和余弦（cos）函数的位置编码方式，具体定义如下：
 $$
@@ -1060,6 +1078,8 @@ PyTorch 中的 Transformer 模块由以下几个核心类构成：
 &gt; [Transformer从入门到精通](https://www.cnblogs.com/Icys/p/18119309/annotated-transformer-chinese)
 
 《The Annotated Transformer》是对Transformer模型的详细注释和实现，基于论文《Attention Is All You Need》。该文档逐行解释了Transformer的架构、编码器-解码器堆栈、自注意力机制、位置编码等关键组件，并提供了PyTorch实现。
+
+## 预训练模型
 
 ## 常用工具
 ### 深度学习框架
