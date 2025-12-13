@@ -10,7 +10,7 @@
 <meta property='og:description' content="记录PCB从设计到开发的全流程，包含电子设计常见知识点、PCB设计与开发、元器件选型等">
 <meta property='og:url' content='https://loveleaves.github.io/p/embedded_programing_pcb/'>
 <meta property='og:site_name' content='安哲睿'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-13T11:04:22&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-26T22:40:09&#43;08:00'/>
 <meta name="twitter:title" content="【Hardware】硬件设计与选型">
 <meta name="twitter:description" content="记录PCB从设计到开发的全流程，包含电子设计常见知识点、PCB设计与开发、元器件选型等">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -747,9 +747,8 @@
 <li>(2) 优先关键元器件：如DDR、射频等核心部分应优先布线，类似信号传输线应提供专层、电源、地回路。其他次要信号要顾全整体，不可以和关键信号相抵触。</li>
 <li>(3) 关键信号线优先：电源、模拟小信号、高速信号、时钟信号和同步信号等关键信号优先布线。</li>
 </ul>
-<details>
-  <summary>布线要求</summary>
-  <ul>
+<p><strong>布线要求：</strong></p>
+<ul>
 <li>1.顶层优先原则：尽量在顶层布线</li>
 <li>2.电源线原则上要加粗：因为电源线是要给电路板各个模块供电的，电源线加粗有利于电流在主干道上流通；在日常PCB设计中，在25℃时，对于铜厚为10z(盎司)的导线，10mil线宽能够承载0.65A电流，40mil线宽能够承载2.3A电流。</li>
 <li>3.同一层内走线大于90°：同一层走线禁止90°或者走锐角，从原理上讲，锐角直角走线会造成走线阻抗不连续，对于信号的传输有影响，推荐走线135°</li>
@@ -758,8 +757,6 @@
 <li>6.PCB布线要尽量远离安装孔与电路板边缘：在PCB钻孔加工中，很容易会切掉一部分导线，为了电路板功能，应尽量远离这些位置。</li>
 <li>7.需要添加泪滴。</li>
 </ul>
-
-</details>
 <h3 id="原件符号绘制">原件符号绘制
 </h3><p>对于元件库中没有的但需要使用的原件，进行元件符号绘制与封装。</p>
 <h2 id="pcb设计常用知识点">PCB设计常用知识点
@@ -2484,7 +2481,7 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 
 
         <span>
-            最后更新于 Dec 13, 2025 11:04 &#43;0800
+            最后更新于 Nov 26, 2025 22:40 &#43;0800
         </span>
     </section></footer>
 
