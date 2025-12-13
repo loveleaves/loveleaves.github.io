@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sat, 13 Dec 2025 10:26:04 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 13 Dec 2025 18:25:27 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -978,6 +978,85 @@ Transformer提出的这种编码方式不依赖任何可学习参数，数值稳
 - 编码方式固定、可预计算，无需训练；
 - 相同位置的编码在不同句子中保持一致；
 - 编码之间具有数学规律，便于模型在注意力机制中感知词语之间的相对位置关系。
+
+##### 问题本质：位置编码要解决什么？
+Transformer 的自注意力机制：
+$$
+\mathrm{Attn}(Q,K,V)=\mathrm{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
+$$
+本身 **对序列是置换不变的（permutation invariant）**。
+
+位置编码的目标是：
+&gt; 向 token 表示中注入一个 **与绝对位置和相对位置有关、可泛化、可比较的信号**
+
+因此一个“合格”的位置编码至少需要满足：
+
+1. **同一位置的编码在不同样本中一致**
+2. **不同位置可区分**
+3. **相对位置信息可被线性或低阶运算提取**
+4. **对未见过的序列长度具备外推能力**
+
+&gt; 如果方案二的$\frac{pos}{T}$改为$\frac{pos}{C}, c=10000$会有问题吗？
+
+1. 定义
+$$
+\mathrm{PE}(pos)=\frac{pos}{C},\quad C=10000
+$$
+2. 绝对位置一致性：无论句长多少，数值一致。
+3. 但问题依然存在（关键）：
+   1. 位置编码是一维标量：所有位置落在一条直线上，表达能力极弱：Attention 只能感知：$Q(K+PE)^\top$，线性偏移，难以刻画复杂相对关系
+   2. 尺度问题（推导）：最大位置$pos_{max}$：$\frac{pos_{max}}{10000} \ll 1$，与 embedding 数值（通常 $\sim \mathcal{N}(0,1)$）相比：$\mathrm{Var}(\mathrm{PE}) \ll \mathrm{Var}(\mathrm{Token})$，位置几乎被“淹没”
+   3. 无法表达相对位移（核心）：设两个位置：$\Delta = \frac{pos_2 - pos_1}{10000}$，Attention 中的内积项：$(x + p_1)^\top(x + p_2)$，只能学到**线性距离差**，无法区分：“近但在前”、“近但在后”、“周期性结构”
+
+&gt; 为什么 Transformer 使用 sin / cos（核心推导）
+1. 定义（原始公式）
+$$
+\begin{aligned}
+\mathrm{PE}_{(pos,2i)} &amp;= \sin\left(\frac{pos}{10000^{2i/d}}\right) \\\\
+\mathrm{PE}_{(pos,2i+1)} &amp;= \cos\left(\frac{pos}{10000^{2i/d}}\right)
+\end{aligned}
+$$
+
+2. 核心性质一：相对位置可线性表示（关键推导）
+
+利用三角恒等式：
+$$
+\sin(a+b) = \sin a \cos b + \cos a \sin b \\\\
+\cos(a+b) = \cos a \cos b - \sin a \sin b
+$$
+设：
+$$
+PE(pos+k) = A(k)\cdot PE(pos)
+$$
+其中 (A(k)) 是仅依赖于 (k) 的线性变换。
+Attention 可通过线性层感知相对位移
+
+3. 核心性质二：多尺度位置分解
+$$
+\omega_i = 10000^{-2i/d}
+$$
+
+* 小 (i)：低频 → 长距离
+* 大 (i)：高频 → 局部顺序
+
+即：
+$$
+pos \mapsto (\sin(\omega_1 pos), \dots, \sin(\omega_d pos))
+$$
+等价于：
+&gt; 将位置映射到一个 **多尺度 Fourier 特征空间**
+
+4. 核心性质三：对任意长度具备外推性
+
+sin / cos：
+
+* 定义在整个实数域
+* 不依赖最大长度
+* 不需要重新训练 embedding
+
+&gt; `pos / seq_len` 完全不具备该性质
+
+---
 
 ### 解码器（Decoder）
 编码器也由多个结构相同的解码器层堆叠组成。每个Decoder Layer都包含三个子层，分别是Masked自注意力子层、编码器-解码器注意力子层（Encoder-Decoder Attention）和前馈神经网络子层（Feed-Forward Network）。
