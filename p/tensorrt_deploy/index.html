@@ -502,7 +502,10 @@
 <ol>
 <li>
 <p>反序列化创建engine, 得为engine提供数据：<code>runtime-&gt;deserializeCudaEngine(modelData, modelSize)</code>,其中<code>modelData</code>包含的是input和output的名字，形状，大小和数据类型</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -517,10 +520,9 @@
 </span></span><span class="line"><span class="cl"><span class="n">INPUT_SHAPE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span> <span class="c1">// [B, C, H, W]
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">OUTPUT_NAME</span> <span class="o">=</span> <span class="s">&#34;prob&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="n">OUTPUT_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
-</span></span><span class="line"><span class="cl"><span class="n">DTYPE</span> <span class="o">=</span> <span class="n">trt</span><span class="p">.</span><span class="n">float32</span>
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl"><span class="n">DTYPE</span> <span class="o">=</span> <span class="n">trt</span><span class="p">.</span><span class="n">float32</span></span></span></code></pre></td></tr></table>
 </div>
-</div></li>
+</div></code></li>
 <li>
 <p>从engine创建执行上下文:<code>engine-&gt;createExecutionContext()</code></p>
 </li>
@@ -595,7 +597,10 @@
 	
 ></li>
 <li>2.1.2. 在运行时，向engine请求绑定维度会返回用于构建网络的相同维度。这意味着，得到的还是动态的维度[-1, in_channel, -1, -1]：
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -605,8 +610,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1">// execution_context-&gt;getTensorShape // TR10接口
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div>获取当前的实际维度，需要查询执行上下文：
-<div class="highlight"><div class="chroma">
+</div></code>获取当前的实际维度，需要查询执行上下文：
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
@@ -614,7 +622,7 @@
 <pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">context</span><span class="p">.</span><span class="n">getBindingDimensions</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">// return [3, 1, 3, 3]
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div></li>
+</div></code></li>
 </ul>
 </li>
 </ul>
@@ -665,15 +673,17 @@
 </ul>
 </li>
 <li>2.3. 通过protoc编译<code>onnx-ml.proto</code>，产生<code>onnx-ml.pb.cc</code>文件
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash make-onnx-pb.sh
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash make-onnx-pb.sh</span></span></code></pre></td></tr></table>
 </div>
-</div></li>
+</div></code></li>
 </ul>
 </li>
 <li>create-onnx.py
@@ -699,37 +709,43 @@
 <li>4.2. 掌握onnx和helper实现对onnx文件的各种编辑和修改
 <ul>
 <li>增：一般伴随增加node和tensor
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xxx_tensor</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xxx_node</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xxx_node</span><span class="p">)</span></span></span></code></pre></td></tr></table>
 </div>
-</div></li>
+</div></code></li>
 <li>删：
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xxx_node</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xxx_node</span><span class="p">)</span></span></span></code></pre></td></tr></table>
 </div>
-</div></li>
+</div></code></li>
 <li>改：
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">input_node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">input_node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span></span></span></code></pre></td></tr></table>
 </div>
-</div></li>
+</div></code></li>
 </ul>
 </li>
 </ul>
@@ -772,15 +788,17 @@
 <li>如果进行推理，将模型设为推理状态：这一点很重要，因为像dropout, batchnorm这样的算子在推理和训练模式下的行为是不同的。</li>
 <li>导出为onnx模型：<code>torch.onnx.export()</code></li>
 <li>运行python脚本，生成onnx，在<code>main.cpp</code>中会对其进行解析
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="n">gen</span><span class="o">-</span><span class="n">onnx</span><span class="o">.</span><span class="n">py</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="n">gen</span><span class="o">-</span><span class="n">onnx</span><span class="o">.</span><span class="n">py</span></span></span></code></pre></td></tr></table>
 </div>
-</div></li>
+</div></code></li>
 <li>运行后的图示：
 <img src="/imgs/tensorRT/7.onnx-proto.jpg"
 	
@@ -851,7 +869,10 @@
     >YOLOv8部署推理案例</a>
 Usage:</li>
 </ol>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -864,10 +885,9 @@ Usage:</li>
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--onnx<span class="o">=</span>yolov8s.onnx <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--saveEngine<span class="o">=</span>yolov8s.engine <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--fp16
-</span></span><span class="line"><span class="cl"><span class="c1"># or --int8</span>
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl"><span class="c1"># or --int8</span></span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="plugin">Plugin
+</div></code><h2 id="plugin">Plugin
 </h2><p>1.如何在pytorch里面导出一个插件
 2.插件解析时如何对应，在onnx parser中如何处理
 3.插件的creator实现

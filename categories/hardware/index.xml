@@ -1684,7 +1684,10 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;/ul&gt;
 &lt;p&gt;这些功能都不能由 GPIO 单独实现。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;典型背光驱动电路&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;details&gt;
+  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
+  &lt;div class=&#34;highlight&#34;&gt;
+    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -1705,10 +1708,9 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;              &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;              &lt;span class=&#34;n&#34;&gt;R2&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;              &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;GND&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;GND&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;strong&gt;特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;p&gt;&lt;strong&gt;特点：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;GPIO 只负责控制 栅极，几乎无电流压力&lt;/li&gt;
 &lt;li&gt;大电流由 MOS 承受&lt;/li&gt;
@@ -2248,7 +2250,10 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;p&gt;I2C协议是一种多主机的串行通信协议，它只需要两条线：SDA（数据线）和SCL（时钟线）。它支持多个从设备连接到同一总线上，每个设备都有一个唯一的地址。&lt;/p&gt;
 &lt;p&gt;I2C协议通过地址来选择不同的从设备进行数据交换，因此相比SPI节省了引脚资源。其通信速率低于SPI，但足以应对多数应用。&lt;/p&gt;
 &lt;p&gt;ESP32S3初始化I2C示例&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;details&gt;
+  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
+  &lt;div class=&#34;highlight&#34;&gt;
+    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -2279,10 +2284,9 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;i2c_param_config&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BSP_I2C_NUM&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i2c_conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i2c_driver_install&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BSP_I2C_NUM&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i2c_conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 不设置buffer
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h5 id=&#34;spi&#34;&gt;SPI
+&lt;/div&gt;&lt;/code&gt;&lt;h5 id=&#34;spi&#34;&gt;SPI
 &lt;/h5&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.wangdali.net/spi/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;SPI总线协议&lt;/a&gt;&lt;/p&gt;
@@ -2392,7 +2396,10 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
     &gt;lvgl控件&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;常用控件：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;details&gt;
+  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
+  &lt;div class=&#34;highlight&#34;&gt;
+    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -2401,11 +2408,13 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lv_XXX_create() // 如btn按键等
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lv_label_create() // label
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lv_timer_create() // timer
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lv_timer_create() // timer&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;事件Event&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;p&gt;事件Event&lt;/p&gt;
+&lt;details&gt;
+  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
+  &lt;div class=&#34;highlight&#34;&gt;
+    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -2418,10 +2427,9 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;状态变化：失去焦点、获得焦点
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;对象变化：创建、删除、页面（屏）加载
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;添加事件接口：lv_obj_add_event_cb()
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;添加事件接口：lv_obj_add_event_cb()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/diy/add_event.png&#34;
+&lt;/div&gt;&lt;/code&gt;&lt;p&gt;&lt;img src=&#34;https://loveleaves.github.io/imgs/diy/add_event.png&#34;
 	
 	
 	
@@ -2444,15 +2452,17 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 &gt;&lt;/p&gt;
 &lt;h4 id=&#34;常见问题&#34;&gt;常见问题
 &lt;/h4&gt;&lt;p&gt;1、长文件名无法正常显示或其中中文无法显示&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;details&gt;
+  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
+  &lt;div class=&#34;highlight&#34;&gt;
+    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;settting里面设置fat的Long filename support，API character encoding使用utf-8，记得保存
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;settting里面设置fat的Long filename support，API character encoding使用utf-8，记得保存&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;蓝牙模块&#34;&gt;蓝牙模块
+&lt;/div&gt;&lt;/code&gt;&lt;h3 id=&#34;蓝牙模块&#34;&gt;蓝牙模块
 &lt;/h3&gt;&lt;h4 id=&#34;简介&#34;&gt;简介
 &lt;/h4&gt;&lt;p&gt;蓝牙模块可以将有线串口数据流转换为无线蓝牙数据流，实现无线串口功能。&lt;/p&gt;
 &lt;table&gt;
@@ -2741,7 +2751,10 @@ View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-e
 &lt;h4 id=&#34;qmi8658&#34;&gt;QMI8658
 &lt;/h4&gt;&lt;p&gt;国产芯片&lt;/p&gt;
 &lt;p&gt;ESP32示例代码：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;details&gt;
+  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
+  &lt;div class=&#34;highlight&#34;&gt;
+    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -2782,10 +2795,9 @@ View the PDF file &lt;a class=&#34;pdf-source&#34; id=&#34;pdf-source-noscript-e
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_write_byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_CTRL7&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x03&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// CTRL7 允许加速度和陀螺仪
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_write_byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_CTRL2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x95&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// CTRL2 设置ACC 4g 250Hz
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;qmi8658_register_write_byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QMI8658_CTRL3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0xd5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// CTRL3 设置GRY 512dps 250Hz 
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;滤波&#34;&gt;滤波
+&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;滤波&#34;&gt;滤波
 &lt;/h4&gt;&lt;h3 id=&#34;tf卡&#34;&gt;TF卡
 &lt;/h3&gt;&lt;p&gt;esp-idf官方例程：https://github.com/espressif/esp-idf/tree/bbe8aabca0/examples/storage/sd_card&lt;/p&gt;
 &lt;p&gt;ESP32与TF卡通信主要有两种方式：&lt;/p&gt;

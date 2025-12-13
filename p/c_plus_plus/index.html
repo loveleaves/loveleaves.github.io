@@ -582,7 +582,10 @@
 <li>可移植性。
 一般实现：</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -599,10 +602,9 @@
 </span></span><span class="line"><span class="cl">   //  ... all public and protected stuff goes here ...
 </span></span><span class="line"><span class="cl">private:
 </span></span><span class="line"><span class="cl">   class impl; unique_ptr&lt;impl&gt; pimpl; // opaque type here
-</span></span><span class="line"><span class="cl">};
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">};</span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="匿名函数-lambda表达式">匿名函数 lambda表达式
+</div></code><h3 id="匿名函数-lambda表达式">匿名函数 lambda表达式
 </h3><h3 id="引用-reference">引用 reference
 </h3><h3 id="指针">指针
 </h3><h3 id="异常">异常
@@ -610,7 +612,10 @@
 </h3><ul>
 <li>变长参数模板：</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -623,10 +628,9 @@
 </span></span><span class="line"><span class="cl">  explicit Sequential(Modules &amp;&amp;...modules) {
 </span></span><span class="line"><span class="cl">    modules_.reserve(sizeof...(Modules));
 </span></span><span class="line"><span class="cl">    pushBack(std::forward&lt;Modules&gt;(modules)...);
-</span></span><span class="line"><span class="cl">  } // 递归展开，调用基础pushBack方法
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">  } // 递归展开，调用基础pushBack方法</span></span></code></pre></td></tr></table>
 </div>
-</div><ul>
+</div></code><ul>
 <li>完美转发：std::forward，保留原来值类型（左值/右值）</li>
 <li>std::optional<T>：处理可能为null等值情况</li>
 <li>std::enable_shared_from_this<T>：在对象的成员函数中获取指向自身的智能指针，增加对象的引用计数，确保对象在异步操作或回调过程中不会被销毁</li>
@@ -664,7 +668,10 @@
     >tbb</a></li>
 <li>使用示例</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -686,7 +693,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 3、std::execution::par_unseq（并行和向量化执行）
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="c-20新特性">C++ 20新特性
+</div></code><h2 id="c-20新特性">C++ 20新特性
 </h2><ul>
 <li><a class="link" href="https://en.cppreference.com/w/cpp/20"  target="_blank" rel="noopener"
     >cppreference</a></li>
@@ -694,7 +701,10 @@
 <h2 id="其他">其他
 </h2><h3 id="宏定义">宏定义
 </h3><h4 id="va_-应用">#、#@、##、<strong>VA_ARGS</strong> 应用
-</h4><div class="highlight"><div class="chroma">
+</h4><details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -720,7 +730,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define debug(...) printf(__VA_ARGS__) </span><span class="c1">// 用于宏定义中代表可变参数
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="运行时类型反射run-time-type-reflection-rttr">运行时类型反射(Run Time Type Reflection, RTTR)
+</div></code><h3 id="运行时类型反射run-time-type-reflection-rttr">运行时类型反射(Run Time Type Reflection, RTTR)
 </h3><ul>
 <li>反射是一个进程检查、反省和修改其自身结构和行为的能力</li>
 <li>众所周知，java、c#、Go等语言在语言层面支持了反射特性。而c++不支持反射，因为C++没有在语言层面提供返回类的metadata的能力，所以很多属性要靠手动注册，于是乎有人自造轮子搞了个反射机制（UE中的U++通过UHT和UBT来支持反射）</li>

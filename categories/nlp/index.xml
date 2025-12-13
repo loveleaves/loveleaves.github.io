@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sat, 13 Dec 2025 10:26:04 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 13 Dec 2025 10:45:56 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -921,15 +921,51 @@ $$
 $\gamma^i$和$\beta^i$为可学习参数。
 
 思考：
-1. **为什么 Transformer 用 LayerNorm 而不是 BatchNorm？**
 
-| 对比项                   | BatchNorm | LayerNorm |
-| --------------------- | --------- | --------- |
-| 归一化维度                 | batch 维   | feature 维 |
-| 是否依赖 batch size       | 是         | 否         |
-| NLP / Transformer 适配性 | 差         | 极好        |
-| 推理阶段一致性               | 有偏差       | 完全一致      |
-| 变长序列                  | 不适合       | 天然支持      |
+&lt;details&gt;
+  &lt;summary&gt;&lt;ol&gt;
+&lt;li&gt;为什么 Transformer 用 LayerNorm 而不是 BatchNorm？&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/summary&gt;
+  &lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;对比项&lt;/th&gt;
+          &lt;th&gt;BatchNorm&lt;/th&gt;
+          &lt;th&gt;LayerNorm&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;归一化维度&lt;/td&gt;
+          &lt;td&gt;batch 维&lt;/td&gt;
+          &lt;td&gt;feature 维&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;是否依赖 batch size&lt;/td&gt;
+          &lt;td&gt;是&lt;/td&gt;
+          &lt;td&gt;否&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;NLP / Transformer 适配性&lt;/td&gt;
+          &lt;td&gt;差&lt;/td&gt;
+          &lt;td&gt;极好&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;推理阶段一致性&lt;/td&gt;
+          &lt;td&gt;有偏差&lt;/td&gt;
+          &lt;td&gt;完全一致&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;变长序列&lt;/td&gt;
+          &lt;td&gt;不适合&lt;/td&gt;
+          &lt;td&gt;天然支持&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/details&gt;
+
 
 
 ##### Pre_Norm

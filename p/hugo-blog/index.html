@@ -432,7 +432,10 @@ giscus app 已安装，否则访客将无法评论和回应。</li>
     >https://www.codeaer.com/post/enable-giscus-comments-in-hugo/</a></li>
 </ul>
 <p>配置 Giscus 根据版本有所不同，0.143.1版本可使用以下模板</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -465,16 +468,18 @@ giscus app 已安装，否则访客将无法评论和回应。</li>
 </span></span><span class="line"><span class="cl">    theme: &#34;dark&#34;
 </span></span><span class="line"><span class="cl">    lang: &#34;zh-CN&#34;
 </span></span><span class="line"><span class="cl">    lazyLoading: true
-</span></span><span class="line"><span class="cl">    crossorigin: &#34;anonymous&#34;
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    crossorigin: &#34;anonymous&#34;</span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="github部署">Github部署
+</div></code><h2 id="github部署">Github部署
 </h2><h3 id="常规部署">常规部署
 </h3><p>（1）前往【Github官网】，创建仓库 {github用户名}.github.io</p>
 <p>（2）前往Setting -&gt; Pages -&gt; Branch选择main分支，然后保存，会自动开启 https://{github用户名}.github.io 的地址，这地址也是以后访问博客的地址</p>
 <p>（3）回到hugo文件中，执行命令hugo -D，会生成 public 静态资源文件夹</p>
 <p>（4）在 public 执行以下命令上传到github仓库上，第一次上传可能需要输入账号密码</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -489,17 +494,19 @@ giscus app 已安装，否则访客将无法评论和回应。</li>
 </span></span><span class="line"><span class="cl">git commit -m &#34;first commit&#34;
 </span></span><span class="line"><span class="cl">git branch -M main
 </span></span><span class="line"><span class="cl">git remote add origin {你的github仓库地址}
-</span></span><span class="line"><span class="cl">git push -u origin main
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">git push -u origin main</span></span></code></pre></td></tr></table>
 </div>
-</div><p>（5）上传成功后访问 https://{github用户名}.github.io，成功搭建属于自己的Hugo博客</p>
+</div></code><p>（5）上传成功后访问 https://{github用户名}.github.io，成功搭建属于自己的Hugo博客</p>
 <h3 id="github-action自动部署">Github Action自动部署
 </h3><p>（1）Github创建一个新的仓库，用于存放Hugo的主文件</p>
 <p>（2）前往Setttings -&gt; Developer Settings -&gt; Personal access tokens，创建一个token(classic)</p>
 <p>（3）token选择永不过期，并勾选 repo 和 workflow 选项</p>
 <p>（4）为保证安全，将生成的token，保存的仓库的变量中，前往Settings -&gt; Secrets and variables -&gt; Actions中设置</p>
 <p>（5）在hugo主文件创建一个.github/workflows/xxxx.yaml文件，将以下内容复制进去，想具体了解更多，可查看【Github Action文档】</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -570,11 +577,13 @@ giscus app 已安装，否则访客将无法评论和回应。</li>
 </span></span><span class="line"><span class="cl">              EXTERNAL_REPOSITORY: 你的github名/你的仓库名
 </span></span><span class="line"><span class="cl">              PUBLISH_BRANCH: main
 </span></span><span class="line"><span class="cl">              PUBLISH_DIR: ./public
-</span></span><span class="line"><span class="cl">              commit_message: auto deploy
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">              commit_message: auto deploy</span></span></code></pre></td></tr></table>
 </div>
-</div><p>（6）在hugo主文件创建.gitignore文件，来避免提交不必要的文件</p>
-<div class="highlight"><div class="chroma">
+</div></code><p>（6）在hugo主文件创建.gitignore文件，来避免提交不必要的文件</p>
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -591,11 +600,13 @@ giscus app 已安装，否则访客将无法评论和回应。</li>
 </span></span><span class="line"><span class="cl">.hugo_build.lock
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"># hugo命令
-</span></span><span class="line"><span class="cl">hugo.exe
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">hugo.exe</span></span></code></pre></td></tr></table>
 </div>
-</div><p>（7）将hugo的主文件上传到仓库，上传成功后会触发Github Action，来自动部署你的静态页面</p>
-<div class="highlight"><div class="chroma">
+</div></code><p>（7）将hugo的主文件上传到仓库，上传成功后会触发Github Action，来自动部署你的静态页面</p>
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -610,10 +621,9 @@ giscus app 已安装，否则访客将无法评论和回应。</li>
 </span></span><span class="line"><span class="cl">git commit -m &#34;first commit&#34;
 </span></span><span class="line"><span class="cl">git branch -M main
 </span></span><span class="line"><span class="cl">git remote add origin {你的github仓库地址}
-</span></span><span class="line"><span class="cl">git push -u origin main
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">git push -u origin main</span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="reference">Reference
+</div></code><h2 id="reference">Reference
 </h2><ul>
 <li><a class="link" href="https://letere-gzj.github.io/hugo-stack/p/hugo/custom-blog/"  target="_blank" rel="noopener"
     >https://letere-gzj.github.io/hugo-stack/p/hugo/custom-blog/</a></li>

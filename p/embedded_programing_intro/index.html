@@ -616,7 +616,10 @@
 <p>I2C协议是一种多主机的串行通信协议，它只需要两条线：SDA（数据线）和SCL（时钟线）。它支持多个从设备连接到同一总线上，每个设备都有一个唯一的地址。</p>
 <p>I2C协议通过地址来选择不同的从设备进行数据交换，因此相比SPI节省了引脚资源。其通信速率低于SPI，但足以应对多数应用。</p>
 <p>ESP32S3初始化I2C示例</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -647,10 +650,9 @@
 </span></span><span class="line"><span class="cl">    <span class="n">i2c_param_config</span><span class="p">(</span><span class="n">BSP_I2C_NUM</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">i2c_conf</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">i2c_driver_install</span><span class="p">(</span><span class="n">BSP_I2C_NUM</span><span class="p">,</span> <span class="n">i2c_conf</span><span class="p">.</span><span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// 不设置buffer
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre></td></tr></table>
 </div>
-</div><h5 id="spi">SPI
+</div></code><h5 id="spi">SPI
 </h5><blockquote>
 <p><a class="link" href="http://www.wangdali.net/spi/"  target="_blank" rel="noopener"
     >SPI总线协议</a></p>
@@ -760,7 +762,10 @@
     >lvgl控件</a></li>
 </ul>
 <p>常用控件：</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -769,11 +774,13 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">lv_XXX_create() // 如btn按键等
 </span></span><span class="line"><span class="cl">lv_label_create() // label
-</span></span><span class="line"><span class="cl">lv_timer_create() // timer
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">lv_timer_create() // timer</span></span></code></pre></td></tr></table>
 </div>
-</div><p>事件Event</p>
-<div class="highlight"><div class="chroma">
+</div></code><p>事件Event</p>
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -786,10 +793,9 @@
 </span></span><span class="line"><span class="cl">状态变化：失去焦点、获得焦点
 </span></span><span class="line"><span class="cl">对象变化：创建、删除、页面（屏）加载
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">添加事件接口：lv_obj_add_event_cb()
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">添加事件接口：lv_obj_add_event_cb()</span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/imgs/diy/add_event.png"
+</div></code><p><img src="/imgs/diy/add_event.png"
 	
 	
 	
@@ -812,15 +818,17 @@
 ></p>
 <h4 id="常见问题">常见问题
 </h4><p>1、长文件名无法正常显示或其中中文无法显示</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">settting里面设置fat的Long filename support，API character encoding使用utf-8，记得保存
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">settting里面设置fat的Long filename support，API character encoding使用utf-8，记得保存</span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="蓝牙模块">蓝牙模块
+</div></code><h3 id="蓝牙模块">蓝牙模块
 </h3><h4 id="简介">简介
 </h4><p>蓝牙模块可以将有线串口数据流转换为无线蓝牙数据流，实现无线串口功能。</p>
 <div class="table-wrapper"><table>
@@ -1193,7 +1201,10 @@ View the PDF file <a class="pdf-source" id="pdf-source-noscript-e97cd62b" href="
 <h4 id="qmi8658">QMI8658
 </h4><p>国产芯片</p>
 <p>ESP32示例代码：</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -1234,10 +1245,9 @@ View the PDF file <a class="pdf-source" id="pdf-source-noscript-e97cd62b" href="
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL7</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">);</span> <span class="c1">// CTRL7 允许加速度和陀螺仪
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL2</span><span class="p">,</span> <span class="mh">0x95</span><span class="p">);</span> <span class="c1">// CTRL2 设置ACC 4g 250Hz
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL3</span><span class="p">,</span> <span class="mh">0xd5</span><span class="p">);</span> <span class="c1">// CTRL3 设置GRY 512dps 250Hz 
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre></td></tr></table>
 </div>
-</div><h4 id="滤波">滤波
+</div></code><h4 id="滤波">滤波
 </h4><h3 id="tf卡">TF卡
 </h3><p>esp-idf官方例程：https://github.com/espressif/esp-idf/tree/bbe8aabca0/examples/storage/sd_card</p>
 <p>ESP32与TF卡通信主要有两种方式：</p>

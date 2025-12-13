@@ -722,7 +722,10 @@ Kafka由多个broker组成，每个broker是一个节点，创建的一个topic�
 &lt;li&gt;分享交流：通过博客、GitHub等渠道分享自己的设计经验，与他人交流学习。
 记录设计过程示例：&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;details&gt;
+  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
+  &lt;div class=&#34;highlight&#34;&gt;
+    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -771,10 +774,9 @@ Kafka由多个broker组成，每个broker是一个节点，创建的一个topic�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;### 运维监控
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- 监控系统运行状态，及时发现并解决性能瓶颈等问题。
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- 使用ELK（Elasticsearch、Logstash、Kibana）进行日志监控。
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- 使用ELK（Elasticsearch、Logstash、Kibana）进行日志监控。&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;通过以上步骤，你可以构建出一个完整的个人架构设计案例集，记录自己的设计经验和心得，不断提升自己的架构设计能力。&lt;/p&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;p&gt;通过以上步骤，你可以构建出一个完整的个人架构设计案例集，记录自己的设计经验和心得，不断提升自己的架构设计能力。&lt;/p&gt;
 </description>
         </item>
         

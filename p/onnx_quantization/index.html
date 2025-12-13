@@ -413,24 +413,28 @@
 <p>During quantization, the floating point values are mapped to an 8 bit quantization space of the form: <code>val_fp32 = scale * (val_quantized - zero_point)</code></p>
 <p><code>scale</code> is a positive real number used to map the floating point numbers to a quantization space. It is calculated as follows:</p>
 <p>For asymmetric quantization:</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> scale = (data_range_max - data_range_min) / (quantization_range_max - quantization_range_min)
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> scale = (data_range_max - data_range_min) / (quantization_range_max - quantization_range_min)</span></span></code></pre></td></tr></table>
 </div>
-</div><p>For symmetric quantization:</p>
-<div class="highlight"><div class="chroma">
+</div></code><p>For symmetric quantization:</p>
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> scale = max(abs(data_range_max), abs(data_range_min)) * 2 / (quantization_range_max - quantization_range_min)
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> scale = max(abs(data_range_max), abs(data_range_min)) * 2 / (quantization_range_max - quantization_range_min)</span></span></code></pre></td></tr></table>
 </div>
-</div><p><code>zero_point</code> represents zero in the quantization space. It is important that the floating point zero value be exactly representable in quantization space. This is because zero padding is used in many CNNs. If it is not possible to represent 0 uniquely after quantization, it will result in accuracy errors.</p>
+</div></code><p><code>zero_point</code> represents zero in the quantization space. It is important that the floating point zero value be exactly representable in quantization space. This is because zero padding is used in many CNNs. If it is not possible to represent 0 uniquely after quantization, it will result in accuracy errors.</p>
 <p><img src="/imgs/quantization/1.png"
 	
 	
@@ -536,7 +540,10 @@
 </h4><ul>
 <li>using torch.export and Torch FX to capture the graph. It was released with PyTorch 2.5</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -559,10 +566,9 @@
 </span></span><span class="line"><span class="cl"><span class="n">onnx_program</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&#34;demo.onnx&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># Check the ONNX model</span>
 </span></span><span class="line"><span class="cl"><span class="n">onnx_model</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;deom.onnx&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">onnx</span><span class="o">.</span><span class="n">checker</span><span class="o">.</span><span class="n">check_model</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl"><span class="n">onnx</span><span class="o">.</span><span class="n">checker</span><span class="o">.</span><span class="n">check_model</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">)</span></span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="example">Example
+</div></code><h2 id="example">Example
 </h2><h3 id="simple-example">Simple Example
 </h3><p><a class="link" href="https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md"  target="_blank" rel="noopener"
     >The example</a> has three parts:</p>

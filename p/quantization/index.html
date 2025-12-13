@@ -567,7 +567,10 @@
 <h2 id="量化硬件实现">量化硬件实现
 </h2><h3 id="量化算子">量化算子
 </h3><p>基本公式：</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -578,10 +581,9 @@
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">float value = 1.0; // 输入值
 </span></span><span class="line"><span class="cl">float scale = 0.1; // 用于缩放输入值（尺度因子）
 </span></span><span class="line"><span class="cl">int32 qt_32 = round_fn(value/scale); // 取整
-</span></span><span class="line"><span class="cl">int8 qt_8 = clip(qt_32, Q_MIN, Q_MAX); // 范围截断
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">int8 qt_8 = clip(qt_32, Q_MIN, Q_MAX); // 范围截断</span></span></code></pre></td></tr></table>
 </div>
-</div><p>取整函数<code>round_fn</code>比较特别，在不同硬件上有不同的<strong>取整模式</strong>（主要对中间值，如1.5，-2.5等），常见取整模式：</p>
+</div></code><p>取整函数<code>round_fn</code>比较特别，在不同硬件上有不同的<strong>取整模式</strong>（主要对中间值，如1.5，-2.5等），常见取整模式：</p>
 <ul>
 <li>Round half to even，torch 、 C使用，向偶数方向取整</li>
 <li>Round half away from zero，向正负无穷方向取整</li>
@@ -617,7 +619,10 @@
 </ul>
 <h3 id="反量化算子">反量化算子
 </h3><p>基本公式：</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -626,14 +631,16 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Char value = 1; // 量化算子/运算输出值
 </span></span><span class="line"><span class="cl">float scale = 0.1; // 用于缩放输入值（尺度因子）
-</span></span><span class="line"><span class="cl">Float deq = (value * scale);
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">Float deq = (value * scale);</span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="量化模式量化与反量化">量化模式（量化与反量化）
+</div></code><h3 id="量化模式量化与反量化">量化模式（量化与反量化）
 </h3><ul>
 <li>对称量化：基本量化模式，分布对称</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -642,36 +649,39 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">int32 qt_32 = round_fn(value/scale); // 取整
 </span></span><span class="line"><span class="cl">int8 qt_8 = clip(qt_32, Q_MIN, Q_MAX); // 范围截断
-</span></span><span class="line"><span class="cl">// 反量化对应量化反向操作，类似encode《=》decode
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">// 反量化对应量化反向操作，类似encode《=》decode</span></span></code></pre></td></tr></table>
 </div>
-</div><ul>
+</div></code><ul>
 <li>非对称量化：充分利用int8数值范围（如relu负数范围）</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">int32 qt_32 = round_fn(value/scale) + offset; // 取整
-</span></span><span class="line"><span class="cl">uint8 qt_8 = clip(qt_32, Q_MIN, Q_MAX); // 范围截断
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">uint8 qt_8 = clip(qt_32, Q_MIN, Q_MAX); // 范围截断</span></span></code></pre></td></tr></table>
 </div>
-</div><ul>
+</div></code><ul>
 <li>整数量化（power of two）：部分硬件不支持浮点运算，用整数运算替换</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">int32 qt_32 = round_fn(value * (2 &lt;&lt; shift)); // 取整，shift-定点位
-</span></span><span class="line"><span class="cl">int8 qt_8 = clip(qt_32, Q_MIN, Q_MAX); // 范围截断
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">int8 qt_8 = clip(qt_32, Q_MIN, Q_MAX); // 范围截断</span></span></code></pre></td></tr></table>
 </div>
-</div><ul>
+</div></code><ul>
 <li>指数量化&hellip;</li>
 </ul>
 <h3 id="tensor量化与通道量化">tensor量化与通道量化
@@ -690,7 +700,10 @@
 </ul>
 <h3 id="量化乘法quantized-mul">量化乘法（quantized mul）
 </h3><p>正常int8计算会溢出，所以先反量化成float计算乘法再量化，即量化计算一般要加上rescale操作</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -707,14 +720,16 @@
 </span></span><span class="line"><span class="cl">ouput[i][j]=clip(round_fn(inputa[i][j]*scale_a * inputb[i][j] * scale_b / scale_c)); // scale 为float
 </span></span><span class="line"><span class="cl">即 ouput[i][j]=quantizied(inputa[i][j] * inputb[i][j] / scale_abc); // scale_abc 可提前算
 </span></span><span class="line"><span class="cl">// 同理，如果采用整数量化
-</span></span><span class="line"><span class="cl">即 ouput[i][j]=quantizied(inputa[i][j] * inputb[i][j] &lt;&lt; round(log2 scale_abc)); // scale_abc 可提前算
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">即 ouput[i][j]=quantizied(inputa[i][j] * inputb[i][j] &lt;&lt; round(log2 scale_abc)); // scale_abc 可提前算</span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="量化加法">量化加法
+</div></code><h3 id="量化加法">量化加法
 </h3><ul>
 <li>加法要求两个操作数的scale必须一致</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -729,14 +744,16 @@
 </span></span><span class="line"><span class="cl">// 如果采用对称量化
 </span></span><span class="line"><span class="cl">ouput[i][j]=clip(round_fn((inputa[i][j]*scale_a + inputb[i][j] * scale_b) / scale_c)); // scale 为float
 </span></span><span class="line"><span class="cl">// 这里加法要求scale_a和scale_b必须一致（两个操作数的scale）
-</span></span><span class="line"><span class="cl">即 ouput[i][j]=quantizied((inputa[i][j] + inputb[i][j]) / scale_ab); // scale_ab 可提前算
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">即 ouput[i][j]=quantizied((inputa[i][j] + inputb[i][j]) / scale_ab); // scale_ab 可提前算</span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="量化激活函数">量化激活函数
+</div></code><h3 id="量化激活函数">量化激活函数
 </h3><ul>
 <li>要求输入输出的scale必须一致</li>
 </ul>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -753,10 +770,9 @@
 </span></span><span class="line"><span class="cl">ouput[i][j]=clip(round_fn((inputa[i][j]*scale_in + min) / scale_out)); // scale 为float
 </span></span><span class="line"><span class="cl">// 这里加法要求scale_in和scale_out必须一致
 </span></span><span class="line"><span class="cl">即 ouput[i][j]=inputa[i][j] + min / scale_in; // 注意这里没有round_fn、clip操作，min被动量化
-</span></span><span class="line"><span class="cl">// 这时这类算子被称为被动量化算子，如clip、relu、concat等
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">// 这时这类算子被称为被动量化算子，如clip、relu、concat等</span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="量化矩阵乘quantized-gemm">量化矩阵乘（quantized Gemm）
+</div></code><h3 id="量化矩阵乘quantized-gemm">量化矩阵乘（quantized Gemm）
 </h3><ul>
 <li>int8输入=》int16/32计算乘法=》int32/64保存求和结果=》量化为int8输出</li>
 </ul>
@@ -819,7 +835,10 @@
 	
 >
 这样有一个问题，量化时会将这三个算子都量化一遍，但其实只需要量化最后一个mul算子即可。这里就可以利用图模式匹配匹配到这个替代的swish结构，并针对性进行处理。</p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -840,10 +859,9 @@
 </span></span><span class="line"><span class="cl">    exclusive = True
 </span></span><span class="line"><span class="cl">)
 </span></span><span class="line"><span class="cl">for computing_op, sigmoid, mul in results:
-</span></span><span class="line"><span class="cl">    ...
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    ...</span></span></code></pre></td></tr></table>
 </div>
-</div><h4 id="遍历模式匹配">遍历模式匹配
+</div></code><h4 id="遍历模式匹配">遍历模式匹配
 </h4><ul>
 <li>匹配模式：起点表达式=》中继点..=》终点..，自动机</li>
 <li>步骤：图拆成树，树拆成链，在每个链上进行模式匹配，期间可用动态规划优化</li>

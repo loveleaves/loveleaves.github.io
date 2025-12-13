@@ -2083,7 +2083,10 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 </ul>
 <p>这些功能都不能由 GPIO 单独实现。</p>
 <p><strong>典型背光驱动电路</strong></p>
-<div class="highlight"><div class="chroma">
+<details>
+  <summary>代码示例 (点击展开/折叠)</summary>
+  <div class="highlight">
+    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -2104,10 +2107,9 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 </span></span><span class="line"><span class="cl">              <span class="o">|</span>
 </span></span><span class="line"><span class="cl">              <span class="n">R2</span>
 </span></span><span class="line"><span class="cl">              <span class="o">|</span>
-</span></span><span class="line"><span class="cl">            <span class="n">GND</span>
-</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">            <span class="n">GND</span></span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>特点：</strong></p>
+</div></code><p><strong>特点：</strong></p>
 <ul>
 <li>GPIO 只负责控制 栅极，几乎无电流压力</li>
 <li>大电流由 MOS 承受</li>
