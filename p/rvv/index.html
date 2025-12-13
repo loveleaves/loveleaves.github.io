@@ -610,10 +610,7 @@
 <h2 id="note-1">Note
 </h2><h3 id="常见使用方式">常见使用方式
 </h3><p>以float32类型dot计算为例：</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -678,9 +675,10 @@
 </span></span><span class="line"><span class="cl">  <span class="n">temp00</span> <span class="o">=</span> <span class="n">__riscv_vfredusum_vs_f32m8_f32m1</span><span class="p">(</span><span class="n">vsum</span><span class="p">,</span> <span class="n">temp00</span><span class="p">,</span> <span class="n">l</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="n">sum</span> <span class="o">=</span> <span class="n">__riscv_vfmv_f_s_f32m1_f32</span><span class="p">(</span><span class="n">temp00</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code>
+</div>
 </section>
 
 

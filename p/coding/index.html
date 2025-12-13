@@ -416,7 +416,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 16 分钟
+                    阅读时长: 15 分钟
                 </time>
             </div>
         
@@ -454,10 +454,7 @@
 </h3><p>以<a class="link" href="https://leetcode.cn/problems/binary-search/description/"  target="_blank" rel="noopener"
     >leetcode-704</a>为例：</p>
 <h4 id="搜索区间左闭右闭">搜索区间：左闭右闭
-</h4><details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+</h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -490,9 +487,10 @@
 </span></span><span class="line"><span class="cl">            right = mid - 1
 </span></span><span class="line"><span class="cl">        else:
 </span></span><span class="line"><span class="cl">            return mid
-</span></span><span class="line"><span class="cl">    return -1</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><p>这里因为定义搜索区间为左闭右闭，所以：</p>
+</div><p>这里因为定义搜索区间为左闭右闭，所以：</p>
 <ul>
 <li>left、right初始值毫无疑问</li>
 <li>最终搜索子区间索引为：<code>[i,i]</code></li>
@@ -500,10 +498,7 @@
 <li>当<code>nums[mid] &lt; target</code>时，已知条件是<code>target</code>肯定在右边，但为什么不能更新为<code>left = mid</code>，是因为考虑到缩小到的子区间里可能有<code>mid==left</code>情况，此时如果不+1移动更新区间，就是死循环；right值处理跟left类似
 所以只要在<code>mid==left</code>时更新区间，其实也可能设置为mid，因为<code>[mid, right]</code>也是符合条件的搜索区间，代码如下：</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -548,13 +543,11 @@
 </span></span><span class="line"><span class="cl">                right = mid
 </span></span><span class="line"><span class="cl">        else:
 </span></span><span class="line"><span class="cl">            return mid
-</span></span><span class="line"><span class="cl">    return -1</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h4 id="搜索区间左闭右开">搜索区间：左闭右开
-</h4><details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+</div><h4 id="搜索区间左闭右开">搜索区间：左闭右开
+</h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -587,9 +580,10 @@
 </span></span><span class="line"><span class="cl">            right = mid
 </span></span><span class="line"><span class="cl">        else:
 </span></span><span class="line"><span class="cl">            return mid
-</span></span><span class="line"><span class="cl">    return -1</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><p>这里因为定义搜索区间为左闭右开，所以：</p>
+</div><p>这里因为定义搜索区间为左闭右开，所以：</p>
 <ul>
 <li>left、right初始值毫无疑问</li>
 <li>最终搜索子区间索引为：<code>[i,i+1]</code></li>
@@ -597,10 +591,7 @@
 <li>当<code>nums[mid] &lt; target</code>时，但为什么不能更新为<code>left = mid</code>，和上面类似；当<code>nums[mid] &gt; target</code>时，则已知最小可搜索空间为<code>[left,mid)</code>，当然也可以为<code>[left,mid+i)</code>（mid&lt;=mid+i&lt;=right），但这就多了许多重复搜索
 所以只要在<code>mid==left</code>时更新区间，其实也可能设置为mid，因为<code>[mid, right]</code>也是符合条件的搜索区间，代码如下：</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -639,13 +630,11 @@
 </span></span><span class="line"><span class="cl">            right = mid
 </span></span><span class="line"><span class="cl">        else:
 </span></span><span class="line"><span class="cl">            return mid
-</span></span><span class="line"><span class="cl">    return -1</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h4 id="搜索区间左开右开">搜索区间：左开右开
-</h4><details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+</div><h4 id="搜索区间左开右开">搜索区间：左开右开
+</h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -678,19 +667,17 @@
 </span></span><span class="line"><span class="cl">            right = mid
 </span></span><span class="line"><span class="cl">        else:
 </span></span><span class="line"><span class="cl">            return mid
-</span></span><span class="line"><span class="cl">    return -1</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return -1
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><p>原因和前两个类似，这里：</p>
+</div><p>原因和前两个类似，这里：</p>
 <ul>
 <li>最终搜索子区间索引为：<code>[i,i+1,i+2]</code></li>
 </ul>
 <h3 id="利用二分性质第一个或最后一个target位置">利用二分性质：第一个或最后一个target位置
 </h3><p>以<a class="link" href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/description/"  target="_blank" rel="noopener"
     >leetcode-34</a>为例，定义搜索空间为左闭右闭：</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -735,13 +722,11 @@
 </span></span><span class="line"><span class="cl">    if first_pos == len(nums) or nums[first_pos] != target:
 </span></span><span class="line"><span class="cl">        return [-1, -1]
 </span></span><span class="line"><span class="cl">    end_pos = lowerBound(nums, target+1) - 1
-</span></span><span class="line"><span class="cl">    return [first_pos, end_pos]</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return [first_pos, end_pos]
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><p>上面的<code>nums[mid] == target</code>情况修改为移动left：</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+</div><p>上面的<code>nums[mid] == target</code>情况修改为移动left：</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -784,9 +769,10 @@
 </span></span><span class="line"><span class="cl">    if first_pos == 0 or nums[first_pos-1] != target:
 </span></span><span class="line"><span class="cl">        return [-1, -1]
 </span></span><span class="line"><span class="cl">    end_pos = lowerBound(nums, target-1)
-</span></span><span class="line"><span class="cl">    return [end_pos, first_pos-1]</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return [end_pos, first_pos-1]
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h4 id="总结">总结
+</div><h4 id="总结">总结
 </h4><p>由上可以总结如下：</p>
 <ul>
 <li>二分查找在mid和target值相等时，继续移动区间，则在有多个target值的情况时：</li>
@@ -796,10 +782,7 @@
 <h4 id="注意">注意
 </h4><p>但当相等情况复杂时，如果相等位置切分不当，left最终位置可能与预期位置不一致，可以通过以<a class="link" href="https://leetcode.cn/problems/search-in-rotated-sorted-array/description/"  target="_blank" rel="noopener"
     >leetcode-33</a>为例思考。</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -846,18 +829,16 @@
 </span></span><span class="line"><span class="cl">            
 </span></span><span class="line"><span class="cl">    if left == len(nums) or nums[left] != target:
 </span></span><span class="line"><span class="cl">        return -1
-</span></span><span class="line"><span class="cl">    return left</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return left
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h3 id="局部可二分">局部可二分
+</div><h3 id="局部可二分">局部可二分
 </h3><p>以<a class="link" href="https://leetcode.cn/problems/find-peak-element/description/"  target="_blank" rel="noopener"
     >leetcode-162</a>为例，定义搜索空间为左闭右闭：</p>
 <h5 id="为什么可以使用二分">为什么可以使用二分
 </h5><p>简单证明：</p>
 <p>我们可以以下标为x轴，元素值为y轴，在平面直角坐标系里绘制出每个元素的位置，再以直线连接，这样构成了一副折线图。由于题目保证两边界之外的元素为负无穷，相邻值不相等且至少存在一个非负无穷元素，所以必然有峰。那么我们任取相邻两点为m、m+1，则如果<code>nums[m]&lt;nums[m+1]</code>，那么<code>m+i, i=1,2..</code>范围肯定存在一个该范围的最大值且为峰顶，同理，如果小于，那么反方向也肯定存在一个该范围的最大值且为峰顶。因而可以用二分解决。</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -886,9 +867,10 @@
 </span></span><span class="line"><span class="cl">            right = mid - 1
 </span></span><span class="line"><span class="cl">        else:
 </span></span><span class="line"><span class="cl">            left = mid + 1
-</span></span><span class="line"><span class="cl">    return left</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return left
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h2 id="回溯">回溯
+</div><h2 id="回溯">回溯
 </h2><h3 id="概念-1">概念
 </h3><p>回溯法就是暴力解法。其基本思想是通过遍历每个阶段的所有可能选择，从而获得想要的所有可能，通常使用<strong>递归</strong>实现。并且通常从第一步开始选择，到最后一步结束，所以呈现类似对树进行DFS的操作，每层代表着每一步，从上往下的每个节点代表着累积的选择。</p>
 <ul>
@@ -920,10 +902,7 @@
 <li>递结束条件：步数为digits长度</li>
 <li>选择约束：每步的所有选择必须选一个</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -984,9 +963,10 @@
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1"># 从第一步开始</span>
 </span></span><span class="line"><span class="cl">    <span class="n">dfs</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ans</span></span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ans</span>
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h3 id="关联选择类型">关联选择类型
+</div><h3 id="关联选择类型">关联选择类型
 </h3><p>以<a class="link" href="https://leetcode.cn/problems/combinations/description/"  target="_blank" rel="noopener"
     >leetcode-78</a>为例：</p>
 <ul>
@@ -996,10 +976,7 @@
 <li>选择约束：每步的选择为前面选择后剩下的，且必须选一个</li>
 </ul>
 <p><strong>简单粗暴</strong>，但超时，因为去重和修改每步选择的实现耗时严重</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -1042,13 +1019,11 @@
 </span></span><span class="line"><span class="cl">            paths.pop()
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    dfs(0, [i for i in range(1,n+1)])
-</span></span><span class="line"><span class="cl">    return [list(item) for item in ans]</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return [list(item) for item in ans]
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><p><strong>优化</strong>：修改每步选择的实现，加入结果条件的约束</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+</div><p><strong>优化</strong>：修改每步选择的实现，加入结果条件的约束</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -1109,13 +1084,11 @@
 </span></span><span class="line"><span class="cl">                mask[j]=True
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    dfs(0)
-</span></span><span class="line"><span class="cl">    return ans</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return ans
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><p>根据满足结果条件进行优化：注意到结果为其实为选择的排列</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+</div><p>根据满足结果条件进行优化：注意到结果为其实为选择的排列</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -1154,14 +1127,12 @@
 </span></span><span class="line"><span class="cl">            paths.pop()
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    dfs(0)
-</span></span><span class="line"><span class="cl">    return ans</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return ans
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><p>同理，<a class="link" href="https://leetcode.cn/problems/n-queens/"  target="_blank" rel="noopener"
+</div><p>同理，<a class="link" href="https://leetcode.cn/problems/n-queens/"  target="_blank" rel="noopener"
     >leetcode-51</a></p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -1220,9 +1191,10 @@
 </span></span><span class="line"><span class="cl">            column[i] = ldiag[n - row + i - 1] = rdiag[row + i] = False
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    dfs(0)
-</span></span><span class="line"><span class="cl">    return ans</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return ans
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h2 id="动态规划">动态规划
+</div><h2 id="动态规划">动态规划
 </h2><h3 id="动态规划的定义">动态规划的定义
 </h3><blockquote>
 <p><strong>动态规划（Dynamic Programming）</strong>：简称 <strong>DP</strong>，是一种求解多阶段决策过程最优化问题的方法。在动态规划中，通过把原问题分解为相对简单的子问题，先求解子问题，再由子问题的解而得到原问题的解。</p>
@@ -1373,10 +1345,7 @@ $$<h4 id="例子">例子
 </h4><p>以<a class="link" href="https://leetcode.cn/problems/target-sum/description/"  target="_blank" rel="noopener"
     >leetcode-494</a>为例：</p>
 <p><strong>回溯实现</strong>，python超时，C++通过</p>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -1409,18 +1378,16 @@ $$<h4 id="例子">例子
 </span></span><span class="line"><span class="cl">        dfs(i+1, t+nums[i])
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    dfs(0, 0)
-</span></span><span class="line"><span class="cl">    return ans[0]</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return ans[0]
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><p><strong>动态规划</strong></p>
+</div><p><strong>动态规划</strong></p>
 <ul>
 <li>注意到：所求方案中的负数和或正数和与总和及target值相关，可转换为0-1背包问题进行求解</li>
 <li>状态转移方程：$dfs(i,c)=dfs(i-1,c)+dfs(i-1,c-nums[i])$</li>
 <li>dfs(i,c)含义：前i个和为c的方案数</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -1581,9 +1548,10 @@ $$<h4 id="例子">例子
 </span></span><span class="line"><span class="cl">        for c in range(target, -1, -1):
 </span></span><span class="line"><span class="cl">            if c &gt;= x:
 </span></span><span class="line"><span class="cl">                dfs[c] = dfs[c]+dfs[c-x]
-</span></span><span class="line"><span class="cl">    return dfs[target]</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return dfs[target]
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h3 id="完全背包">完全背包
+</div><h3 id="完全背包">完全背包
 </h3><h4 id="概念-3">概念
 </h4><p>有 \( n \) 种物品，第 \( i \) 种物品的体积为 \( w[i] \)，价值为 \( v[i] \)。<br>
 每种物品 <strong>无限次重复</strong> 选，求体积和不超过 \( capacity \) 时的最大价值和。</p>
@@ -1614,10 +1582,7 @@ $$<h4 id="例子-1">例子
 <li>不同于0-1背包某个物品只能选一次</li>
 <li>这里要求最小数量：修改转移方程和不满足时返回值</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -1668,9 +1633,10 @@ $$<h4 id="例子-1">例子
 </span></span><span class="line"><span class="cl">            if c&gt;=x:
 </span></span><span class="line"><span class="cl">                dfs[c] = min(dfs[c], dfs[c-x]+1)
 </span></span><span class="line"><span class="cl">    ans = dfs[amount]
-</span></span><span class="line"><span class="cl">    return ans if ans &lt; inf else -1</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">    return ans if ans &lt; inf else -1
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code>
+</div>
 </section>
 
 

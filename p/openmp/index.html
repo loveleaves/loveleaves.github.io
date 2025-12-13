@@ -380,7 +380,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 5 分钟
+                    阅读时长: 4 分钟
                 </time>
             </div>
         
@@ -440,10 +440,7 @@
 </ul>
 <h2 id="使用">使用
 </h2><h3 id="编译">编译
-</h3><details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -454,9 +451,10 @@
 <pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#include &lt;omp.h&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">gcc</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="n">test</span><span class="o">.</span><span class="n">c</span>
 </span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="k">export</span> <span class="n">OMP_NUM_THREADS</span><span class="o">=</span><span class="n">n</span> <span class="c1"># 指定线程数量，omp_get_num_threads()获取</span>
-</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="o">./</span><span class="n">a</span><span class="o">.</span><span class="n">out</span></span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="o">./</span><span class="n">a</span><span class="o">.</span><span class="n">out</span>
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h3 id="编译器指令">编译器指令
+</div><h3 id="编译器指令">编译器指令
 </h3><ul>
 <li>OpenMP编译器指令用于各种目的：</li>
 <li>产生平行区域</li>
@@ -482,10 +480,7 @@
 <strong>用途</strong>: 定义一个并行区域，启动多个线程并行执行该区域中的代码。
 示例：</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -496,17 +491,15 @@
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#pragma omp parallel
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 并行执行的部分
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre></td></tr></table>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><ul>
+</div><ul>
 <li><code>#pragma omp for</code>
 用途: 将循环的迭代分配给多个线程并行执行。
 示例：</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -517,9 +510,10 @@
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#pragma omp parallel for
 </span></span><span class="line"><span class="cl">for (int i = 0; i &lt; n; i++) {
 </span></span><span class="line"><span class="cl">    // 并行执行的循环体
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><ul>
+</div><ul>
 <li><code>#pragma omp single</code>
 用途：指定代码块只由第一个到达线程执行，其他线程跳过该代码块。</li>
 </ul>
@@ -528,10 +522,7 @@
 <li><code>#pragma omp critical</code>
 用途: 定义一个临界区，保证代码块在同一时刻只被一个线程执行，以防止竞争条件。</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -560,16 +551,14 @@
 </span></span><span class="line"><span class="cl">    #pragma omp critical //Threads wait their turn. Only one at a time calls consume()
 </span></span><span class="line"><span class="cl">    res += consume (B);
 </span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><ul>
+</div><ul>
 <li><code>#pragma omp barrier</code>
 用途: 强制所有线程在此处同步，确保所有线程都执行到这一步后，才继续执行后续代码。</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -586,15 +575,13 @@
 </span></span><span class="line"><span class="cl">	A[id] = big_calc1 (id);
 </span></span><span class="line"><span class="cl">	#pragma omp barrier  // 只有当所有线程都到达barrier的时候才会继续运行
 </span></span><span class="line"><span class="cl">	B[id] = big_calc2(id, A);
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><ul>
+</div><ul>
 <li><code>#pragma omp atomic</code></li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -613,15 +600,13 @@
 </span></span><span class="line"><span class="cl">	tmp = big ugly(B);
 </span></span><span class="line"><span class="cl">	#pragma omp atomic
 </span></span><span class="line"><span class="cl">	X+= tmp;
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><ul>
+</div><ul>
 <li><code>#pragma omp for</code></li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -638,17 +623,15 @@
 </span></span><span class="line"><span class="cl">	for(i=0;i&lt;n;i++){ // i is private by default
 </span></span><span class="line"><span class="cl">		do...;
 </span></span><span class="line"><span class="cl">	}
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h4 id="3变量的作用域">3、变量的作用域
+</div><h4 id="3变量的作用域">3、变量的作用域
 </h4><ul>
 <li><code>shared</code>：默认情况下，并行区域外申明的变量在并行区域中是共享的，可以使用shared子句显式指定变量为共享的。
 示例：</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -661,16 +644,14 @@
 </span></span><span class="line"><span class="cl">#pragma omp parallel for shared(a)
 </span></span><span class="line"><span class="cl">for (int i = 0; i &lt; n; i++) {
 </span></span><span class="line"><span class="cl">    // a为公有变量
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><ul>
+</div><ul>
 <li><code>private</code>：每个线程在并行区域中有自己独立的变量副本，线程之间相互独立，互不干扰。并行区域内申明的变量默认为私有的，并行区域外申明的变量需要显式申明private
 示例：</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -685,16 +666,14 @@
 </span></span><span class="line"><span class="cl">for (int i = 0; i &lt; n; i++) {
 </span></span><span class="line"><span class="cl">    int b;
 </span></span><span class="line"><span class="cl">    //a,b均为私有变量
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><ul>
+</div><ul>
 <li><code>reduction</code>： 用于将每个线程的私有变量在并行区域结束时进行归约（如求和、求最大值等），最终将结果存储到共享变量中。
 示例：</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -707,17 +686,15 @@
 </span></span><span class="line"><span class="cl">#pragma omp parallel for reduction(+:sum)
 </span></span><span class="line"><span class="cl">for (int i = 0; i &lt; 10; i++) {
 </span></span><span class="line"><span class="cl">    sum += i;
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><h4 id="4调度方法">4、调度方法
+</div><h4 id="4调度方法">4、调度方法
 </h4><ul>
 <li><code>static</code>：静态调度将循环的迭代均匀分配给所有线程，并且相邻的迭代会被分配在同一个线程，分配方式在程序开始执行时就已经确定。
 示例:</li>
 </ul>
-<details>
-  <summary>代码示例 (点击展开/折叠)</summary>
-  <div class="highlight">
-    <pre class="brush:php;toolbar:false;" tabindex="0" style="background-color:#fff;"><code><div class="highlight"><div class="chroma">
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -728,9 +705,10 @@
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#pragma omp parallel for schedule(static, 3)
 </span></span><span class="line"><span class="cl">for (int i = 0; i &lt; n; i++) {
 </span></span><span class="line"><span class="cl">    // 每个线程执行3个连续的迭代
-</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
-</div></code><ul>
+</div><ul>
 <li><code>dynamic</code>：动态调度在执行时分配迭代，每当一个线程完成当前分配的迭代时，它会动态获取下一个块的迭代。</li>
 <li><code>guided</code>：引导调度是一种动态调度的变体，但块大小（chunk size）随着任务的完成而逐渐减小。</li>
 <li><code>auto</code>：自动调度将调度策略的选择权交给编译器或运行时库，由它们决定最佳的调度方式。</li>

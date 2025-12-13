@@ -30,17 +30,15 @@
 &lt;li&gt;&lt;code&gt;-D &amp;lt;macro&amp;gt;&lt;/code&gt;: 定义宏。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;as -o main.o main.s&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;as -o main.o main.s
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h3 id=&#34;交叉编译工具链-cross-compiler-toolchain&#34;&gt;交叉编译工具链 (Cross Compiler Toolchain)
+&lt;/div&gt;&lt;h3 id=&#34;交叉编译工具链-cross-compiler-toolchain&#34;&gt;交叉编译工具链 (Cross Compiler Toolchain)
 &lt;/h3&gt;&lt;h4 id=&#34;gcc-gnu-compiler-collection&#34;&gt;GCC (GNU Compiler Collection)
 &lt;/h4&gt;&lt;p&gt;GCC 是用于 C、C++、Fortran 等语言的编译器，常用于嵌入式编程中。它可以生成目标平台的代码，并支持交叉编译（cross-compilation），即在一种平台上为另一种平台编译代码。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用选项：&lt;/strong&gt;&lt;/p&gt;
@@ -50,17 +48,15 @@
 &lt;li&gt;&lt;code&gt;-m32&lt;/code&gt; 或 &lt;code&gt;-m64&lt;/code&gt;: 设置生成的代码是 32 位或 64 位。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;arm-none-eabi-gcc -o my_program.elf main.c&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;arm-none-eabi-gcc -o my_program.elf main.c
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;clang&#34;&gt;Clang
+&lt;/div&gt;&lt;h4 id=&#34;clang&#34;&gt;Clang
 &lt;/h4&gt;&lt;p&gt;Clang 是 LLVM 项目的一部分，作为 GCC 的替代品，Clang 提供了高效的编译功能，并且具有更加友好的错误报告。它同样支持交叉编译，特别适合现代嵌入式编程和集成开发环境（IDE）中使用。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用选项：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -68,17 +64,15 @@
 &lt;li&gt;&lt;code&gt;-o &amp;lt;file&amp;gt;&lt;/code&gt;: 输出文件。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;clang -target arm-none-eabi -o my_program.elf main.c&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;clang -target arm-none-eabi -o my_program.elf main.c
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;binutils&#34;&gt;Binutils
+&lt;/div&gt;&lt;h4 id=&#34;binutils&#34;&gt;Binutils
 &lt;/h4&gt;&lt;p&gt;Binutils 是一组二进制工具，包括汇编器、链接器、调试器等，广泛用于嵌入式系统开发。&lt;code&gt;ld&lt;/code&gt; 和 &lt;code&gt;as&lt;/code&gt; 工具是其中最常用的，负责汇编、链接以及生成目标文件。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用工具：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -87,19 +81,17 @@
 &lt;li&gt;&lt;code&gt;objcopy&lt;/code&gt;：将目标文件转换为不同格式。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;as -o main.o main.s
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ld -o my_program.elf main.o&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ld -o my_program.elf main.o
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h3 id=&#34;调试工具-debugging-tools&#34;&gt;调试工具 (Debugging Tools)
+&lt;/div&gt;&lt;h3 id=&#34;调试工具-debugging-tools&#34;&gt;调试工具 (Debugging Tools)
 &lt;/h3&gt;&lt;h4 id=&#34;gdb-gnu-debugger&#34;&gt;GDB (GNU Debugger)
 &lt;/h4&gt;&lt;p&gt;GDB 是一个功能强大的调试工具，适用于 C/C++ 等程序的调试。在嵌入式开发中，GDB 通常配合交叉编译工具链和硬件调试器（如 JTAG、SWD）一起使用。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;
@@ -110,17 +102,15 @@
 &lt;li&gt;&lt;code&gt;next&lt;/code&gt;：单步执行，不进入函数。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;gdb my_program.elf&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;gdb my_program.elf
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;openocd&#34;&gt;OpenOCD
+&lt;/div&gt;&lt;h4 id=&#34;openocd&#34;&gt;OpenOCD
 &lt;/h4&gt;&lt;p&gt;OpenOCD 是一个用于与目标硬件（如 ARM 处理器）进行通信的调试工具。它支持通过 JTAG 或 SWD 接口进行调试，可以与 GDB 配合使用。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -129,17 +119,15 @@
 &lt;li&gt;&lt;code&gt;flash write_image erase &amp;lt;file&amp;gt; 0x0&lt;/code&gt;：将固件烧录到设备。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;openocd -f interface/stlink-v2.cfg -f target/stm32f4x.cfg&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;openocd -f interface/stlink-v2.cfg -f target/stm32f4x.cfg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;jlink-segger-j-link&#34;&gt;JLink (SEGGER J-Link)
+&lt;/div&gt;&lt;h4 id=&#34;jlink-segger-j-link&#34;&gt;JLink (SEGGER J-Link)
 &lt;/h4&gt;&lt;p&gt;JLink 是 SEGGER 提供的一个商业级调试器，支持 JTAG 和 SWD 接口，用于调试各种嵌入式设备。它提供高性能的调试功能，广泛用于工业和开发中。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;主要功能：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -154,17 +142,15 @@
 &lt;li&gt;loadfile &lt;file&gt;: 加载二进制文件到目标设备。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;JLinkExe -device STM32F407VG -if SWD&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;JLinkExe -device STM32F407VG -if SWD
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;lldb&#34;&gt;LLDB
+&lt;/div&gt;&lt;h4 id=&#34;lldb&#34;&gt;LLDB
 &lt;/h4&gt;&lt;p&gt;LLDB 是 LLVM 提供的调试工具，类似于 GDB，但更加现代化。它具有更高效的性能，特别适用于基于 Clang 的编译工具链。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -173,17 +159,15 @@
 &lt;li&gt;&lt;code&gt;step&lt;/code&gt;：单步执行。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lldb my_program.elf&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lldb my_program.elf
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h3 id=&#34;构建工具-build-tools&#34;&gt;构建工具 (Build Tools)
+&lt;/div&gt;&lt;h3 id=&#34;构建工具-build-tools&#34;&gt;构建工具 (Build Tools)
 &lt;/h3&gt;&lt;h4 id=&#34;make&#34;&gt;Make
 &lt;/h4&gt;&lt;p&gt;&lt;code&gt;Make&lt;/code&gt; 是一个非常常用的构建工具，使用 &lt;code&gt;Makefile&lt;/code&gt; 管理项目的编译过程。它会根据 &lt;code&gt;Makefile&lt;/code&gt; 中的规则自动执行编译、链接等操作，尤其适合嵌入式项目。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;
@@ -192,17 +176,15 @@
 &lt;li&gt;&lt;code&gt;make clean&lt;/code&gt;：清理编译结果。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;make -f Makefile&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;make -f Makefile
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;cmake&#34;&gt;CMake
+&lt;/div&gt;&lt;h4 id=&#34;cmake&#34;&gt;CMake
 &lt;/h4&gt;&lt;p&gt;CMake 是一个跨平台的自动化构建工具，可以生成适用于不同平台的构建文件（如 Makefile、Ninja 文件等）。它在现代嵌入式开发中非常流行，支持复杂的项目构建配置。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -210,19 +192,17 @@
 &lt;li&gt;&lt;code&gt;make&lt;/code&gt;：执行构建。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cmake .
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;make&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;make
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h3 id=&#34;其他工具&#34;&gt;其他工具
+&lt;/div&gt;&lt;h3 id=&#34;其他工具&#34;&gt;其他工具
 &lt;/h3&gt;&lt;h4 id=&#34;nm&#34;&gt;nm
 &lt;/h4&gt;&lt;p&gt;nm 是一个用于列出二进制文件（例如可执行文件、共享库、目标文件等）符号表的工具。它显示文件中定义和引用的符号，包括函数、变量等。通过 nm，用户可以查看符号的类型和地址信息。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用选项：&lt;/strong&gt;&lt;/p&gt;
@@ -232,17 +212,15 @@
 &lt;li&gt;-n 或 &amp;ndash;numeric-sort: 按地址排序符号。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nm my_program&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;grep func&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nm my_program&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;grep func
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;objdump&#34;&gt;Objdump
+&lt;/div&gt;&lt;h4 id=&#34;objdump&#34;&gt;Objdump
 &lt;/h4&gt;&lt;p&gt;&lt;code&gt;objdump&lt;/code&gt; 用于反汇编和查看目标文件的详细信息。它可以显示汇编代码、符号表、段信息等，帮助开发人员理解程序的低级结构。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -250,17 +228,15 @@
 &lt;li&gt;&lt;code&gt;objdump -t &amp;lt;file&amp;gt;&lt;/code&gt;：显示符号表。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;objdump -d my_program&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;objdump -d my_program
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h4 id=&#34;readelf&#34;&gt;Readelf
+&lt;/div&gt;&lt;h4 id=&#34;readelf&#34;&gt;Readelf
 &lt;/h4&gt;&lt;p&gt;&lt;code&gt;readelf&lt;/code&gt; 用于显示 ELF 文件的详细信息，提供比 &lt;code&gt;objdump&lt;/code&gt; 更加专注于 ELF 文件结构的查看。它支持查看 ELF 头、段、节区、符号表等信息。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -268,17 +244,15 @@
 &lt;li&gt;&lt;code&gt;readelf -S &amp;lt;file&amp;gt;&lt;/code&gt;：显示节区信息。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;示例：&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;readelf -h my_program&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;readelf -h my_program
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h2 id=&#34;热点分析&#34;&gt;热点分析
+&lt;/div&gt;&lt;h2 id=&#34;热点分析&#34;&gt;热点分析
 &lt;/h2&gt;&lt;p&gt;热点分析通常通过使用 性能分析工具 来实现，工具会提供每个函数、方法、代码块的执行时间、调用次数、CPU 占用率等信息，帮助开发人员识别耗时最多的部分。&lt;/p&gt;
 &lt;h3 id=&#34;常见的热点分析方法&#34;&gt;常见的热点分析方法
 &lt;/h3&gt;&lt;ul&gt;
@@ -334,10 +308,7 @@
     &gt;perf分析c热点函数&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;perf简单例子-程序调用栈火焰图&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -362,13 +333,11 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 使用开源软件：https://github.com/brendangregg/FlameGraph.git
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./stackcollapse-perf.pl perf.unfold &amp;amp;&amp;gt; perf.folded
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 生成火焰图
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./flamegraph.pl perf.folded &amp;gt; perf.svg&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./flamegraph.pl perf.folded &amp;gt; perf.svg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;p&gt;&lt;strong&gt;perf简单例子-分析热点函数、指令&lt;/strong&gt;&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;perf简单例子-分析热点函数、指令&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -387,9 +356,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 查看热点分布
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf report
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 查看热点函数testA中的热点指令及语句
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf annotate --stdio --symbol=testA&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf annotate --stdio --symbol=testA
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;h3 id=&#34;intel-vtune-profiler&#34;&gt;Intel VTune Profiler
+&lt;/div&gt;&lt;h3 id=&#34;intel-vtune-profiler&#34;&gt;Intel VTune Profiler
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;适用语言： 多语言支持&lt;/li&gt;
 &lt;li&gt;平台： Windows、Linux&lt;/li&gt;
@@ -493,10 +463,7 @@ ThreadSanitizer 是一种 动态检测工具，它能够监测并发程序中的
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;3. 如何使用 TSan&lt;/strong&gt;
 TSan 是通过编译器插件实现的，因此需要在编译程序时启用它。以下是启用 TSan 的基本步骤：&lt;/p&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -519,9 +486,10 @@ TSan 是通过编译器插件实现的，因此需要在编译程序时启用它
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  #0 0x7f89b5cb5e6f in foo
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  #1 0x7f89b5cb5e79 in bar
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  #2 0x7f89b5cb5f89 in main
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;TSan 会提供详细的栈跟踪，指出哪些线程、哪些内存地址、在哪些函数中发生了数据竞争。&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;TSan 会提供详细的栈跟踪，指出哪些线程、哪些内存地址、在哪些函数中发生了数据竞争。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;p&gt;&lt;strong&gt;4. TSan 的工作原理&lt;/strong&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;4. TSan 的工作原理&lt;/strong&gt;
 TSan 通过对程序进行 &lt;strong&gt;插桩&lt;/strong&gt;，在程序中每次内存访问（读/写）时插入检查代码，追踪每个线程对内存的访问。它会记录每个线程对共享内存的访问并进行比较，以判断是否存在数据竞争。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;主要机制：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -569,17 +537,15 @@ ASan 通过 &lt;strong&gt;编译器插桩&lt;/strong&gt;（Instrumenting Compile
 &lt;li&gt;&lt;strong&gt;如何使用 ASan&lt;/strong&gt;
 要启用 AddressSanitizer，您需要在编译时添加 &lt;code&gt;-fsanitize=address&lt;/code&gt; 选项，并启用调试信息 &lt;code&gt;-g&lt;/code&gt;（以便于调试）。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;details&gt;
-  &lt;summary&gt;代码示例 (点击展开/折叠)&lt;/summary&gt;
-  &lt;div class=&#34;highlight&#34;&gt;
-    &lt;pre class=&#34;brush:php;toolbar:false;&#34; tabindex=&#34;0&#34; style=&#34;background-color:#fff;&#34;&gt;&lt;code&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;g++ -fsanitize&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;address -g -o &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; test.cpp&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;g++ -fsanitize&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;address -g -o &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; test.cpp
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/code&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;/div&gt;&lt;ol start=&#34;4&#34;&gt;
 &lt;li&gt;&lt;strong&gt;ASan 错误报告&lt;/strong&gt;
 当 ASan 检测到内存错误时，它会生成详细的错误报告。该报告通常包含以下信息：&lt;/li&gt;
 &lt;/ol&gt;
