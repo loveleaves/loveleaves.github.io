@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sat, 13 Dec 2025 21:50:19 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 13 Dec 2025 23:38:01 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【系统工程基础】 系统工程基础</title>
         <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
         <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
@@ -9632,7 +9632,7 @@ Transformer 的提出对自然语言处理产生了深远影响。在机器翻�
   - Self-Attention：用于捕捉序列中各位置之间的依赖关系。
   - Feed-Forward：用于对每个位置的表示进行非线性变换，从而提升模型的表达能力。
 
-#### 自注意力层（Self-Attention）/ 多头自注意力（multi Self-Attention）
+#### 自注意力层（Self-Attention）/ 多头自注意力（multi-Head Self-Attention，MHA）
 之所以被称为“自”注意力，是因为模型在计算每个位置的表示时，所参考的信息全部来自同一个输入序列本身，而不是来自另一个序列。
 
 ##### 自注意力计算过程
@@ -9679,6 +9679,10 @@ $$
 为此，Transformer 引入了多头注意力机制（Multi-Head Attention）。其核心思想是通过多组独立的 Query、Key、Value 投影，让不同注意力头分别专注于不同的语义关系，最后将各头的输出拼接融合。
 
 多头注意力的计算过程如下：
+
+$$
+MHA(Q,K,V)=Concat(head_1,head_2,..,head_n)W^o
+$$
 
 **（1）分别计算各头注意力**
 
@@ -10186,7 +10190,321 @@ T5微调阶段需要将所有任务转换为文本到文本的形式，例如：
 |问答|	question: What is the capital of France? context: France is a country...|	Paris|
 
 ### 主流技术
+#### Tokenizer
+| 技术                            | 关键词     | 代表模型         | 关键机制        | 论文出处                                        |
+| ----------------------------- | ------- | ------------ | ----------- | ------------------------------------------- |
+| Byte Pair Encoding (BPE)      | 基于频率合并  | GPT 系列初期     | 贪心合并最频对     | *Gage 1994*；*Sennrich et al. 2016*          |
+| WordPiece                     | 最大化似然   | BERT 系列      | 类似 BPE + LM | *Schuster &amp; Nakajima 2012*；*Wu et al. 2016* |
+| SentencePiece (Unigram LM)    | LM 模型   | T5, ALBERT   | 子词 LM + EM  | *Kudo 2018*                                 |
+| Byte-Level BPE                | 基于字节    | GPT-2/3/Neox | 无需预清洗       | *Radford et al. 2019*                       |
+| Unigram LM                    | 概率模型    | XLM-R        | 子词概率 + 剪枝   | *Kudo &amp; Richardson 2018*                    |
+| Morphological / Feature-aware | 形态/语言规则 | 少数语言专用       | 融语法/形态学     | 多篇任务论文                                      |
 
+#### 位置嵌入（Positional Encoding）
+当前预训练模型中的位置建模方法，已经从**“绝对位置编码”**演化为**“相对位置与几何约束”**，主流可分为五大类：
+
+1. **绝对位置编码（Absolute Position Embedding, APE）**
+
+   * 可学习（Learned APE）
+   * 固定函数（Sinusoidal PE）
+2. **相对位置编码（Relative Position Encoding, RPE）**
+
+   * 相对位置偏置（Relative Bias）
+   * 相对位置向量
+3. **旋转位置编码（RoPE）**
+4. **线性偏置位置编码（ALiBi）**
+5. **混合 / 改进型方法（如 YaRN、xPos、NTK-aware RoPE）**
+
+**各技术概览：**
+| 方法              | 是否主流       | 代表模型         |
+| --------------- | ---------- | ------------ |
+| Sin/Cos APE     | 否          | 早期 Transformer，教学 / baseline，**现代大模型基本不用**         |
+| Learned APE     | 否          | BERT，**在长上下文预训练模型中基本被淘汰**        |
+| Relative Bias   | 是（Encoder） | T5 / PaLM，**Encoder-heavy 模型中的事实标准**   |
+| RoPE            | 是（Decoder） | LLaMA / Qwen/DeepSeek，**Decoder-only LLM 的事实标准** |
+| ALiBi           | 次主流        | BLOOM，部分长上下文变体模型        |
+| YaRN / NTK-RoPE | 是（长上下文）    | LLaMA Long，**主流 LLM 长上下文扩展的工程标准手段**   |
+
+---
+
+##### 绝对位置编码（已逐渐退出主流）
+1. 固定正弦位置编码（Sinusoidal PE）
+$$
+\begin{aligned}
+PE_{(pos,2i)} &amp;= \sin\left(\frac{pos}{10000^{2i/d}}\right) \
+PE_{(pos,2i+1)} &amp;= \cos\left(\frac{pos}{10000^{2i/d}}\right)
+\end{aligned}
+$$
+
+**优点**
+
+* 不依赖最大长度
+* 理论上具备外推性
+* 相对位移可线性表示（Fourier 特性）
+
+**致命问题**
+
+* **与注意力是“加性耦合”**，不是结构性约束
+* 在超长上下文中性能显著下降
+* 实际大模型中已很少单独使用
+
+**论文**
+
+* *Attention Is All You Need*, Vaswani et al., 2017
+
+2. 可学习绝对位置嵌入（Learned APE）
+$$
+x_i = e_i + p_i,\quad p_i \in \mathbb{R}^d
+$$
+**优点**
+* 表达能力强
+* 短序列任务效果好
+
+**核心问题（工程上不可接受）**
+1. **无法外推到未见长度**
+2. embedding 表大小与 max length 线性增长
+3. 在长上下文任务中不稳定
+
+**论文 / 模型**
+* BERT（Devlin et al., 2018）
+* GPT-1 / GPT-2（Radford et al.）
+
+##### 相对位置编码（第一代主流替代方案）
+1. Transformer-XL 相对位置编码（向量形式）
+
+Attention 分数中显式引入相对距离：
+$$
+\mathrm{Attn}*{ij} = q_i^\top k_j + q_i^\top r*{i-j}
+$$
+
+**特点**
+* 相对位置显式建模
+* 对序列长度泛化更好
+
+**问题**
+* 实现复杂
+* 计算与存储成本高
+* 不利于大规模并行
+
+**论文**
+* *Transformer-XL*, Dai et al., 2019
+
+2. 相对位置偏置（Relative Position Bias）【工程主流】
+
+**机制（以 T5 为代表）**
+$$
+\mathrm{Attn}*{ij} = q_i^\top k_j + b*{i-j}
+$$
+
+其中：
+* (b_{i-j}) 是可学习标量
+* 通常采用 **bucket 化距离**
+
+**优点**
+* 参数量极小
+* 与 Attention 结构天然融合
+* 稳定、易实现、可扩展
+
+**论文与模型**
+* *T5*, Raffel et al., 2020
+* PaLM
+* FLAN
+* ViT v2（部分变体）
+
+##### 旋转位置编码（RoPE）
+1. RoPE（Rotary Position Embedding）
+
+不是“加位置”，而是**旋转 Query / Key 空间**：
+$$
+\mathrm{Attn}*{ij}
+= (R*{pos_i} q_i)^\top (R_{pos_j} k_j)
+$$
+等价于：
+$$
+\mathrm{Attn}_{ij} \propto \cos(\theta(pos_i - pos_j))
+$$
+
+**数学本质**
+* 在复平面进行相位旋转
+* Attention 内积只依赖相对位移
+
+**优点**
+* 无额外参数
+* 与注意力内积深度耦合
+* 对长序列泛化显著优于 APE
+
+**论文**
+* *RoFormer*, Su et al., 2021
+
+##### 线性偏置位置编码（ALiBi）
+1. ALiBi（Attention with Linear Biases）
+$$
+\mathrm{Attn}_{ij} = q_i^\top k_j - \alpha_h |i - j|
+$$
+
+* 每个 attention head 一个 slope
+* 无 embedding、无旋转
+
+**优点**
+* 极强长度外推能力
+* 实现极简
+* 推理成本最低
+
+**缺点**
+* 表达能力弱于 RoPE
+* 在复杂语言建模中略逊
+
+**论文**
+* *Train Short, Test Long*, Press et al., 2021
+
+##### RoPE 改进与现代长上下文方案（2023–）
+NTK-aware RoPE / xPos / YaRN（工程增强）
+
+原始 RoPE 在超长上下文中：
+* 角频率过密
+* 远距离 token 混叠
+
+**代表工作**
+
+1. NTK-aware RoPE
+* 调整频率缩放
+* LLaMA 2 长上下文版本
+
+2. YaRN
+* 分段频率插值
+* 保留低频稳定性
+* 论文：*YaRN*, Peng et al., 2023
+
+#### Attention（MHA/GQA/MQA）
+标准多头注意力（MHA）在单层对长度为 (n) 的序列、batch size (B)、头数 (H)、每头维度 (d_k) 的情况下，关键成本（单层）为：
+
+* 计算量（近似）：$(O(B \cdot H \cdot n \cdot d_k + B \cdot H \cdot n^2))$（QK 内积产生 ($n\times n$) 矩阵）
+* 内存（KV 保存供自回归解码使用时）：若保存 keys/values 到缓存，KV tensor 大小为 $(B \times n \times H \times d_k)$。
+
+这说明：
+- （a）自回归**推理**时 KV 缓存的读写成为瓶颈
+- （b）若 H 很大，KV 的存储/带宽按比例放大。
+
+原始 MHA 的设计在训练/解码规模放大时会碰到显著的 **内存带宽与显存** 问题。
+
+##### Multi-Query Attention (MQA)
+**核心思想**：所有 `query heads` 共用同一组` Key/Value` 投影（即只为 `Keys/Values` **保留 1 个头而不是 H 个**），而每个 head 仍有自己独立的 Query。
+
+**数学 / 复杂度变化**
+
+* 原 KV 大小：$(B \times n \times H \times d_k)$
+* MQA KV 大小：$(B \times n \times 1 \times d_k = B \times n \times d_k)$
+
+**KV 大小减少因子 ≈ (H)**（近似），因此 KV **读写带宽**与**缓存显存**在自回归解码时降低近 H 倍（最重要的工程收益）。
+
+计算上：注意力分数计算仍需要为每个 `query head` 计算 $(Q_h K_{shared}^\top)$，但对 KV 的加载/传输开销大幅减少。
+
+**工程/经验影响**
+
+* **极大提升解码吞吐/降低延迟**（尤其在长上下文与大 batch 自回归生成时）。
+* 可能引入**质量/表达能力下降**，因为不同 head 不能再拥有各自的 K/V 表征（有些语义/模式分工被弱化）。
+* 在工程上常用于 decoder-only LLM 的推理优化；通常需要在训练/微调阶段适配或 uptraining 才能最小化性能下降。
+
+**代表/出处**
+* Shazeer, *Fast Transformer Decoding: One Write-Head is All You Need* (2019).
+
+##### Grouped-Query Attention (GQA)
+**核心思想**：在 MHA 与 MQA 之间做折衷。把 (H) 个 `query head` 按组分成 G 组$(1 \le G \le H)$，每组共享一组 `K/V`（组内的多个 `query heads` 共享该组的 `K/V`）。当 `G=H` 时退化为 MHA；当 `G=1` 时退化为 MQA。
+
+**数学 / 复杂度**
+* KV 大小：$(B \times n \times G \times d_k)$。相对于 MHA 的压缩因子为 (H/G)。
+* 当 $(G \ll H)$ 时，可显著减少 KV 缓存大小与带宽，但保留比 MQA 更好的多样性。
+
+**工程与训练要点**
+* GQA 在实务中常采用 **先把已有 MHA checkpoint 转换为 GQA，再做少量 uptraining（低成本微调）**，即可恢复大部分质量（Ainslie et al. 的方法论）。这使 GQA 成为实用迁移/加速策略，而不需要从头训练新的架构。
+* 选择 (G) 是工程折中：较小的 (G) 带来更大推理加速但更可能损失建模能力；文献证明用少量 uptraining（如 5% 原训练 compute）可以把损失压缩到可接受范围。
+
+**代表/出处**
+* Ainslie et al., *GQA: Training Generalized Multi-Query Transformer Models* (EMNLP 2023).
+
+##### 为什么 MQA/GQA 在「推理工程」中有效（量化说明）
+考虑自回归生成逐步解码（生成第 (t) 步）时必须读取并使用前 (t-1) 个 token 的 KV。假设每个 KV 元素为 2 字节（BF16），batch B=1：
+
+* MHA KV bytes ≈ $((t-1)\cdot H \cdot d_k \cdot 2)$
+* MQA KV bytes ≈ $((t-1)\cdot 1 \cdot d_k \cdot 2)$
+
+因此在长上下文（t 很大）或多卡 KV 传输场景下，带宽/显存压力下降近 (H) 倍，能显著降低推理延迟与跨卡通信开销（实测在多篇工程文章/博客里呈现为数倍到十倍的吞吐改进）。GQA 在 (H/G) 维持同类效果但更平衡质量。
+
+##### FlashAttention：微架构/算法级的加速（与 MQA/GQA 不冲突）
+**FlashAttention** 不是新的注意力「结构」而是 **IO-aware 的 exact attention 实现**：它通过 tile 分块、在片上 SRAM 中完成 softmax 计算，避免构造完整 (n\times n) 中间矩阵，减少 HBM↔SRAM 读写，从而实现**内存与时间双降**（并能配合 MHA/MQA/GQA 使用）。
+
+* 对比：标准实现需要存储 (QK^\top) 或若干中间缓冲；FlashAttention 用流式（tiling）做数值稳定的 softmax，memory footprint 大幅降低，wall-clock 加速显著。
+* 工程价值：训练与推理中都能直接减少显存、加速训练步长、延长可支持的上下文长度。[&#34;FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness&#34;](https://arxiv.org/abs/2205.14135?utm_source=chatgpt.com )
+
+##### 稀疏/图式注意力（窗口 + 全局 / 随机）
+* **Longformer**：局部滑动窗口 + 少数 global tokens，复杂度 (O(n))。适合许多长文档任务。
+  * 参考：&#34;Longformer: The Long-Document Transformer&#34;
+* **BigBird**：窗口 + 随机 + 全局三分法，理论上能近似完整 attention（Turing complete），并实现线性复杂度。
+  * &#34;Big Bird: Transformers for Longer Sequences&#34;
+
+##### 低秩 / 投影近似
+* **Linformer**：对 K/V 在序列维投影到低维空间，假设 attention 矩阵近似低秩，从 (O(n^2)) 降到 (O(n))。
+* &#34;Linformer: Self-Attention with Linear Complexity&#34;
+
+##### 随机特征 / 核线性化（线性注意）
+* **Performer (FAVOR(+))**：用随机特征逼近 softmax kernel，使 attention 复杂度变为线性（理论上有可控误差界）。适合超长序列但在某些任务上与 exact attention 有差距。
+* &#34;[2009.14794] Rethinking Attention with Performers&#34;
+
+##### LSH / 分组注意力
+* **Reformer**：用 Locality-Sensitive Hashing 将相似 queries 聚类，仅与同 bucket keys 交互，复杂度 (O(n \log n))，并配合可逆网络节省激活内存。
+* &#34;Reformer: The Efficient Transformer&#34;
+
+#### LayerNorm
+RMSNorm 替代 LayerNorm（结构简化 + 性能）
+
+#### FFN
+从 ReLU 到 SwiGLU
+
+##### 训练与数值稳定性优化
+7. 初始化与残差缩放（Residual Scaling）
+
+输出层 / FFN 使用更小初始化
+有时引入 residual scale（如 1/√L）
+
+目的：
+防止深层残差累积导致激活爆炸
+
+8. 混合精度与数值技巧
+BF16 / FP16 训练
+FP32 master weights
+loss scaling
+
+#### 工程优化
+
+##### FlashAttention（训练与推理的革命）
+原始 Attention
+O(N²) 显存
+大量 memory access
+
+FlashAttention
+在线 softmax
+避免中间矩阵存储
+效果
+显存 ↓ 2–4 倍
+速度 ↑ 2–3 倍
+
+##### KV Cache + 推理优化
+自回归推理缓存 K/V
+支持 streaming generation
+分页 KV Cache（Paged Attention）
+
+##### 并行化策略
+训练并行
+Data Parallel
+Tensor Parallel
+Pipeline Parallel
+ZeRO / FSDP
+
+推理并行
+张量并行
+多卡 KV cache 切分
+
+---
 
 ## 常用工具
 ### 深度学习框架
