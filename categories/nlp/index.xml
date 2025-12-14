@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 14 Dec 2025 20:12:07 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 14 Dec 2025 20:50:53 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -2353,6 +2353,24 @@ Hugging Face 提供了一套围绕预训练模型构建的工具库。这些组�
 
 #### ModelScope
 类似HuggingFace，由Alibaba维护。
+
+# NLP进阶
+
+# Materials
+## lessons/presentation/blogs
+- [cs224n](https://web.stanford.edu/class/cs224n/)
+- [illustrated-transformer](https://jalammar.github.io/illustrated-transformer/)
+- [huggingface LLM course](https://huggingface.co/learn/llm-course/en/chapter1/6)
+
+## Papers/
+- [ACL Anthology](https://aclanthology.org/)（ACL、EMNLP、NAACL 等会议论文集合）——查 NLP 最新论文的权威库。 
+- arXiv / Papers with Code / Semantic Scholar —— 快速跟踪最新 preprints 与复现代码。
+- 关注主要会议：ACL, EMNLP, NeurIPS, ICML, ICLR。
+
+## Books
+- [Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3)
+- [Practical Deep Learning](https://course.fast.ai/)
+- [Natural Language Processing with Transformers](https://github.com/nlp-with-transformers/notebooks)
 
 # References
 - [尚硅谷大模型技术之NLP1.0.3.pdf](/pdf/nlp/尚硅谷大模型技术之NLP1.0.3.pdf)
