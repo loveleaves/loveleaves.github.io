@@ -10846,49 +10846,300 @@ $$
 * FFN 权重对量化更敏感 → 需分组量化 / SmoothQuant
 * 但 FFN 仍是量化收益最大的模块之一
 
-##### 训练与数值稳定性优化
-7. 初始化与残差缩放（Residual Scaling）
-
-输出层 / FFN 使用更小初始化
-有时引入 residual scale（如 1/√L）
-
-目的：
-防止深层残差累积导致激活爆炸
-
-8. 混合精度与数值技巧
-BF16 / FP16 训练
-FP32 master weights
-loss scaling
+#### 训练与数值稳定性优化
+一个工业可行的预训练 pipeline（高层）通常包含：
+- 架构：Pre-LN + RMSNorm + residual scaling（若需要极深则 DeepNorm）；
+- 初始化：Xavier/He 的基础 + 若不使用 Norm 可用 T-Fixup/DeepInit；
+- Optimizer：AdamW（大多数）或 Adafactor（内存受限），可在需要时尝试 Lion / LAMB（大 batch）；
+- 精度：BF16（或混合 FP16 + master FP32）+ 动态 loss scaling；
+- LR：短 warm-up（若 Pre-LN 可弱化）+ linear/cosine decay；
+- 数值保护：global gradient clipping、overflow 检测、健壮 softmax（FlashAttention）；
+- 系统：ZeRO/FSDP + FlashAttention + fused kernels + activation checkpointing；
+- 生产化监控与逐步放大测试。
 
 #### 工程优化
+现代大模型预训练的工程优化，本质是围绕显存、通信和算子效率构建一套多层次并行与内存管理体系：
+- 以 ZeRO/FSDP 为核心解决参数规模问题
+- 以 FlashAttention 和 kernel 融合解决算子与带宽瓶颈
+- 并通过混合精度与重计算在可控 FLOPs 增长下换取可扩展性
 
-##### FlashAttention（训练与推理的革命）
-原始 Attention
-O(N²) 显存
-大量 memory access
+**主流工程优化技术全景表**
 
-FlashAttention
-在线 softmax
-避免中间矩阵存储
-效果
-显存 ↓ 2–4 倍
-速度 ↑ 2–3 倍
+| 类别     | 技术                    | 是否主流 |
+| ------ | --------------------- | ---- |
+| 并行     | ZeRO / FSDP           | 是    |
+| 并行     | Tensor Parallel       | 是    |
+| 并行     | Pipeline Parallel     | 条件   |
+| 显存     | Activation Checkpoint | 是    |
+| 精度     | BF16                  | 是    |
+| Kernel | FlashAttention        | 是    |
+| Kernel | Fused FFN             | 是    |
+| IO     | 高效数据管道                | 是    |
+| 推理     | GQA/MQA               | 是    |
 
-##### KV Cache + 推理优化
-自回归推理缓存 K/V
-支持 streaming generation
-分页 KV Cache（Paged Attention）
+##### 工程优化的总体目标与约束
+在大模型预训练阶段，工程优化的核心目标并非“提高理论表达能力”，而是：
 
-##### 并行化策略
-训练并行
-Data Parallel
-Tensor Parallel
-Pipeline Parallel
-ZeRO / FSDP
+1. **把硬件算力转化为有效 token throughput**
+2. **在数值稳定前提下最大化并行度**
+3. **降低显存、通信、IO、kernel launch 等非算力瓶颈**
+4. **保证系统可扩展到数百/上千 GPU 的稳定运行**
 
-推理并行
-张量并行
-多卡 KV cache 切分
+这决定了工程优化几乎全部围绕以下四类瓶颈展开：
+
+* 显存（memory）
+* 通信（communication）
+* IO / 带宽（bandwidth）
+* kernel / 算子效率（compute utilization）
+
+##### 并行化体系（最核心的工程优化）
+1. 数据并行（Data Parallel, DP）及其局限
+
+**基本思想**
+* 每张卡保存一份完整模型
+* 不同 batch 分配到不同卡
+* 反向传播后 All-Reduce 梯度
+
+**问题**
+* 参数 + optimizer state 全复制 → **显存线性爆炸**
+* 在百亿/千亿参数下不可行
+
+2. ZeRO：工程上的分水岭（事实标准）
+
+**核心思想（Rajbhandari et al.）**
+
+把冗余状态拆分（partition）到不同设备：
+
+| Stage  | 拆分内容             |
+| ------ | ---------------- |
+| ZeRO-1 | Optimizer states |
+| ZeRO-2 | + Gradients      |
+| ZeRO-3 | + Parameters     |
+
+**数学/工程本质**
+* 把原本 (O(N)) 的显存需求降为 $O(N / {GPUs})$
+* 用通信换显存
+
+**工程影响**
+* **使百亿到千亿模型成为“常规工程问题”**
+* 是 DeepSpeed、FSDP 的理论基础
+
+**论文：**
+* *ZeRO: Memory Optimizations Toward Training Trillion Parameter Models*
+  Rajbhandari et al., SC 2020
+
+3. FSDP（Fully Sharded Data Parallel）
+
+**本质**
+* PyTorch 官方对 ZeRO-3 的实现与工程化增强
+
+**优化点**
+* 参数、梯度、optimizer state 全分片
+* fine-grained shard（按 module）
+* 与 PyTorch autograd 深度集成
+
+**工程实践**
+* 当前 PyTorch 生态的**事实标准**
+* Qwen / LLaMA 生态训练广泛使用
+
+**论文：**
+* *FSDP: Fully Sharded Data Parallel*
+  PyTorch team, 2022（技术报告）
+
+4. 张量并行（Tensor Parallel, TP）
+
+**思想**
+* 把**单个矩阵乘法**拆分到多张卡
+* 常用于 Attention / FFN 的线性层
+
+**数学形式（示例）**
+$$
+W \in \mathbb{R}^{d \times d} \Rightarrow
+[W_1, W_2, \dots, W_k]
+$$
+
+**工程代价**
+* 每层都需要通信（All-Reduce / All-Gather）
+* 通信频率高
+
+**适用场景**
+* 单卡放不下模型
+* 与 ZeRO/FSDP 结合使用
+
+**论文：**
+* *Megatron-LM*
+  Shoeybi et al., 2019
+
+5. Pipeline Parallel（PP）
+
+**思想**
+* 按层切分模型，形成流水线
+* micro-batch 填充 pipeline
+
+**问题**
+* bubble（空泡）导致利用率下降
+* 调度复杂
+
+**现状**
+* 在极大模型中仍有价值
+* 但工程复杂度高，通常是“最后一招”
+
+**论文：**
+* *GPipe*
+  Huang et al., 2019
+
+##### 显存优化（Memory is King）
+1. Activation Checkpointing（重计算）
+
+**思想**
+* 前向不保存全部激活
+* 反向时重算
+
+**数学权衡**
+* 显存：↓
+* FLOPs：↑（通常 &lt;2×）
+
+**实践**
+* Transformer block 级 checkpoint
+* 工业界默认开启
+
+**论文：**
+* *Training Deep Nets with Sublinear Memory Cost*
+  Chen et al., 2016
+
+2. 混合精度（BF16 / FP16）
+
+**工程事实**
+* 不使用混合精度几乎不可能训练大模型
+
+**BF16 优势**
+* 更大指数范围
+* 数值更稳定
+* 减少 overflow/underflow
+
+**工程要点**
+* master weights FP32
+* loss scaling（FP16）
+
+**论文：**
+* *Mixed Precision Training*
+  Micikevicius et al., 2018
+
+3. KV Cache 工程优化（训练 &amp; 推理）
+
+**核心**
+* KV Cache 是显存大户（O(seq_len × layers × d)）
+
+**技术**
+* 分页 KV Cache
+* chunked attention
+* offload（CPU/NVMe）
+
+**论文：**
+* *Efficient Memory Management for Large Language Model Serving*
+  Kwon et al., 2023（vLLM）
+
+##### 算子与 Kernel 级优化（吞吐提升的关键）
+1. FlashAttention（革命性优化）
+
+**原理**
+* IO-aware attention
+* 不显式 materialize (QK^T)
+
+**数学本质**
+* softmax 的分块数值稳定计算
+
+**工程收益**
+* 显存：O(n²) → O(n)
+* 速度：显著提升
+* 数值稳定性更好
+
+**论文：**
+* *FlashAttention*
+  Dao et al., NeurIPS 2022
+
+2. Fused Kernels（线性 + 激活 + 线性）
+
+**思想**
+* 减少 kernel launch
+* 减少中间内存读写
+
+**典型融合**
+* QKV fused
+* Linear + SiLU + Linear（FFN）
+
+**实际影响**
+* 在 FFN 占主导的模型中，**收益非常大**
+
+**工业实现：**
+* Triton
+* NVIDIA Transformer Engine
+
+3. 通信-计算重叠（Overlap）
+
+**技术**
+* backward 中 overlap All-Reduce 与 GEMM
+* pipeline overlap
+
+**目标**
+* 隐藏通信延迟
+* 提高 GPU 利用率
+
+**论文：**
+* *Efficient Large-Scale Language Model Training on GPU Clusters*
+  Narayanan et al., 2021
+
+##### IO 与数据工程优化（常被低估）
+
+1. 高效数据管道
+
+**问题**
+* GPU 常因 data starvation 空转
+
+**技术**
+* 多进程预取
+* mmap / streaming
+* shard + shuffle
+
+**论文：**
+* *Efficient Training of Language Models to Fill in the Gaps*
+  Fedus et al., 2022
+
+2. Checkpoint 工程
+
+**挑战**
+* 千亿参数 checkpoint 可达 TB 级
+
+**技术**
+* sharded checkpoint
+* async save
+* 增量 checkpoint
+
+**实践：**
+* DeepSpeed / FSDP checkpoint
+
+##### 推理友好工程（训练阶段即考虑）
+
+1. 结构选择的工程动机
+
+| 设计           | 工程收益        |
+| ------------ | ----------- |
+| Decoder-only | KV Cache 友好 |
+| GQA / MQA    | KV Cache 减少 |
+| RMSNorm      | kernel 融合   |
+
+**论文：**
+* *GQA: Training Generalized Multi-Query Transformer Models*
+  Ainslie et al., 2023
+
+2. 量化友好训练（QAT-aware）
+* SmoothQuant
+* 分组量化
+* FFN-aware scaling
+
+**论文：**
+* *SmoothQuant*
+  Xiao et al., 2022
 
 ---
 
@@ -10915,6 +11166,30 @@ ZeRO / FSDP
 - TensorBoard：可以监听log数据，图形化展示训练曲线
 - tqdm：进度条
 - netron：模型结构可视化
+
+### LLM网站及工具
+#### HuggingFace
+Hugging Face 是一家提供开源 AI 工具和平台的公司，致力于简化预训练模型的使用，加速机器学习项目的开发与落地。
+
+最初以 Transformers 库闻名，该库极大地降低了使用 BERT、GPT、T5 等模型的门槛。如今，Hugging Face 已发展成为一个完整的 AI 开发生态系统，支持自然语言处理、计算机视觉、语音处理、多模态任务等多个领域。
+
+Hugging Face 的生态系统主要由两个核心部分组成：
+
+##### 1）Hugging Face Hub
+Hugging Face提供了一个集中式的开源平台，用于托管和分享模型、数据集和应用。
+- 官网地址为：https://huggingface.co/
+- 国内镜像地址为：https://hf-mirror.com/
+
+##### 2）工具链（Libraries）
+Hugging Face 提供了一套围绕预训练模型构建的工具库。这些组件彼此独立，又可以协同工作，覆盖了从数据处理到模型训练与推理的完整流程。
+
+各组件具体功能如下：
+- Datasets：Datasets 是用于加载和处理数据集的工具库。支持从在线仓库或本地文件（如 CSV、JSON）加载文本数据，并支持清洗、编码、切分等预处理操作。处理后的数据可直接用于模型训练，是连接原始数据与模型输入的重要桥梁。
+- Tokenizers：Tokenizers 是用于将文本转换为模型输入的工具。它支持文本分词、编码为 token ID，同时自动处理特殊符号、填充（padding）、attention mask 和句子对标记（token type ID）。分词器通常与模型配套使用，可通过统一接口加载。
+- Transformers：Transformers 是 Hugging Face 最核心的库，用于加载、使用和微调各种预训练模型。该库统一了模型接口，支持数百种模型结构，如 BERT、GPT 等，用户可以通过一行代码 from_pretrained()直接加载公开模型，快速用于推理或训练。
+
+#### ModelScope
+类似HuggingFace，由Alibaba维护。
 
 # References
 - [尚硅谷大模型技术之NLP1.0.3.pdf](/pdf/nlp/尚硅谷大模型技术之NLP1.0.3.pdf)
