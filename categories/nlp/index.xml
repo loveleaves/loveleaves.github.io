@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sat, 13 Dec 2025 23:38:01 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 14 Dec 2025 10:22:56 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -1617,10 +1617,397 @@ NTK-aware RoPE / xPos / YaRN（工程增强）
 * &#34;Reformer: The Efficient Transformer&#34;
 
 #### LayerNorm
-RMSNorm 替代 LayerNorm（结构简化 + 性能）
+##### PostNorm（原始transformer使用）
+原始设计（Vaswani et al., 2017）Transformer 使用的是：
+* **LayerNorm**
+* **Post-LN 结构**
+
+即：
+$$
+y = \mathrm{LN}(x + \mathrm{Sublayer}(x)) \\\\
+\mathrm{LN}(x) = \gamma \cdot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta
+$$
+在小模型（6–12 层）中是可行的，但在大模型中暴露出严重问题。
+- （1）深层梯度不稳定（致命）
+
+对输入梯度近似为：
+$$
+\frac{\partial y}{\partial x} \approx \frac{\partial \mathrm{LN}}{\partial x} \cdot (I + \partial \mathrm{Sublayer})
+$$
+
+LayerNorm 的梯度是**缩放 + 去均值的非对角矩阵**，导致：
+* 梯度被反复缩放
+* 残差通道不再是“近似恒等映射”
+* 层数 ↑ → 梯度消失 / 爆炸
+
+**结论**：
+
+&gt; 原始 LN + Post-LN 结构无法稳定扩展到 40+、80+ 层
+
+##### Pre-LayerNorm（结构级革命）
+**结构变化**
+
+从：$y = \mathrm{LN}(x + \mathrm{Sublayer}(x))$
+
+变为：$y = x + \mathrm{Sublayer}(\mathrm{LN}(x))$
+
+**核心数学差异**
+
+残差分支的梯度：
+$$
+\frac{\partial y}{\partial x} \approx I + \frac{\partial \mathrm{Sublayer}}{\partial x}
+$$
+
+即：
+* 梯度可以**绕过 LayerNorm**
+* 残差路径近似恒等映射
+
+**工程结果**
+
+* 训练深度可从 12 层 → 80+ 层
+* 几乎所有现代 LLM 的**必要条件**
+
+**论文支撑**
+
+* *On Layer Normalization in the Transformer Architecture*
+  Xiong et al., 2020
+* *Understanding the Difficulty of Training Transformers*
+  Liu et al., 2020
+
+**实际采用**
+* GPT-2 之后所有 GPT 系列
+* LLaMA / Qwen / DeepSeek / Mistral
+
+##### RMSNorm（LayerNorm 的结构简化）
+&gt; RMSNorm：去均值是否真的必要？
+
+**RMSNorm 定义**
+$$
+\mathrm{RMSNorm}(x) = \gamma \cdot \frac{x}{\sqrt{\frac{1}{d}\sum_i x_i^2 + \epsilon}}
+$$
+
+**与 LayerNorm 的本质差异**
+
+| 项目      | LayerNorm | RMSNorm |
+| ------- | --------- | ------- |
+| 去均值     | 是         | 否       |
+| 方差归一    | 是         | 是       |
+| 可学习偏置 β | 有         | 无       |
+| 参数量     | 2d        | d       |
+
+**理论与经验动机**
+
+在 **Pre-LN 架构**下：
+* 均值偏移不会随深度累积（残差稳定）
+* 方差才是主要不稳定来源
+* 去均值的收益极小，但计算与通信成本真实存在
+
+**工程收益**
+* 计算更快
+* 数值更稳定（尤其在 BF16）
+* Kernel 更容易融合
+
+**论文**
+* *Root Mean Square Layer Normalization*
+  Zhang &amp; Sennrich, 2019
+
+**实际采用**
+* LLaMA 系列
+* Qwen 系列
+* DeepSeek
+* Mistral
+
+&gt; **RMSNorm 是当前 Decoder-only LLM 的事实标准**
+
+##### Norm 位置与残差缩放的协同设计
+**问题**
+
+即使 Pre-LN + RMSNorm，在 **100+ 层**时仍会出现：
+* 残差累积导致激活范数缓慢上升
+
+**解决策略（多种等价形式）**
+
+- （1）Residual Scaling
+$$
+y = x + \alpha \cdot \mathrm{Sublayer}(\mathrm{Norm}(x))
+$$
+其中：$\alpha \sim \frac{1}{\sqrt{L}}$
+
+- （2）小初始化（等价效果）
+  * 输出投影权重使用更小 std
+  * FFN / Attention 输出更“保守”
+
+**理论直觉**
+
+让残差路径在深度上保持：
+$$
+\mathbb{E}|x^{(l)}|^2 \approx \text{常数}
+$$
+
+**论文 / 技术来源**
+* *DeepNet: Scaling Transformers to 1,000 Layers*
+  Wang et al., 2022
+* *Stabilizing Transformer Training by Preventing Internal Covariate Shift*（相关分析）
+
+**实际情况**
+* 多数大厂模型使用该思想
+* 但**不会在论文或代码中显式标注**（工程细节）
+
+##### Norm 相关的其他重要变体（较少但真实存在）
+
+1. ScaleNorm（轻量替代）
+$$
+\mathrm{ScaleNorm}(x) = \frac{g}{|x|} x
+$$
+
+* 仅控制向量模长
+* 参数极少
+* 表达能力弱于 RMSNorm
+
+**论文：**
+* *Transformers without Tears*
+  Nguyen &amp; Salazar, 2019
+
+&gt; 实际 LLM 中不如 RMSNorm 常见
+
+2. NoNorm / μParam（研究方向）
+
+**核心思想**
+* 利用初始化与参数化控制尺度
+* 显式去除归一化层
+
+**问题**
+* 对初始化极度敏感
+* 工程鲁棒性差
+
+**代表论文**
+* *µParam: A Unified Framework for Scaling Transformers*
+  Yang et al., 2022
+
+&gt; **尚未成为主流工程方案**
+
+##### 主流模型真实采用情况对照表
+
+| 模型             | Norm 类型   | LN 位置   | 备注    |
+| -------------- | --------- | ------- | ----- |
+| 原始 Transformer | LayerNorm | Post-LN | 仅适合浅层 |
+| BERT           | LayerNorm | Post-LN | 深度有限  |
+| GPT-2          | LayerNorm | Pre-LN  | 过渡阶段  |
+| LLaMA          | RMSNorm   | Pre-LN  | 主流范式  |
+| Qwen           | RMSNorm   | Pre-LN  | 主流范式  |
+| DeepSeek       | RMSNorm   | Pre-LN  | 主流范式  |
+| Mistral        | RMSNorm   | Pre-LN  | 主流范式  |
 
 #### FFN
-从 ReLU 到 SwiGLU
+现代预训练模型对 Transformer 中 FFN 的优化，本质是:
+- 用门控非线性（SwiGLU）和更合理的参数分配，显著提升单位参数的表达能力，
+- 并在高端模型中通过 MoE 引入条件计算以突破容量瓶颈；
+- 在工程上，FFN 已成为算力与优化的主战场，而不再只是 Attention 的“配角”。
+
+**主流 FFN 技术路线对照表**
+
+| 维度     | 原始 Transformer | 现代主流 LLM       |
+| ------ | -------------- | -------------- |
+| 激活     | ReLU           | SiLU           |
+| 结构     | 单支路            | SwiGLU         |
+| 宽度     | 4d             | ≥4d（更优）        |
+| 参数占比   | ~50%           | 60–70%         |
+| 稀疏性    | 无              | MoE（可选）        |
+| Kernel | 标准 GEMM        | Fused / Triton |
+
+
+##### 原始 Transformer 中 FFN
+1. 原始 FFN 定义（Vaswani et al., 2017）
+$$
+\mathrm{FFN}(x)=Linear_2(ReLU(Linear_1(x)))\\\\
+\iff\mathrm{FFN}(x)=\max(0, xW_1 + b_1) W_2 + b_2
+$$
+
+其中：
+* $W_1 \in \mathbb{R}^{d \times d_{ff}}$
+* $W_2 \in \mathbb{R}^{d_{ff} \times d}$
+* 通常 $d_{ff} = 4d$
+
+**原始定位**
+* Attention：**token 间交互**
+* FFN：**token 内的非线性特征变换**
+
+2. 原始 FFN 在大模型中的问题
+
+（1）非线性表达能力有限
+* ReLU 在负半轴完全为 0
+* 激活分布稀疏、梯度不连续
+* 在深层堆叠中表现不稳定
+
+（2）参数与算力利用效率不高
+* 同样的参数预算下，ReLU-FFN 的表达能力不如门控结构
+* 在 Scaling Law 视角下不是最优结构
+
+（3）数值稳定性与混合精度不友好
+* ReLU 的 hard cutoff
+* 对 BF16 / FP16 训练不友好
+
+##### 激活函数升级（ReLU → GELU / SiLU）
+1. GELU（过渡方案）
+$$
+\mathrm{GELU}(x)=x \cdot \Phi(x)
+$$
+* 平滑近似 ReLU
+* 在 BERT、早期 GPT 中使用
+
+论文：
+* *Gaussian Error Linear Units (GELUs)*
+  Hendrycks &amp; Gimpel, 2016
+
+**局限**
+* 非门控结构
+* 在大规模生成模型中逐渐被淘汰
+
+2. SiLU / Swish（现代门控的基础）
+$$
+\mathrm{SiLU}(x) = x \cdot \sigma(x)
+$$
+* 平滑
+* 梯度连续
+* 数值稳定性好
+
+**论文：**
+* *Swish: A Self-Gated Activation Function*
+  Ramachandran et al., 2017
+
+&gt; **SiLU 成为后续 GLU 系列的核心激活函数**
+
+##### 门控 FFN（GLU 系列）【事实标准】
+1. GLU 家族的统一视角
+
+一般形式：
+$$
+\mathrm{FFN}_{GLU}(x)=(xW_1) \odot g(xW_2)
+$$
+其中：
+* $g(\cdot)$ 为激活函数
+* $\odot$ 为Hadamard积，即逐元素相乘（门控）
+
+2. SwiGLU：当前 Decoder-only LLM 的事实标准
+
+**定义**
+$$
+\mathrm{SwiGLU}(x)=(xW_1) \odot \mathrm{SiLU}(xW_2)\\\\
+\mathrm{FFN}(x)=\mathrm{SwiGLU}(x)W_3
+$$
+
+**与原始 FFN 的对比**
+
+| 维度   | ReLU-FFN | SwiGLU-FFN |
+| ---- | -------- | ---------- |
+| 非线性  | 单支路      | 门控双支路      |
+| 激活   | ReLU     | SiLU       |
+| 梯度   | 不连续      | 连续         |
+| 表达能力 | 较弱       | 显著更强       |
+
+**理论与经验动机**
+
+- （1）条件计算（Conditional Computation）
+  * 门控决定哪些通道被激活
+  * 等价于软稀疏专家选择
+- （2）更高的函数逼近效率
+  - 在相同参数预算下：GLU &gt; ReLU（经验与理论一致）
+- （3）更好的梯度传播
+  * 乘性门控避免 ReLU 的“死亡神经元”
+
+**论文支撑**
+* *GLU Variants Improve Transformer*
+  Shazeer, 2020
+* *PaLM*（Chowdhery et al., 2022，附录实验）
+
+**实际采用**
+* LLaMA / LLaMA 2 / LLaMA 3
+* Qwen
+* DeepSeek
+* Mistral
+
+&gt; **这是目前 FFN 结构层面的最大共识**
+
+##### 参数重分配：为什么 FFN 仍是 4d 甚至更大？
+**观察事实**
+* FFN 通常占 **60%–70% 的参数量**
+* Attention 占比反而下降
+
+**理论依据：Scaling Laws**
+
+**论文：**
+* *Chinchilla: Training Compute-Optimal Large Language Models*
+  Hoffmann et al., 2022
+
+**结论：**
+* 在给定计算预算下，**更大的 FFN 宽度比更多 Attention heads 更划算**
+* FFN 是主要的“记忆与模式存储单元”
+
+##### MoE（Mixture-of-Experts）FFN
+1. MoE-FFN：用稀疏性换取容量
+
+**基本结构**
+$$
+\mathrm{FFN}_{MoE}(x)=\sum_{e \in \mathcal{E}} p_e(x) \cdot \mathrm{FFN}_e(x)
+$$
+* 每个 token 只激活 Top-k 个 expert
+* 总参数量 ↑↑，计算量近似不变
+
+**理论动机**
+* FFN 是主要容量瓶颈
+* MoE 实现 **条件计算 + 参数规模解耦**
+
+**关键工程挑战**
+* 路由不均衡
+* 通信开销
+* 推理复杂度
+
+**代表论文**
+* *Switch Transformers*
+  Fedus et al., 2021
+* *GShard*
+  Lepikhin et al., 2020
+
+**实际使用**
+* PaLM-2（部分）
+* Mixtral（Mistral MoE）
+* DeepSeek-MoE
+
+&gt; **MoE 是“高端路线”，但不是所有模型的默认选择**
+
+##### 数值与工程层面的 FFN 优化
+1. 初始化与输出缩放
+
+**问题**
+* FFN 输出方差随深度累积
+
+**对策**
+* 输出投影使用更小 std
+* 或显式 residual scaling：
+  $$
+  x_{l+1} = x_l + \alpha \cdot \mathrm{FFN}(\cdot),\quad \alpha \sim \frac{1}{\sqrt{L}}
+  $$
+
+**论文：**
+* *DeepNet*
+  Wang et al., 2022
+
+2. Kernel 融合与算子优化
+
+**工程实践**
+* fused Linear + Activation + Linear
+* FlashFFN / Triton kernel
+* 减少内存访问与 kernel launch
+
+**影响**
+* FFN 在推理中常占 &gt;50% 的 wall-time
+* kernel 优化比结构微调更重要
+
+3. 低精度与量化适配
+
+* BF16 / FP16 训练
+* FFN 权重对量化更敏感 → 需分组量化 / SmoothQuant
+* 但 FFN 仍是量化收益最大的模块之一
 
 ##### 训练与数值稳定性优化
 7. 初始化与残差缩放（Residual Scaling）
