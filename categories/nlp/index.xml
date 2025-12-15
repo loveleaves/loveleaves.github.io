@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 14 Dec 2025 20:50:53 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 15 Dec 2025 23:55:12 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -37,10 +37,49 @@
 # NLP基础
 ## 导论
 ### 定义
+自然语言处理（Natural Language Processing, NLP），是人工智能领域的一个重要分支。自然语言，指人类日常使用的语言（如中文、英文），NLP 的目标是让计算机“理解”或“使用”这些语言。
 
 ### 常见任务
+自然语言处理包含多个典型任务，主要可分为以下几类：
+
+#### 文本分类
+对整段文本进行判断或归类。
+
+常见应用：情感分析（判断评价是正面还是负面）、垃圾邮件识别、新闻主题分类等。
+
+#### 序列标注
+对一段文本中的每个词或字打上标签。
+
+常见应用：命名实体识别（找出人名、地名、手机号码等）
+
+#### 文本生成
+根据已有内容生成新的自然语言文本。
+
+常见应用：自动写作、摘要生成、智能回复、对话系统等。
+
+#### 信息抽取
+从文本中提取出结构化的信息。
+
+常见应用：给出一段文本和一个问题，从中抽取答案。
+
+#### 文本转换
+将一种文本转换为另一种形式。
+
+常见应用：机器翻译，摘要生成等。
 
 ### 技术演进历史
+
+#### 规则系统阶段
+在20世纪50年代至80年代初，自然语言处理主要依赖人工编写的语言规则，这些规则由语言学家和程序员手动制定。这一阶段的代表系统有早期的机器翻译系统（如Georgetown-IBM实验）和ELIZA聊天机器人。这类系统在特定领域表现良好，但缺乏通用性，扩展性差，对语言的复杂性处理有限。
+
+#### 统计方法阶段
+90年代，随着计算能力的提升和语料资源的积累，统计方法逐渐成为主流。通过对大量文本数据进行概率建模，系统能够“学习”语言中的模式和规律。典型方法包括n-gram模型、隐马尔可夫模型（HMM）和最大熵模型。这一阶段标志着从“专家经验”向“数据驱动”方法的转变。
+
+#### 机器学习阶段
+进入21世纪，NLP技术逐步引入传统机器学习方法，如逻辑回归、支持向量机（SVM）、决策树、条件随机场（CRF）等。这些方法在命名实体识别、文本分类等任务上表现出色。在此阶段，特征工程成为关键环节，研究者需要设计大量手工特征来提升模型性能。该阶段的特点是学习算法更为复杂，模型泛化能力增强。
+
+#### 深度学习阶段
+自2010年代中期开始，深度学习在NLP中迅速崛起。基于神经网络的模型RNN、LSTM、GRU等，取代了传统手工特征工程，能够从海量数据中自动提取语义表示。随后，Transformer架构的提出极大提升了语言理解与生成的能力，深度学习不仅在精度上实现突破，也推动了预训练语言模型（如GPT、BERT等）和迁移学习的发展，使NLP技术更通用、更强大。
 
 ## 文本表示（Representation）
 ### 概述
@@ -1537,7 +1576,7 @@ NTK-aware RoPE / xPos / YaRN（工程增强）
 * 保留低频稳定性
 * 论文：*YaRN*, Peng et al., 2023
 
-#### Attention（MHA/GQA/MQA）
+#### Attention（MHA/GQA/MQA/MLA）
 标准多头注意力（MHA）在单层对长度为 (n) 的序列、batch size (B)、头数 (H)、每头维度 (d_k) 的情况下，关键成本（单层）为：
 
 * 计算量（近似）：$(O(B \cdot H \cdot n \cdot d_k + B \cdot H \cdot n^2))$（QK 内积产生 ($n\times n$) 矩阵）
@@ -1591,6 +1630,9 @@ NTK-aware RoPE / xPos / YaRN（工程增强）
 * MQA KV bytes ≈ $((t-1)\cdot 1 \cdot d_k \cdot 2)$
 
 因此在长上下文（t 很大）或多卡 KV 传输场景下，带宽/显存压力下降近 (H) 倍，能显著降低推理延迟与跨卡通信开销（实测在多篇工程文章/博客里呈现为数倍到十倍的吞吐改进）。GQA 在 (H/G) 维持同类效果但更平衡质量。
+
+##### MLA
+&gt; [缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA](https://kexue.fm/archives/10091)
 
 ##### FlashAttention：微架构/算法级的加速（与 MQA/GQA 不冲突）
 **FlashAttention** 不是新的注意力「结构」而是 **IO-aware 的 exact attention 实现**：它通过 tile 分块、在片上 SRAM 中完成 softmax 计算，避免构造完整 (n\times n) 中间矩阵，减少 HBM↔SRAM 读写，从而实现**内存与时间双降**（并能配合 MHA/MQA/GQA 使用）。
@@ -2361,6 +2403,8 @@ Hugging Face 提供了一套围绕预训练模型构建的工具库。这些组�
 - [cs224n](https://web.stanford.edu/class/cs224n/)
 - [illustrated-transformer](https://jalammar.github.io/illustrated-transformer/)
 - [huggingface LLM course](https://huggingface.co/learn/llm-course/en/chapter1/6)
+- [cs336](https://stanford-cs336.github.io/spring2025/)
+- [苏剑林-苏神博客](https://kexue.fm/)
 
 ## Papers/
 - [ACL Anthology](https://aclanthology.org/)（ACL、EMNLP、NAACL 等会议论文集合）——查 NLP 最新论文的权威库。 
