@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Mon, 15 Dec 2025 23:55:12 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 18 Dec 2025 23:01:03 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -40,6 +40,8 @@
 自然语言处理（Natural Language Processing, NLP），是人工智能领域的一个重要分支。自然语言，指人类日常使用的语言（如中文、英文），NLP 的目标是让计算机“理解”或“使用”这些语言。
 
 ### 常见任务
+
+常见任务=》平安银行算法经历=》简历
 自然语言处理包含多个典型任务，主要可分为以下几类：
 
 #### 文本分类
@@ -495,6 +497,8 @@ output, (h_n, c_n) = lstm(input, (h_0, c_0))
 ``` python
 # 对于序列模型中有padding操作时，注意把padding去掉再丢入LSTM计算
 # 双向多层LSTM模型示例
+# 可利用以下接口：
+# from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_sequence
 class ReviewAnalyzeModel(nn.Module):
     def __init__(self, vocab_size, padding_idx=0):
         super(ReviewAnalyzeModel, self).__init__()

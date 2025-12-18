@@ -7,7 +7,23 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Mon, 15 Dec 2025 23:55:12 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 18 Dec 2025 23:01:03 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Leadership</title>
+        <link>https://loveleaves.github.io/categories/leadership/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/categories/leadership/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>SE</title>
+        <link>https://loveleaves.github.io/categories/se/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/categories/se/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Systems_Engineering</title>
         <link>https://loveleaves.github.io/categories/systems_engineering/</link>
         <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
@@ -45,14 +61,6 @@
         <pubDate>Sat, 22 Mar 2025 00:00:00 +0000</pubDate>
         
         <guid>https://loveleaves.github.io/categories/distributed_system/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>SE</title>
-        <link>https://loveleaves.github.io/categories/se/</link>
-        <pubDate>Sat, 22 Mar 2025 00:00:00 +0000</pubDate>
-        
-        <guid>https://loveleaves.github.io/categories/se/</guid>
         <description></description>
         </item>
         <item>

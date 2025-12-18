@@ -7,6 +7,126 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright><atom:link href="https://loveleaves.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【Leader思维】 如何成长为一个优秀的技术领导者</title>
+        <link>https://loveleaves.github.io/p/leadership_intro/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://loveleaves.github.io/p/leadership_intro/</guid>
+        <description>&lt;h1 id=&#34;项目流程&#34;&gt;项目流程
+&lt;/h1&gt;&lt;h2 id=&#34;ai项目流程&#34;&gt;AI项目流程
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;如何判断是否要做一个 AI 项目&lt;/li&gt;
+&lt;li&gt;如何做前期的调研&lt;/li&gt;
+&lt;li&gt;如何做开发的计划&lt;/li&gt;
+&lt;li&gt;如何对结果进行验证&lt;/li&gt;
+&lt;li&gt;如何进行部署&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;如何判断是否要做一个-ai-项目&#34;&gt;如何判断是否要做一个 AI 项目
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;技术的成熟度&lt;/li&gt;
+&lt;li&gt;需求的可控程度&lt;/li&gt;
+&lt;li&gt;项目投入的周期和成本&lt;/li&gt;
+&lt;li&gt;项目最终的交付流程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;技术的成熟度&#34;&gt;技术的成熟度
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;底线：人工是否可以解决这个问题&lt;/li&gt;
+&lt;li&gt;Paper 中技术的复现性 VS 领先厂商当前的水平&lt;/li&gt;
+&lt;li&gt;初期通过小 Demo 测试准确率&lt;/li&gt;
+&lt;li&gt;团队的时间和能力&lt;/li&gt;
+&lt;li&gt;项目部署问题&lt;/li&gt;
+&lt;li&gt;保守估计项目的交付时间&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;需求的可控程度&#34;&gt;需求的可控程度
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;销售导向 OR 技术导向&lt;/li&gt;
+&lt;li&gt;客户管理能力&lt;/li&gt;
+&lt;li&gt;团队整体的需求控制能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;项目投入的周期和成本&#34;&gt;项目投入的周期和成本
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;大多数时候，人们会低估项目投入的周期和成本。&lt;/li&gt;
+&lt;li&gt;项目周期和成本不可控的原因主要来源于需求的变更。&lt;/li&gt;
+&lt;li&gt;其他可能出现的问题：&lt;/li&gt;
+&lt;li&gt;标注的不可控性&lt;/li&gt;
+&lt;li&gt;模型效果调优所需要的时间&lt;/li&gt;
+&lt;li&gt;推断速度提升所需要的时间&lt;/li&gt;
+&lt;li&gt;环境部署所需要的时间&lt;/li&gt;
+&lt;li&gt;运行模型所需要的算力成本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;项目最终的交付流程&#34;&gt;项目最终的交付流程
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;明确项目目标&lt;/li&gt;
+&lt;li&gt;不要忽略交付流程中的额外投入&lt;/li&gt;
+&lt;li&gt;组织的项目交付的流水化能力：&lt;/li&gt;
+&lt;li&gt;是否有明确的交付流程&lt;/li&gt;
+&lt;li&gt;人员职责安排是否清晰&lt;/li&gt;
+&lt;li&gt;是否严格遵循时间规范&lt;/li&gt;
+&lt;li&gt;项目是否有烂尾的风险&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;项目的一般流程&#34;&gt;项目的一般流程
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;前期调研和方案确定&lt;/li&gt;
+&lt;li&gt;数据标注和开发&lt;/li&gt;
+&lt;li&gt;效果调优（包括准确性和速度）&lt;/li&gt;
+&lt;li&gt;代码部署&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;前期调研和方案确定&#34;&gt;前期调研和方案确定
+&lt;/h4&gt;&lt;p&gt;容易被忽略的问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;很多时候，学术结果难以复现。&lt;/li&gt;
+&lt;li&gt;很多方法在某些数据上可能会非常好用，但是在另一些数据上则会失效。&lt;/li&gt;
+&lt;li&gt;很多方法的成功取决于一些细节，而这些细节只有真正做过的人才会知道。&lt;/li&gt;
+&lt;li&gt;很多时候人们会过于关注方法的效果，而忽略了整体的运行实效。&lt;/li&gt;
+&lt;li&gt;在绝大多数的时候，人们都会低估整个项目的难度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;数据标注&#34;&gt;数据标注
+&lt;/h4&gt;&lt;p&gt;我的建议：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;前期一定要制定充分的标注规则&lt;/li&gt;
+&lt;li&gt;数据的采集一定要具有代表性&lt;/li&gt;
+&lt;li&gt;非常不建议采用自动标注的方式&lt;/li&gt;
+&lt;li&gt;先训练一个初步模型，然后只让相关人员进行校对，可以保证标注效率并减少标注成本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;算法开发&#34;&gt;算法开发
+&lt;/h4&gt;&lt;p&gt;我的建议：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;千万不要采用规则的方式进行开发&lt;/li&gt;
+&lt;li&gt;初期就要引导客户使用和购买能够支持深度学习框架的硬件&lt;/li&gt;
+&lt;li&gt;算法开发的过程中，一定要有量化的指标并记录下来&lt;/li&gt;
+&lt;li&gt;开发的过程中，多分解问题&lt;/li&gt;
+&lt;li&gt;前端对接的时候一定要去引导何为“智能”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;效果优化&#34;&gt;效果优化
+&lt;/h4&gt;&lt;p&gt;我的建议：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;初期要充分考虑到效果优化所需要的时间和成本&lt;/li&gt;
+&lt;li&gt;客户并不知道通过什么标准来评估一个系统的好坏&lt;/li&gt;
+&lt;li&gt;一定要从数据的角度出发进行优化&lt;/li&gt;
+&lt;li&gt;学会止损&lt;/li&gt;
+&lt;li&gt;出了准确性的优化，还要注重代码运算效率的优化&lt;/li&gt;
+&lt;li&gt;算法开发和效果优化常常是需要反复进行的工作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;算法部署&#34;&gt;算法部署
+&lt;/h4&gt;&lt;p&gt;我的建议：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果客户的系统比较奇怪，或者难以满足一些要求，要提前让客户知晓这些风险。&lt;/li&gt;
+&lt;li&gt;即使再小的项目，我也强烈建议用微服务架构进行部署。&lt;/li&gt;
+&lt;li&gt;不要把算法部署在本地，尽量采用云端部署。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;必备实力&#34;&gt;必备实力
+&lt;/h1&gt;&lt;h2 id=&#34;高效学习&#34;&gt;高效学习
+&lt;/h2&gt;&lt;h2 id=&#34;高效沟通&#34;&gt;高效沟通
+&lt;/h2&gt;&lt;h2 id=&#34;时间管理&#34;&gt;时间管理
+&lt;/h2&gt;&lt;h2 id=&#34;技术领导力&#34;&gt;技术领导力
+&lt;/h2&gt;&lt;h1 id=&#34;references&#34;&gt;References
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://pan.baidu.com/s/5emvXbxZqIogCrPGW4987xQ&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;左耳听风-课程-传奇程序员练级攻略pdf&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>【系统工程基础】 系统工程基础</title>
         <link>https://loveleaves.github.io/p/systems_fundamentals_intro/</link>
         <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
@@ -8877,6 +8997,8 @@ ASan 可以检测的内存问题包括：&lt;/li&gt;
 自然语言处理（Natural Language Processing, NLP），是人工智能领域的一个重要分支。自然语言，指人类日常使用的语言（如中文、英文），NLP 的目标是让计算机“理解”或“使用”这些语言。
 
 ### 常见任务
+
+常见任务=》平安银行算法经历=》简历
 自然语言处理包含多个典型任务，主要可分为以下几类：
 
 #### 文本分类
@@ -9332,6 +9454,8 @@ output, (h_n, c_n) = lstm(input, (h_0, c_0))
 ``` python
 # 对于序列模型中有padding操作时，注意把padding去掉再丢入LSTM计算
 # 双向多层LSTM模型示例
+# 可利用以下接口：
+# from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_sequence
 class ReviewAnalyzeModel(nn.Module):
     def __init__(self, vocab_size, padding_idx=0):
         super(ReviewAnalyzeModel, self).__init__()
