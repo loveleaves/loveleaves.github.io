@@ -2099,7 +2099,7 @@ PCB的良好布局对DCDC电源非常至关重要，他能直接影响到产品�
 <pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 使用 N 沟道 MOS 管（最常用）
 </span></span></span><span class="line"><span class="cl"><span class="c1">// R1（1K）：限流作用，防止通向NMOS管栅极的电流过大，保护栅极。
 </span></span></span><span class="line"><span class="cl"><span class="c1">// R2（10K）：作为下拉电阻，确保在BL引脚未被驱动时，NMOS管的栅极电压接近地电平，保持NMOS管处于截止状态。
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">MCU</span> <span class="n">GPIO</span> <span class="o">--</span><span class="n">R1</span><span class="o">---</span><span class="n">Rgate</span><span class="o">--|&gt;</span> <span class="n">MOSFET</span> <span class="o">|-----</span> <span class="n">LED</span><span class="o">+</span> <span class="p">(</span><span class="err">背光</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">              <span class="o">|</span>
 </span></span><span class="line"><span class="cl">              <span class="n">R2</span>

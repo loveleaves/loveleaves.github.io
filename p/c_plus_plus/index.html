@@ -678,8 +678,8 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;execution&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">// std::sort(begin, end, comp); // origin
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">exe_policy</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">comp</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1">// std::sort(begin, end, comp); // origin
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">exe_policy</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">comp</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// 执行策略(execution policy)可选：
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 1、std::execution::seq（顺序执行）
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 2、std::execution::par（并行执行）
@@ -709,15 +709,15 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#define Conn(x,y)  x##y </span><span class="c1">// 表示x连接y
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define ToChar(x)  #@x  </span><span class="c1">// 给x加上单引号
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define ToString(x) #x  </span><span class="c1">// 给x加上双引号
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ToChar(x)  #@x  </span><span class="c1">// 给x加上单引号
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ToString(x) #x  </span><span class="c1">// 给x加上双引号
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">ToString</span><span class="p">(</span><span class="mi">123132</span><span class="p">);</span>     <span class="c1">// str=&#34;123132&#34;;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">Conn</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span><span class="mi">456</span><span class="p">);</span>            <span class="c1">//n=123456;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">Conn</span><span class="p">(</span><span class="s">&#34;asdf&#34;</span><span class="p">,</span> <span class="s">&#34;add&#34;</span><span class="p">)</span>   <span class="c1">//str = &#34;asdfadf&#34;;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span> <span class="n">a</span> <span class="o">=</span> <span class="n">ToChar</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>               <span class="c1">// a=&#39;1&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">Conn</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span><span class="mi">456</span><span class="p">);</span>            <span class="c1">//n=123456;
+</span></span></span><span class="line"><span class="cl"><span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">Conn</span><span class="p">(</span><span class="s">&#34;asdf&#34;</span><span class="p">,</span> <span class="s">&#34;add&#34;</span><span class="p">)</span>   <span class="c1">//str = &#34;asdfadf&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">a</span> <span class="o">=</span> <span class="n">ToChar</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>               <span class="c1">// a=&#39;1&#39;;
 </span></span></span><span class="line"><span class="cl"><span class="c1">// char a = ToChar(123);          // 编译器报错
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define debug(...) printf(__VA_ARGS__) </span><span class="c1">// 用于宏定义中代表可变参数
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define debug(...) printf(__VA_ARGS__) </span><span class="c1">// 用于宏定义中代表可变参数
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="运行时类型反射run-time-type-reflection-rttr">运行时类型反射(Run Time Type Reflection, RTTR)

@@ -638,16 +638,16 @@
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">i2c_config_t</span> <span class="n">i2c_conf</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">I2C_MODE_MASTER</span><span class="p">,</span> <span class="c1">// 主模式
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">.</span><span class="n">sda_io_num</span> <span class="o">=</span> <span class="n">BSP_I2C_SDA</span><span class="p">,</span> <span class="c1">// sda引脚
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">.</span><span class="n">sda_pullup_en</span> <span class="o">=</span> <span class="n">GPIO_PULLUP_ENABLE</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">sda_io_num</span> <span class="o">=</span> <span class="n">BSP_I2C_SDA</span><span class="p">,</span> <span class="c1">// sda引脚
+</span></span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">sda_pullup_en</span> <span class="o">=</span> <span class="n">GPIO_PULLUP_ENABLE</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">scl_io_num</span> <span class="o">=</span> <span class="n">BSP_I2C_SCL</span><span class="p">,</span> <span class="c1">// scl引脚
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">.</span><span class="n">scl_pullup_en</span> <span class="o">=</span> <span class="n">GPIO_PULLUP_ENABLE</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">scl_pullup_en</span> <span class="o">=</span> <span class="n">GPIO_PULLUP_ENABLE</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">master</span><span class="p">.</span><span class="n">clk_speed</span> <span class="o">=</span> <span class="n">BSP_I2C_FREQ_HZ</span> <span class="c1">// 时钟频率
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">};</span>
+</span></span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">    <span class="n">i2c_param_config</span><span class="p">(</span><span class="n">BSP_I2C_NUM</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">i2c_conf</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">i2c_driver_install</span><span class="p">(</span><span class="n">BSP_I2C_NUM</span><span class="p">,</span> <span class="n">i2c_conf</span><span class="p">.</span><span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// 不设置buffer
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h5 id="spi">SPI
@@ -1217,24 +1217,24 @@ View the PDF file <a class="pdf-source" id="pdf-source-noscript-e97cd62b" href="
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 初始化qmi8658
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">qmi8658_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">qmi8658_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">uint8_t</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 芯片的ID号
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">qmi8658_register_read</span><span class="p">(</span><span class="n">QMI8658_WHO_AM_I</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span> <span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// 读芯片的ID号
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">while</span> <span class="p">(</span><span class="n">id</span> <span class="o">!=</span> <span class="mh">0x05</span><span class="p">)</span>  <span class="c1">// 判断读到的ID号是否是0x05
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nf">qmi8658_register_read</span><span class="p">(</span><span class="n">QMI8658_WHO_AM_I</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span> <span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// 读芯片的ID号
+</span></span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">id</span> <span class="o">!=</span> <span class="mh">0x05</span><span class="p">)</span>  <span class="c1">// 判断读到的ID号是否是0x05
+</span></span></span><span class="line"><span class="cl">    <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nf">vTaskDelay</span><span class="p">(</span><span class="mi">1000</span> <span class="o">/</span> <span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>  <span class="c1">// 延时1秒
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nf">qmi8658_register_read</span><span class="p">(</span><span class="n">QMI8658_WHO_AM_I</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span> <span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// 读取ID号
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nf">qmi8658_register_read</span><span class="p">(</span><span class="n">QMI8658_WHO_AM_I</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span> <span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// 读取ID号
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">&#34;QMI8658 OK!&#34;</span><span class="p">);</span>  <span class="c1">// 打印信息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_RESET</span><span class="p">,</span> <span class="mh">0xb0</span><span class="p">);</span>  <span class="c1">// 复位  
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">vTaskDelay</span><span class="p">(</span><span class="mi">10</span> <span class="o">/</span> <span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>  <span class="c1">// 延时10ms
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL1</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">);</span> <span class="c1">// CTRL1 设置地址自动增加
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL7</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">);</span> <span class="c1">// CTRL7 允许加速度和陀螺仪
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL2</span><span class="p">,</span> <span class="mh">0x95</span><span class="p">);</span> <span class="c1">// CTRL2 设置ACC 4g 250Hz
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL3</span><span class="p">,</span> <span class="mh">0xd5</span><span class="p">);</span> <span class="c1">// CTRL3 设置GRY 512dps 250Hz 
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nf">vTaskDelay</span><span class="p">(</span><span class="mi">10</span> <span class="o">/</span> <span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>  <span class="c1">// 延时10ms
+</span></span></span><span class="line"><span class="cl">    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL1</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">);</span> <span class="c1">// CTRL1 设置地址自动增加
+</span></span></span><span class="line"><span class="cl">    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL7</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">);</span> <span class="c1">// CTRL7 允许加速度和陀螺仪
+</span></span></span><span class="line"><span class="cl">    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL2</span><span class="p">,</span> <span class="mh">0x95</span><span class="p">);</span> <span class="c1">// CTRL2 设置ACC 4g 250Hz
+</span></span></span><span class="line"><span class="cl">    <span class="nf">qmi8658_register_write_byte</span><span class="p">(</span><span class="n">QMI8658_CTRL3</span><span class="p">,</span> <span class="mh">0xd5</span><span class="p">);</span> <span class="c1">// CTRL3 设置GRY 512dps 250Hz 
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="滤波">滤波
