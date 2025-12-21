@@ -7,7 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Andrew Stark</copyright>
-        <lastBuildDate>Sun, 21 Dec 2025 23:08:03 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 21 Dec 2025 23:47:59 +0800</lastBuildDate><atom:link href="https://loveleaves.github.io/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>【NLP】 NLP 手册</title>
         <link>https://loveleaves.github.io/p/nlp_intro/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -1161,8 +1161,6 @@ Transformer 的训练与推理都基于自回归生成机制（Autoregressive Ge
 模型会基于**完整前文重新计算注意力分布**，生成当前步的输出。由于每一步的输入依赖前一步结果，整个过程必须**顺序执行，无法并行**。
 
 每步输出的是一个词的概率分布，最终生成结果也可使用不同的**解码策略**
-- 贪心搜索（Greedy）
-- 束搜索（Beam Search）
 
 ### Pytorch API使用
 ``` python
@@ -1267,6 +1265,10 @@ GPT基于Transformer的解码器结构，但与标准的Transformer解码器并�
 1. 输入嵌入层（Text &amp; Position Embedding）
 
 GPT不同于原始Transformer的一点在于：位置编码采用的是可学习的位置嵌入（learnable positional embedding）。这意味着每个位置对应一个可训练的向量，模型可以在训练过程中自动优化这些向量，而非使用不可训练的三角函数编码（如正弦/余弦函数）。
+
+**权重共享（Weight Typing）**
+- `self.transformer.wte.weight=self.llm_head.weight`，将词嵌入层的权重和语言模型头的权重绑定在一起
+- GPT系列的经典优化，既能减少模型参数数量（提升训练效率），又能让Token的语义向量和预测向量更一致，从而提升模型性能。
 
 2. 解码器
 
@@ -2060,6 +2062,127 @@ $$
 * BF16 / FP16 训练
 * FFN 权重对量化更敏感 → 需分组量化 / SmoothQuant
 * 但 FFN 仍是量化收益最大的模块之一
+
+#### 解码策略（Decoding Strategy）
+##### Greedy Decoding（贪心解码） / 确定性
+1. 定义：$x_t = \arg\max p(x_t \mid x_{&lt;t})$
+2. 特点：快，唯一
+
+##### 随机采样类
+1. Temperature Sampling（温度采样）
+   1. 定义：$p_i&#39; = \frac{\exp(z_i / T)}{\sum_j \exp(z_j / T)}$
+   2. 特点：
+      1. T → 0：趋近贪心
+      2. T = 1：原始分布
+      3. T &gt; 1：更随机
+   3. 几乎所有解码都会叠加 temperature
+2. Top-k Sampling
+   1. 机制
+      1. 只保留概率最高的 k 个 token
+      2. 重新归一化后采样
+   2. 优点
+      1. 排除长尾噪声 token
+      2. 简单、稳定
+   3. 缺点
+      1. 固定 k 不适应分布变化
+3. Top-p（Nucleus Sampling）
+   1. 机制
+      1. 按概率排序
+      2. 取累计概率 ≥ p 的最小集合
+      3. 在该集合内采样
+   2. 优点
+      1. 自适应候选集大小
+      2. 低熵时近似贪心
+      3. 高熵时保留多样性
+4. Typical Sampling
+   1. 特点：不是选“概率最高”，而是选“信息量典型”的 token
+   2. 优点：
+      1. 减少奇怪 token
+      2. 提升流畅性
+
+##### Beam Search 系列
+1. 机制
+   1. 同时保留 B 条候选序列
+   2. 每步扩展后保留得分最高的 B 条
+2. 优点
+   1. 全局最优近似
+   2. 适合翻译、摘要
+3. 缺点（在 LLM 中）
+   1. 输出趋同
+   2. 计算 / 内存开销大
+   3. 不适合长对话
+
+##### 对比 / 辅助解码
+1. Contrastive Decoding
+   1. 核心思想：同时用：
+      1. 大模型（流畅性）
+      2. 小模型（置信度）
+      3. 选择：$\arg\max (\log p_{\text{large}} - \alpha \log p_{\text{small}})$
+   2. 机制（简化）
+      1. 小模型一次性生成 k 个 token
+      2. 大模型并行验证
+      3. 接受最长前缀
+   3. 效果：
+      1. 减少重复
+      2. 减少空话
+      3. 提升信息密度
+2. Speculative Decoding
+   1. 目标：不是提升质量，而是提升吞吐 / 降低延迟
+   2. 特点
+      1. 解码“语义等价”
+      2. 显著减少大模型 forward 次数
+
+##### 约束 / 控制型解码
+1. Repetition Penalty / Frequency Penalty
+   1. 降低已出现 token 的概率
+   2. 防止循环
+
+##### Stop Tokens / Grammar Constraints
+1. JSON / SQL / 代码生成
+2. 保证结构合法
+
+##### 总结
+在真实系统中，解码不是单一机制，而是：
+
+```
+logits
+ → temperature
+ → repetition / presence penalty
+ → top-p / top-k
+ → sampling
+ → stop condition
+```
+
+- 主流 LLM 的解码机制本质是在概率分布上进行策略化采样。
+- 工业系统中最常用的是 **temperature + top-p sampling**，在质量和多样性之间取得平衡；
+- Beam Search 在开放生成中逐渐被弃用；
+- Speculative Decoding 是当前推理加速的核心方向；
+- 解码本身不改变模型能力，但显著影响生成质量、系统吞吐和用户体验。
+
+**主流 LLM 解码机制特点对比汇总表**
+| 解码机制                              | 核心思想              | 是否随机   | 生成质量   | 多样性    | 推理速度     | 工程复杂度  | 典型参数           | 适用场景        |
+| --------------------------------- | ----------------- | ------ | ------ | ------ | -------- | ------ | -------------- | ----------- |
+| **Greedy**                        | 每步选最大概率 token     | 否      | 中      | 极低     | **最快**   | 极低     | –              | Debug、确定性任务 |
+| **Temperature**                   | 平滑 / 锐化分布         | 是      | 中      | 中      | 快        | 低      | T∈(0,∞)        | 基础随机性控制     |
+| **Top-k**                         | 仅在前 k 个 token 中采样 | 是      | 中–高    | 中      | 快        | 低      | k=20–100       | 排除长尾噪声      |
+| **Top-p (Nucleus)**               | 累计概率 ≥ p 的最小集合    | 是      | **高**  | **高**  | 快        | 低      | p=0.9–0.95     | **工业默认**    |
+| **Typical Sampling**              | 采样“信息量典型”的 token  | 是      | 高      | 中–高    | 快        | 中      | τ≈0.2          | 流畅性优化       |
+| **Beam Search**                   | 保留 B 条最优序列        | 否      | 中–高    | **低**  | 慢        | 高      | beam=4–8       | 翻译、摘要       |
+| **Contrastive Decoding**          | 大模型 − 小模型对比       | 否      | **很高** | 低      | 慢        | 高      | α≈0.5          | 研究 / 高质量生成  |
+| **Speculative Decoding**          | 小模型提议，大模型验证       | 取决于主策略 | 与主策略一致 | 与主策略一致 | **显著更快** | **很高** | draft_len=4–16 | **推理加速**    |
+| **Repetition / Presence Penalty** | 抑制重复 token        | 是      | 提升稳定性  | 下降     | 快        | 低      | 1.1–1.3        | 对话、防循环      |
+| **Constrained Decoding**          | 强制输出满足规则          | 否      | 高（结构）  | 极低     | 慢        | 高      | grammar / FSM  | JSON / SQL  |
+
+**常见“组合使用方式”（工业实际）**
+| 使用目标      | 推荐解码组合                                   |
+| --------- | ---------------------------------------- |
+| 对话 / Chat | temperature + top-p + repetition penalty |
+| 创意写作      | temperature↑ + top-p                     |
+| 事实问答      | temperature↓ + top-p 或 greedy            |
+| 结构化输出     | greedy / top-p + constrained decoding    |
+| 高吞吐服务     | speculative decoding + top-p             |
+| 翻译 / 摘要   | beam search（谨慎）                          |
+
 
 #### 训练与数值稳定性优化
 一个工业可行的预训练 pipeline（高层）通常包含：
