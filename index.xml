@@ -9106,6 +9106,11 @@ for word in word_freqs.keys():
 alphabet.sort()
 vocab = [&#34;&lt;|endoftext|&gt;&#34;] + alphabet.copy() # GPT-2 模型的特殊 tokens
 
+# BBPE时，先用utf-8（中文）、Unicode（英文）等进行编码，再得到vocab
+def text_to_bytes(text):
+    &#34;&#34;&#34;将文本转换为UTF-8字节序列&#34;&#34;&#34;
+    return list(text.encode(&#39;utf-8&#39;))
+
 # 合并规则，计算出现频率，之后可以按相邻频率最高的pair对合并
 def compute_pair_freqs(splits):
     pair_freqs = defaultdict(int)
@@ -9152,6 +9157,7 @@ def tokenize(word):
 
 **总结**
 - 使用频率进行合并
+- [Byte-level Byte-pair Encoding（BBPE）详解、代码实现与应用](https://awesomeml.com/byte-level-byte-pair-encoding/)
 
 #### WordPiece
 &gt; [WordPiece tokenization 算法](https://hf-mirror.com/learn/llm-course/zh-CN/chapter6/6)
@@ -9321,6 +9327,521 @@ BERT的分词器由两个部分组成：
 然而，语言的表达极其灵活，一个词在不同上下文中可能有完全不同的含义。如吃的苹果和苹果手机。
 
 上下文相关词表示（Contextual Word Representations），是指词语的向量表示会根据它所在的句子上下文动态变化，从而更好地捕捉其语义。一个具有代表性的模型是——ELMo。该模型全称为 Embeddings from Language Models，发表于2018年2月。其基于LSTM 语言模型，使用上下文动态生成每个词的表示，每个词的向量由其前文和后文共同决定，是第一个被广泛应用于下游任务的上下文词向量模型。
+
+## 传统训练步骤
+### 损失函数
+在 NLP 中，损失函数本质上是在**建模条件概率分布**或**判别边界**：
+
+* **生成式任务**：语言模型、翻译、摘要
+  → 最大化 *log-likelihood*
+* **判别式任务**：分类、序列标注、匹配
+  → 最小化 *cross entropy / margin loss*
+* **排序/匹配任务**：检索、对齐
+  → pairwise / contrastive loss
+
+**核心问题永远是**：
+
+&gt; *模型输出的是什么概率空间？标签是否互斥？是否独立？*
+
+#### 二分类与多标签任务
+
+##### 1. `BCELoss`（Binary Cross Entropy）
+
+**数学定义**
+
+对单个样本：
+$$
+\mathcal{L} = -[y \log(p) + (1-y)\log(1-p)]
+$$
+
+**PyTorch 使用**
+
+```python
+loss = nn.BCELoss()
+p = torch.sigmoid(logits)
+loss(p, labels)
+```
+
+**关键约束**
+
+* **输入必须是概率**：`p ∈ (0,1)`
+* 需要 **手动 sigmoid**
+* 数值稳定性较差（log(0)）
+
+**适用场景**
+* 教学 / 简单实验
+* **不推荐工业使用**
+
+##### 2. `BCEWithLogitsLoss`（工业首选）
+
+**数学等价关系（重点）**
+$$
+\texttt{BCEWithLogitsLoss}(x, y) \equiv \texttt{BCELoss}(\sigma(x), y)
+$$
+
+但 **实现方式完全不同**。
+
+**内部实现（数值稳定）**
+$$
+\max(x,0) - x\cdot y + \log(1 + e^{-|x|})
+$$
+
+避免了：
+* `sigmoid(x)` 的上溢 / 下溢
+* `log(0)`
+
+**PyTorch 使用**
+
+```python
+loss = nn.BCEWithLogitsLoss()
+loss(logits, labels.float())
+```
+
+**工程级优势**
+* **一步完成 sigmoid + BCE**
+* 更稳定、更快
+* 支持 `pos_weight`（极其重要）
+
+**NLP 典型应用**
+| 场景                         | 原因   |
+| -------------------------- | ---- |
+| 多标签文本分类                    | 标签独立 |
+| 意图识别（多意图）                  | 非互斥  |
+| 文本匹配（是否相关）                 | 二分类  |
+| token-level binary tagging | 独立判定 |
+
+**类别不平衡处理**
+
+```python
+loss = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([5.0]))
+```
+
+#### 多分类（互斥标签）任务
+
+##### 3. `CrossEntropyLoss`（NLP 最常用）
+**数学形式**
+$$
+\mathcal{L} = -\log \frac{e^{x_{y}}}{\sum_{c} e^{x_c}}
+$$
+
+**等价关系**
+$$
+\texttt{CrossEntropyLoss} \equiv \texttt{LogSoftmax} + \texttt{NLLLoss}
+$$
+
+**PyTorch 使用**
+
+```python
+loss = nn.CrossEntropyLoss()
+loss(logits, labels)  # logits: [B, C], labels: [B]
+```
+
+* **不要 softmax**
+* `labels` 是类别 index（不是 one-hot）
+
+**NLP 应用场景**
+
+| 任务                    | 说明        |
+| --------------------- | --------- |
+| 单标签文本分类               | 情感、主题     |
+| Token 分类              | NER / POS |
+| Next-token prediction | 语言模型      |
+
+#### Token-Level 使用
+
+```python
+logits: [B, L, C]
+labels: [B, L]
+loss = CrossEntropyLoss(ignore_index=-100)
+```
+
+---
+
+### 4. `NLLLoss`（底层组件）
+
+#### 使用前提
+
+* 输入必须是 **log-probabilities**
+
+```python
+log_probs = F.log_softmax(logits, dim=-1)
+loss = nn.NLLLoss()
+loss(log_probs, labels)
+```
+
+#### 什么时候用？
+
+* 自定义 softmax / mask
+* CRF / structured loss 前后处理
+
+---
+
+## 四、语言模型与生成任务
+
+### 5. Language Modeling Loss（本质仍是 CE）
+
+#### GPT / BERT MLM
+
+```python
+loss = CrossEntropyLoss(ignore_index=pad_id)
+```
+
+* **自回归**：预测 next token
+* **MLM**：只在 mask 位置计算 loss
+
+#### 工程关键点
+
+* label shift（右移）
+* padding mask
+* label smoothing（有时提升泛化）
+
+---
+
+## 五、序列标注与结构化预测
+
+### 6. CRF Loss（非 PyTorch 原生）
+
+#### 原理
+
+[
+\mathcal{L} = -(\text{score}(y) - \log \sum_{y&#39;} e^{\text{score}(y&#39;)})
+]
+
+#### NLP 场景
+
+* NER
+* Slot Filling
+* 地址解析
+
+#### 特点
+
+* 显式建模 tag 转移约束
+* **不能逐 token 独立建模**
+
+---
+
+## 六、对比学习 / 匹配 / 检索
+
+### 7. `MarginRankingLoss`
+
+```python
+loss = nn.MarginRankingLoss(margin=1.0)
+loss(pos_score, neg_score, target=1)
+```
+
+用于：
+
+* 句对排序
+* 问答检索
+
+---
+
+### 8. `CosineEmbeddingLoss`
+
+```python
+loss = nn.CosineEmbeddingLoss()
+loss(u, v, y)  # y ∈ {1, -1}
+```
+
+适合：
+
+* 语义相似度
+* Sentence-BERT
+
+---
+
+### 9. InfoNCE / Contrastive Loss（工业核心）
+
+虽非原生，但**现代 NLP 极其重要**：
+
+[
+\mathcal{L} = -\log \frac{e^{sim(q,k^+)/\tau}}{\sum e^{sim(q,k)/\tau}}
+]
+
+应用：
+
+* 表征学习
+* 检索
+* 对齐（CLIP、SimCSE）
+
+---
+
+## 七、损失函数选择速查表（强烈建议记住）
+
+| 任务         | 标签关系 | 推荐 Loss              |
+| ---------- | ---- | -------------------- |
+| 单标签分类      | 互斥   | CrossEntropyLoss     |
+| 多标签分类      | 独立   | BCEWithLogitsLoss    |
+| 二分类        | 独立   | BCEWithLogitsLoss    |
+| 语言模型       | 互斥   | CrossEntropyLoss     |
+| NER（无 CRF） | 互斥   | CrossEntropyLoss     |
+| NER（有 CRF） | 结构化  | CRF Loss             |
+| 语义相似度      | 相对   | Cosine / Contrastive |
+| 检索排序       | 相对   | Margin / InfoNCE     |
+
+---
+
+## 八、工业经验总结（资深工程师视角）
+
+1. **能用 `WithLogits` 就不用手动 sigmoid/softmax**
+2. **CrossEntropy ≠ 多标签**
+3. 多标签任务 **不要 one-hot + CE**
+4. 类别极不平衡时：
+
+   * BCE → `pos_weight`
+   * CE → `class_weight`
+5. Token 任务一定注意 `ignore_index`
+6. Loss 是概率建模假设的体现，不是随便换的
+
+---
+
+如果你愿意，我可以**下一步**：
+
+* 从“**概率建模视角**”推导 BCE / CE 的统一形式
+* 对比 **CE vs Focal Loss 在 NLP 长尾问题中的真实差异**
+* 给你一套 **BERT 多任务 loss 设计范式（工业级）**
+
+你可以直接指定你更关注 **分类 / 序列标注 / 检索 / 生成** 中的哪一类。
+
+
+
+### 评价指标
+#### 本质角色
+**损失函数（Loss）**
+
+* 用于 **训练阶段**
+* 可微、连续
+* 是概率建模或判别假设的一部分
+
+**评价指标（Metric）**
+
+* 用于 **评估与选型**
+* 不可微、离散
+* 是业务目标与统计意义的体现
+
+#### 分类任务指标（Classification）
+
+##### 1. Accuracy（准确率）
+定义
+$$
+Accuracy = \frac{{预测正确}}{{总样本}}
+$$
+
+使用方式
+```python
+pred = logits.argmax(dim=-1)
+acc = (pred == labels).float().mean()
+```
+
+适用场景
+* **类别均衡**
+* 错误代价对称
+
+NLP 典型任务
+* Topic 分类（平衡数据）
+* 简单意图识别
+
+工程陷阱
+* **极度不平衡数据完全失效**
+* 在 NER / token 任务中毫无意义（大量 O 标签）
+
+##### 2. Precision / Recall / F1（核心指标）
+
+混淆矩阵定义
+
+|     | 预测正 | 预测负 |
+| --- | --- | --- |
+| 实际正 | TP  | FN  |
+| 实际负 | FP  | TN  |
+
+定义
+$$
+\text{Precision} = \frac{TP}{TP + FP} \\\\
+\text{Recall} = \frac{TP}{TP + FN} \\\\
+\text{F1} = \frac{2PR}{P+R}
+$$
+
+工程意义
+* **Precision 高** → 少误报
+* **Recall 高** → 少漏报
+* **F1** → 折中
+
+##### 3. Macro / Micro / Weighted 区别（高频考点）
+
+**3.1 Micro**
+* 全局统计 TP/FP/FN
+* **偏向大类**
+
+```python
+micro_f1 = f1_score(y_true, y_pred, average=&#34;micro&#34;)
+```
+
+**3.2 Macro**
+* 每类算 F1，再平均
+* **平等对待每个类别**
+
+```python
+macro_f1 = f1_score(y_true, y_pred, average=&#34;macro&#34;)
+```
+
+**3.3 Weighted**
+
+* Macro + 类别频率加权
+* 折中方案
+
+**NLP 经验法则**
+
+| 场景     | 推荐            |
+| ------ | ------------- |
+| 类别极不平衡 | Macro-F1      |
+| 关注整体效果 | Micro-F1      |
+| 对外展示   | Macro + Micro |
+
+#### 多标签分类指标（Multi-label）
+
+##### 4. Subset Accuracy（几乎不用）
+$$
+\text{Exact Match} = \mathbb{1}[\hat{Y} = Y]
+$$
+
+* **过于严格**
+* 标签稍多即接近 0
+
+##### 5. Hamming Loss / Hamming Score
+$$
+\text{Hamming Loss} = \frac{1}{NL}\sum \mathbb{1}[y_{ij} \neq \hat{y}_{ij}]
+$$
+
+* 标签独立
+* 工业常用
+
+##### 6. Micro / Macro F1（多标签）
+
+```python
+f1_score(y_true, y_pred, average=&#34;micro&#34;)
+```
+
+* **多标签任务首选**
+* 比 accuracy 更有意义
+
+#### 序列标注（NER / POS）
+
+##### Token-level Accuracy（误用最多）
+
+```python
+(token_pred == token_label).mean()
+```
+
+问题
+* O 标签占比极高
+* 无法反映实体级效果
+
+**工业上几乎无价值**
+
+##### Entity-level Precision / Recall / F1（标准）
+**评估单位**
+* **完整实体 span**
+* BIO / BIOES 边界必须完全正确
+
+**示例**
+
+| 预测          | 实际          | 结果      |
+| ----------- | ----------- | ------- |
+| B-PER I-PER | B-PER I-PER | TP      |
+| B-PER I-LOC | B-PER I-PER | FP + FN |
+
+**常用工具**
+* `seqeval`
+* `conlleval`
+
+**工业标准**
+* **只看 entity-level F1**
+* 忽略 token-level 指标
+
+#### 排序与检索任务
+
+##### MRR（Mean Reciprocal Rank）
+$$
+\text{MRR} = \frac{1}{N} \sum \frac{1}{rank_i}
+$$
+
+* 首条命中越靠前越好
+* QA / 检索
+
+##### Recall@K / Precision@K
+
+```text
+Recall@10 = relevant ∈ top-10 ?
+```
+
+* 工业检索最重要指标
+* 对排序 loss 非常敏感
+
+##### NDCG（排序质量）
+$$
+\text{NDCG@K} = \frac{DCG}{IDCG}
+$$
+
+* 支持多级相关性
+* 搜索、推荐常用
+
+#### 生成任务指标（NLG）
+
+##### BLEU（机器翻译）
+
+* n-gram precision
+* 对语序敏感
+* **对中文不友好**
+
+##### ROUGE（摘要）
+
+| 指标      | 含义      |
+| ------- | ------- |
+| ROUGE-1 | unigram |
+| ROUGE-2 | bigram  |
+| ROUGE-L | LCS     |
+
+* 偏 recall
+* 容易被“堆词”欺骗
+
+##### Perplexity（语言模型）
+$$
+\text{PPL} = \exp(\text{CrossEntropy})
+$$
+
+* 模型内在指标
+* **不可跨 tokenizer 比较**
+
+#### 指标 vs 业务目标（资深经验）
+
+| 任务   | 不要只看        | 必须看        |
+| ---- | ----------- | ---------- |
+| 文本分类 | Accuracy    | Macro-F1   |
+| 多标签  | Exact Match | Micro-F1   |
+| NER  | Token Acc   | Entity-F1  |
+| 检索   | Loss        | Recall@K   |
+| 生成   | BLEU 单一值    | 人工评估 + 多指标 |
+
+#### PyTorch 工业实践建议
+
+1. **不要在训练 step 内算 metric**
+2. 使用 `torchmetrics` / `sklearn`
+3. 明确 macro/micro/weighted
+4. NER 永远 entity-level
+5. 检索永远 top-K
+6. 指标决定模型方向，不是装饰品
+
+#### 损失函数 vs 评价指标对照（总结）
+
+| 任务  | Loss          | Metric       |
+| --- | ------------- | ------------ |
+| 分类  | CrossEntropy  | Macro-F1     |
+| 多标签 | BCEWithLogits | Micro-F1     |
+| NER | CE / CRF      | Entity-F1    |
+| 检索  | InfoNCE       | Recall@K     |
+| 生成  | CE            | BLEU / ROUGE |
+
+------
 
 ## 传统序列模型
 ### RNN（Recurrent Neural Network，循环神经网络）
@@ -10223,7 +10744,7 @@ GPT基于Transformer的解码器结构，但与标准的Transformer解码器并�
 
 GPT不同于原始Transformer的一点在于：位置编码采用的是可学习的位置嵌入（learnable positional embedding）。这意味着每个位置对应一个可训练的向量，模型可以在训练过程中自动优化这些向量，而非使用不可训练的三角函数编码（如正弦/余弦函数）。
 
-**权重共享（Weight Typing）**
+**权重共享（Weight Typing / Tie Word Embeddings）**
 - `self.transformer.wte.weight=self.llm_head.weight`，将词嵌入层的权重和语言模型头的权重绑定在一起
 - GPT系列的经典优化，既能减少模型参数数量（提升训练效率），又能让Token的语义向量和预测向量更一致，从而提升模型性能。
 
@@ -11505,7 +12026,7 @@ Hugging Face 提供了一套围绕预训练模型构建的工具库。这些组�
    1. 合并计算：优化推理性能，KV Cache 对齐$\\\\qkv = qkv\_proj(x)\\\\q, k, v = split(qkv)$
    2. GQA，部分kv共享，减少kv cache显存占用
    3. Q、K会先经过RMSNorm再计算，如：$Q=RMSNorm(Q)$
-   4. 使用滑动窗口`slidding_window`限制attention视野范围，如最长可以感知上下文4096token，从而能学习并生成更长上下文。
+   4. 长文本训练或推理使用滑动窗口`slidding_window`限制attention视野范围，如最长可以感知上下文4096token，从而能学习并生成更长上下文。
 3. Norm
    1. preNorm+RMSNorm，即$x + Attention(RMSNorm(x))$
 4. FFN
